@@ -22,7 +22,7 @@ class HRDetail extends React.Component<any> {
         this.props.getDefaultControlsData();
     }
     
-    componentDidMount() {
+    componentDidUpdate() {
         debugger;
         this.props.getDefaultControlsData();
 
@@ -82,13 +82,12 @@ class HRDetail extends React.Component<any> {
                         <Control.select model="HR.reasonForLeaving" id="HR.reasonForLeaving">
                             <option>--Select--</option>
                             
-                            {this.props.HR.reasonOfLeavingOptions.map(reasons => {
-                                debugger
+                            {/* {this.props.HR.reasonOfLeavingOptions.map(reasons => {
                                 return <option key={reasons} value={reasons}>{reasons}</option>
-                            })};
-                            {/* <option>Growth</option>
+                            })}; */}
+                            <option>Growth</option>
                             <option>Better Projects</option>
-                            <option>Better Opportunity</option> */}
+                            <option>Better Opportunity</option>
                         </Control.select>
                     </div>
                     <div className='col'> {/* Date of Resignation*/}
