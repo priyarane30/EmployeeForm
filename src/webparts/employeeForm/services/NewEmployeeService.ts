@@ -1,13 +1,14 @@
 import INewEmpRequestService from './INewEmpRequestService';
 import { INewFormState } from "../state/INewFormControlsState";
-// import pnp from "sp-pnp-js";
-// import { ItemAddResult, Web } from "sp-pnp-js";
 import axios from 'axios';
 import { AppConstats, ListNames } from '../AppConstants';
+import pnp from "sp-pnp-js";
+import { sp, ItemAddResult, Web } from "sp-pnp-js";
 
 export default class NewEmployeeService implements INewEmpRequestService {
 
-   
+
+
     getusingCallback: (name) => {
 
     };
@@ -63,29 +64,43 @@ export default class NewEmployeeService implements INewEmpRequestService {
 
     // Creates a new employee request. The request is created in two list. One where the main data is stored and one
     // where the purchase items are stored with a reference of the ID of main request.
-    async AddNewEmpRequest(empData: INewFormState): Promise<any> {
-        var url = AppConstats.SITEURL + "/_api/web/lists/GetByTitle(" + ListNames.EMPLOYEECONTACT + ")/items";
-       
-        var headers = {
-            "accept": "application/json;odata=verbose", //It defines the Data format   
-            "content-type": "application/json;odata=verbose", //It defines the content type as JSON  
-            //"X-RequestDigest": $("#__REQUESTDIGEST").val()
-        }
-        debugger
-
-        var data = JSON.stringify({
-            '__metadata': {
-                'type': 'SP.Data.EmployeeContactItem' // it defines the ListEnitityTypeName  
-            },
-            //Pass the parameters
-            FirstName: empData.firstName,
-            LastName: empData.lastName
-        });
-        return axios.post(url, data, { headers: headers }).then((result) => {
+    AddNewEmpRequest(empData: INewFormState): Promise<any> {
+        let web = new Web(AppConstats.SITEURL);
+        return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
+            FirstName: empData.FirstName,
+            LastName: empData.LastName,
+            Designation: empData.Designation,
+            Gender: empData.Gender,
+            Technology: empData.Technology,
+            MotherName : empData.MotherName,
+            Mobile:empData.Mobile
+        }).then((result: ItemAddResult) => {
             debugger
-            let mainListID = result.data.value.ID;
+            let mainListID = result.data.Id;
+            console.log("Employee request created : " + mainListID);
+            if (empData.childDetailItems != null && empData.childDetailItems.length > 0) {
+
+                // Creates the multiple purchase items in batch.
+                let web = new Web(AppConstats.SITEURL);
+                let batch = web.createBatch();
+
+                // empData.childDetailItems.forEach(child => {
+                //     web.lists.getByTitle("PurchaseRequestItems").items.inBatch(batch).add({
+                //         ProductCode: child.childName,
+                //         Quantity: child.DateOfBirth,
+                //         RequestID: mainListID
+                //     });
+                // });
+
+                // batch.execute().then(() => {
+                //     console.log("children details added to the list....");
+                // });
+            }
+            // else {
+            //     alert('Select atleast one purchase item.');
+            // }
         }).catch(error => {
-            console.log(error)
+            console.log("error while adding an employee");
         });
     }
 }
