@@ -1,25 +1,26 @@
 // Represents a employee detail
 export interface INewFormState {
     //form controls
-    firstName: string;
-    lastName: string;
-    gender: string;
-    dateOfJoin: string; //datetime?
-    designation: string;
-    technology: string;
-    personalEmail: string;
-    mobileNo: string;
-    dateOfBirth: string;//dateTime?
-    age: number;
-    bloodGroup: string;
-    fatherName: string;
-    motherName: string;
+    FirstName: string;
+    LastName: string;
+    Gender: string;
+    DateofJoining: string; //datetime?
+    Designation: string;
+    Technology: string;
+    CompanyEmail: string;
+    PersonalEmail: string;
+    Mobile: string;
+    DateOfBirth: string;//dateTime?
+    Age: number;
+    BloodGroup: string;
+    FatherName: string;
+    MotherName: string;
     maritalStatus: string;
     spouceName: string;
     spouceOccup: string;
     spouceDOB: string; //dateTime?
-    emergencyContact: string;
-    relWithEmergency: string;
+    EmergencyNo: string;
+    RelationWithEmergencyNo: string;
     currentAddress: string;
     IsSamePermCurrAddress: boolean;
     permanentAddress: string;
@@ -42,5 +43,5 @@ export interface INewFormState {
 // Represents one child detail in the Employee request.
 export interface IChildDetailItem {
     childName: string;
-    dateOfBirth: string;//dateTime??
+    DateOfBirth: string;//dateTime??
 }

@@ -10,7 +10,7 @@
 // The file contains actions for the NewEmployeeReducer
 
 import { INewFormState } from '../state/INewFormControlsState';
-import { ICommonState, IRequestDigest } from '../state/ICommonState';
+import { ICommonState } from '../state/ICommonState';
 import NewEmpService from '../services/NewEmployeeService';
 import NewEmployeeService from '../services/NewEmployeeService';
 import { ActionTypes } from '../AppConstants';
@@ -47,7 +47,6 @@ export function AddNewEmployee(empReqData: INewFormState) {
         let newEmpReqServiceObj: NewEmployeeService = new NewEmpService();
         debugger
         newEmpReqServiceObj.AddNewEmpRequest(empReqData).then(resp => {
-            debugger
             console.log(resp);
             alert("New Employee is added successfully");
         }).catch(() => {
@@ -65,12 +64,5 @@ export function SetTabName(tabData: ICommonState) {
     return ({
         type: "SET_TAB",
         payload: tabData
-    })
-}
-
-export function SetReqDigest(reqDigest: IRequestDigest) {
-    return ({
-        type: "SET_REQ_DIGEST",
-        payload: reqDigest
     })
 }

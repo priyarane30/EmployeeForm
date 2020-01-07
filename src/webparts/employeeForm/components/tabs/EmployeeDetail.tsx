@@ -2,11 +2,8 @@ import * as React from 'react';
 import { Form, Control } from 'react-redux-form';
 import { connect } from "react-redux";
 import { SetTabName, GetInitialControlValuesAction, AddNewEmployee } from "../../actions/NewFormControlsValuesAction";
-import { ICommonState, IRequestDigest } from '../../state/ICommonState';
+import { ICommonState } from '../../state/ICommonState';
 import { INewFormState } from '../../state/INewFormControlsState';
-
-
-
 
 // Represents the connected dispatch
 interface INewFormConnectedDispatch {
@@ -27,8 +24,6 @@ class EmployeeDetail extends React.Component<any> {
         super(props);
     }
 
-   
-
     handleSubmit(formValues) {
 
         // Do anything you want with the form value
@@ -40,13 +35,10 @@ class EmployeeDetail extends React.Component<any> {
         // you can dispatch actions such as:
         // dispatch(actions.submit('user', somePromise));
         // etc.
-
-        debugger;
         let empData = {} as INewFormState;
         empData = formValues;
         // Call the connected dispatch to create new purchase request
         this.props.addNewEmployee(empData);
-
     }
 
     public render() {
@@ -55,34 +47,61 @@ class EmployeeDetail extends React.Component<any> {
                 <Form model="Employee" onSubmit={(val) => this.handleSubmit(val)}>
                     <div className='col'>
                         <label>First Name:</label>
-                        <Control.text model='.firstName' id='.firstName' />
+                        <Control.text model='.FirstName' id='.FirstName' />
                     </div>
                     <div className='col'>
                         <label>Last Name:</label>
-                        <Control.text model='.lastName' id='.lastName' />
+                        <Control.text model='.LastName' id='.LastName' />
+                    </div>
+                    <div className='col'>
+                        <label>Date Of Joining:</label>
+                        <Control.text model='.DateofJoining' id='.DateofJoining' />
                     </div>
                     <div className='col'>
                         <label>Gender:</label>
-                        <Control.select model=".gender" id=".gender">
+                        <Control.select model=".Gender" id=".Gender">
                             <option>--Select--</option>
                             {this.props.Employee.genderOptions.map(gender => { return <option key={gender} value={gender}>{gender}</option> })};
                         </Control.select>
                     </div>
                     <div className='col'>
                         <label>Designation:</label>
-                        <Control.select model=".designation" id=".designation">
+                        <Control.select model=".Designation" id=".Designation">
                             <option>--Select--</option>
                             {this.props.Employee.designationOptions.map(desig => { return <option key={desig} value={desig}>{desig}</option> })};
                         </Control.select>
                     </div>
                     <div className='col'>
                         <label>Technology:</label>
-                        <Control.select model=".technology" id=".technology">
+                        <Control.select model=".Technology" id=".Technology">
                             <option>--Select--</option>
                             {this.props.Employee.technologyOptions.map(tech => { return <option key={tech} value={tech}>{tech}</option> })};
                         </Control.select>
                     </div>
-
+                    <div className='col'>
+                        <label>Company Email:</label>
+                        <Control.text model='.CompanyEmail' id='.CompanyEmail' />
+                    </div>
+                    <div className='col'>
+                        <label>Mobile No:</label>
+                        <Control.text model='.Mobile' id='.Mobile' />
+                    </div>
+                    <div className='col'>
+                        <label>Emergency Contact No:</label>
+                        <Control.text model='.EmergencyNo' id='.EmergencyNo' />
+                    </div>
+                    <div className='col'>
+                        <label>Relation with Emergency No:</label>
+                        <Control.text model='.RelationWithEmergencyNo' id='.RelationWithEmergencyNo' />
+                    </div>
+                    <div className='col'>
+                        <label>Father Name:</label>
+                        <Control.text model='.FatherName' id='.FatherName' />
+                    </div>
+                    <div className='col'>
+                        <label>Mother Name:</label>
+                        <Control.text model='.MotherName' id='.MotherName' />
+                    </div>
                     <button type="submit">Submit</button>
                 </Form>
             </div>);
@@ -91,7 +110,7 @@ class EmployeeDetail extends React.Component<any> {
 
     componentDidMount() {
         this.props.getDefaultControlsData();
-       
+
     }
 
 }
@@ -105,7 +124,6 @@ const mapStateToProps = function (state) {
 const mapDispatchToProps = (dispatch): INewFormConnectedDispatch => {
     return {
         setTabName: SetTabName,
-        //setReqDigest : SetReqDigest,
         getDefaultControlsData: () => {
             return dispatch(GetInitialControlValuesAction());
         },
