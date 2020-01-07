@@ -4,7 +4,7 @@ import NewEmployeeService from '../services/NewEmployeeService';
 import { ActionTypes } from '../AppConstants';
 import NewEmpService from '../services/NewEmployeeService';
 
-export function GetControlValuesAction() {
+export function GetInitialControlValuesAction() {
     return dispatch => {
 
         let formControlState = {

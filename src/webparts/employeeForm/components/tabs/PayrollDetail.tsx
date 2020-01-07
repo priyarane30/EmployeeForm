@@ -1,18 +1,35 @@
 import * as React from 'react';
 import { Form, Control, Field } from 'react-redux-form';
+import { ICommonState } from '../../state/ICommonState';
 import {IPayrollState} from '../../state/IPayrollState';
 
-export default class PayrollDetail extends React.Component {
+export default class PayrollDetail extends React.Component <any>{
     constructor(props) {
         super(props);
     }
    
- 
+    handleSubmit(formValues) {
+        // Do anything you want with the form value
+        console.log(formValues);
+        // Do whatever you like in here.
+        // If you connect the UserForm to the Redux store,
+        // you can dispatch actions such as:
+        // dispatch(actions.submit('user', somePromise));
+        // etc.
+        const CommonState: ICommonState = { CurrentForm: "Payroll" };
+        this.props.setTabName(CommonState);
+
+        //     // Do whatever you like in here.
+        //     // If you connect the UserForm to the Redux store,
+        //     // you can dispatch actions such as:
+        //     // dispatch(actions.submit('user', somePromise));
+        //     // etc.
+    }
 
     public render() {
         return (
             <div>
-                <Form model="Payroll" >
+                <Form model="Payroll" onSubmit={(val) => this.handleSubmit(val)} >
                     <div className='col'>
                         <label>ESI Applicable:</label>
                         <Field model=".ESIApplicable" className="field">
@@ -37,7 +54,7 @@ export default class PayrollDetail extends React.Component {
                     </div>
                     <div className='col'>
                     <label>PF Applicable:</label>
-                        <Control.checkbox model='Payroll.PFApplicable'/>
+                    <Control.checkbox model='Payroll.PFApplicable' id='Payroll.PFApplicable' />
                         
                     </div>
                     <div className='col'>
@@ -68,10 +85,6 @@ export default class PayrollDetail extends React.Component {
                     <label>Director:</label>
                         <Control.text model='.Director' id='.Director' />
                     </div>
-
-
-
-
                     <button type="submit">Submit</button>
                 </Form>
             </div>);

@@ -28,10 +28,12 @@ export default class NewEmployeeService implements INewEmpRequestService {
     }
 
     private getOptionsFromChoiceField(listName, columnName): Promise<any> {
+        debugger;
         // return pnp.sp.web.fields.getByTitle("Gender").select("Choices").get().then(response => {
         var url = AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + listName + "')/fields?$filter=EntityPropertyName eq '" + columnName + "'";
         return axios.get(url)
             .then(res => {
+                debugger;
                 console.log(res);
                 return res.data.value[0].Choices;
             }).catch(error => {
@@ -108,7 +110,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
     getHRFormControlState(): Promise<any> {
         let hrControlsState = {} as IHRState;
         debugger
-        return this.getOptionsFromChoiceField(ListNames.REASONFORLEAVING, 'Title').then(statusResp => {
+        return this.getOptionsFromMaster(ListNames.REASONFORLEAVING, 'Title').then(statusResp => {
             hrControlsState.reasonOfLeavingOptions = statusResp;
             return hrControlsState;
         });

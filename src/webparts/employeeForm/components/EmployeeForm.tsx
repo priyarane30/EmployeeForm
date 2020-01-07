@@ -37,10 +37,9 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, {}
               </PivotItem>
             </Pivot>
           </div>
-          
         </div>
       </Provider>
     );
   }
-  
+
 }
