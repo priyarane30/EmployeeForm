@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Form, Control } from 'react-redux-form';
 import { ICommonState } from '../../state/ICommonState';
 import { connect } from "react-redux";
-import { SetTabName, GetInitialControlValuesAction } from "../../actions/HRFormControlsValuesAction";
+import { SetTabName, GetControlValuesAction } from "../../actions/HRFormControlsValuesAction";
 import { IHRState } from '../../state/IHRSectionControlsState';
 
 // Represents the connected dispatch
@@ -18,8 +18,12 @@ interface IHRConnectedDispatch {
 class HRDetail extends React.Component<any> {
     constructor(props) {
         super(props);
+        debugger;
+        this.props.getDefaultControlsData();
     }
+    
     componentDidMount() {
+        debugger;
         this.props.getDefaultControlsData();
 
     }
@@ -77,9 +81,11 @@ class HRDetail extends React.Component<any> {
                         <label>Reason for leaving:</label>
                         <Control.select model="HR.reasonForLeaving" id="HR.reasonForLeaving">
                             <option>--Select--</option>
-                            {this.props.HR.reasonOfLeavingOptions.map(reasons => {
+                            
+                            {/* {this.props.HR.reasonOfLeavingOptions.map(reasons => {
+                                debugger
                                 return <option key={reasons} value={reasons}>{reasons}</option>
-                            })};
+                            })}; */}
                             {/* <option>Growth</option>
                             <option>Better Projects</option>
                             <option>Better Opportunity</option> */}
@@ -111,7 +117,7 @@ const mapDispatchToProps = (dispatch): IHRConnectedDispatch => {
         setTabName: SetTabName,
         //setReqDigest : SetReqDigest,
         getDefaultControlsData: () => {
-            return dispatch(GetInitialControlValuesAction());
+            return dispatch(GetControlValuesAction());
         }
     };
 };

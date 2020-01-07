@@ -1,10 +1,10 @@
 import { IHRState } from '../state/IHRSectionControlsState';
-import { ICommonState, IRequestDigest } from '../state/ICommonState';
+import { ICommonState } from '../state/ICommonState';
 import NewEmployeeService from '../services/NewEmployeeService';
 import { ActionTypes } from '../AppConstants';
 import NewEmpService from '../services/NewEmployeeService';
 
-export function GetInitialControlValuesAction() {
+export function GetControlValuesAction() {
     return dispatch => {
 
         let formControlState = {
@@ -32,9 +32,9 @@ export function SetTabName(tabData: ICommonState) {
     })
 }
 
-export function SetReqDigest(reqDigest: IRequestDigest) {
-    return ({
-        type: "SET_REQ_DIGEST",
-        payload: reqDigest
-    })
-}
+// export function SetReqDigest(reqDigest: IRequestDigest) {
+//     return ({
+//         type: "SET_REQ_DIGEST",
+//         payload: reqDigest
+//     })
+// }

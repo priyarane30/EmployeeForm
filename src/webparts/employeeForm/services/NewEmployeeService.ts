@@ -42,6 +42,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
 
     // Gets the choices to be displayed in the dropdown fields.
     getNewFormControlState(): Promise<any> {
+        debugger
         let newFormControlsState = {} as INewFormState;
         return this.getOptionsFromChoiceField(ListNames.EMPLOYEECONTACT, 'Gender').then(genderResp => {
             newFormControlsState.genderOptions = genderResp;
@@ -72,10 +73,9 @@ export default class NewEmployeeService implements INewEmpRequestService {
             Designation: empData.Designation,
             Gender: empData.Gender,
             Technology: empData.Technology,
-            MotherName : empData.MotherName,
-            Mobile:empData.Mobile
+            MotherName: empData.MotherName,
+            Mobile: empData.Mobile
         }).then((result: ItemAddResult) => {
-            debugger
             let mainListID = result.data.Id;
             console.log("Employee request created : " + mainListID);
             if (empData.childDetailItems != null && empData.childDetailItems.length > 0) {
@@ -107,7 +107,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
     //HR Section
     getHRFormControlState(): Promise<any> {
         let hrControlsState = {} as IHRState;
-
+        debugger
         return this.getOptionsFromChoiceField(ListNames.REASONFORLEAVING, 'Title').then(statusResp => {
             hrControlsState.reasonOfLeavingOptions = statusResp;
             return hrControlsState;
