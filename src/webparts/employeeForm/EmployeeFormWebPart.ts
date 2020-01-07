@@ -11,33 +11,18 @@ import * as strings from 'EmployeeFormWebPartStrings';
 import EmployeeForm from './components/EmployeeForm';
 import { IEmployeeFormProps } from './components/IEmployeeFormProps';
 
-import { IRequestDigest } from '../employeeForm/state/ICommonState';
-import { IDigestCache, DigestCache } from '@microsoft/sp-http';
-
 export interface IEmployeeFormWebPartProps {
   description: string;
 }
 
 export default class EmployeeFormWebPart extends BaseClientSideWebPart<IEmployeeFormWebPartProps> {
-  protected onInit(): Promise<void> {
-    return new Promise<void>((resolve: () => void, reject: (error: any) => void): void => {
-      const digestCache: IDigestCache = this.context.serviceScope.consume(DigestCache.serviceKey);
-      digestCache.fetchDigest(this.context.pageContext.web.serverRelativeUrl).then((digest: string): void => {
-        // use the digest here
-        debugger
-        const reqDigest: IRequestDigest = { RequestDigest: digest };
-        
-        resolve();
-      });
-    });
-  }
-
-
   public render(): void {
     const element: React.ReactElement<IEmployeeFormProps> = React.createElement(
       EmployeeForm,
       {
-        description: this.properties.description
+        description: this.properties.description,
+        siteUrl:this.context.pageContext.web.absoluteUrl,
+        spHttpClient:this.context.spHttpClient
       }
     );
     ReactDom.render(element, this.domElement);
