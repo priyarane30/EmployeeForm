@@ -8,7 +8,8 @@ export const ListNames = {
     DESIGNATION: 'Designation',
     TECHNOLOGY: 'TechnologyList',
     CHILDDETAILS :'ChildDetails',
-    VISADETAILS : 'VisaDetails'
+    VISADETAILS : 'VisaDetails',
+    REASONFORLEAVING:'ReasonForLeaving'
 }
 
 export const ActionTypes = {

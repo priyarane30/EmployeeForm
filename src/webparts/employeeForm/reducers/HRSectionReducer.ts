@@ -3,13 +3,13 @@ import { IHRState } from '../state/IHRSectionControlsState';
 //Initialise state of Employee Detail
 export const hrInitialState: IHRState = {
     userAlias: '',
-    ADLoginName: '',
-    manager: '',
-    employmentStatus: '',
-    dateOfLeaving: '', //dateTime?
+    ADLogin: '',
+    Manager: '',
+    employementStatus: '',
+    DateOfLeaving: '', //dateTime?
     reasonForLeaving: '',
-    resignationDate: '', //datetime?
-    eligibleToRehire: false,
+    ResigntionDate: '', //datetime?
+    EligibleforRehire: false,
 
     // Represent the choices to be displayed in dropdown when the form loads.
     employmentStatusOptions: [],
@@ -32,13 +32,13 @@ export const HRSectionReducer = (state: IHRState = hrInitialState, action) => {
             state = {
                 ...state,
                 userAlias: action.payload.userAlias,
-                ADLoginName: action.payload.ADLoginName,
-                manager: action.payload.manager,
-                employmentStatus: action.payload.employmentStatus,
-                dateOfLeaving: action.payload.dateOfLeaving,
+                ADLogin: action.payload.ADLogin,
+                Manager: action.payload.Manager,
+                employementStatus: action.payload.employementStatus,
+                DateOfLeaving: action.payload.DateOfLeaving,
                 reasonForLeaving: action.payload.reasonForLeaving,
-                resignationDate: action.payload.resignationDate,
-                eligibleToRehire: action.payload.eligibleToRehire,
+                ResigntionDate: action.payload.ResigntionDate,
+                EligibleforRehire: action.payload.EligibleforRehire,
 
                 // Represent the choices to be displayed in dropdown when the form loads.
                 employmentStatusOptions: action.payload.employmentStatusOptions,

@@ -35,13 +35,10 @@ class EmployeeDetail extends React.Component<any> {
         // you can dispatch actions such as:
         // dispatch(actions.submit('user', somePromise));
         // etc.
-
-        debugger;
         let empData = {} as INewFormState;
         empData = formValues;
         // Call the connected dispatch to create new purchase request
         this.props.addNewEmployee(empData);
-
     }
 
     public render() {

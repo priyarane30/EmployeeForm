@@ -1,12 +1,12 @@
 import INewEmpRequestService from './INewEmpRequestService';
 import { INewFormState } from "../state/INewFormControlsState";
+import { IHRState } from "../state/IHRSectionControlsState";
 import axios from 'axios';
 import { AppConstats, ListNames } from '../AppConstants';
 import pnp from "sp-pnp-js";
 import { sp, ItemAddResult, Web } from "sp-pnp-js";
 
 export default class NewEmployeeService implements INewEmpRequestService {
-
 
 
     getusingCallback: (name) => {
@@ -28,10 +28,12 @@ export default class NewEmployeeService implements INewEmpRequestService {
     }
 
     private getOptionsFromChoiceField(listName, columnName): Promise<any> {
+        debugger;
         // return pnp.sp.web.fields.getByTitle("Gender").select("Choices").get().then(response => {
         var url = AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + listName + "')/fields?$filter=EntityPropertyName eq '" + columnName + "'";
         return axios.get(url)
             .then(res => {
+                debugger;
                 console.log(res);
                 return res.data.value[0].Choices;
             }).catch(error => {
@@ -42,6 +44,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
 
     // Gets the choices to be displayed in the dropdown fields.
     getNewFormControlState(): Promise<any> {
+        debugger
         let newFormControlsState = {} as INewFormState;
         return this.getOptionsFromChoiceField(ListNames.EMPLOYEECONTACT, 'Gender').then(genderResp => {
             newFormControlsState.genderOptions = genderResp;
@@ -72,10 +75,9 @@ export default class NewEmployeeService implements INewEmpRequestService {
             Designation: empData.Designation,
             Gender: empData.Gender,
             Technology: empData.Technology,
-            MotherName : empData.MotherName,
-            Mobile:empData.Mobile
+            MotherName: empData.MotherName,
+            Mobile: empData.Mobile
         }).then((result: ItemAddResult) => {
-            debugger
             let mainListID = result.data.Id;
             console.log("Employee request created : " + mainListID);
             if (empData.childDetailItems != null && empData.childDetailItems.length > 0) {
@@ -101,6 +103,16 @@ export default class NewEmployeeService implements INewEmpRequestService {
             // }
         }).catch(error => {
             console.log("error while adding an employee");
+        });
+    }
+
+    //HR Section
+    getHRFormControlState(): Promise<any> {
+        let hrControlsState = {} as IHRState;
+        debugger
+        return this.getOptionsFromMaster(ListNames.REASONFORLEAVING, 'Title').then(statusResp => {
+            hrControlsState.reasonOfLeavingOptions = statusResp;
+            return hrControlsState;
         });
     }
 }

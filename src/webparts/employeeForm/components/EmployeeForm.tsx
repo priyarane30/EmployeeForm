@@ -8,12 +8,12 @@ import EducationDetail from '../components/tabs/EducationDetail';
 import ProfessionalDetail from '../components/tabs/ProfessionalDetail';
 import HRDetail from '../components/tabs/HRDetail';
 import PayrollDetail from '../components/tabs/PayrollDetail';
-
 import { Provider } from 'react-redux';
 import { store } from "../store/ConfigureStore";
 
 
 export default class EmployeeForm extends React.Component<IEmployeeFormProps, {}> {
+
   public render(): React.ReactElement<IEmployeeFormProps> {
     return (
       <Provider store={store}>
@@ -41,4 +41,5 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, {}
       </Provider>
     );
   }
+
 }
