@@ -6,7 +6,9 @@ export const AppConstats = {
 export const ListNames = {
     EMPLOYEECONTACT: 'EmployeeContact',
     DESIGNATION: 'Designation',
-    TECHNOLOGY: 'TechnologyList'
+    TECHNOLOGY: 'TechnologyList',
+    CHILDDETAILS :'ChildDetails',
+    VISADETAILS : 'VisaDetails'
 }
 
 export const ActionTypes = {

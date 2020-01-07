@@ -61,13 +61,6 @@ class EmployeeDetail extends React.Component<any> {
                         <Control.text model='.DateofJoining' id='.DateofJoining' />
                     </div>
                     <div className='col'>
-                        <label>Gender:</label>
-                        <Control.select model=".Gender" id=".Gender">
-                            <option>--Select--</option>
-                            {this.props.Employee.genderOptions.map(gender => { return <option key={gender} value={gender}>{gender}</option> })};
-                        </Control.select>
-                    </div>
-                    <div className='col'>
                         <label>Designation:</label>
                         <Control.select model=".Designation" id=".Designation">
                             <option>--Select--</option>
@@ -86,6 +79,52 @@ class EmployeeDetail extends React.Component<any> {
                         <Control.text model='.CompanyEmail' id='.CompanyEmail' />
                     </div>
                     <div className='col'>
+                        <label>Gender:</label>
+                        <Control.select model=".Gender" id=".Gender">
+                            <option>--Select--</option>
+                            {this.props.Employee.genderOptions.map(gender => { return <option key={gender} value={gender}>{gender}</option> })};
+                        </Control.select>
+                    </div>
+                    <div className='col'>
+                        <label>Date Of Birth:</label>
+                        <Control.text model='.DateofBirth' id='.DateofBirth' />
+                    </div>
+                    <div className='col'>
+                        <label>Father Name:</label>
+                        <Control.text model='.FatherName' id='.FatherName' />
+                    </div>
+                    <div className='col'>
+                        <label>Mother Name:</label>
+                        <Control.text model='.MotherName' id='.MotherName' />
+                    </div>
+                    <div className='col'>
+                        <label>Marital Status:</label>
+                        <Control.select model=".MaritalStatus" id=".MaritalStatus">
+                            <option>--Select--</option>
+                            {this.props.Employee.maritalStatusOptions.map(mStatus => { return <option key={mStatus} value={mStatus}>{mStatus}</option> })};
+                        </Control.select>
+                    </div>
+                    <div className='col'>
+                        <label>Spouse Name:</label>
+                        <Control.text model='.SpouseName' id='.SpouseName' />
+                    </div>
+                    <div className='col'>
+                        <label>Spouse Occupation:</label>
+                        <Control.text model='.SpouseOccupation' id='.SpouseOccupation' />
+                    </div>
+                    <div className='col'>
+                        <label>Spouse DOB:</label>
+                        <Control.text model='.SpouceDOB' id='.SpouceDOB' />
+                    </div>
+                    <div>
+                        Children Details
+                        <table></table>
+                    </div>
+                    <div className='col'>
+                        <label>Personal Email:</label>
+                        <Control.text model='.PersonalEmail' id='.PersonalEmail' />
+                    </div>
+                    <div className='col'>
                         <label>Mobile No:</label>
                         <Control.text model='.Mobile' id='.Mobile' />
                     </div>
@@ -98,13 +137,22 @@ class EmployeeDetail extends React.Component<any> {
                         <Control.text model='.RelationWithEmergencyNo' id='.RelationWithEmergencyNo' />
                     </div>
                     <div className='col'>
-                        <label>Father Name:</label>
-                        <Control.text model='.FatherName' id='.FatherName' />
+                        <label>Blood Group:</label>
+                        <Control.text model='.BloodGroup' id='.BloodGroup' />
                     </div>
                     <div className='col'>
-                        <label>Mother Name:</label>
-                        <Control.text model='.MotherName' id='.MotherName' />
+                        <label>Current Resident Address:</label>
+                        <Control.textarea model='.CurrentAddress' id='.CurrentAddress' />
                     </div>
+                    <div className='col'>
+                        <label>Permanent Resident Address:</label>
+                        <div className="field">
+                            <label>Is Same as Current Address?</label>
+                            <label><Control.checkbox model=".IsSameAsCurrAddress" /> Yep, Same as Current</label>
+                        </div>
+                        <Control.textarea model='.PermanentAddress' id='.PermanentAddress' />
+                    </div>
+
                     <button type="submit">Submit</button>
                 </Form>
             </div>);

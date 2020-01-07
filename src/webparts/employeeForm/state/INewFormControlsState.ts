@@ -15,15 +15,15 @@ export interface INewFormState {
     BloodGroup: string;
     FatherName: string;
     MotherName: string;
-    maritalStatus: string;
-    spouceName: string;
-    spouceOccup: string;
-    spouceDOB: string; //dateTime?
+    MaritalStatus: string;
+    SpouceName: string;
+    SpouseOccupation: string;
+    SpouceDOB: string; //dateTime?
     EmergencyNo: string;
     RelationWithEmergencyNo: string;
-    currentAddress: string;
-    IsSamePermCurrAddress: boolean;
-    permanentAddress: string;
+    CurrentAddress: string;
+    IsSameAsCurrAddress: boolean;
+    PermanentAddress: string;
     panNo: string;
     aadharNo: string;
     isPassAvail: boolean;
