@@ -1,5 +1,6 @@
 import INewEmpRequestService from './INewEmpRequestService';
 import { INewFormState } from "../state/INewFormControlsState";
+import { IHRState } from "../state/IHRSectionControlsState";
 // import pnp from "sp-pnp-js";
 // import { ItemAddResult, Web } from "sp-pnp-js";
 import axios from 'axios';
@@ -7,7 +8,7 @@ import { AppConstats, ListNames } from '../AppConstants';
 
 export default class NewEmployeeService implements INewEmpRequestService {
 
-   
+
     getusingCallback: (name) => {
 
     };
@@ -65,7 +66,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
     // where the purchase items are stored with a reference of the ID of main request.
     async AddNewEmpRequest(empData: INewFormState): Promise<any> {
         var url = AppConstats.SITEURL + "/_api/web/lists/GetByTitle(" + ListNames.EMPLOYEECONTACT + ")/items";
-       
+
         var headers = {
             "accept": "application/json;odata=verbose", //It defines the Data format   
             "content-type": "application/json;odata=verbose", //It defines the content type as JSON  
@@ -86,6 +87,16 @@ export default class NewEmployeeService implements INewEmpRequestService {
             let mainListID = result.data.value.ID;
         }).catch(error => {
             console.log(error)
+        });
+    }
+
+    //HR Section
+    getHRFormControlState(): Promise<any> {
+        let hrControlsState = {} as IHRState;
+        
+        return this.getOptionsFromChoiceField(ListNames.REASONFORLEAVING, 'Title').then(statusResp => {
+            hrControlsState.reasonOfLeavingOptions = statusResp;
+            return hrControlsState;
         });
     }
 }

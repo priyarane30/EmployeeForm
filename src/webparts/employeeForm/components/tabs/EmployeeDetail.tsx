@@ -6,8 +6,6 @@ import { ICommonState, IRequestDigest } from '../../state/ICommonState';
 import { INewFormState } from '../../state/INewFormControlsState';
 
 
-
-
 // Represents the connected dispatch
 interface INewFormConnectedDispatch {
     setTabName: (tabName: ICommonState) => void;
@@ -40,13 +38,10 @@ class EmployeeDetail extends React.Component<any> {
         // you can dispatch actions such as:
         // dispatch(actions.submit('user', somePromise));
         // etc.
-
-        debugger;
         let empData = {} as INewFormState;
         empData = formValues;
         // Call the connected dispatch to create new purchase request
         this.props.addNewEmployee(empData);
-
     }
 
     public render() {

@@ -1,13 +1,13 @@
 export interface IHRState {
     //form controls
     userAlias: string;
-    ADLoginName: string;
-    manager: string;
-    employmentStatus: string; 
-    dateOfLeaving: string; //dateTime?
+    ADLogin: string;
+    Manager: string;
+    employementStatus: string; 
+    DateOfLeaving: string; //dateTime?
     reasonForLeaving: string;
-    resignationDate: string; //datetime?
-    eligibleToRehire: boolean;
+    ResigntionDate: string; //datetime?
+    EligibleforRehire: boolean;
     
 
     // Represent the choices to be displayed in dropdown when the form loads.
