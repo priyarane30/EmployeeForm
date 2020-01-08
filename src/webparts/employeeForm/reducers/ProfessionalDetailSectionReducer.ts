@@ -26,7 +26,7 @@ export const ProfessionalDetailSectionReducer = (state: IProfessionalDetailState
                 reasonOfLeavingOptions: action.payload.reasonOfLeavingOptions
             };
             break;
-            case "SET_INITIAL_STATE":
+            case "SET_INITIAL_FORM_STATE":
             state = {
                 ...state,
                 organization: action.payload.PD.organization,

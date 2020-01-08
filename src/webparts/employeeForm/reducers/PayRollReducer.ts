@@ -1,6 +1,6 @@
 import { IPayrollState } from '../state/IPayrollState';
 
-//Initialise state of Employee Detail
+//Initialise state of Pay Roll
 export const PayRollInitialState: IPayrollState = {
     ESIApplicable:false,
     ESINo:'',
@@ -17,7 +17,7 @@ export const PayRollInitialState: IPayrollState = {
 };
 
 
-export const HRSectionReducer = (state: IPayrollState = PayRollInitialState, action) => {
+export const PayRollSectionReducer = (state: IPayrollState = PayRollInitialState, action) => {
     switch (action.type) {
 
         // Gets the values for dropdown fields from SharePoint master/choice columns.
@@ -27,7 +27,7 @@ export const HRSectionReducer = (state: IPayrollState = PayRollInitialState, act
                 
             };
             break;
-        case "SET_INITIAL_STATE":
+        case "SET_INITIAL_FORM_STATE":
             state = {
                 ...state,
                 ESIApplicable:action.payload.PayRollData.ESIApplicable,

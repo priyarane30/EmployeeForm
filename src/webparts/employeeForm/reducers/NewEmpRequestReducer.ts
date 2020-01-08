@@ -53,25 +53,45 @@ export const NewEmpRequestReducer = (state: INewFormState = newEmpFormControlsIn
                 designationOptions: action.payload.designationOptions,
                 maritalStatusOptions: action.payload.maritalStatusOptions,
                 technologyOptions: action.payload.technologyOptions,
-                
+
             };
             break;
         case "SET_INITIAL_STATE":
-        state = {
-            ...state,
-            FirstName: action.payload.EmployeeDetails.FirstName
-        };
-        break;
+            state = {
+                ...state,
+                PersonalEmail: action.payload.NewEmpReqData.PersonalEmail,
+                Mobile: action.PayRollDatapayload.NewEmpReqData.Mobile,
+                DateOfBirth: action.PayRollDatapayload.NewEmpReqData.DateOfBirth,
+                Age: action.PayRollDatapayload.NewEmpReqData.Age,
+                BloodGroup: action.PayRollDatapayload.NewEmpReqData.BloodGroup,
+                FatherName: action.PayRollDatapayload.NewEmpReqData.FatherName,
+                MotherName: action.PayRollDatapayload.NewEmpReqData.MotherName,
+                maritalStatus: action.PayRollDatapayload.NewEmpReqData.maritalStatus,
+                spouceName: action.PayRollDatapayload.NewEmpReqData.spouceName,
+                spouceOccup: action.PayRollDatapayload.NewEmpReqData.spouceOccup,
+                spouceDOB: action.PayRollDatapayload.NewEmpReqData.spouceDOB,
+                EmergencyNo: action.PayRollDatapayload.NewEmpReqData.EmergencyNo,
+                RelationWithEmergencyNo: action.PayRollDatapayload.NewEmpReqData.RelationWithEmergencyNo,
+                currentAddress: action.PayRollDatapayload.NewEmpReqData.currentAddress,
+                IsSamePermCurrAddress: action.PayRollDatapayload.NewEmpReqData.IsSamePermCurrAddress,
+                permanentAddress: action.PayRollDatapayload.NewEmpReqData.permanentAddress,
+                panNo: action.PayRollDatapayload.NewEmpReqData.panNo,
+                aadharNo: action.PayRollDatapayload.NewEmpReqData.aadharNo,
+                isPassAvail: action.PayRollDatapayload.NewEmpReqData.isPassAvail,
+                passportNo: action.PayRollDatapayload.NewEmpReqData.passportNo,
+                passportValidity: action.PayRollDatapayload.NewEmpReqData.passportValidity,
+            };
+            break;
         case "ADD_NEW_EMPLOYEE":
             state = {
                 ...state,
                 //FirstName: action.payload.FirstName,
-               // LastName: action.payload.LastName,
-                Gender: action.payload.Gender,
-                DateofJoining: action.payload.DateofJoining,//datetime?
-                Designation: action.payload.Designation,
-                Technology : action.payload.Technology,
-                CompanyEmail : action.payload.CompanyEmail,
+                // LastName: action.payload.LastName,
+                // Gender: action.payload.Gender,
+                // DateofJoining: action.payload.DateofJoining,//datetime?
+                // Designation: action.payload.Designation,
+                // Technology : action.payload.Technology,
+                // CompanyEmail : action.payload.CompanyEmail,
                 PersonalEmail: action.payload.PersonalEmail,
                 Mobile: action.payload.Mobile,
                 DateOfBirth: action.payload.DateOfBirth,
