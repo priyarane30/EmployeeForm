@@ -44,15 +44,13 @@ export default class PayrollDetail extends React.Component <any>{
                         <Control.text model='.ESIDispensary' id='.ESIDispensary' />
                     </div>
                     <div className='col'>
-<<<<<<< HEAD
                     <label>PF Applicable?</label>
                         <Control.checkbox model='Payroll.PFApplicable'/>
                         Yes, Applicable
-=======
+
                     <label>PF Applicable:</label>
                     <Control.checkbox model='Payroll.PFApplicable' id='Payroll.PFApplicable' />
-                        
->>>>>>> e752edb67e691bbcca14597ed6a82006f4a1b820
+
                     </div>
                     <div className='col'>
                     <label>PF No:</label>
