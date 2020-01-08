@@ -15,16 +15,7 @@ export default class PayrollDetail extends React.Component {
                 <Form model="Payroll" >
                     <div className='col'>
                         <label>ESI Applicable:</label>
-                        <Field model=".ESIApplicable" className="field">
-                            <label>
-                                <input type="radio" value="Yes" />
-                                Yes
-                            </label>
-                            <label>
-                                <input type="radio" value="No" />
-                                No
-                            </label>
-                            </Field>
+                        <Control.checkbox model='Payroll.ESIApplicable'/>
                       
                     </div>
                     <div className='col'>
@@ -36,9 +27,9 @@ export default class PayrollDetail extends React.Component {
                         <Control.text model='.ESIDispensary' id='.ESIDispensary' />
                     </div>
                     <div className='col'>
-                    <label>PF Applicable:</label>
+                    <label>PF Applicable?</label>
                         <Control.checkbox model='Payroll.PFApplicable'/>
-                        
+                        Yes, Applicable
                     </div>
                     <div className='col'>
                     <label>PF No:</label>
@@ -46,7 +37,7 @@ export default class PayrollDetail extends React.Component {
                     </div>
                     <div className='col'>
                     <label>PF No for Dept file:</label>
-                        <Control.text model='.PFNODept' id='.PFNODept' />
+                        <Control.text model='.PFNoforDeptFile' id='.PFNoforDeptFile' />
                     </div>
                     <div className='col'>
                     <label>Restrict PF:</label>
@@ -62,7 +53,7 @@ export default class PayrollDetail extends React.Component {
                     </div>
                     <div className='col'>
                     <label>Ward/Circle:</label>
-                        <Control.text model='.Ward' id='.Ward' />
+                        <Control.text model='.Ward_x002f_Circle' id='.Ward_x002f_Circle' />
                     </div>
                     <div className='col'>
                     <label>Director:</label>

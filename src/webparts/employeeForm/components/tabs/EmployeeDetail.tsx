@@ -61,7 +61,7 @@ class EmployeeDetail extends React.Component<any> {
                         <label>Gender:</label>
                         <Control.select model=".Gender" id=".Gender">
                             <option>--Select--</option>
-                            {this.props.Employee.genderOptions.map(gender => { return <option key={gender} value={gender}>{gender}</option> })};
+                            {/* {this.props.Employee.genderOptions.map(gender => { return <option key={gender} value={gender}>{gender}</option> })}; */}
                         </Control.select>
                     </div>
                     <div className='col'>

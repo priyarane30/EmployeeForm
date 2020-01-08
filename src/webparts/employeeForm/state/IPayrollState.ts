@@ -6,12 +6,11 @@ export interface IPayrollState {
     ESIDispensary:string;
     PFApplicable:boolean;
     PFNo:string;
-    PFNODept:string;
+    PFNoforDeptFile:string;
     RestrictPF:string;
     ZeroPension:string;
     ZeroPT:string;
-    Ward:string;
+    Ward_x002f_Circle:string;
     Director:string;
-    
 
 }

@@ -1,5 +1,5 @@
 import { IHRState } from '../state/IHRSectionControlsState';
-import { ICommonState, IRequestDigest } from '../state/ICommonState';
+import { ICommonState } from '../state/ICommonState';
 import NewEmployeeService from '../services/NewEmployeeService';
 import { ActionTypes } from '../AppConstants';
 import NewEmpService from '../services/NewEmployeeService';
@@ -29,12 +29,5 @@ export function SetTabName(tabData: ICommonState) {
     return ({
         type: "SET_TAB",
         payload: tabData
-    })
-}
-
-export function SetReqDigest(reqDigest: IRequestDigest) {
-    return ({
-        type: "SET_REQ_DIGEST",
-        payload: reqDigest
     })
 }
