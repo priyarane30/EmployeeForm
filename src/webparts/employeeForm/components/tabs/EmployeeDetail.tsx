@@ -13,7 +13,7 @@ interface INewFormConnectedDispatch {
     getDefaultControlsData: () => void;
 
     //save data
-    addNewEmployee: (empData: INewFormState) => void;
+    // addNewEmployee: (empData: INewFormState) => void;
 }
 // interface ICommonDispatch {
 //     setTabName: (tabName: ICommonState) => void;
@@ -27,6 +27,7 @@ class EmployeeDetail extends React.Component<any> {
     handleSubmit(formValues) {
 
         // Do anything you want with the form value
+        //debugger;
         const CommonState: ICommonState = { CurrentForm: "Employee" };
         this.props.setTabName(CommonState);
 
@@ -35,10 +36,10 @@ class EmployeeDetail extends React.Component<any> {
         // you can dispatch actions such as:
         // dispatch(actions.submit('user', somePromise));
         // etc.
-        let empData = {} as INewFormState;
-        empData = formValues;
+        // let empData = {} as INewFormState;
+        // empData = formValues;
         // Call the connected dispatch to create new purchase request
-        this.props.addNewEmployee(empData);
+        // this.props.addNewEmployee(empData);
     }
 
     public render() {
@@ -57,6 +58,13 @@ class EmployeeDetail extends React.Component<any> {
                     <div className='col'>
                         <label>Date Of Joining:</label>
                         <Control.text model='.DateofJoining' id='.DateofJoining' />
+                    </div>
+                    <div className='col'>
+                        <label>Gender:</label>
+                        <Control.select model=".Gender" id=".Gender">
+                            <option>--Select--</option>
+                            {/* {this.props.Employee.genderOptions.map(gender => { return <option key={gender} value={gender}>{gender}</option> })}; */}
+                        </Control.select>
                     </div>
                     <div className='col'>
                         <label>Designation:</label>
@@ -211,13 +219,15 @@ const mapStateToProps = function (state) {
 // Maps dispatch to props
 const mapDispatchToProps = (dispatch): INewFormConnectedDispatch => {
     return {
-        setTabName: SetTabName,
+        setTabName: (tabData: ICommonState) => {
+            return dispatch(SetTabName(tabData))
+        },
         getDefaultControlsData: () => {
             return dispatch(GetInitialControlValuesAction());
         },
-        addNewEmployee: (empData: INewFormState) => {
-            return dispatch(AddNewEmployee(empData));
-        }
+        // addNewEmployee: (empData: INewFormState) => {
+        //     return dispatch(AddNewEmployee(empData));
+        // }
     };
 };
 

@@ -49,17 +49,24 @@ export const NewEmpRequestReducer = (state: INewFormState = newEmpFormControlsIn
         case "GET_DEFAULT_FORM_CONTROLS":
             state = {
                 ...state,
-                genderOptions: action.payload.genderOptions,
+                genderOptions: action.payload.EmployeeDetails.FirstName,
                 designationOptions: action.payload.designationOptions,
                 maritalStatusOptions: action.payload.maritalStatusOptions,
-                technologyOptions: action.payload.technologyOptions
+                technologyOptions: action.payload.technologyOptions,
+                
             };
             break;
+        case "SET_INITIAL_STATE":
+        state = {
+            ...state,
+            FirstName: action.payload.EmployeeDetails.FirstName
+        };
+        break;
         case "ADD_NEW_EMPLOYEE":
             state = {
                 ...state,
-                FirstName: action.payload.FirstName,
-                LastName: action.payload.LastName,
+                //FirstName: action.payload.FirstName,
+               // LastName: action.payload.LastName,
                 Gender: action.payload.Gender,
                 DateofJoining: action.payload.DateofJoining,//datetime?
                 Designation: action.payload.Designation,

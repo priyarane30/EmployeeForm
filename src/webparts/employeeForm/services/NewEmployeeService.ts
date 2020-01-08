@@ -1,6 +1,7 @@
 import INewEmpRequestService from './INewEmpRequestService';
 import { INewFormState } from "../state/INewFormControlsState";
 import { IHRState } from "../state/IHRSectionControlsState";
+import { IProfessionalDetailState } from "../state/IProfessionalDetailControlState";
 import axios from 'axios';
 import { AppConstats, ListNames } from '../AppConstants';
 import pnp from "sp-pnp-js";
@@ -103,13 +104,47 @@ export default class NewEmployeeService implements INewEmpRequestService {
         });
     }
 
-    //HR Section
+    //Start HR Section
+
+    //Get HR
     getHRFormControlState(): Promise<any> {
         let hrControlsState = {} as IHRState;
-        debugger
         return this.getOptionsFromMaster(ListNames.REASONFORLEAVING, 'Title').then(statusResp => {
             hrControlsState.reasonOfLeavingOptions = statusResp;
             return hrControlsState;
         });
     }
+    //Save HR
+    HrAddNewEmployee(empReqData: IHRState): Promise<any> {
+        debugger
+        let web = new Web(AppConstats.SITEURL);
+        return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
+            userAlias:empReqData.userAlias,
+            ADLogin:empReqData.ADLogin,
+            Manager: empReqData.Manager,
+            employementStatus: empReqData.employementStatus,
+            DateOfLeaving: empReqData.DateOfLeaving,
+            reasonForLeaving: empReqData.reasonForLeaving,
+            ResigntionDate: empReqData.ResigntionDate,
+            EligibleforRehire: empReqData.EligibleforRehire,
+        }).then((result: ItemAddResult) => {
+            let mainListID = result.data.Id;
+            console.log("Employee request created : " + mainListID);
+
+        }).catch(error => {
+            console.log("error while adding an employee");
+        });
+
+    }
+    //End HR Section
+    //Start Professional Detail Section
+    getPDFormControlState(): Promise<any> {
+        let pdControlsState = {} as IProfessionalDetailState;
+        return this.getOptionsFromMaster(ListNames.REASONFORLEAVING, 'Title').then(statusResp => {
+            pdControlsState.reasonOfLeavingOptions = statusResp;
+            return pdControlsState;
+        });
+    }
+
+    //End Professional Detail Section
 }

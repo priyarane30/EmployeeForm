@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Form, Control } from 'react-redux-form';
 import { ICommonState } from '../../state/ICommonState';
 import { connect } from "react-redux";
-import { SetTabName, GetInitialControlValuesAction } from "../../actions/HRFormControlsValuesAction";
+import { SetTabName, GetInitialControlValuesAction,HrAddNewEmployee } from "../../actions/HRFormControlsValuesAction";
 import { IHRState } from '../../state/IHRSectionControlsState';
 
 // Represents the connected dispatch
@@ -12,37 +12,29 @@ interface IHRConnectedDispatch {
     // Gets the options for dropdown fields
     getDefaultControlsData: () => void;
 
-    //save data
+   //save data
+   HraddNewEmployee: (empHrData: IHRState) => void;
 
 }
 class HRDetail extends React.Component<any> {
     constructor(props) {
         super(props);
-        debugger;
         this.props.getDefaultControlsData();
     }
     
-    componentDidMount() {
-        debugger;
+    componentDidUpdate() {
         this.props.getDefaultControlsData();
 
     }
     handleSubmit(formValues) {
-        // Do anything you want with the form value
         console.log(formValues);
-        // Do whatever you like in here.
-        // If you connect the UserForm to the Redux store,
-        // you can dispatch actions such as:
-        // dispatch(actions.submit('user', somePromise));
-        // etc.
         const CommonState: ICommonState = { CurrentForm: "HR" };
         this.props.setTabName(CommonState);
 
-        //     // Do whatever you like in here.
-        //     // If you connect the UserForm to the Redux store,
-        //     // you can dispatch actions such as:
-        //     // dispatch(actions.submit('user', somePromise));
-        //     // etc.
+        let empHrData = {} as IHRState;
+        empHrData = formValues;
+        // Call the connected dispatch to create new purchase request
+        this.props.HraddNewEmployee(empHrData);
     }
 
     public render() {
@@ -107,21 +99,21 @@ class HRDetail extends React.Component<any> {
 
 }
 const mapStateToProps = function (state) {
-    debugger
     console.log(state)
     return state;
 }
 
 // Maps dispatch to props
 const mapDispatchToProps = (dispatch): IHRConnectedDispatch => {
-    debugger
     return {
         setTabName: SetTabName,
         //setReqDigest : SetReqDigest,
         getDefaultControlsData: () => {
             return dispatch(GetInitialControlValuesAction());
+        },
+        HraddNewEmployee: (empHrData: IHRState) => {
+            return dispatch(HrAddNewEmployee(empHrData));
         }
     };
 };
-
 export default connect(mapStateToProps, mapDispatchToProps)(HRDetail);

@@ -8,17 +8,32 @@ import EducationDetail from '../components/tabs/EducationDetail';
 import ProfessionalDetail from '../components/tabs/ProfessionalDetail';
 import HRDetail from '../components/tabs/HRDetail';
 import PayrollDetail from '../components/tabs/PayrollDetail';
-import { Provider } from 'react-redux';
+import { Provider,connect } from 'react-redux';
 import { store } from "../store/ConfigureStore";
+import { SetTabName, GetInitialControlValuesAction, AddNewEmployee } from "./../actions/NewFormControlsValuesAction";
+import { ICommonState } from './../state/ICommonState';
+interface INewFormConnectedDispatch {
+  setTabName: (tabName: ICommonState) => void;
 
+  // Gets the options for dropdown fields
+  getDefaultControlsData: () => void;
 
-export default class EmployeeForm extends React.Component<IEmployeeFormProps, {}> {
+  //save data
+  // addNewEmployee: (empData: INewFormState) => void;
+}
+class EmployeeForm extends React.Component<IEmployeeFormProps, {}> {
+
+  componentDidMount() {
+    //this.props.getDefaultControlsData();
+}
 
   public render(): React.ReactElement<IEmployeeFormProps> {
+    console.log(store.getState())
     return (
       <Provider store={store}>
         <div className={styles.employeeForm}>
           <div className={styles.container}>
+            {/* <div>{store.getState().} </div> */}
             <Pivot aria-label="Employee Form">
               <PivotItem headerText="Employee Details">
                 <EmployeeDetail />
@@ -42,4 +57,26 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, {}
     );
   }
 
+
 }
+const mapStateToProps = function (state) {
+  console.log(state)
+  return state;
+}
+
+// Maps dispatch to props
+const mapDispatchToProps = (dispatch): INewFormConnectedDispatch => {
+  return {
+      setTabName: (tabData: ICommonState) => {
+          return dispatch(SetTabName(tabData))
+      },
+      getDefaultControlsData: () => {
+          return dispatch(GetInitialControlValuesAction());
+      },
+      // addNewEmployee: (empData: INewFormState) => {
+      //     return dispatch(AddNewEmployee(empData));
+      // }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EmployeeForm);
