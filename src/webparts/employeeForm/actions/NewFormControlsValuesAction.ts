@@ -45,7 +45,6 @@ export function GetInitialControlValuesAction() {
 export function AddNewEmployee(empReqData: INewFormState) {
     return dispatch => {
         let newEmpReqServiceObj: NewEmployeeService = new NewEmpService();
-        debugger
         newEmpReqServiceObj.AddNewEmpRequest(empReqData).then(resp => {
             console.log(resp);
             alert("New Employee is added successfully");

@@ -13,6 +13,10 @@ export default interface INewEmpRequestService {
     //Start HR Section
     getHRFormControlState(): Promise<any>;
     //End HR Section
+
+    /**End HR Section*/
+    getPDFormControlState(): Promise<any>
+    /**End HR Section*/
     /**
      class CallbackTest
         {

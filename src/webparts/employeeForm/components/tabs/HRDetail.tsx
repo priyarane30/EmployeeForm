@@ -18,27 +18,17 @@ interface IHRConnectedDispatch {
 class HRDetail extends React.Component<any> {
     constructor(props) {
         super(props);
+        this.props.getDefaultControlsData();
     }
-    componentDidMount() {
+    
+    componentDidUpdate() {
         this.props.getDefaultControlsData();
 
     }
     handleSubmit(formValues) {
-        // Do anything you want with the form value
         console.log(formValues);
-        // Do whatever you like in here.
-        // If you connect the UserForm to the Redux store,
-        // you can dispatch actions such as:
-        // dispatch(actions.submit('user', somePromise));
-        // etc.
         const CommonState: ICommonState = { CurrentForm: "HR" };
         this.props.setTabName(CommonState);
-
-        //     // Do whatever you like in here.
-        //     // If you connect the UserForm to the Redux store,
-        //     // you can dispatch actions such as:
-        //     // dispatch(actions.submit('user', somePromise));
-        //     // etc.
     }
 
     public render() {
@@ -77,12 +67,13 @@ class HRDetail extends React.Component<any> {
                         <label>Reason for leaving:</label>
                         <Control.select model="HR.reasonForLeaving" id="HR.reasonForLeaving">
                             <option>--Select--</option>
-                            {this.props.HR.reasonOfLeavingOptions.map(reasons => {
+                            
+                            {/* {this.props.HR.reasonOfLeavingOptions.map(reasons => {
                                 return <option key={reasons} value={reasons}>{reasons}</option>
-                            })};
-                            {/* <option>Growth</option>
+                            })}; */}
+                            <option>Growth</option>
                             <option>Better Projects</option>
-                            <option>Better Opportunity</option> */}
+                            <option>Better Opportunity</option>
                         </Control.select>
                     </div>
                     <div className='col'> {/* Date of Resignation*/}
@@ -115,5 +106,4 @@ const mapDispatchToProps = (dispatch): IHRConnectedDispatch => {
         }
     };
 };
-
 export default connect(mapStateToProps, mapDispatchToProps)(HRDetail);
