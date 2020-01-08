@@ -1,6 +1,7 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { NewEmpRequestReducer } from "../reducers/NewEmpRequestReducer";
 import { HRSectionReducer } from "../reducers/HRSectionReducer";
+import { ProfessionalDetailSectionReducer } from "../reducers/ProfessionalDetailSectionReducer"
 import { CommonReducer } from "../reducers/CommonReducer";
 import thunk from "redux-thunk";
 // import { reducer as formReducer } from 'redux-form';
@@ -31,6 +32,7 @@ export const store = createStore(
         ...createForms({
             Employee: NewEmpRequestReducer,
             HR: HRSectionReducer,
+            ProfessionalDetail:ProfessionalDetailSectionReducer
         })
     }),
     applyMiddleware(thunk)

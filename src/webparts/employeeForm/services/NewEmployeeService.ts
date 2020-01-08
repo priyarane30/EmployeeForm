@@ -1,6 +1,7 @@
 import INewEmpRequestService from './INewEmpRequestService';
 import { INewFormState } from "../state/INewFormControlsState";
 import { IHRState } from "../state/IHRSectionControlsState";
+import { IProfessionalDetailState } from "../state/IProfessionalDetailControlState";
 import axios from 'axios';
 import { AppConstats, ListNames } from '../AppConstants';
 import pnp from "sp-pnp-js";
@@ -28,12 +29,10 @@ export default class NewEmployeeService implements INewEmpRequestService {
     }
 
     private getOptionsFromChoiceField(listName, columnName): Promise<any> {
-        debugger;
         // return pnp.sp.web.fields.getByTitle("Gender").select("Choices").get().then(response => {
         var url = AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + listName + "')/fields?$filter=EntityPropertyName eq '" + columnName + "'";
         return axios.get(url)
             .then(res => {
-                debugger;
                 console.log(res);
                 return res.data.value[0].Choices;
             }).catch(error => {
@@ -44,7 +43,6 @@ export default class NewEmployeeService implements INewEmpRequestService {
 
     // Gets the choices to be displayed in the dropdown fields.
     getNewFormControlState(): Promise<any> {
-        debugger
         let newFormControlsState = {} as INewFormState;
         return this.getOptionsFromChoiceField(ListNames.EMPLOYEECONTACT, 'Gender').then(genderResp => {
             newFormControlsState.genderOptions = genderResp;
@@ -106,13 +104,22 @@ export default class NewEmployeeService implements INewEmpRequestService {
         });
     }
 
-    //HR Section
+    //Start HR Section
     getHRFormControlState(): Promise<any> {
         let hrControlsState = {} as IHRState;
-        debugger
         return this.getOptionsFromMaster(ListNames.REASONFORLEAVING, 'Title').then(statusResp => {
             hrControlsState.reasonOfLeavingOptions = statusResp;
             return hrControlsState;
         });
     }
+    //End HR Section
+    //Start Professional Detail Section
+    getPDFormControlState(): Promise<any> {
+        let pdControlsState = {} as IProfessionalDetailState;
+        return this.getOptionsFromMaster(ListNames.REASONFORLEAVING, 'Title').then(statusResp => {
+            pdControlsState.reasonOfLeavingOptions = statusResp;
+            return pdControlsState;
+        });
+    }
+    //End Professional Detail Section
 }

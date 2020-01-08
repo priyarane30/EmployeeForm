@@ -18,31 +18,17 @@ interface IHRConnectedDispatch {
 class HRDetail extends React.Component<any> {
     constructor(props) {
         super(props);
-        debugger;
         this.props.getDefaultControlsData();
     }
     
     componentDidUpdate() {
-        debugger;
         this.props.getDefaultControlsData();
 
     }
     handleSubmit(formValues) {
-        // Do anything you want with the form value
         console.log(formValues);
-        // Do whatever you like in here.
-        // If you connect the UserForm to the Redux store,
-        // you can dispatch actions such as:
-        // dispatch(actions.submit('user', somePromise));
-        // etc.
         const CommonState: ICommonState = { CurrentForm: "HR" };
         this.props.setTabName(CommonState);
-
-        //     // Do whatever you like in here.
-        //     // If you connect the UserForm to the Redux store,
-        //     // you can dispatch actions such as:
-        //     // dispatch(actions.submit('user', somePromise));
-        //     // etc.
     }
 
     public render() {
@@ -106,14 +92,12 @@ class HRDetail extends React.Component<any> {
 
 }
 const mapStateToProps = function (state) {
-    debugger
     console.log(state)
     return state;
 }
 
 // Maps dispatch to props
 const mapDispatchToProps = (dispatch): IHRConnectedDispatch => {
-    debugger
     return {
         setTabName: SetTabName,
         //setReqDigest : SetReqDigest,
@@ -122,5 +106,4 @@ const mapDispatchToProps = (dispatch): IHRConnectedDispatch => {
         }
     };
 };
-
 export default connect(mapStateToProps, mapDispatchToProps)(HRDetail);
