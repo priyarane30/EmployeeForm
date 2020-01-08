@@ -1,13 +1,13 @@
 // Represents a employee detail
 export interface INewFormState {
     //form controls
-    FirstName: string;
-    LastName: string;
-    Gender: string;
-    DateofJoining: string; //datetime?
-    Designation: string;
-    Technology: string;
-    CompanyEmail: string;
+    // FirstName: string;
+    // LastName: string;
+    // Gender: string;
+    // DateofJoining: string; //datetime?
+    // Designation: string;
+    // Technology: string;
+    // CompanyEmail: string;
     PersonalEmail: string;
     Mobile: string;
     DateOfBirth: string;//dateTime?
