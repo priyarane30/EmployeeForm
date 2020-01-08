@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Form, Control } from "react-redux-form";
-import { ICommonState, IRequestDigest } from "../../state/ICommonState";
+import { ICommonState } from "../../state/ICommonState";
 import {
   SetTabName,
   GetInitialControlValuesAction,
@@ -44,6 +44,7 @@ class EducationDetail extends React.Component<any> {
       <div>
         <Form model="educationDetail" onSubmit={val => this.handleSubmit(val)}>
           <table>
+          <tr><th colSpan={8} style={{textAlign:"left"}}>Education details</th></tr>
             <tr>
               <td>
                 <label>Diploma/Degree</label>
@@ -99,53 +100,36 @@ class EducationDetail extends React.Component<any> {
             </tr>
           </table>
           <table>
+            <tr><th colSpan={6} style={{textAlign:"left"}}>Certification details</th></tr>
             <tr>
               <td>
-                <label>Diploma/Degree</label>
-                <Control.select model=".DiplomaDegree" id=".DiplomaDegree">
-                  <option></option>
-                  <option value="Degree">Degree</option>
-                  <option value="Diploma">Diploma</option>
-                  <option value="12th">12th</option>
-                  <option value="10th">10th</option>
-                </Control.select>
+                <label>Certification</label>
+                <Control.text model=".Certification" id=".Certification">
+                </Control.text>
               </td>
               <td>
-                <label>Grade</label>
-                <Control.text model=".Grade" id=".Grade"></Control.text>
+                <label>Start Year</label>
+                <Control.text model=".StartYear" id=".StartYear" placeholder="YYYY"></Control.text>
               </td>
               <td>
-                <label>StartYear</label>
+                <label>YearOfCompletion</label>
                 <Control.text
-                  model=".StartYear"
-                  id=".StartYear"
+                  model=".YearOfCompletion"
+                  id=".YearOfCompletion"
                   placeholder="YYYY"
                 ></Control.text>
               </td>
+              
               <td>
-                <label>EndYear</label>
-                <Control.text
-                  model=".EndYear"
-                  id=".EndYear"
-                  placeholder="YYYY"
-                ></Control.text>
+                <label>InstituteName</label>
+                <Control.text model=".InstituteName" id=".InstituteName"></Control.text>
               </td>
+             
               <td>
-                <label>Board</label>
-                <Control.text model=".Board" id=".Board"></Control.text>
-              </td>
-              <td>
-                <label>SchoolCollege</label>
+                <label>GradePercentage</label>
                 <Control.text
-                  model=".SchoolCollege"
-                  id=".SchoolCollege"
-                ></Control.text>
-              </td>
-              <td>
-                <label>DegreeName</label>
-                <Control.text
-                  model=".DegreeName"
-                  id=".DegreeName"
+                  model=".GradePercentage"
+                  id=".GradePercentage"
                 ></Control.text>
               </td>
               <td>
@@ -159,4 +143,4 @@ class EducationDetail extends React.Component<any> {
     );
   }
 }
-export default EmployeeDetail;
+export default EducationDetail;
