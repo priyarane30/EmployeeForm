@@ -1,6 +1,6 @@
 import { IHRState } from '../state/IHRSectionControlsState';
 
-//Initialise state of Employee Detail
+//Initialise state of HR 
 export const hrInitialState: IHRState = {
     userAlias: '',
     ADLogin: '',
