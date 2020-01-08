@@ -42,6 +42,7 @@ class EmployeeDetail extends React.Component<any> {
     }
 
     public render() {
+        let i = 0;
         return (
             <div>
                 <Form model="Employee" onSubmit={(val) => this.handleSubmit(val)}>
@@ -115,7 +116,46 @@ class EmployeeDetail extends React.Component<any> {
                     </div>
                     <div>
                         Children Details
-                        <table></table>
+                        <Form model="Employee.childDetailItems">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <label>Child Name</label>
+                                        <Control.text model={`.child[${i}].ChildName`} id=".ChildName"></Control.text>
+                                    </td>
+                                    <td>
+                                        <label>Child DOB</label>
+                                        <Control.text model={`.child[${i}].DateOfBirth`} id=".DateOfBirth"></Control.text>
+                                    </td>
+                                    <td>
+                                        <button type="submit" onSubmit={(childData) => {
+                                            i++;
+                                            debugger
+                                           
+                                        }}>+</button>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </Form>
+                        <table>
+                            {
+                                this.props.Employee.childDetailItems.map((child, i) =>
+                                    <tr>
+                                        <td>
+                                            <label>Child Name</label>
+                                            <Control.text model={`.child[${i}].ChildName`} id=".ChildName"></Control.text>
+                                        </td>
+                                        <td>
+                                            <label>Child DOB</label>
+                                            <Control.text model={`.child[${i}].DateOfBirth`} id=".DateOfBirth"></Control.text>
+                                        </td>
+                                        <td>
+                                            <button type="submit">+</button>
+                                        </td>
+                                    </tr>
+                                )}
+                        </table>
                     </div>
                     <div className='col'>
                         <label>Personal Email:</label>

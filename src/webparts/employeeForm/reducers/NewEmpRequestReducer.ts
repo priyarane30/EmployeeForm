@@ -25,11 +25,11 @@ export const newEmpFormControlsInitialState: INewFormState = {
     CurrentAddress: '',
     IsSameAsCurrAddress: false,
     PermanentAddress: '',
-    panNo: '',
-    aadharNo: '',
-    isPassAvail: false,
-    passportNo: '',
-    passportValidity: '',
+    PanNo: '',
+    AadharNo: '',
+    IsPassAvail: false,
+    PassportNo: '',
+    PassportValidity: '',
 
     // Represent the choices to be displayed in dropdown when the form loads.
     genderOptions: [],
@@ -81,11 +81,11 @@ export const NewEmpRequestReducer = (state: INewFormState = newEmpFormControlsIn
                 CurrentAddress: action.payload.CurrentAddress,
                 IsSameAsCurrAddress: action.payload.IsSameAsCurrAddress,
                 PermanentAddress: action.payload.PermanentAddress,
-                panNo: action.payload.panNo,
-                aadharNo: action.payload.aadharNo,
-                isPassAvail: action.payload.isPassAvail,
-                passportNo: action.payload.passportNo,
-                passportValidity: action.payload.passportValidity,
+                PanNo: action.payload.PanNo,
+                AadharNo: action.payload.AadharNo,
+                IsPassAvail: action.payload.IsPassAvail,
+                PassportNo: action.payload.PassportNo,
+                PassportValidity: action.payload.PassportValidity,
 
                 // Represent the choices to be displayed in dropdown when the form loads.
                 genderOptions: action.payload.genderOptions,

@@ -5,7 +5,7 @@ export interface IEducationDetailState {
   certificationDetails: ICertificationDetails[];
 }
 export interface IEducationDetails {
-  DiplomaDegree: [];
+  DiplomaDegree: string;
   Grade: string;
   StartYear: string;
   EndYear: string;

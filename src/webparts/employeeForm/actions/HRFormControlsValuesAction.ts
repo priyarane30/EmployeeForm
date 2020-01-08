@@ -31,10 +31,3 @@ export function SetTabName(tabData: ICommonState) {
         payload: tabData
     })
 }
-
-// export function SetReqDigest(reqDigest: IRequestDigest) {
-//     return ({
-//         type: "SET_REQ_DIGEST",
-//         payload: reqDigest
-//     })
-// }

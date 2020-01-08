@@ -28,12 +28,10 @@ export default class NewEmployeeService implements INewEmpRequestService {
     }
 
     private getOptionsFromChoiceField(listName, columnName): Promise<any> {
-        debugger;
         // return pnp.sp.web.fields.getByTitle("Gender").select("Choices").get().then(response => {
         var url = AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + listName + "')/fields?$filter=EntityPropertyName eq '" + columnName + "'";
         return axios.get(url)
             .then(res => {
-                debugger;
                 console.log(res);
                 return res.data.value[0].Choices;
             }).catch(error => {
@@ -44,7 +42,6 @@ export default class NewEmployeeService implements INewEmpRequestService {
 
     // Gets the choices to be displayed in the dropdown fields.
     getNewFormControlState(): Promise<any> {
-        debugger
         let newFormControlsState = {} as INewFormState;
         return this.getOptionsFromChoiceField(ListNames.EMPLOYEECONTACT, 'Gender').then(genderResp => {
             newFormControlsState.genderOptions = genderResp;
@@ -88,7 +85,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
 
                 // empData.childDetailItems.forEach(child => {
                 //     web.lists.getByTitle("PurchaseRequestItems").items.inBatch(batch).add({
-                //         ProductCode: child.childName,
+                //         ProductCode: child.ChildName,
                 //         Quantity: child.DateOfBirth,
                 //         RequestID: mainListID
                 //     });
