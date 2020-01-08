@@ -13,7 +13,7 @@ interface INewFormConnectedDispatch {
     getDefaultControlsData: () => void;
 
     //save data
-    addNewEmployee: (empData: INewFormState) => void;
+    // addNewEmployee: (empData: INewFormState) => void;
 }
 // interface ICommonDispatch {
 //     setTabName: (tabName: ICommonState) => void;
@@ -27,6 +27,7 @@ class EmployeeDetail extends React.Component<any> {
     handleSubmit(formValues) {
 
         // Do anything you want with the form value
+        //debugger;
         const CommonState: ICommonState = { CurrentForm: "Employee" };
         this.props.setTabName(CommonState);
 
@@ -35,10 +36,10 @@ class EmployeeDetail extends React.Component<any> {
         // you can dispatch actions such as:
         // dispatch(actions.submit('user', somePromise));
         // etc.
-        let empData = {} as INewFormState;
-        empData = formValues;
+        // let empData = {} as INewFormState;
+        // empData = formValues;
         // Call the connected dispatch to create new purchase request
-        this.props.addNewEmployee(empData);
+        // this.props.addNewEmployee(empData);
     }
 
     public render() {
@@ -123,13 +124,15 @@ const mapStateToProps = function (state) {
 // Maps dispatch to props
 const mapDispatchToProps = (dispatch): INewFormConnectedDispatch => {
     return {
-        setTabName: SetTabName,
+        setTabName: (tabData: ICommonState) => {
+            return dispatch(SetTabName(tabData))
+        },
         getDefaultControlsData: () => {
             return dispatch(GetInitialControlValuesAction());
         },
-        addNewEmployee: (empData: INewFormState) => {
-            return dispatch(AddNewEmployee(empData));
-        }
+        // addNewEmployee: (empData: INewFormState) => {
+        //     return dispatch(AddNewEmployee(empData));
+        // }
     };
 };
 

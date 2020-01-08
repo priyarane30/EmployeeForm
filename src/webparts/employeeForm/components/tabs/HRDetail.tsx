@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Form, Control } from 'react-redux-form';
 import { ICommonState } from '../../state/ICommonState';
 import { connect } from "react-redux";
-import { SetTabName, GetInitialControlValuesAction } from "../../actions/HRFormControlsValuesAction";
+import { SetTabName, GetInitialControlValuesAction,HrAddNewEmployee } from "../../actions/HRFormControlsValuesAction";
 import { IHRState } from '../../state/IHRSectionControlsState';
 
 // Represents the connected dispatch
@@ -12,7 +12,8 @@ interface IHRConnectedDispatch {
     // Gets the options for dropdown fields
     getDefaultControlsData: () => void;
 
-    //save data
+   //save data
+   HraddNewEmployee: (empHrData: IHRState) => void;
 
 }
 class HRDetail extends React.Component<any> {
@@ -29,6 +30,11 @@ class HRDetail extends React.Component<any> {
         console.log(formValues);
         const CommonState: ICommonState = { CurrentForm: "HR" };
         this.props.setTabName(CommonState);
+
+        let empHrData = {} as IHRState;
+        empHrData = formValues;
+        // Call the connected dispatch to create new purchase request
+        this.props.HraddNewEmployee(empHrData);
     }
 
     public render() {
@@ -68,12 +74,13 @@ class HRDetail extends React.Component<any> {
                         <Control.select model="HR.reasonForLeaving" id="HR.reasonForLeaving">
                             <option>--Select--</option>
                             
-                            {/* {this.props.HR.reasonOfLeavingOptions.map(reasons => {
+                            {this.props.HR.reasonOfLeavingOptions.map(reasons => {
+                                debugger
                                 return <option key={reasons} value={reasons}>{reasons}</option>
-                            })}; */}
-                            <option>Growth</option>
+                            })};
+                            {/* <option>Growth</option>
                             <option>Better Projects</option>
-                            <option>Better Opportunity</option>
+                            <option>Better Opportunity</option> */}
                         </Control.select>
                     </div>
                     <div className='col'> {/* Date of Resignation*/}
@@ -103,6 +110,9 @@ const mapDispatchToProps = (dispatch): IHRConnectedDispatch => {
         //setReqDigest : SetReqDigest,
         getDefaultControlsData: () => {
             return dispatch(GetInitialControlValuesAction());
+        },
+        HraddNewEmployee: (empHrData: IHRState) => {
+            return dispatch(HrAddNewEmployee(empHrData));
         }
     };
 };

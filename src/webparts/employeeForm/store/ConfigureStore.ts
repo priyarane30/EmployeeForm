@@ -30,6 +30,7 @@ export const store = createStore(
     combineReducers({
         CommonReducer: CommonReducer,
         ...createForms({
+            //BasicEmployee: BasicEmpReducer,
             Employee: NewEmpRequestReducer,
             HR: HRSectionReducer,
             ProfessionalDetail:ProfessionalDetailSectionReducer

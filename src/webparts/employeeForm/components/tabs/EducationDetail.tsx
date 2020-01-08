@@ -1,6 +1,10 @@
 import * as React from "react";
 import { Form, Control } from "react-redux-form";
+<<<<<<< HEAD
 import { ICommonState } from "../../state/ICommonState";
+=======
+import { ICommonState} from "../../state/ICommonState";
+>>>>>>> 97194fc723e2ca2f1d56ce50fe52f01e27859b6f
 import {
   SetTabName,
   GetInitialControlValuesAction,
