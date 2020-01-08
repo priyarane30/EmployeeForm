@@ -2,13 +2,13 @@ import { INewFormState } from '../state/INewFormControlsState';
 
 //Initialise state of Employee Detail
 export const newEmpFormControlsInitialState: INewFormState = {
-    FirstName: '',
-    LastName: '',
-    Gender: '',
-    DateofJoining: '',//datetime?
-    Designation: '',
-    Technology :'',
-    CompanyEmail : '',
+    // FirstName: '',
+    // LastName: '',
+    // Gender: '',
+    // DateofJoining: '',//datetime?
+    // Designation: '',
+    // Technology :'',
+    // CompanyEmail : '',
     PersonalEmail: '',
     Mobile: '',
     DateOfBirth: '',//dateTime?

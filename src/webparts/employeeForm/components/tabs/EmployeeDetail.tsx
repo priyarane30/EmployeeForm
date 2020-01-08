@@ -13,7 +13,7 @@ interface INewFormConnectedDispatch {
     getDefaultControlsData: () => void;
 
     //save data
-    // addNewEmployee: (empData: INewFormState) => void;
+    addNewEmployee: (empData: INewFormState) => void;
 }
 // interface ICommonDispatch {
 //     setTabName: (tabName: ICommonState) => void;
@@ -27,7 +27,6 @@ class EmployeeDetail extends React.Component<any> {
     handleSubmit(formValues) {
 
         // Do anything you want with the form value
-        //debugger;
         const CommonState: ICommonState = { CurrentForm: "Employee" };
         this.props.setTabName(CommonState);
 
@@ -36,10 +35,10 @@ class EmployeeDetail extends React.Component<any> {
         // you can dispatch actions such as:
         // dispatch(actions.submit('user', somePromise));
         // etc.
-        // let empData = {} as INewFormState;
-        // empData = formValues;
+        let empData = {} as INewFormState;
+        empData = formValues;
         // Call the connected dispatch to create new purchase request
-        // this.props.addNewEmployee(empData);
+        this.props.addNewEmployee(empData);
     }
 
     public render() {
@@ -47,7 +46,7 @@ class EmployeeDetail extends React.Component<any> {
         return (
             <div>
                 <Form model="Employee" onSubmit={(val) => this.handleSubmit(val)}>
-                    <div className='col'>
+                    {/* <div className='col'>
                         <label>First Name:</label>
                         <Control.text model='.FirstName' id='.FirstName' />
                     </div>
@@ -63,7 +62,7 @@ class EmployeeDetail extends React.Component<any> {
                         <label>Gender:</label>
                         <Control.select model=".Gender" id=".Gender">
                             <option>--Select--</option>
-                            {/* {this.props.Employee.genderOptions.map(gender => { return <option key={gender} value={gender}>{gender}</option> })}; */}
+                            {this.props.Employee.genderOptions.map(gender => { return <option key={gender} value={gender}>{gender}</option> })};
                         </Control.select>
                     </div>
                     <div className='col'>
@@ -83,7 +82,7 @@ class EmployeeDetail extends React.Component<any> {
                     <div className='col'>
                         <label>Company Email:</label>
                         <Control.text model='.CompanyEmail' id='.CompanyEmail' />
-                    </div>
+                    </div> */}
                     <div className='col'>
                         <label>Gender:</label>
                         <Control.select model=".Gender" id=".Gender">
@@ -219,15 +218,13 @@ const mapStateToProps = function (state) {
 // Maps dispatch to props
 const mapDispatchToProps = (dispatch): INewFormConnectedDispatch => {
     return {
-        setTabName: (tabData: ICommonState) => {
-            return dispatch(SetTabName(tabData))
-        },
+        setTabName: SetTabName,
         getDefaultControlsData: () => {
             return dispatch(GetInitialControlValuesAction());
         },
-        // addNewEmployee: (empData: INewFormState) => {
-        //     return dispatch(AddNewEmployee(empData));
-        // }
+        addNewEmployee: (empData: INewFormState) => {
+            return dispatch(AddNewEmployee(empData));
+        }
     };
 };
 
