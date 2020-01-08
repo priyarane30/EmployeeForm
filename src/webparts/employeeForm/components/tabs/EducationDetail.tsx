@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Form, Control } from "react-redux-form";
-import { ICommonState, IRequestDigest } from "../../state/ICommonState";
+import { ICommonState} from "../../state/ICommonState";
 import {
   SetTabName,
   GetInitialControlValuesAction,

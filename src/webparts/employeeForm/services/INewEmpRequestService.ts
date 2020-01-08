@@ -1,5 +1,5 @@
 import { INewFormState } from '../state/INewFormControlsState';
-
+import { IHRState } from '../state/IHRSectionControlsState';
 // Represents the service to interact with SharePoint to work with employee detail request.
 export default interface INewEmpRequestService {
     //Start Employee Detail Form
@@ -12,10 +12,12 @@ export default interface INewEmpRequestService {
 
     //Start HR Section
     getHRFormControlState(): Promise<any>;
+
+    HrAddNewEmployee(empReqData: IHRState):Promise<any>;
     //End HR Section
 
     /**End HR Section*/
-    getPDFormControlState(): Promise<any>
+    getPDFormControlState(): Promise<any>;
     /**End HR Section*/
     /**
      class CallbackTest
