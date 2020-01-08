@@ -28,6 +28,19 @@ export const HRSectionReducer = (state: IHRState = hrInitialState, action) => {
                 reasonOfLeavingOptions: action.payload.reasonOfLeavingOptions
             };
             break;
+        case "SET_INITIAL_STATE":
+            state = {
+                ...state,
+                userAlias: action.payload.HRData.userAlias,
+                ADLogin: action.payload.HRData.ADLogin,
+                Manager: action.payload.HRData.Manager,
+                employementStatus: action.payload.HRData.employementStatus,
+                DateOfLeaving: action.payload.HRData.DateOfLeaving,
+                reasonForLeaving: action.payload.HRData.reasonForLeaving,
+                ResigntionDate: action.payload.HRData.ResigntionDate,
+                EligibleforRehire: action.payload.HRData.EligibleforRehire,
+            };
+            break;
         case "ADD_NEW_EMPLOYEE":
             state = {
                 ...state,

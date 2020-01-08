@@ -45,7 +45,7 @@ class EmployeeDetail extends React.Component<any> {
         return (
             <div>
                 <Form model="Employee" onSubmit={(val) => this.handleSubmit(val)}>
-                    <div className='col'>
+                    {/* <div className='col'>
                         <label>First Name:</label>
                         <Control.text model='.FirstName' id='.FirstName' />
                     </div>
@@ -61,7 +61,7 @@ class EmployeeDetail extends React.Component<any> {
                         <label>Gender:</label>
                         <Control.select model=".Gender" id=".Gender">
                             <option>--Select--</option>
-                            {/* {this.props.Employee.genderOptions.map(gender => { return <option key={gender} value={gender}>{gender}</option> })}; */}
+                            {this.props.Employee.genderOptions.map(gender => { return <option key={gender} value={gender}>{gender}</option> })};
                         </Control.select>
                     </div>
                     <div className='col'>
@@ -81,7 +81,7 @@ class EmployeeDetail extends React.Component<any> {
                     <div className='col'>
                         <label>Company Email:</label>
                         <Control.text model='.CompanyEmail' id='.CompanyEmail' />
-                    </div>
+                    </div> */}
                     <div className='col'>
                         <label>Mobile No:</label>
                         <Control.text model='.Mobile' id='.Mobile' />

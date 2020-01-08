@@ -118,12 +118,36 @@ export default class NewEmployeeService implements INewEmpRequestService {
     }
 
     //Start HR Section
+
+    //Get HR
     getHRFormControlState(): Promise<any> {
         let hrControlsState = {} as IHRState;
         return this.getOptionsFromMaster(ListNames.REASONFORLEAVING, 'Title').then(statusResp => {
             hrControlsState.reasonOfLeavingOptions = statusResp;
             return hrControlsState;
         });
+    }
+    //Save HR
+    HrAddNewEmployee(empReqData: IHRState): Promise<any> {
+        debugger
+        let web = new Web(AppConstats.SITEURL);
+        return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
+            userAlias:empReqData.userAlias,
+            ADLogin:empReqData.ADLogin,
+            Manager: empReqData.Manager,
+            employementStatus: empReqData.employementStatus,
+            DateOfLeaving: empReqData.DateOfLeaving,
+            reasonForLeaving: empReqData.reasonForLeaving,
+            ResigntionDate: empReqData.ResigntionDate,
+            EligibleforRehire: empReqData.EligibleforRehire,
+        }).then((result: ItemAddResult) => {
+            let mainListID = result.data.Id;
+            console.log("Employee request created : " + mainListID);
+
+        }).catch(error => {
+            console.log("error while adding an employee");
+        });
+
     }
     //End HR Section
     //Start Professional Detail Section
@@ -134,5 +158,6 @@ export default class NewEmployeeService implements INewEmpRequestService {
             return pdControlsState;
         });
     }
+
     //End Professional Detail Section
 }

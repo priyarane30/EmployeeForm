@@ -13,5 +13,6 @@ export const CommonReducer = (state: ICommonState = commonStateInitialState, act
             };
             break;
     }
+    
     return state;
 }
