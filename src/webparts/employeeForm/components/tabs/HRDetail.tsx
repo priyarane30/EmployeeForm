@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Form, Control } from 'react-redux-form';
 import { ICommonState } from '../../state/ICommonState';
 import { connect } from "react-redux";
-import { SetTabName, GetInitialControlValuesAction,HrAddNewEmployee } from "../../actions/HRFormControlsValuesAction";
+import { SetTabName, GetInitialControlValuesAction, HrAddNewEmployee } from "../../actions/HRFormControlsValuesAction";
 import { IHRState } from '../../state/IHRSectionControlsState';
 
 // Represents the connected dispatch
@@ -12,19 +12,17 @@ interface IHRConnectedDispatch {
     // Gets the options for dropdown fields
     getDefaultControlsData: () => void;
 
-   //save data
-   HraddNewEmployee: (empHrData: IHRState) => void;
+    //save data
+    HraddNewEmployee: (empHrData: IHRState) => void;
 
 }
 class HRDetail extends React.Component<any> {
     constructor(props) {
         super(props);
-        this.props.getDefaultControlsData();
     }
-    
-    componentDidUpdate() {
+    componentDidMount() {
+        console.log("HR Details");
         this.props.getDefaultControlsData();
-
     }
     handleSubmit(formValues) {
         console.log(formValues);
@@ -38,6 +36,8 @@ class HRDetail extends React.Component<any> {
     }
 
     public render() {
+        console.log(this.props)
+        if (!this.props.HR) return (<div> Loading.... </div>)
         return (
             <div>
                 <Form model="HR" onSubmit={(val) => this.handleSubmit(val)}>
@@ -73,9 +73,9 @@ class HRDetail extends React.Component<any> {
                         <label>Reason for leaving:</label>
                         <Control.select model="HR.reasonForLeaving" id="HR.reasonForLeaving">
                             <option>--Select--</option>
-                            
+
                             {this.props.HR.reasonOfLeavingOptions.map(reasons => {
-                                debugger
+
                                 return <option key={reasons} value={reasons}>{reasons}</option>
                             })};
                             {/* <option>Growth</option>

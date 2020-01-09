@@ -42,13 +42,34 @@ export const newEmpFormControlsInitialState: INewFormState = {
 };
 
 
-export const NewEmpRequestReducer = (state: INewFormState = newEmpFormControlsInitialState, action) => {
+export const NewEmpRequestReducer = (state: INewFormState = null, action) => {
     switch (action.type) {
 
         // Gets the values for dropdown fields from SharePoint master/choice columns.
         case "GET_DEFAULT_FORM_CONTROLS":
             state = {
                 ...state,
+                PersonalEmail: '',
+                Mobile: '',
+                DateOfBirth: '',//dateTime?
+                Age: 0,
+                BloodGroup: '',
+                FatherName: '',
+                MotherName: '',
+                MaritalStatus: '',
+                SpouceName: '',
+                SpouseOccupation: '',
+                SpouceDOB: '', //dateTime?
+                EmergencyNo: '',
+                RelationWithEmergencyNo: '',
+                CurrentAddress: '',
+                IsSameAsCurrAddress: false,
+                PermanentAddress: '',
+                PanNo: '',
+                AadharNo: '',
+                IsPassAvail: false,
+                PassportNo: '',
+                PassportValidity: '',
                 genderOptions: action.payload.genderOptions,
                 designationOptions: action.payload.designationOptions,
                 maritalStatusOptions: action.payload.maritalStatusOptions,

@@ -18,7 +18,7 @@ export function GetInitialControlValuesAction() {
           //  formControlState.employmentStatusOptions = resp.employmentStatusOptions;
             formControlState.reasonOfLeavingOptions = resp.reasonOfLeavingOptions;
             dispatch({
-                type: ActionTypes.GetDefaultFormControls,
+                type: ActionTypes.GetHRFormControls,
                 payload: formControlState
             });
         });

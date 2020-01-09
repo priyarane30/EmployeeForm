@@ -17,15 +17,23 @@ export const hrInitialState: IHRState = {
 };
 
 
-export const HRSectionReducer = (state: IHRState = hrInitialState, action) => {
+export const HRSectionReducer = (state: IHRState = null, action) => {
     switch (action.type) {
 
         // Gets the values for dropdown fields from SharePoint master/choice columns.
-        case "GET_DEFAULT_FORM_CONTROLS":
+        case "GET_HR_FORM_CONTROLS":
             state = {
                 ...state,
                 employmentStatusOptions: action.payload.employmentStatusOptions,
-                reasonOfLeavingOptions: action.payload.reasonOfLeavingOptions
+                reasonOfLeavingOptions: action.payload.reasonOfLeavingOptions,
+                userAlias: '',
+                ADLogin: '',
+                Manager: '',
+                employementStatus: '',
+                DateOfLeaving: '', //dateTime?
+                reasonForLeaving: '',
+                ResigntionDate: '', //datetime?
+                EligibleforRehire: false
             };
             break;
         case "SET_INITIAL_FORM_STATE":

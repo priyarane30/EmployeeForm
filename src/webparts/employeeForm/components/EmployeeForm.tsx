@@ -12,6 +12,7 @@ import { store } from "../store/ConfigureStore";
 
 export default class EmployeeForm extends React.Component<IEmployeeFormProps, {}> {
   public render(): React.ReactElement<IEmployeeFormProps> {
+
     return (
       <Provider store={store}>
         <div className={styles.employeeForm}>
