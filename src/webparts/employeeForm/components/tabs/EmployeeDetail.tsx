@@ -122,6 +122,8 @@ const mapStateToProps = function (state) {
 
 // Maps dispatch to props
 const mapDispatchToProps = (dispatch): INewFormConnectedDispatch => {
+
+    
     return {
         setTabName: SetTabName,
         getDefaultControlsData: () => {
