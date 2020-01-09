@@ -34,11 +34,11 @@ export interface INewFormState {
     genderOptions: string[];
     designationOptions: string[];
     maritalStatusOptions: string[];
-    technologyOptions : string[];
+    technologyOptions: string[];
 
     //tran list Items
     childDetailItems: IChildDetailItem[];
-}  
+}
 
 // Represents one child detail in the Employee request.
 export interface IChildDetailItem {

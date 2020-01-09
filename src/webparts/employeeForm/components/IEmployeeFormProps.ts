@@ -3,4 +3,5 @@ export interface IEmployeeFormProps {
   description: string;
   siteUrl:string;
   spHttpClient: SPHttpClient;
+  getDefaultControlsData : Function;
 }

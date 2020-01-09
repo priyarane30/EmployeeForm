@@ -9,7 +9,7 @@
 
 // The file contains actions for the NewEmployeeReducer
 
-import { INewFormState } from '../state/INewFormControlsState';
+import {INewFormState} from '../state/INewFormControlsState';
 import { ICommonState } from '../state/ICommonState';
 import NewEmpService from '../services/NewEmployeeService';
 import NewEmployeeService from '../services/NewEmployeeService';

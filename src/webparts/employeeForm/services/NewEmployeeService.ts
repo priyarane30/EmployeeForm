@@ -68,11 +68,11 @@ export default class NewEmployeeService implements INewEmpRequestService {
     AddNewEmpRequest(empData: INewFormState): Promise<any> {
         let web = new Web(AppConstats.SITEURL);
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
-            FirstName: empData.FirstName,
-            LastName: empData.LastName,
-            Designation: empData.Designation,
-            Gender: empData.Gender,
-            Technology: empData.Technology,
+            // FirstName: empData.FirstName,
+            // LastName: empData.LastName,
+            // Designation: empData.Designation,
+            // Gender: empData.Gender,
+            // Technology: empData.Technology,
             MotherName: empData.MotherName,
             Mobile: empData.Mobile
         }).then((result: ItemAddResult) => {

@@ -138,7 +138,7 @@ class EmployeeDetail extends React.Component<any> {
                                         <button type="submit" onSubmit={(childData) => {
                                             i++;
                                             debugger
-                                           
+
                                         }}>+</button>
                                     </td>
                                 </tr>
