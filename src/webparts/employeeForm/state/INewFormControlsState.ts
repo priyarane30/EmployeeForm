@@ -15,33 +15,33 @@ export interface INewFormState {
     BloodGroup: string;
     FatherName: string;
     MotherName: string;
-    maritalStatus: string;
-    spouceName: string;
-    spouceOccup: string;
-    spouceDOB: string; //dateTime?
+    MaritalStatus: string;
+    SpouceName: string;
+    SpouseOccupation: string;
+    SpouceDOB: string; //dateTime?
     EmergencyNo: string;
     RelationWithEmergencyNo: string;
-    currentAddress: string;
-    IsSamePermCurrAddress: boolean;
-    permanentAddress: string;
-    panNo: string;
-    aadharNo: string;
-    isPassAvail: boolean;
-    passportNo: string;
-    passportValidity: string;
+    CurrentAddress: string;
+    IsSameAsCurrAddress: boolean;
+    PermanentAddress: string;
+    PanNo: string;
+    AadharNo: string;
+    IsPassAvail: boolean;
+    PassportNo: string;
+    PassportValidity: string; //datetime?
 
     // Represent the choices to be displayed in dropdown when the form loads.
     genderOptions: string[];
     designationOptions: string[];
     maritalStatusOptions: string[];
-    technologyOptions : string[];
+    technologyOptions: string[];
 
     //tran list Items
     childDetailItems: IChildDetailItem[];
-}  
+}
 
 // Represents one child detail in the Employee request.
 export interface IChildDetailItem {
-    childName: string;
+    ChildName: string;
     DateOfBirth: string;//dateTime??
 }

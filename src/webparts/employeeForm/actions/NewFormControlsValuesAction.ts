@@ -9,7 +9,7 @@
 
 // The file contains actions for the NewEmployeeReducer
 
-import { INewFormState } from '../state/INewFormControlsState';
+import {INewFormState} from '../state/INewFormControlsState';
 import { ICommonState } from '../state/ICommonState';
 import NewEmpService from '../services/NewEmployeeService';
 import NewEmployeeService from '../services/NewEmployeeService';
@@ -46,8 +46,8 @@ export function AddNewEmployee(empReqData: INewFormState) {
     return dispatch => {
         let newEmpReqServiceObj: NewEmployeeService = new NewEmpService();
         newEmpReqServiceObj.AddNewEmpRequest(empReqData).then(resp => {
-            console.log(resp);
-            alert("New Employee is added successfully");
+            if (resp != undefined)
+                alert("New Employee is added successfully");
         }).catch(() => {
             alert("Sorry. Error while adding employee...");
         });

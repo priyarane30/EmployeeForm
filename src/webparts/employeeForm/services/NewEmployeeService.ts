@@ -99,7 +99,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
 
                 // empData.childDetailItems.forEach(child => {
                 //     web.lists.getByTitle("PurchaseRequestItems").items.inBatch(batch).add({
-                //         ProductCode: child.childName,
+                //         ProductCode: child.ChildName,
                 //         Quantity: child.DateOfBirth,
                 //         RequestID: mainListID
                 //     });

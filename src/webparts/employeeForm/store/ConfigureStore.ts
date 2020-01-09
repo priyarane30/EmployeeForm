@@ -1,5 +1,6 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { NewEmpRequestReducer } from "../reducers/NewEmpRequestReducer";
+import { EducationReducer } from "../reducers/EducationDetailReducer";
 import { HRSectionReducer } from "../reducers/HRSectionReducer";
 import { ProfessionalDetailSectionReducer } from "../reducers/ProfessionalDetailSectionReducer"
 import { CommonReducer } from "../reducers/CommonReducer";
@@ -33,6 +34,7 @@ export const store = createStore(
             //BasicEmployee: BasicEmpReducer,
             Employee: NewEmpRequestReducer,
             HR: HRSectionReducer,
+            Education : EducationReducer,
             ProfessionalDetail:ProfessionalDetailSectionReducer
         })
     }),

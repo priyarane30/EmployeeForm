@@ -3,12 +3,12 @@ export interface IHRState {
     userAlias: string;
     ADLogin: string;
     Manager: string;
-    employementStatus: string; 
+    employementStatus: string;
     DateOfLeaving: string; //dateTime?
     reasonForLeaving: string;
     ResigntionDate: string; //datetime?
     EligibleforRehire: boolean;
-    
+
 
     // Represent the choices to be displayed in dropdown when the form loads.
     employmentStatusOptions: string[];

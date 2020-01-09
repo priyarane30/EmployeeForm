@@ -16,20 +16,20 @@ export const newEmpFormControlsInitialState: INewFormState = {
     BloodGroup: '',
     FatherName: '',
     MotherName: '',
-    maritalStatus: '',
-    spouceName: '',
-    spouceOccup: '',
-    spouceDOB: '', //dateTime?
+    MaritalStatus: '',
+    SpouceName: '',
+    SpouseOccupation: '',
+    SpouceDOB: '', //dateTime?
     EmergencyNo: '',
     RelationWithEmergencyNo: '',
-    currentAddress: '',
-    IsSamePermCurrAddress: false,
-    permanentAddress: '',
-    panNo: '',
-    aadharNo: '',
-    isPassAvail: false,
-    passportNo: '',
-    passportValidity: '',
+    CurrentAddress: '',
+    IsSameAsCurrAddress: false,
+    PermanentAddress: '',
+    PanNo: '',
+    AadharNo: '',
+    IsPassAvail: false,
+    PassportNo: '',
+    PassportValidity: '',
 
     // Represent the choices to be displayed in dropdown when the form loads.
     genderOptions: [],
@@ -49,29 +49,49 @@ export const NewEmpRequestReducer = (state: INewFormState = newEmpFormControlsIn
         case "GET_DEFAULT_FORM_CONTROLS":
             state = {
                 ...state,
-                genderOptions: action.payload.EmployeeDetails.FirstName,
+                genderOptions: action.payload.genderOptions,
                 designationOptions: action.payload.designationOptions,
                 maritalStatusOptions: action.payload.maritalStatusOptions,
                 technologyOptions: action.payload.technologyOptions,
-                
+
             };
             break;
         case "SET_INITIAL_STATE":
-        state = {
-            ...state,
-            FirstName: action.payload.EmployeeDetails.FirstName
-        };
-        break;
+            state = {
+                ...state,
+                PersonalEmail: action.payload.NewEmpReqData.PersonalEmail,
+                Mobile: action.PayRollDatapayload.NewEmpReqData.Mobile,
+                DateOfBirth: action.PayRollDatapayload.NewEmpReqData.DateOfBirth,
+                Age: action.PayRollDatapayload.NewEmpReqData.Age,
+                BloodGroup: action.PayRollDatapayload.NewEmpReqData.BloodGroup,
+                FatherName: action.PayRollDatapayload.NewEmpReqData.FatherName,
+                MotherName: action.PayRollDatapayload.NewEmpReqData.MotherName,
+                MaritalStatus: action.PayRollDatapayload.NewEmpReqData.MaritalStatus,
+                SpouceName: action.PayRollDatapayload.NewEmpReqData.SpouceName,
+                // SpouceOccupation: action.PayRollDatapayload.NewEmpReqData.SpouceOccupation,
+                SpouceDOB: action.PayRollDatapayload.NewEmpReqData.spouceDOB,
+                EmergencyNo: action.PayRollDatapayload.NewEmpReqData.EmergencyNo,
+                RelationWithEmergencyNo: action.PayRollDatapayload.NewEmpReqData.RelationWithEmergencyNo,
+                //  currentAddress: action.PayRollDatapayload.NewEmpReqData.currentAddress,
+                // IsSamePermCurrAddress: action.PayRollDatapayload.NewEmpReqData.IsSamePermCurrAddress,
+                // permanentAddress: action.PayRollDatapayload.NewEmpReqData.permanentAddress,
+                // panNo: action.PayRollDatapayload.NewEmpReqData.panNo,
+                // aadharNo: action.PayRollDatapayload.NewEmpReqData.aadharNo,
+                // isPassAvail: action.PayRollDatapayload.NewEmpReqData.isPassAvail,
+                // passportNo: action.PayRollDatapayload.NewEmpReqData.passportNo,
+                // passportValidity: action.PayRollDatapayload.NewEmpReqData.passportValidity,
+            };
+            break;
         case "ADD_NEW_EMPLOYEE":
             state = {
                 ...state,
                 //FirstName: action.payload.FirstName,
-               // LastName: action.payload.LastName,
-                Gender: action.payload.Gender,
-                DateofJoining: action.payload.DateofJoining,//datetime?
-                Designation: action.payload.Designation,
-                Technology : action.payload.Technology,
-                CompanyEmail : action.payload.CompanyEmail,
+                // LastName: action.payload.LastName,
+                // Gender: action.payload.Gender,
+                // DateofJoining: action.payload.DateofJoining,//datetime?
+                // Designation: action.payload.Designation,
+                // Technology: action.payload.Technology,
+                // CompanyEmail: action.payload.CompanyEmail,
                 PersonalEmail: action.payload.PersonalEmail,
                 Mobile: action.payload.Mobile,
                 DateOfBirth: action.payload.DateOfBirth,
@@ -79,20 +99,20 @@ export const NewEmpRequestReducer = (state: INewFormState = newEmpFormControlsIn
                 BloodGroup: action.payload.BloodGroup,
                 FatherName: action.payload.FatherName,
                 MotherName: action.payload.MotherName,
-                maritalStatus: action.payload.maritalStatus,
-                spouceName: action.payload.spouceName,
-                spouceOccup: action.payload.spouceOccup,
-                spouceDOB: action.payload.spouceDOB,
+                MaritalStatus: action.payload.MaritalStatus,
+                SpouceName: action.payload.SpouceName,
+                SpouseOccupation: action.payload.SpouseOccupation,
+                SpouceDOB: action.payload.SpouceDOB,
                 EmergencyNo: action.payload.EmergencyNo,
                 RelationWithEmergencyNo: action.payload.RelationWithEmergencyNo,
-                currentAddress: action.payload.currentAddress,
-                IsSamePermCurrAddress: action.payload.IsSamePermCurrAddress,
-                permanentAddress: action.payload.permanentAddress,
-                panNo: action.payload.panNo,
-                aadharNo: action.payload.aadharNo,
-                isPassAvail: action.payload.isPassAvail,
-                passportNo: action.payload.passportNo,
-                passportValidity: action.payload.passportValidity,
+                CurrentAddress: action.payload.CurrentAddress,
+                IsSameAsCurrAddress: action.payload.IsSameAsCurrAddress,
+                PermanentAddress: action.payload.PermanentAddress,
+                PanNo: action.payload.PanNo,
+                AadharNo: action.payload.AadharNo,
+                IsPassAvail: action.payload.IsPassAvail,
+                PassportNo: action.payload.PassportNo,
+                PassportValidity: action.payload.PassportValidity,
 
                 // Represent the choices to be displayed in dropdown when the form loads.
                 genderOptions: action.payload.genderOptions,
