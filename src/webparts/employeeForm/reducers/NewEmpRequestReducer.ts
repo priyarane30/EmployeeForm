@@ -59,7 +59,27 @@ export const NewEmpRequestReducer = (state: INewFormState = newEmpFormControlsIn
         case "SET_INITIAL_STATE":
             state = {
                 ...state,
-                //FirstName: action.payload.EmployeeDetails.FirstName
+                PersonalEmail: action.payload.NewEmpReqData.PersonalEmail,
+                Mobile: action.PayRollDatapayload.NewEmpReqData.Mobile,
+                DateOfBirth: action.PayRollDatapayload.NewEmpReqData.DateOfBirth,
+                Age: action.PayRollDatapayload.NewEmpReqData.Age,
+                BloodGroup: action.PayRollDatapayload.NewEmpReqData.BloodGroup,
+                FatherName: action.PayRollDatapayload.NewEmpReqData.FatherName,
+                MotherName: action.PayRollDatapayload.NewEmpReqData.MotherName,
+                MaritalStatus: action.PayRollDatapayload.NewEmpReqData.MaritalStatus,
+                SpouceName: action.PayRollDatapayload.NewEmpReqData.SpouceName,
+                // SpouceOccupation: action.PayRollDatapayload.NewEmpReqData.SpouceOccupation,
+                SpouceDOB: action.PayRollDatapayload.NewEmpReqData.spouceDOB,
+                EmergencyNo: action.PayRollDatapayload.NewEmpReqData.EmergencyNo,
+                RelationWithEmergencyNo: action.PayRollDatapayload.NewEmpReqData.RelationWithEmergencyNo,
+                //  currentAddress: action.PayRollDatapayload.NewEmpReqData.currentAddress,
+                // IsSamePermCurrAddress: action.PayRollDatapayload.NewEmpReqData.IsSamePermCurrAddress,
+                // permanentAddress: action.PayRollDatapayload.NewEmpReqData.permanentAddress,
+                // panNo: action.PayRollDatapayload.NewEmpReqData.panNo,
+                // aadharNo: action.PayRollDatapayload.NewEmpReqData.aadharNo,
+                // isPassAvail: action.PayRollDatapayload.NewEmpReqData.isPassAvail,
+                // passportNo: action.PayRollDatapayload.NewEmpReqData.passportNo,
+                // passportValidity: action.PayRollDatapayload.NewEmpReqData.passportValidity,
             };
             break;
         case "ADD_NEW_EMPLOYEE":

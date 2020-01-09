@@ -26,6 +26,19 @@ export const ProfessionalDetailSectionReducer = (state: IProfessionalDetailState
                 reasonOfLeavingOptions: action.payload.reasonOfLeavingOptions
             };
             break;
+            case "SET_INITIAL_FORM_STATE":
+            state = {
+                ...state,
+                organization: action.payload.PD.organization,
+                designation: action.payload.PD.designation,
+                startDate: action.payload.PD.startDate,
+                endDate: action.payload.PD.endDate,
+                reportingTo: action.payload.PD.reportingTo,
+                reportingDesignation: action.payload.PD.reportingDesignation,
+                totalExp: action.payload.PD.totalExp,
+                reasonForLeaving: action.payload.PD.reasonForLeaving,
+            };
+            break;
         case "ADD_NEW_EMPLOYEE":
             state = {
                 ...state,

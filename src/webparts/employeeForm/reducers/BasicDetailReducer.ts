@@ -1,12 +1,17 @@
-import { IEducationDetailState } from "../state/IEducationDetailState";
+import { IBasicDetailState } from "../state/IBasicDetailState";
 //Initialise state of Education 
-export const eduDetailState: IEducationDetailState = {
-  educationDetails: [],
-  certificationDetails: []
+export const BasicDetailState: IBasicDetailState = {
+    FirstName: '',
+    LastName: '',
+    Gender: '',
+    DateofJoining: '', //datetime?
+    Designation: '',
+    Technology: '',
+    CompanyEmail: '',
 };
 
 
-export const EducationSectionReducer = (state: IEducationDetailState = eduDetailState, action) => {
+export const BasicDetailSectionReducer = (state: IBasicDetailState = BasicDetailState, action) => {
     switch (action.type) {
 
         // Gets the values for dropdown fields from SharePoint master/choice columns.
