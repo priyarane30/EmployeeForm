@@ -1,6 +1,6 @@
 import { IHRState } from '../state/IHRSectionControlsState';
 
-//Initialise state of Employee Detail
+//Initialise state of HR 
 export const hrInitialState: IHRState = {
     userAlias: '',
     ADLogin: '',
@@ -28,7 +28,7 @@ export const HRSectionReducer = (state: IHRState = hrInitialState, action) => {
                 reasonOfLeavingOptions: action.payload.reasonOfLeavingOptions
             };
             break;
-        case "SET_INITIAL_STATE":
+        case "SET_INITIAL_FORM_STATE":
             state = {
                 ...state,
                 userAlias: action.payload.HRData.userAlias,

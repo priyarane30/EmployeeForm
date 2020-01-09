@@ -6,8 +6,8 @@ export interface IProfessionalDetailState {
     endDate: string; //dateTime?
     reportingTo: string;
     reportingDesignation: string;
-    totalExp: string; 
-    reasonForLeaving:string;
+    totalExp: string;
+    reasonForLeaving: string;
 
     // Represent the choices to be displayed in dropdown when the form loads.
     reasonOfLeavingOptions: string[];

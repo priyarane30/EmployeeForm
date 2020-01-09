@@ -22,7 +22,8 @@ export default class EmployeeFormWebPart extends BaseClientSideWebPart<IEmployee
       {
         description: this.properties.description,
         siteUrl:this.context.pageContext.web.absoluteUrl,
-        spHttpClient:this.context.spHttpClient
+        spHttpClient:this.context.spHttpClient,
+        getDefaultControlsData : undefined
       }
     );
     ReactDom.render(element, this.domElement);

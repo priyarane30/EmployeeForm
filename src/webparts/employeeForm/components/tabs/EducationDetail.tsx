@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Form, Control } from "react-redux-form";
 import { ICommonState } from "../../state/ICommonState";
-
 import {
   SetTabName,
   GetInitialControlValuesAction,
@@ -22,19 +21,13 @@ interface INewFormConnectedDispatch {
 class EducationDetail extends React.Component<any> {
   constructor(props) {
     super(props);
+    //props.educationDetails = [];
   }
   handleSubmit(formValues) {
     // Do anything you want with the form value
-    const CommonState: ICommonState = { CurrentForm: "Employee" };
+    const CommonState: ICommonState = { CurrentForm: "Education" };
     this.props.setTabName(CommonState);
 
-    // Do whatever you like in here.
-    // If you connect the UserForm to the Redux store,
-    // you can dispatch actions such as:
-    // dispatch(actions.submit('user', somePromise));
-    // etc.
-
-    debugger;
     let eduData = {} as IEducationDetailState;
     eduData = formValues;
     // Call the connected dispatch to create new purchase request
@@ -43,121 +36,125 @@ class EducationDetail extends React.Component<any> {
   public render() {
     return (
       <div>
-        <Form model="educationDetail" onSubmit={val => this.handleSubmit(val)}>
+        <Form model="Education" onSubmit={val => this.handleSubmit(val)}>
           <table>
-            <tr>
-              <td>
-                <label>Diploma/Degree</label>
-                <Control.select model=".DiplomaDegree" id=".DiplomaDegree">
-                  <option></option>
-                  <option value="Degree">Degree</option>
-                  <option value="Diploma">Diploma</option>
-                  <option value="12th">12th</option>
-                  <option value="10th">10th</option>
-                </Control.select>
-              </td>
-              <td>
-                <label>Grade</label>
-                <Control.text model=".Grade" id=".Grade"></Control.text>
-              </td>
-              <td>
-                <label>StartYear</label>
-                <Control.text
-                  model=".StartYear"
-                  id=".StartYear"
-                  placeholder="YYYY"
-                ></Control.text>
-              </td>
-              <td>
-                <label>EndYear</label>
-                <Control.text
-                  model=".EndYear"
-                  id=".EndYear"
-                  placeholder="YYYY"
-                ></Control.text>
-              </td>
-              <td>
-                <label>Board</label>
-                <Control.text model=".Board" id=".Board"></Control.text>
-              </td>
-              <td>
-                <label>SchoolCollege</label>
-                <Control.text
-                  model=".SchoolCollege"
-                  id=".SchoolCollege"
-                ></Control.text>
-              </td>
-              <td>
-                <label>DegreeName</label>
-                <Control.text
-                  model=".DegreeName"
-                  id=".DegreeName"
-                ></Control.text>
-              </td>
-              <td>
-                <button type="submit">+</button>
-              </td>
-            </tr>
+            {
+              this.props.educationDetails.map((edu, i) =>
+              <tr>
+                <td>
+                  <label>Diploma/Degree</label>
+                  <Control.select model={`.edu[${i}].DiplomaDegree`} id=".DiplomaDegree">
+                    <option></option>
+                    <option value="Degree">Degree</option>
+                    <option value="Diploma">Diploma</option>
+                    <option value="12th">12th</option>
+                    <option value="10th">10th</option>
+                  </Control.select>
+                </td>
+                <td>
+                  <label>Grade</label>
+                  <Control.text model={`.edu[${i}].Grade`} id=".Grade"></Control.text>
+                </td>
+                <td>
+                  <label>StartYear</label>
+                  <Control.text
+                    model={`.edu[${i}].StartYear`}
+                    id=".StartYear"
+                    placeholder="YYYY"
+                  ></Control.text>
+                </td>
+                <td>
+                  <label>EndYear</label>
+                  <Control.text
+                    model=".EndYear"
+                    id=".EndYear"
+                    placeholder="YYYY"
+                  ></Control.text>
+                </td>
+                <td>
+                  <label>Board</label>
+                  <Control.text model={`.edu[${i}].Board`} id=".Board"></Control.text>
+                </td>
+                <td>
+                  <label>SchoolCollege</label>
+                  <Control.text
+                    model={`.edu[${i}].SchoolCollege`}
+                    id=".SchoolCollege"
+                  ></Control.text>
+                </td>
+                <td>
+                  <label>DegreeName</label>
+                  <Control.text
+                    model={`.edu[${i}].DegreeName`}
+                    id=".DegreeName"
+                  ></Control.text>
+                </td>
+                <td>
+                  <button type="submit">+</button>
+                </td>
+              </tr>
+            )}
           </table>
-          <table>
-            <tr>
-              <td>
-                <label>Diploma/Degree</label>
-                <Control.select model=".DiplomaDegree" id=".DiplomaDegree">
-                  <option></option>
-                  <option value="Degree">Degree</option>
-                  <option value="Diploma">Diploma</option>
-                  <option value="12th">12th</option>
-                  <option value="10th">10th</option>
-                </Control.select>
-              </td>
-              <td>
-                <label>Grade</label>
-                <Control.text model=".Grade" id=".Grade"></Control.text>
-              </td>
-              <td>
-                <label>StartYear</label>
-                <Control.text
-                  model=".StartYear"
-                  id=".StartYear"
-                  placeholder="YYYY"
-                ></Control.text>
-              </td>
-              <td>
-                <label>EndYear</label>
-                <Control.text
-                  model=".EndYear"
-                  id=".EndYear"
-                  placeholder="YYYY"
-                ></Control.text>
-              </td>
-              <td>
-                <label>Board</label>
-                <Control.text model=".Board" id=".Board"></Control.text>
-              </td>
-              <td>
-                <label>SchoolCollege</label>
-                <Control.text
-                  model=".SchoolCollege"
-                  id=".SchoolCollege"
-                ></Control.text>
-              </td>
-              <td>
-                <label>DegreeName</label>
-                <Control.text
-                  model=".DegreeName"
-                  id=".DegreeName"
-                ></Control.text>
-              </td>
-              <td>
-                <button type="submit">+</button>
-              </td>
-            </tr>
-          </table>
+
+          {/* <table>
+          <tr>
+            <td>
+              <label>Diploma/Degree</label>
+              <Control.select model=".DiplomaDegree" id=".DiplomaDegree">
+                <option></option>
+                <option value="Degree">Degree</option>
+                <option value="Diploma">Diploma</option>
+                <option value="12th">12th</option>
+                <option value="10th">10th</option>
+              </Control.select>
+            </td>
+            <td>
+              <label>Grade</label>
+              <Control.text model=".Grade" id=".Grade"></Control.text>
+            </td>
+            <td>
+              <label>StartYear</label>
+              <Control.text
+                model=".StartYear"
+                id=".StartYear"
+                placeholder="YYYY"
+              ></Control.text>
+            </td>
+            <td>
+              <label>EndYear</label>
+              <Control.text
+                model=".EndYear"
+                id=".EndYear"
+                placeholder="YYYY"
+              ></Control.text>
+            </td>
+            <td>
+              <label>Board</label>
+              <Control.text model=".Board" id=".Board"></Control.text>
+            </td>
+            <td>
+              <label>SchoolCollege</label>
+              <Control.text
+                model=".SchoolCollege"
+                id=".SchoolCollege"
+              ></Control.text>
+            </td>
+            <td>
+              <label>DegreeName</label>
+              <Control.text
+                model=".DegreeName"
+                id=".DegreeName"
+              ></Control.text>
+            </td>
+            <td>
+              <button type="submit">+</button>
+            </td>
+          </tr>
+          </table> */}
           <button type="submit">Save</button>
         </Form>
-      </div>
+      </div >
     );
   }
 }
-export default EmployeeDetail;
+export default EducationDetail;
