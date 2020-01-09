@@ -16,6 +16,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
     };
 
     private getOptionsFromMaster(listName, columnName): Promise<any> {
+        debugger;
         //Get data from Master lists
         var url = AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + listName + "')/items?$select=" + columnName;
         return axios.get(url)
@@ -122,6 +123,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
 
     //Get HR
     getHRFormControlState(): Promise<any> {
+        debugger;
         let hrControlsState = {} as IHRState;
         return this.getOptionsFromMaster(ListNames.REASONFORLEAVING, 'Title').then(statusResp => {
             hrControlsState.reasonOfLeavingOptions = statusResp;

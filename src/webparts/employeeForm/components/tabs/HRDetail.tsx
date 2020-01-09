@@ -23,7 +23,7 @@ class HRDetail extends React.Component<any> {
     }
     
     componentDidUpdate() {
-        this.props.getDefaultControlsData();
+     //   this.props.getDefaultControlsData();
 
     }
     handleSubmit(formValues) {
@@ -67,7 +67,7 @@ class HRDetail extends React.Component<any> {
                     </div>
                     <div className='col'> {/* Date of leaving*/}
                         <label>Date of leaving:</label>
-                        <Control.text model='HR.DateOfLeaving' id='HR.DateOfLeaving' />
+                        <Control.text model='HR.DateOfLeaving' id='HR.DateOfLeaving' placeholder='dd-MM-yyyy'/>
                     </div>
                     <div className='col'>{/* Reason for leaving */}
                         <label>Reason for leaving:</label>
@@ -85,7 +85,7 @@ class HRDetail extends React.Component<any> {
                     </div>
                     <div className='col'> {/* Date of Resignation*/}
                         <label>Resignation Date:</label>
-                        <Control.text model='HR.ResigntionDate' id='HR.ResigntionDate' />
+                        <Control.text model='HR.ResigntionDate' id='HR.ResigntionDate' placeholder='dd-MM-yyyy'/>
                     </div>
                     <div className='col'> {/* Eligible for rehire*/}
                         <label>Eligible for Rehire:</label>
