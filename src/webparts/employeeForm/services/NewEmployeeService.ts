@@ -15,7 +15,6 @@ export default class NewEmployeeService implements INewEmpRequestService {
     };
 
     private getOptionsFromMaster(listName, columnName): Promise<any> {
-        debugger;
         //Get data from Master lists
         var url = AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + listName + "')/items?$select=" + columnName;
         return axios.get(url)
@@ -28,9 +27,10 @@ export default class NewEmployeeService implements INewEmpRequestService {
                 console.log(error)
             });
     }
-    private getDataFromList(listName,userEmail): Promise<any> {
+    private getDataFromList(listName, userEmail): Promise<any> {
         //Get data from Master lists
-        var url =AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + listName + "')/items?$select=*&$filter=CompanyEMail_x0020_ID eq '"+userEmail+"'" ;
+        debugger;
+        var url = AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + listName + "')/items?$select=*&$filter=CompanyEMail_x0020_ID eq '" + userEmail + "'";
         return axios.get(url)
             .then(res => {
                 if (res.data.value != undefined && res.data.value != null) {
@@ -122,7 +122,6 @@ export default class NewEmployeeService implements INewEmpRequestService {
 
     //Get HR
     getHRFormControlState(): Promise<any> {
-        debugger;
         let hrControlsState = {} as IHRState;
         return this.getOptionsFromMaster(ListNames.REASONFORLEAVING, 'Title').then(statusResp => {
             hrControlsState.reasonOfLeavingOptions = statusResp;
@@ -131,11 +130,10 @@ export default class NewEmployeeService implements INewEmpRequestService {
     }
     //Save HR
     HrAddNewEmployee(empReqData: IHRState): Promise<any> {
-        debugger
         let web = new Web(AppConstats.SITEURL);
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
-            userAlias:empReqData.userAlias,
-            ADLogin:empReqData.ADLogin,
+            UserAlias: empReqData.UserAlias,
+            ADLogin: empReqData.ADLogin,
             Manager: empReqData.Manager,
             employementStatus: empReqData.employementStatus,
             DateOfLeaving: empReqData.DateOfLeaving,
@@ -148,6 +146,24 @@ export default class NewEmployeeService implements INewEmpRequestService {
 
         }).catch(error => {
             console.log("error while adding an employee");
+        });
+
+    }
+    //get List Data
+    getHRFormlistControlState(): Promise<any> {
+        debugger
+        let hrlistState= {} as IHRState;
+        return this.getDataFromList(ListNames.EMPLOYEECONTACT, 'hitaxi.kachhadiya@synoverge.com').then(statusResp => {
+            debugger
+            hrlistState.UserAlias= statusResp[0].UserAlies;
+            hrlistState.ADLogin= statusResp[0].ADLogin;
+            hrlistState.Manager= statusResp[0].Manager;
+            hrlistState.employementStatus= statusResp[0].employementStatus;
+            hrlistState.DateOfLeaving= statusResp[0].DateOfLeaving;
+            hrlistState.reasonForLeaving= statusResp[0].reasonForLeaving;
+            hrlistState.ResigntionDate= statusResp[0].ResigntionDate;
+            hrlistState.EligibleforRehire= statusResp[0].EligibleforRehire;
+            return hrlistState;
         });
 
     }

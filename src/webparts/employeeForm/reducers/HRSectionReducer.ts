@@ -2,7 +2,7 @@ import { IHRState } from '../state/IHRSectionControlsState';
 
 //Initialise state of HR 
 export const hrInitialState: IHRState = {
-    userAlias: '',
+    UserAlias: '',
     ADLogin: '',
     Manager: '',
     employementStatus: '',
@@ -31,20 +31,20 @@ export const HRSectionReducer = (state: IHRState = hrInitialState, action) => {
         case "SET_INITIAL_FORM_STATE":
             state = {
                 ...state,
-                userAlias: action.payload.HRData.userAlias,
-                ADLogin: action.payload.HRData.ADLogin,
-                Manager: action.payload.HRData.Manager,
-                employementStatus: action.payload.HRData.employementStatus,
-                DateOfLeaving: action.payload.HRData.DateOfLeaving,
-                reasonForLeaving: action.payload.HRData.reasonForLeaving,
-                ResigntionDate: action.payload.HRData.ResigntionDate,
-                EligibleforRehire: action.payload.HRData.EligibleforRehire,
+                UserAlias: action.payload.UserAlias,
+                ADLogin: action.payload.ADLogin,
+                Manager: action.payload.Manager,
+                employementStatus: action.payload.employementStatus,
+                DateOfLeaving: action.payload.DateOfLeaving,
+                reasonForLeaving: action.payload.reasonForLeaving,
+                ResigntionDate: action.payload.ResigntionDate,
+                EligibleforRehire: action.payload.EligibleforRehire,
             };
             break;
         case "ADD_NEW_EMPLOYEE":
             state = {
                 ...state,
-                userAlias: action.payload.userAlias,
+                UserAlias: action.payload.UserAlias,
                 ADLogin: action.payload.ADLogin,
                 Manager: action.payload.Manager,
                 employementStatus: action.payload.employementStatus,
