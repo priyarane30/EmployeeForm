@@ -28,13 +28,13 @@ export default class NewEmployeeService implements INewEmpRequestService {
                 console.log(error)
             });
     }
-    private getOptionsFromList(listName,userEmail, columnName): Promise<any> {
+    private getDataFromList(listName,userEmail): Promise<any> {
         //Get data from Master lists
         var url =AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + listName + "')/items?$select=*&$filter=CompanyEMail_x0020_ID eq '"+userEmail+"'" ;
         return axios.get(url)
             .then(res => {
                 if (res.data.value != undefined && res.data.value != null) {
-                    return res.data.value.map(r => r[columnName]);
+                    return res.data.value;
                 }
             }).catch(error => {
                 console.log('error while getOptionsFromMaster');
