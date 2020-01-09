@@ -27,9 +27,9 @@ export default class NewEmployeeService implements INewEmpRequestService {
                 console.log(error)
             });
     }
-    private getOptionsFromList(listName, columnName): Promise<any> {
+    private getOptionsFromList(listName,userEmail, columnName): Promise<any> {
         //Get data from Master lists
-        var url =AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + listName + "')/items?$select=*$&filter" ;
+        var url =AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + listName + "')/items?$select=*&$filter=CompanyEMail_x0020_ID eq '"+userEmail+"'" ;
         return axios.get(url)
             .then(res => {
                 if (res.data.value != undefined && res.data.value != null) {
@@ -81,11 +81,11 @@ export default class NewEmployeeService implements INewEmpRequestService {
     AddNewEmpRequest(empData: INewFormState): Promise<any> {
         let web = new Web(AppConstats.SITEURL);
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
-            FirstName: empData.FirstName,
-            LastName: empData.LastName,
-            Designation: empData.Designation,
-            Gender: empData.Gender,
-            Technology: empData.Technology,
+            // FirstName: empData.FirstName,
+            // LastName: empData.LastName,
+            // Designation: empData.Designation,
+            // Gender: empData.Gender,
+            // Technology: empData.Technology,
             MotherName: empData.MotherName,
             Mobile: empData.Mobile
         }).then((result: ItemAddResult) => {
