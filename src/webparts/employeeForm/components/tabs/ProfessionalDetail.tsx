@@ -6,6 +6,7 @@ export default class ProfessionalDetail extends React.Component {
         super(props);
     }
     handleSubmit(formValues) {
+        
         console.log(formValues);
     }
     public render() {
