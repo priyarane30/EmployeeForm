@@ -17,7 +17,7 @@ export function GetInitialControlValuesAction() {
         newEmpServiceObj.getHRFormControlState().then((resp: IHRState) => {
             formControlState.reasonOfLeavingOptions = resp.reasonOfLeavingOptions;
             dispatch({
-                type: ActionTypes.GetDefaultFormControls,
+                type: ActionTypes.GetHRFormControls,
                 payload: formControlState
             });
         });

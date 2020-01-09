@@ -6,6 +6,7 @@ import axios from 'axios';
 import { AppConstats, ListNames } from '../AppConstants';
 import pnp from "sp-pnp-js";
 import { sp, ItemAddResult, Web } from "sp-pnp-js";
+import { IPayrollState } from '../state/IPayrollState';
 
 export default class NewEmployeeService implements INewEmpRequestService {
 
@@ -178,4 +179,13 @@ export default class NewEmployeeService implements INewEmpRequestService {
     }
 
     //End Professional Detail Section
+
+    //Get Payroll
+    getPayrollControlState(): Promise<any>{
+        let payrollControlsState = {} as IPayrollState;
+        return this.getDataFromList(ListNames.EMPLOYEECONTACT, 'hirvita.rajyaguru@synoverge.com').then(statusResp => {
+             payrollControlsState = statusResp;
+            return payrollControlsState;
+        });
+    }
 }

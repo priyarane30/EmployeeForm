@@ -23,6 +23,10 @@ class EducationDetail extends React.Component<any> {
     super(props);
     //props.educationDetails = [];
   }
+componentDidMount(){
+  console.log("Education Details");
+}
+
   handleSubmit(formValues) {
     // Do anything you want with the form value
     const CommonState: ICommonState = { CurrentForm: "Education" };

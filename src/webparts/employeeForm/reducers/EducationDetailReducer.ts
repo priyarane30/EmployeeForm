@@ -6,7 +6,7 @@ export const eduDetailState: IEducationDetailState = {
 };
 
 
-export const EducationSectionReducer = (state: IEducationDetailState = eduDetailState, action) => {
+ export  const EducationSectionReducer = (state: IEducationDetailState = eduDetailState, action) => {
     switch (action.type) {
 
         // Gets the values for dropdown fields from SharePoint master/choice columns.
