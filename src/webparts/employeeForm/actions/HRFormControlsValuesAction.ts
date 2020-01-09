@@ -13,9 +13,8 @@ export function GetInitialControlValuesAction() {
         } as IHRState;
 
         let newEmpServiceObj: NewEmpService = new NewEmpService();
-
+        debugger
         newEmpServiceObj.getHRFormControlState().then((resp: IHRState) => {
-          //  formControlState.employmentStatusOptions = resp.employmentStatusOptions;
             formControlState.reasonOfLeavingOptions = resp.reasonOfLeavingOptions;
             dispatch({
                 type: ActionTypes.GetHRFormControls,
