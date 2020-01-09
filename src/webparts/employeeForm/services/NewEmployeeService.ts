@@ -167,9 +167,9 @@ export default class NewEmployeeService implements INewEmpRequestService {
     //Get Payroll
     getPayrollControlState(): Promise<any>{
         let payrollControlsState = {} as IPayrollState;
-        return this.getOptionsFromList(ListNames.EMPLOYEECONTACT, 'Title').then(statusResp => {
-            hrControlsState.reasonOfLeavingOptions = statusResp;
-            return hrControlsState;
+        return this.getDataFromList(ListNames.EMPLOYEECONTACT, 'hirvita.rajyaguru@synoverge.com').then(statusResp => {
+             payrollControlsState = statusResp;
+            return payrollControlsState;
         });
     }
 }

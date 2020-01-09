@@ -1,25 +1,31 @@
 import { IPayrollState } from '../state/IPayrollState';
 import { ICommonState } from '../state/ICommonState';
-import NewEmployeeService from '../services/NewEmployeeService';
 import { ActionTypes } from '../AppConstants';
 import NewEmpService from '../services/NewEmployeeService';
 
 
-export function PayrollAddNewEmployee(empReqData: IPayrollState) {
-    debugger
+export function GetPayrollAction(){
     return dispatch => {
-        let newEmpReqServiceObj: NewEmployeeService = new NewEmpService();
-export function PayrollAddNewEmployee(empReqData: IPayrollState) {
-        newEmpReqServiceObj.PayrollAddNewEmployee(empReqData).then(resp => {
-            console.log(resp);
-            alert("New Employee is added successfully");
-        }).catch(() => {
-            alert("Sorry. Error while adding employee...");
-        });
+          
+        let formControlState = {
+            
+        } as IPayrollState;
 
-        dispatch({
-            type: "ADD_NEW_EMPLOYEE",
-            payload: empReqData
+        let newEmpServiceObj: NewEmpService = new NewEmpService();
+        debugger
+        newEmpServiceObj.getPayrollControlState().then((resp: IPayrollState) => {
+            formControlState = resp;
+            dispatch({
+                type: ActionTypes.GetDefaultFormControls,
+                payload: formControlState
+            });
         });
     }
+}
+
+export function SetTabName(tabData: ICommonState) {
+    return ({
+        type: "SET_TAB",
+        payload: tabData
+    })
 }

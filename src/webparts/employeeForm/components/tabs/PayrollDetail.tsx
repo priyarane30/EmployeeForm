@@ -2,19 +2,22 @@ import * as React from 'react';
 import { Form, Control, Field } from 'react-redux-form';
 import { ICommonState } from '../../state/ICommonState';
 import {IPayrollState} from '../../state/IPayrollState';
+import { connect } from "react-redux";
+import {GetPayrollAction,SetTabName} from '../../actions/PayrollFormControlsValuesAction'
 
 // Represents the connected dispatch
 interface IPayrollConnectedDispatch {
     setTabName: (tabName: ICommonState) => void;
-
-   //save data
-   HraddNewEmployee: (empHrData: IHRState) => void;
+    
+    getDefaultControlsData: () => void;
+  
 
 }
 
  class PayrollDetail extends React.Component <any>{
     constructor(props) {
         super(props);
+        this.props.getDefaultControlsData();
     }
    
     handleSubmit(formValues) {
@@ -53,9 +56,9 @@ interface IPayrollConnectedDispatch {
                         <Control.text model='.ESIDispensary' id='.ESIDispensary' />
                     </div>
                     <div className='col'>
-                    <label>PF Applicable?</label>
+                    {/* <label>PF Applicable?</label>
                         <Control.checkbox model='Payroll.PFApplicable'/>
-                        Yes, Applicable
+                        Yes, Applicable */}
 
                     <label>PF Applicable:</label>
                     <Control.checkbox model='Payroll.PFApplicable' id='Payroll.PFApplicable' />
@@ -95,3 +98,22 @@ interface IPayrollConnectedDispatch {
 
     }
 }
+
+
+const mapStateToProps = function (state) {
+    console.log(state)
+    return state;
+}
+
+// Maps dispatch to props
+const mapDispatchToProps = (dispatch): IPayrollConnectedDispatch => {
+    return {
+        setTabName: SetTabName,
+        //setReqDigest : SetReqDigest,
+        getDefaultControlsData: () => {
+            return dispatch(GetPayrollAction());
+        },
+       
+    };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(PayrollDetail);
