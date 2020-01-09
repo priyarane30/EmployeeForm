@@ -3,7 +3,16 @@ import { Form, Control, Field } from 'react-redux-form';
 import { ICommonState } from '../../state/ICommonState';
 import {IPayrollState} from '../../state/IPayrollState';
 
-export default class PayrollDetail extends React.Component <any>{
+// Represents the connected dispatch
+interface IPayrollConnectedDispatch {
+    setTabName: (tabName: ICommonState) => void;
+
+   //save data
+   HraddNewEmployee: (empHrData: IHRState) => void;
+
+}
+
+ class PayrollDetail extends React.Component <any>{
     constructor(props) {
         super(props);
     }
