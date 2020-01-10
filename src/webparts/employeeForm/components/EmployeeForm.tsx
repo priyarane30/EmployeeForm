@@ -17,11 +17,11 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, {}
       <Provider store={store}>
         <div className={styles.employeeForm}>
           <div className={styles.container}>
-            <Pivot aria-label="Employee Form">
+            <Pivot aria-label="Employee Form"  >
               <PivotItem headerText="Employee Details">
                 <EmployeeDetail />
               </PivotItem>
-              <PivotItem headerText="Education Details">
+              <PivotItem headerText="Education Details">  
                 <EducationDetail />
               </PivotItem>
               <PivotItem headerText="Professional Detail">

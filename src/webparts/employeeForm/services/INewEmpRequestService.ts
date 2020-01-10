@@ -13,7 +13,8 @@ export default interface INewEmpRequestService {
     //Start HR Section
     getHRFormControlState(): Promise<any>;
 
-    HrAddNewEmployee(empReqData: IHRState):Promise<any>;
+    HrAddNewEmployee(empReqData: IHRState): Promise<any>;
+    getHRFormlistControlState(): Promise<any>;
     //End HR Section
 
     /**End HR Section*/

@@ -16,7 +16,6 @@ export default class NewEmployeeService implements INewEmpRequestService {
     };
 
     private getOptionsFromMaster(listName, columnName): Promise<any> {
-        debugger;
         //Get data from Master lists
         var url = AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + listName + "')/items?$select=" + columnName;
         return axios.get(url)
@@ -29,9 +28,10 @@ export default class NewEmployeeService implements INewEmpRequestService {
                 console.log(error)
             });
     }
-    private getDataFromList(listName,userEmail): Promise<any> {
+    private getDataFromList(listName, userEmail): Promise<any> {
         //Get data from Master lists
-        var url =AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + listName + "')/items?$select=*&$filter=CompanyEMail_x0020_ID eq '"+userEmail+"'" ;
+        debugger;
+        var url = AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + listName + "')/items?$select=*&$filter=CompanyEMail_x0020_ID eq '" + userEmail + "'";
         return axios.get(url)
             .then(res => {
                 if (res.data.value != undefined && res.data.value != null) {
@@ -98,22 +98,8 @@ export default class NewEmployeeService implements INewEmpRequestService {
                 // Creates the multiple purchase items in batch.
                 let web = new Web(AppConstats.SITEURL);
                 let batch = web.createBatch();
-
-                // empData.childDetailItems.forEach(child => {
-                //     web.lists.getByTitle("PurchaseRequestItems").items.inBatch(batch).add({
-                //         ProductCode: child.ChildName,
-                //         Quantity: child.DateOfBirth,
-                //         RequestID: mainListID
-                //     });
-                // });
-
-                // batch.execute().then(() => {
-                //     console.log("children details added to the list....");
-                // });
             }
-            // else {
-            //     alert('Select atleast one purchase item.');
-            // }
+
         }).catch(error => {
             console.log("error while adding an employee");
         });
@@ -123,7 +109,6 @@ export default class NewEmployeeService implements INewEmpRequestService {
 
     //Get HR
     getHRFormControlState(): Promise<any> {
-        debugger;
         let hrControlsState = {} as IHRState;
         return this.getOptionsFromMaster(ListNames.REASONFORLEAVING, 'Title').then(statusResp => {
             hrControlsState.reasonOfLeavingOptions = statusResp;
@@ -132,17 +117,16 @@ export default class NewEmployeeService implements INewEmpRequestService {
     }
     //Save HR
     HrAddNewEmployee(empReqData: IHRState): Promise<any> {
-        debugger
         let web = new Web(AppConstats.SITEURL);
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
-            userAlias:empReqData.userAlias,
-            ADLogin:empReqData.ADLogin,
-            Manager: empReqData.Manager,
-            employementStatus: empReqData.employementStatus,
-            DateOfLeaving: empReqData.DateOfLeaving,
-            reasonForLeaving: empReqData.reasonForLeaving,
-            ResigntionDate: empReqData.ResigntionDate,
-            EligibleforRehire: empReqData.EligibleforRehire,
+            //UserAlies: empReqData.UserAlies,
+            ADLogin: empReqData.ADLogin,
+            // Manager: empReqData.Manager,
+            // employementStatus: empReqData.employementStatus,
+            // DateOfLeaving: empReqData.DateOfLeaving,
+            // reasonForLeaving: empReqData.reasonForLeaving,
+            // ResigntionDate: empReqData.ResigntionDate,
+            // EligibleforRehire: empReqData.EligibleforRehire,
         }).then((result: ItemAddResult) => {
             let mainListID = result.data.Id;
             console.log("Employee request created : " + mainListID);
@@ -152,7 +136,28 @@ export default class NewEmployeeService implements INewEmpRequestService {
         });
 
     }
+    //get List Data
+    getHRFormlistControlState(): Promise<any> {
+        debugger
+        let hrlistState = {} as IHRState;
+        return this.getDataFromList(ListNames.EMPLOYEECONTACT, 'hitaxi.kachhadiya@synoverge.com').then(statusResp => {
+            debugger
+            hrlistState = statusResp
+            // hrlistState.UserAlies = statusResp.UserAlies;
+            // hrlistState.ADLogin = statusResp[0].ADLogin;
+            // hrlistState.Manager = statusResp[0].Manager;
+            // hrlistState.employementStatus = statusResp[0].employementStatus;
+            // hrlistState.DateOfLeaving = statusResp[0].DateOfLeaving;
+            // hrlistState.reasonForLeaving = statusResp[0].reasonForLeaving;
+            // hrlistState.ResigntionDate = statusResp[0].ResigntionDate;
+            // hrlistState.EligibleforRehire = statusResp[0].EligibleforRehire;
+            console.log('HR Service:---' + hrlistState + statusResp + hrlistState.ADLogin)
+            return hrlistState;
+        });
+
+    }
     //End HR Section
+
     //Start Professional Detail Section
     getPDFormControlState(): Promise<any> {
         let pdControlsState = {} as IProfessionalDetailState;
@@ -165,10 +170,10 @@ export default class NewEmployeeService implements INewEmpRequestService {
     //End Professional Detail Section
 
     //Get Payroll
-    getPayrollControlState(): Promise<any>{
+    getPayrollControlState(): Promise<any> {
         let payrollControlsState = {} as IPayrollState;
         return this.getDataFromList(ListNames.EMPLOYEECONTACT, 'hirvita.rajyaguru@synoverge.com').then(statusResp => {
-             payrollControlsState = statusResp;
+            payrollControlsState = statusResp;
             return payrollControlsState;
         });
     }
