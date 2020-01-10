@@ -2,9 +2,8 @@ import * as React from 'react';
 import { Form, Control } from 'react-redux-form';
 import { ICommonState } from '../../state/ICommonState';
 import { connect } from "react-redux";
-import { SetTabName, GetInitialControlValuesAction, HrAddNewEmployee ,GetListValuesAction} from "../../actions/HRFormControlsValuesAction";
+import { SetTabName, GetInitialControlValuesAction, HrAddNewEmployee } from "../../actions/HRFormControlsValuesAction";
 import { IHRState } from '../../state/IHRSectionControlsState';
-//import { hrInitialState } from '../../reducers/HRSectionReducer';
 
 // Represents the connected dispatch
 interface IHRConnectedDispatch {
@@ -14,9 +13,8 @@ interface IHRConnectedDispatch {
     getDefaultControlsData: () => void;
 
 
-    getlistDate:()=>void;
    //save data
-   HraddNewEmployee: (empHrData: IHRState) => void;
+   addNewEmployee: (empHrData: IHRState) => void;
 
 
 }
@@ -27,7 +25,6 @@ class HRDetail extends React.Component<any> {
     componentDidMount() {
         console.log("HR Details");
         this.props.getDefaultControlsData();
-        this.props.getlistDate();
     }
     handleSubmit(formValues) {
         console.log(formValues);
@@ -37,7 +34,7 @@ class HRDetail extends React.Component<any> {
         let empHrData = {} as IHRState;
         empHrData = formValues;
         // Call the connected dispatch to create new purchase request
-        this.props.HraddNewEmployee(empHrData);
+        this.props.AddValueFromHR(empHrData);
     }
 
     public render() {
@@ -48,7 +45,7 @@ class HRDetail extends React.Component<any> {
                 <Form model="HR" onSubmit={(val) => this.handleSubmit(val)}>
                     <div className='col'> {/* User Alias*/}
                         <label>User Alias:</label>
-                        <Control.text model='.UserAlies' id='.UserAlies'/>
+                        <Control.text model='HR.UserAlies' id='.UserAlies' disabled/>
                     </div>
                     <div className='col'> {/* Name of employee*/}
                         <label>AD Login Name of Employee:</label>
@@ -110,10 +107,7 @@ const mapDispatchToProps = (dispatch): IHRConnectedDispatch => {
         getDefaultControlsData: () => {
             return dispatch(GetInitialControlValuesAction());
         },
-        getlistDate:()=>{
-            return dispatch(GetListValuesAction());
-        },
-        HraddNewEmployee: (empHrData: IHRState) => {
+        addNewEmployee: (empHrData: IHRState) => {
             return dispatch(HrAddNewEmployee(empHrData));
         }
     };

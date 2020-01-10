@@ -7,7 +7,7 @@ import { AppConstats, ListNames } from '../AppConstants';
 import pnp from "sp-pnp-js";
 import { sp, ItemAddResult, Web } from "sp-pnp-js";
 import { IPayrollState } from '../state/IPayrollState';
-
+import a$ from 'ajax';
 export default class NewEmployeeService implements INewEmpRequestService {
 
 
@@ -31,6 +31,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
     private getDataFromList(listName, userEmail): Promise<any> {
         //Get data from Master lists
         debugger;
+        //var url="http://intranet/_api/web/lists/GetByTitle('" + listName + "')/items?$select=*,ADLogin/Title,Manager/Title&$expand=ADLogin/Id,Manager/Id&$filter=CompanyEMail_x0020_ID eq '" + userEmail + "'";
         var url = AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + listName + "')/items?$select=*&$filter=CompanyEMail_x0020_ID eq '" + userEmail + "'";
         return axios.get(url)
             .then(res => {
@@ -105,26 +106,39 @@ export default class NewEmployeeService implements INewEmpRequestService {
         });
     }
 
-    //Start HR Section
+//Start HR Section
 
-    //Get HR
+    //Get Data for HR  FORM
     getHRFormControlState(): Promise<any> {
         let hrControlsState = {} as IHRState;
         return this.getOptionsFromMaster(ListNames.REASONFORLEAVING, 'Title').then(statusResp => {
             hrControlsState.reasonOfLeavingOptions = statusResp;
-            return hrControlsState;
+
+            return this.getDataFromList(ListNames.EMPLOYEECONTACT, 'hitaxi.kachhadiya@synoverge.com').then(Resp => {
+                debugger
+                hrControlsState.UserAlies = Resp.UserAlies;
+                hrControlsState.UserID = Resp.Id;
+                hrControlsState.ADLogin = Resp.ADLoginId;//'Hitaxi Kachhadiya';//Resp.ADLogin;
+                hrControlsState.Manager = Resp.ManagerId;//'Krishna Soni';//Resp.Manager;
+                hrControlsState.employementStatus = Resp.employementStatus;
+                hrControlsState.DateOfLeaving = Resp.DateOfLeaving;
+                if (Resp.reasonForLeaving == null)
+                    hrControlsState.reasonForLeaving = '--Select--';//Resp.reasonForLeaving;
+                else
+                    hrControlsState.reasonForLeaving = Resp.reasonForLeaving;
+                hrControlsState.ResigntionDate = Resp.ResigntionDate;
+                hrControlsState.EligibleforRehire = Resp.EligibleforRehire;
+
+                return hrControlsState;
+            });
         });
     }
-    //Save HR
+    //Save HR FORM Data
     HrAddNewEmployee(empReqData: IHRState): Promise<any> {
         let web = new Web(AppConstats.SITEURL);
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
-            //UserAlies: empReqData.UserAlies,
-            ADLogin: empReqData.ADLogin,
-            // Manager: empReqData.Manager,
-            // employementStatus: empReqData.employementStatus,
-            // DateOfLeaving: empReqData.DateOfLeaving,
-            // reasonForLeaving: empReqData.reasonForLeaving,
+            DateOfLeaving: empReqData.DateOfLeaving,
+            reasonForLeaving: empReqData.reasonForLeaving,
             // ResigntionDate: empReqData.ResigntionDate,
             // EligibleforRehire: empReqData.EligibleforRehire,
         }).then((result: ItemAddResult) => {
@@ -134,29 +148,33 @@ export default class NewEmployeeService implements INewEmpRequestService {
         }).catch(error => {
             console.log("error while adding an employee");
         });
-
+    //     const user = {
+    //         //employementStatus: empReqData.employementStatus,
+    //         DateOfLeaving: empReqData.DateOfLeaving,
+    //         reasonForLeaving: empReqData.reasonForLeaving,
+    //         ResigntionDate: empReqData.ResigntionDate,
+    //         EligibleforRehire: empReqData.EligibleforRehire,
+    //     };
+    //     let url = AppConstats.SITEURL + "_api/web/lists/GetByTitle('" + ListNames.EMPLOYEECONTACT + "')/items/getbyid('" + empReqData.UserID + "')";
+    //     a$.ajax({  
+    //         url: url,  
+    //         type: "POST",  
+    //         headers: {  
+    //             Accept: "application/json;odata=verbose"  
+    //         },  
+    //         data: JSON.stringify(user),
+    //       //  data: "{__metadata:{'type':'SP.Data.YourlistnameListItem'},"+user+" }",  
+    //     success: function(data) {  
+    //         alert("Item updated successfully");  
+    //     }, eror: function(data) {  
+    //         console.log("An error occurred. Please try again.");  
+    //     }  
+        
+    // });
+    // return ;  
     }
-    //get List Data
-    getHRFormlistControlState(): Promise<any> {
-        debugger
-        let hrlistState = {} as IHRState;
-        return this.getDataFromList(ListNames.EMPLOYEECONTACT, 'hitaxi.kachhadiya@synoverge.com').then(statusResp => {
-            debugger
-            hrlistState = statusResp
-            // hrlistState.UserAlies = statusResp.UserAlies;
-            // hrlistState.ADLogin = statusResp[0].ADLogin;
-            // hrlistState.Manager = statusResp[0].Manager;
-            // hrlistState.employementStatus = statusResp[0].employementStatus;
-            // hrlistState.DateOfLeaving = statusResp[0].DateOfLeaving;
-            // hrlistState.reasonForLeaving = statusResp[0].reasonForLeaving;
-            // hrlistState.ResigntionDate = statusResp[0].ResigntionDate;
-            // hrlistState.EligibleforRehire = statusResp[0].EligibleforRehire;
-            console.log('HR Service:---' + hrlistState + statusResp + hrlistState.ADLogin)
-            return hrlistState;
-        });
 
-    }
-    //End HR Section
+//End HR Section
 
     //Start Professional Detail Section
     getPDFormControlState(): Promise<any> {
