@@ -4,7 +4,7 @@ import { ICommonState } from '../../state/ICommonState';
 import { connect } from "react-redux";
 import { SetTabName, GetInitialControlValuesAction, HrAddNewEmployee ,GetListValuesAction} from "../../actions/HRFormControlsValuesAction";
 import { IHRState } from '../../state/IHRSectionControlsState';
-import { hrInitialState } from '../../reducers/HRSectionReducer';
+//import { hrInitialState } from '../../reducers/HRSectionReducer';
 
 // Represents the connected dispatch
 interface IHRConnectedDispatch {
@@ -48,7 +48,7 @@ class HRDetail extends React.Component<any> {
                 <Form model="HR" onSubmit={(val) => this.handleSubmit(val)}>
                     <div className='col'> {/* User Alias*/}
                         <label>User Alias:</label>
-                        <Control.text model='HR.UserAlias' id='HR.UserAlias'/>
+                        <Control.text model='.UserAlies' id='.UserAlies'/>
                     </div>
                     <div className='col'> {/* Name of employee*/}
                         <label>AD Login Name of Employee:</label>
@@ -80,12 +80,8 @@ class HRDetail extends React.Component<any> {
                             <option>--Select--</option>
 
                             {this.props.HR.reasonOfLeavingOptions.map(reasons => {
-
                                 return <option key={reasons} value={reasons}>{reasons}</option>
                             })}; 
-                            <option>Growth</option>
-                            <option>Better Projects</option>
-                            <option>Better Opportunity</option>
                         </Control.select>
                     </div>
                     <div className='col'> {/* Date of Resignation*/}
@@ -99,9 +95,7 @@ class HRDetail extends React.Component<any> {
                     <button type="submit">Save</button>
                 </Form>
             </div>);
-
     }
-
 }
 const mapStateToProps = function (state) {
     console.log(state)

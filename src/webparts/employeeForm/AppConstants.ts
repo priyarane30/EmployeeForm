@@ -15,6 +15,9 @@ export const ListNames = {
 export const ActionTypes = {
     GetDefaultFormControls: 'GET_DEFAULT_FORM_CONTROLS',
     GetHRFormControls: 'GET_HR_FORM_CONTROLS',
+    GetPdFromControls:'GET_PD_FORM_CONTROLS',
     SetInitialFormState:'SET_INITIAL_FORM_STATE',
-    AddNewEmployee:'ADD_NEW_EMPLOYEE'
+    AddNewEmployee:'ADD_NEW_EMPLOYEE',
+    AddValueFromHR:'ADD_VALUE_FROM_HR'
+
 }

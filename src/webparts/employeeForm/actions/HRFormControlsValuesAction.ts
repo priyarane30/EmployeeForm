@@ -36,7 +36,7 @@ export function HrAddNewEmployee(empReqData: IHRState) {
         });
 
         dispatch({
-            type: "ADD_NEW_EMPLOYEE",
+            type: "ADD_VALUE_FROM_HR",
             payload: empReqData
         });
     }
@@ -46,28 +46,30 @@ export function GetListValuesAction() {
     return dispatch => {
 
         let formControlState = {
-            UserAlias: '',
-            ADLogin: '',
-            Manager: '',
-            employementStatus: '',
-            DateOfLeaving: '', //dateTime?
-            reasonForLeaving: '',
-            ResigntionDate: '', //datetime?
-            EligibleforRehire: false,
+            // UserAlies: '',
+            // ADLogin: '',
+            // Manager: '',
+            // employementStatus: '',
+            // DateOfLeaving: '', //dateTime?
+            // reasonForLeaving: '',
+            // ResigntionDate: '', //datetime?
+            // EligibleforRehire: false,
         } as IHRState;
 
         let newEmpServiceObj: NewEmpService = new NewEmpService();
         debugger
         newEmpServiceObj.getHRFormlistControlState().then((resp: IHRState) => {
             debugger
-            formControlState.UserAlias = resp.UserAlias;
-            formControlState.ADLogin = resp.ADLogin;
-            formControlState.Manager = resp.Manager;
-            formControlState.employementStatus = resp.employementStatus;
-            formControlState.DateOfLeaving = resp.DateOfLeaving;
-            formControlState.reasonForLeaving = resp.reasonForLeaving;
-            formControlState.ResigntionDate = resp.ResigntionDate;
-            formControlState.EligibleforRehire = resp.EligibleforRehire;
+            formControlState=resp
+            formControlState.UserAlies = resp.UserAlies;
+            formControlState.ADLogin = 'Hitaxi';//resp.ADLogin;
+            formControlState.Manager = '';//resp.Manager;
+            formControlState.employementStatus = '';//resp.employementStatus;
+            formControlState.DateOfLeaving = '';//resp.DateOfLeaving;
+            formControlState.reasonForLeaving = '';//resp.reasonForLeaving;
+            formControlState.ResigntionDate = '';//resp.ResigntionDate;
+            formControlState.EligibleforRehire = true;
+             console.log('Action:--' + formControlState.UserAlies +formControlState)
             dispatch({
                 type: ActionTypes.SetInitialFormState,
                 payload: formControlState
