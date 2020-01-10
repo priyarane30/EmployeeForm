@@ -35,7 +35,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
         return axios.get(url)
             .then(res => {
                 if (res.data.value != undefined && res.data.value != null) {
-                    return res.data.value;
+                    return res.data.value[0];
                 }
             }).catch(error => {
                 console.log('error while getOptionsFromMaster');

@@ -16,7 +16,7 @@ export function GetPayrollAction(){
         newEmpServiceObj.getPayrollControlState().then((resp: IPayrollState) => {
             formControlState = resp;
             dispatch({
-                type: ActionTypes.GetDefaultFormControls,
+                type: ActionTypes.GetPayrollFormControls,
                 payload: formControlState
             });
         });

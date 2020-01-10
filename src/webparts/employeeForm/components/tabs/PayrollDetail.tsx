@@ -9,7 +9,7 @@ import {GetPayrollAction,SetTabName} from '../../actions/PayrollFormControlsValu
 interface IPayrollConnectedDispatch {
     setTabName: (tabName: ICommonState) => void;
     
-    getDefaultControlsData: () => void;
+    getPayrollFormControls: () => void;
   
 
 }
@@ -17,7 +17,7 @@ interface IPayrollConnectedDispatch {
  class PayrollDetail extends React.Component <any>{
     constructor(props) {
         super(props);
-        this.props.getDefaultControlsData();
+        this.props.getPayrollFormControls();
     }
    
     handleSubmit(formValues) {
@@ -110,7 +110,7 @@ const mapDispatchToProps = (dispatch): IPayrollConnectedDispatch => {
     return {
         setTabName: SetTabName,
         //setReqDigest : SetReqDigest,
-        getDefaultControlsData: () => {
+        getPayrollFormControls: () => {
             return dispatch(GetPayrollAction());
         },
        
