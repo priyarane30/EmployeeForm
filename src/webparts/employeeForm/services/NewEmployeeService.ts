@@ -7,7 +7,7 @@ import { AppConstats, ListNames } from '../AppConstants';
 import pnp from "sp-pnp-js";
 import { sp, ItemAddResult, Web } from "sp-pnp-js";
 import { IPayrollState } from '../state/IPayrollState';
-import jquery from 'jquery'
+
 export default class NewEmployeeService implements INewEmpRequestService {
 
 
@@ -30,7 +30,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
     }
     private getDataFromList(listName, userEmail): Promise<any> {
         //Get data from Master lists
-        debugger;
+    //debugger;
         //var url="http://intranet/_api/web/lists/GetByTitle('" + listName + "')/items?$select=*,ADLogin/Title,Manager/Title&$expand=ADLogin/Id,Manager/Id&$filter=CompanyEMail_x0020_ID eq '" + userEmail + "'";
         var url = AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + listName + "')/items?$select=*&$filter=CompanyEMail_x0020_ID eq '" + userEmail + "'";
         return axios.get(url)
@@ -115,7 +115,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
             hrControlsState.reasonOfLeavingOptions = statusResp;
 
             return this.getDataFromList(ListNames.EMPLOYEECONTACT, 'hitaxi.kachhadiya@synoverge.com').then(Resp => {
-                debugger
+               //debugger
                 hrControlsState.UserAlies = Resp.UserAlies;
                 hrControlsState.UserID = Resp.Id;
                 hrControlsState.ADLogin = Resp.ADLoginId;//'Hitaxi Kachhadiya';//Resp.ADLogin;
@@ -136,8 +136,8 @@ export default class NewEmployeeService implements INewEmpRequestService {
     //Save HR FORM Data
     HrAddNewEmployee(empReqData: IHRState): Promise<any> {
         let web = new Web(AppConstats.SITEURL);
-        return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empReqData.UserID).update({
-        // return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
+      //  return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empReqData.UserID).update({
+         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
             DateOfLeaving: empReqData.DateOfLeaving,
             //reasonForLeaving: empReqData.reasonForLeaving,
             ResigntionDate: empReqData.ResigntionDate,
@@ -169,14 +169,26 @@ export default class NewEmployeeService implements INewEmpRequestService {
     getPayrollControlState(): Promise<any> {
         let payrollControlsState = {} as IPayrollState;
         return this.getDataFromList(ListNames.EMPLOYEECONTACT, 'hirvita.rajyaguru@synoverge.com').then(statusResp => {
-            payrollControlsState = statusResp;
+            //payrollControlsState = statusResp;
+            payrollControlsState.UserID = statusResp.UserID;
+            payrollControlsState.ESINo = statusResp.ESINo;
+            payrollControlsState.ESIDispensary = statusResp.ESIDispensary;
+            payrollControlsState.PFNo = statusResp.PFNo;
+            payrollControlsState.PFNoforDeptFile = statusResp.PFNoforDeptFile;
+            payrollControlsState.RestrictPF = statusResp.RestrictPF;
+            payrollControlsState.ZeroPension = statusResp.ZeroPension;
+            payrollControlsState.ZeroPT = statusResp.ZeroPT;
+            payrollControlsState.Ward_x002f_Circle = statusResp.Ward_x002f_Circle;
+            payrollControlsState.Director = statusResp.Director;
+
             return payrollControlsState;
         });
     }
     
-        //Save HR
+        //Save Payroll
         PayrollAddEmployee(empReqData: IPayrollState): Promise<any> {
             let web = new Web(AppConstats.SITEURL);
+           // return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empReqData.UserID).update({
             return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
                 //ESIApplicable:empReqData.ESIApplicable,
                 ESINo: empReqData.ESINo,

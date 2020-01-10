@@ -3,6 +3,8 @@ import { Form, Control, Field } from 'react-redux-form';
 import { ICommonState } from '../../state/ICommonState';
 import {IPayrollState} from '../../state/IPayrollState';
 import { connect } from "react-redux";
+import NewEmpService from '../../services/NewEmployeeService';
+import NewEmployeeService from '../../services/NewEmployeeService';
 import {GetPayrollAction,SetTabName,PayrollAddEmployee} from '../../actions/PayrollFormControlsValuesAction'
 
 // Represents the connected dispatch
@@ -15,12 +17,20 @@ interface IPayrollConnectedDispatch {
    PayrollAddEmployee: (empPayrollData: IPayrollState) => void;
 }
 
- class PayrollDetail extends React.Component <any>{
+interface IState {
+    isVisible:boolean;
+  }
+ class PayrollDetail extends React.Component <any,IState>{
     constructor(props) {
         super(props);
-        this.props.getPayrollFormControls();
+        this.state = { isVisible: true };
     }
    
+    componentDidMount(){
+        console.log("componentDidMount");
+        this.props.getPayrollFormControls();
+    }
+
     handleSubmit(formValues) {
         // Do anything you want with the form value
         console.log(formValues);
@@ -35,10 +45,24 @@ interface IPayrollConnectedDispatch {
         let empPayrollData = {} as IPayrollState;
         empPayrollData = formValues;
         // Call the connected dispatch to create new purchase request
-        this.props.PayrollAddEmployee(empPayrollData);
+        //this.props.PayrollAddEmployee(empPayrollData);
+
+        let newEmpReqServiceObj: NewEmployeeService = new NewEmpService();
+        newEmpReqServiceObj.PayrollAddEmployee(empPayrollData).then(resp => {
+            console.log(resp);
+           this.setState({isVisible:true})
+            alert("New Employee is added successfully");
+        }).catch(() => {
+            alert("Sorry. Error while adding employee...");
+        });
+        this.setState({isVisible:false})
+        
     }
 
+
+
     public render() {
+        console.log(this.state.isVisible)
         return (
             <div>
                 <Form model="Payroll" onSubmit={(val) => this.handleSubmit(val)} >
@@ -92,7 +116,7 @@ interface IPayrollConnectedDispatch {
                     <label>Director:</label>
                         <Control.text model='.Director' id='.Director' />
                     </div>
-                    <button type="submit">Submit</button>
+                    <button disabled={!this.state.isVisible} type="submit">Submit</button>
                 </Form>
             </div>);
 
