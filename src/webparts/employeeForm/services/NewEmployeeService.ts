@@ -185,12 +185,6 @@ export default class NewEmployeeService implements INewEmpRequestService {
                 //UserAlies: empReqData.UserAlies,
                 ESINo: empReqData.ESINo,
                 ESIDispensary : empReqData.ESIDispensary
-                // Manager: empReqData.Manager,
-                // employementStatus: empReqData.employementStatus,
-                // DateOfLeaving: empReqData.DateOfLeaving,
-                // reasonForLeaving: empReqData.reasonForLeaving,
-                // ResigntionDate: empReqData.ResigntionDate,
-                // EligibleforRehire: empReqData.EligibleforRehire,
             }).then((result: ItemAddResult) => {
                 let mainListID = result.data.Id;
                 console.log("Employee request created : " + mainListID);
@@ -198,7 +192,5 @@ export default class NewEmployeeService implements INewEmpRequestService {
             }).catch(error => {
                 console.log("error while adding an employee");
             });
-    
         }
-
 }

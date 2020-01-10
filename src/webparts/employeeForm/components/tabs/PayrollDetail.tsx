@@ -12,7 +12,7 @@ interface IPayrollConnectedDispatch {
     getPayrollFormControls: () => void;
   
    //save data
-   PayrollAddEmployee: (empHrData: IPayrollState) => void;
+   PayrollAddEmployee: (empPayrollData: IPayrollState) => void;
 }
 
  class PayrollDetail extends React.Component <any>{
@@ -32,11 +32,10 @@ interface IPayrollConnectedDispatch {
         const CommonState: ICommonState = { CurrentForm: "Payroll" };
         this.props.setTabName(CommonState);
 
-        //     // Do whatever you like in here.
-        //     // If you connect the UserForm to the Redux store,
-        //     // you can dispatch actions such as:
-        //     // dispatch(actions.submit('user', somePromise));
-        //     // etc.
+        let empPayrollData = {} as IPayrollState;
+        empPayrollData = formValues;
+        // Call the connected dispatch to create new purchase request
+        this.props.PayrollAddEmployee(empPayrollData);
     }
 
     public render() {
