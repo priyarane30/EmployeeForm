@@ -2,6 +2,7 @@ import * as React from 'react';
 import styles from './EmployeeForm.module.scss';
 import { IEmployeeFormProps } from './IEmployeeFormProps';
 import { Pivot, PivotItem, PivotLinkSize } from 'office-ui-fabric-react/lib/Pivot';
+import BasicDetail from '../components/tabs/BasicDetail';
 import EmployeeDetail from '../components/tabs/EmployeeDetail';
 import EducationDetail from '../components/tabs/EducationDetail';
 import ProfessionalDetail from '../components/tabs/ProfessionalDetail';
@@ -11,12 +12,17 @@ import { Provider } from 'react-redux';
 import { store } from "../store/ConfigureStore";
 
 export default class EmployeeForm extends React.Component<IEmployeeFormProps, {}> {
+
+
   public render(): React.ReactElement<IEmployeeFormProps> {
 
     return (
       <Provider store={store}>
         <div className={styles.employeeForm}>
           <div className={styles.container}>
+            <div>
+              <BasicDetail empEmail={this.props.userEmail} />
+            </div>
             <Pivot aria-label="Employee Form">
               <PivotItem headerText="Employee Details">
                 <EmployeeDetail />

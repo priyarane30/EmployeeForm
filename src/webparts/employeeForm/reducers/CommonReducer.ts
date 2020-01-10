@@ -1,18 +1,27 @@
-import { ICommonState } from '../state/ICommonState';
+import { ICommonState, IEmpListIdState } from '../state/ICommonState';
+import { ActionTypes } from '../AppConstants';
 
-export const commonStateInitialState: ICommonState = {
-    CurrentForm: ""
+export const EmpListIdReducer = (state: IEmpListIdState = null, action) => {
+    switch (action.type) {
+        case ActionTypes.GetEmpID:
+            state = {
+                ...state,
+                EmpListID: action.payload.EmpListID
+            }
+    }
+    return state;
 }
 
-export const CommonReducer = (state: ICommonState = commonStateInitialState, action) => {
+export const CommonReducer = (state: ICommonState = null, action) => {
     switch (action.type) {
-        case "SET_TAB":
+        case ActionTypes.SetTabName:
             state = {
                 ...state,
                 CurrentForm: action.payload.CurrentForm
             };
             break;
     }
-    
     return state;
 }
+
+

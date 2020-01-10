@@ -1,3 +1,8 @@
 export interface ICommonState {
-    CurrentForm : string;
+    CurrentForm: string;
+
+}
+
+export interface IEmpListIdState {
+    EmpListID: number;
 }

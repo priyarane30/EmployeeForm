@@ -7,6 +7,7 @@ import { AppConstats, ListNames } from '../AppConstants';
 import pnp from "sp-pnp-js";
 import { sp, ItemAddResult, Web } from "sp-pnp-js";
 import { IPayrollState } from '../state/IPayrollState';
+import { IBasicDetailState } from '../state/IBasicDetailState';
 
 export default class NewEmployeeService implements INewEmpRequestService {
 
@@ -16,7 +17,6 @@ export default class NewEmployeeService implements INewEmpRequestService {
     };
 
     private getOptionsFromMaster(listName, columnName): Promise<any> {
-        debugger;
         //Get data from Master lists
         var url = AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + listName + "')/items?$select=" + columnName;
         return axios.get(url)
@@ -29,9 +29,9 @@ export default class NewEmployeeService implements INewEmpRequestService {
                 console.log(error)
             });
     }
-    private getDataFromList(listName,userEmail): Promise<any> {
+    private getDataFromList(listName, userEmail): Promise<any> {
         //Get data from Master lists
-        var url =AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + listName + "')/items?$select=*&$filter=CompanyEMail_x0020_ID eq '"+userEmail+"'" ;
+        var url = AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + listName + "')/items?$select=*&$filter=CompanyEMail_x0020_ID eq '" + userEmail + "'";
         return axios.get(url)
             .then(res => {
                 if (res.data.value != undefined && res.data.value != null) {
@@ -55,6 +55,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                 console.log(error);
             });
     }
+
 
     // Gets the choices to be displayed in the dropdown fields.
     getNewFormControlState(): Promise<any> {
@@ -123,7 +124,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
 
     //Get HR
     getHRFormControlState(): Promise<any> {
-        debugger;
+        ;
         let hrControlsState = {} as IHRState;
         return this.getOptionsFromMaster(ListNames.REASONFORLEAVING, 'Title').then(statusResp => {
             hrControlsState.reasonOfLeavingOptions = statusResp;
@@ -132,11 +133,11 @@ export default class NewEmployeeService implements INewEmpRequestService {
     }
     //Save HR
     HrAddNewEmployee(empReqData: IHRState): Promise<any> {
-        debugger
+
         let web = new Web(AppConstats.SITEURL);
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
-            userAlias:empReqData.userAlias,
-            ADLogin:empReqData.ADLogin,
+            userAlias: empReqData.userAlias,
+            ADLogin: empReqData.ADLogin,
             Manager: empReqData.Manager,
             employementStatus: empReqData.employementStatus,
             DateOfLeaving: empReqData.DateOfLeaving,
@@ -165,10 +166,10 @@ export default class NewEmployeeService implements INewEmpRequestService {
     //End Professional Detail Section
 
     //Get Payroll
-    getPayrollControlState(): Promise<any>{
+    getPayrollControlState(): Promise<any> {
         let payrollControlsState = {} as IPayrollState;
         return this.getDataFromList(ListNames.EMPLOYEECONTACT, 'hirvita.rajyaguru@synoverge.com').then(statusResp => {
-             payrollControlsState = statusResp;
+            payrollControlsState = statusResp;
             return payrollControlsState;
         });
     }

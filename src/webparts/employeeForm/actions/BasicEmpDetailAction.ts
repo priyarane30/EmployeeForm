@@ -1,27 +1,49 @@
 import { IBasicDetailState } from '../state/IBasicDetailState';
-import NewEmpService from '../services/NewEmployeeService';
+import BasicFormService from '../services/BasicFormService';
+import UtilityService from '../services/UtilityService';
 import { ActionTypes } from '../AppConstants';
-export function GetAllFormFields() {
+import { ICommonState, IEmpListIdState } from '../state/ICommonState';
+export function GetEmpBasicData() {
     return dispatch => {
 
-        let formControlState = {
-            // genderOptions: [],
-            // designationOptions: [],
-            // maritalStatusOptions: [],
-            // technologyOptions: []
-        } as IBasicDetailState;
+        let basicFormState = {} as IBasicDetailState;
+        let newBasicFormServiceObj: BasicFormService = new BasicFormService();
 
-        let newEmpServiceObj: NewEmpService = new NewEmpService();
+        newBasicFormServiceObj.GetEmpBasicData().then((resp: IBasicDetailState) => {
+            debugger
+            basicFormState = resp;
+            // basicFormState.technologyOptions = resp.technologyOptions;
 
-        newEmpServiceObj.getNewFormControlState().then((resp: IBasicDetailState) => {
-            // formControlState.genderOptions = resp.genderOptions;
-            // formControlState.designationOptions = resp.designationOptions;
-            // formControlState.maritalStatusOptions = resp.maritalStatusOptions;
-            // formControlState.technologyOptions = resp.technologyOptions;
             dispatch({
-                type: ActionTypes.GetDefaultFormControls,
-                payload: formControlState
+                type: ActionTypes.GetBasicFormControls,
+                payload: basicFormState
             });
         });
+    }
+}
+
+export function SetTabName(tabData) {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.SetTabName,
+            payload: tabData
+        });
+    }
+}
+
+export function GetEmpListIdUsingUserEmail(currUserEmail) {
+    return dispatch => {
+        let newEmpServiceObj: UtilityService = new UtilityService();
+        let empIdState = { EmpListID: 0 } as IEmpListIdState;
+        newEmpServiceObj.GetEmpIdByUserEmail(currUserEmail).then((resp) => {
+            if (resp != null && resp != undefined && resp != 0) {
+                empIdState.EmpListID = resp;
+            }
+            dispatch({
+                type: ActionTypes.GetEmpID,
+                payload: empIdState
+            });
+        });
+
     }
 }
