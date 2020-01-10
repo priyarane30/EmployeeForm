@@ -182,9 +182,16 @@ export default class NewEmployeeService implements INewEmpRequestService {
         PayrollAddEmployee(empReqData: IPayrollState): Promise<any> {
             let web = new Web(AppConstats.SITEURL);
             return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
-                //UserAlies: empReqData.UserAlies,
+                //ESIApplicable:empReqData.ESIApplicable,
                 ESINo: empReqData.ESINo,
-                ESIDispensary : empReqData.ESIDispensary
+                ESIDispensary : empReqData.ESIDispensary,
+                PFNo:empReqData.PFNo,
+                PFNoforDeptFile: empReqData.PFNoforDeptFile,
+                RestrictPF:empReqData.RestrictPF,
+                ZeroPension: empReqData.ZeroPension,
+                ZeroPT: empReqData.ZeroPT,
+                Ward_x002f_Circle: empReqData.Ward_x002f_Circle,
+                Director: empReqData.Director
             }).then((result: ItemAddResult) => {
                 let mainListID = result.data.Id;
                 console.log("Employee request created : " + mainListID);
