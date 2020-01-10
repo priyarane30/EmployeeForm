@@ -4,7 +4,7 @@ import { IEmployeeFormProps } from './IEmployeeFormProps';
 import { Pivot, PivotItem, PivotLinkSize } from 'office-ui-fabric-react/lib/Pivot';
 import BasicDetail from '../components/tabs/BasicDetail';
 import EmployeeDetail from '../components/tabs/EmployeeDetail';
-import EducationDetail from '../components/tabs/EducationDetail';
+import EducationDetail from './tabs/EducationDetail/EducationDetail';
 import ProfessionalDetail from '../components/tabs/ProfessionalDetail';
 import HRDetail from '../components/tabs/HRDetail';
 import PayrollDetail from '../components/tabs/PayrollDetail';

@@ -1,6 +1,6 @@
 export interface IPayrollState {
     //form controls
-
+    UserID:number;
     ESIApplicable: boolean;
     ESINo: string;
     ESIDispensary: string;
@@ -12,5 +12,6 @@ export interface IPayrollState {
     ZeroPT: string;
     Ward_x002f_Circle: string;
     Director: string;
+    SavingData : boolean;
 
 }

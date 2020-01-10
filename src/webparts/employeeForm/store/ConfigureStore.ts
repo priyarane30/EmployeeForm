@@ -37,9 +37,9 @@ export const store = createStore(
             Basic: BasicDetailSectionReducer,
             Employee: NewEmpRequestReducer,
             HR: HRSectionReducer,
-            Education: EducationSectionReducer,
-            ProfessionalDetail: ProfessionalDetailSectionReducer,
-            PayrollDetail: PayRollSectionReducer
+            Education : EducationSectionReducer,
+            ProfessionalDetail:ProfessionalDetailSectionReducer,
+            Payroll:PayRollSectionReducer
         })
     }),
     applyMiddleware(thunk)

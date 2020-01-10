@@ -12,8 +12,10 @@ interface IHRConnectedDispatch {
     // Gets the options for dropdown fields
     getDefaultControlsData: () => void;
 
-    //save data
-    HraddNewEmployee: (empHrData: IHRState) => void;
+
+   //save data
+   AddValueFromHR: (empHrData: IHRState) => void;
+
 
 }
 class HRDetail extends React.Component<any> {
@@ -32,7 +34,7 @@ class HRDetail extends React.Component<any> {
         let empHrData = {} as IHRState;
         empHrData = formValues;
         // Call the connected dispatch to create new purchase request
-        this.props.HraddNewEmployee(empHrData);
+        this.props.AddValueFromHR(empHrData);
     }
 
     public render() {
@@ -43,7 +45,7 @@ class HRDetail extends React.Component<any> {
                 <Form model="HR" onSubmit={(val) => this.handleSubmit(val)}>
                     <div className='col'> {/* User Alias*/}
                         <label>User Alias:</label>
-                        <Control.text model='HR.userAlias' id='HR.userAlias' />
+                        <Control.text model='HR.UserAlies' id='.UserAlies' disabled/>
                     </div>
                     <div className='col'> {/* Name of employee*/}
                         <label>AD Login Name of Employee:</label>
@@ -75,12 +77,8 @@ class HRDetail extends React.Component<any> {
                             <option>--Select--</option>
 
                             {this.props.HR.reasonOfLeavingOptions.map(reasons => {
-
                                 return <option key={reasons} value={reasons}>{reasons}</option>
-                            })};
-                            {/* <option>Growth</option>
-                            <option>Better Projects</option>
-                            <option>Better Opportunity</option> */}
+                            })}; 
                         </Control.select>
                     </div>
                     <div className='col'> {/* Date of Resignation*/}
@@ -94,9 +92,7 @@ class HRDetail extends React.Component<any> {
                     <button type="submit">Save</button>
                 </Form>
             </div>);
-
     }
-
 }
 const mapStateToProps = function (state) {
     console.log(state)
@@ -111,7 +107,7 @@ const mapDispatchToProps = (dispatch): IHRConnectedDispatch => {
         getDefaultControlsData: () => {
             return dispatch(GetInitialControlValuesAction());
         },
-        HraddNewEmployee: (empHrData: IHRState) => {
+        AddValueFromHR: (empHrData: IHRState) => {
             return dispatch(HrAddNewEmployee(empHrData));
         }
     };
