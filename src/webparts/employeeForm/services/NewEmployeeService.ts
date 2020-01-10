@@ -7,7 +7,7 @@ import { AppConstats, ListNames } from '../AppConstants';
 import pnp from "sp-pnp-js";
 import { sp, ItemAddResult, Web } from "sp-pnp-js";
 import { IPayrollState } from '../state/IPayrollState';
-import a$ from 'ajax';
+import jquery from 'jquery'
 export default class NewEmployeeService implements INewEmpRequestService {
 
 
@@ -106,7 +106,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
         });
     }
 
-//Start HR Section
+    //Start HR Section
 
     //Get Data for HR  FORM
     getHRFormControlState(): Promise<any> {
@@ -136,11 +136,12 @@ export default class NewEmployeeService implements INewEmpRequestService {
     //Save HR FORM Data
     HrAddNewEmployee(empReqData: IHRState): Promise<any> {
         let web = new Web(AppConstats.SITEURL);
-        return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
+        return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empReqData.UserID).update({
+        // return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
             DateOfLeaving: empReqData.DateOfLeaving,
-            reasonForLeaving: empReqData.reasonForLeaving,
-            // ResigntionDate: empReqData.ResigntionDate,
-            // EligibleforRehire: empReqData.EligibleforRehire,
+            //reasonForLeaving: empReqData.reasonForLeaving,
+            ResigntionDate: empReqData.ResigntionDate,
+            EligibleforRehire: empReqData.EligibleforRehire,
         }).then((result: ItemAddResult) => {
             let mainListID = result.data.Id;
             console.log("Employee request created : " + mainListID);
@@ -148,33 +149,10 @@ export default class NewEmployeeService implements INewEmpRequestService {
         }).catch(error => {
             console.log("error while adding an employee");
         });
-    //     const user = {
-    //         //employementStatus: empReqData.employementStatus,
-    //         DateOfLeaving: empReqData.DateOfLeaving,
-    //         reasonForLeaving: empReqData.reasonForLeaving,
-    //         ResigntionDate: empReqData.ResigntionDate,
-    //         EligibleforRehire: empReqData.EligibleforRehire,
-    //     };
-    //     let url = AppConstats.SITEURL + "_api/web/lists/GetByTitle('" + ListNames.EMPLOYEECONTACT + "')/items/getbyid('" + empReqData.UserID + "')";
-    //     a$.ajax({  
-    //         url: url,  
-    //         type: "POST",  
-    //         headers: {  
-    //             Accept: "application/json;odata=verbose"  
-    //         },  
-    //         data: JSON.stringify(user),
-    //       //  data: "{__metadata:{'type':'SP.Data.YourlistnameListItem'},"+user+" }",  
-    //     success: function(data) {  
-    //         alert("Item updated successfully");  
-    //     }, eror: function(data) {  
-    //         console.log("An error occurred. Please try again.");  
-    //     }  
-        
-    // });
-    // return ;  
+       
     }
 
-//End HR Section
+    //End HR Section
 
     //Start Professional Detail Section
     getPDFormControlState(): Promise<any> {
@@ -195,20 +173,20 @@ export default class NewEmployeeService implements INewEmpRequestService {
             return payrollControlsState;
         });
     }
-    
-        //Save HR
-        PayrollAddEmployee(empReqData: IPayrollState): Promise<any> {
-            let web = new Web(AppConstats.SITEURL);
-            return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
-                //UserAlies: empReqData.UserAlies,
-                ESINo: empReqData.ESINo,
-                ESIDispensary : empReqData.ESIDispensary
-            }).then((result: ItemAddResult) => {
-                let mainListID = result.data.Id;
-                console.log("Employee request created : " + mainListID);
-    
-            }).catch(error => {
-                console.log("error while adding an employee");
-            });
-        }
+
+    //Save Payroll
+    PayrollAddEmployee(empReqData: IPayrollState): Promise<any> {
+        let web = new Web(AppConstats.SITEURL);
+        return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
+            //UserAlies: empReqData.UserAlies,
+            ESINo: empReqData.ESINo,
+            ESIDispensary: empReqData.ESIDispensary
+        }).then((result: ItemAddResult) => {
+            let mainListID = result.data.Id;
+            console.log("Employee request created : " + mainListID);
+
+        }).catch(error => {
+            console.log("error while adding an employee");
+        });
+    }
 }

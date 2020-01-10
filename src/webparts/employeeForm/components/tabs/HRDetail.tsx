@@ -14,7 +14,7 @@ interface IHRConnectedDispatch {
 
 
    //save data
-   addNewEmployee: (empHrData: IHRState) => void;
+   AddValueFromHR: (empHrData: IHRState) => void;
 
 
 }
@@ -107,7 +107,7 @@ const mapDispatchToProps = (dispatch): IHRConnectedDispatch => {
         getDefaultControlsData: () => {
             return dispatch(GetInitialControlValuesAction());
         },
-        addNewEmployee: (empHrData: IHRState) => {
+        AddValueFromHR: (empHrData: IHRState) => {
             return dispatch(HrAddNewEmployee(empHrData));
         }
     };
