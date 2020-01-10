@@ -1,6 +1,7 @@
 import INewEmpRequestService from './INewEmpRequestService';
 import { INewFormState } from "../state/INewFormControlsState";
 import { IHRState } from "../state/IHRSectionControlsState";
+import { IEducationDetailState } from "../state/IEducationDetailState";
 import { IProfessionalDetailState } from "../state/IProfessionalDetailControlState";
 import axios from 'axios';
 import { AppConstats, ListNames } from '../AppConstants';
@@ -27,9 +28,9 @@ export default class NewEmployeeService implements INewEmpRequestService {
                 console.log(error)
             });
     }
-    private getDataFromList(listName,userEmail): Promise<any> {
+     getDataFromList(listName,userEmail): Promise<any> {
         //Get data from Master lists
-        var url =AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + listName + "')/items?$select=*&$filter=CompanyEMail_x0020_ID eq '"+userEmail+"'" ;
+        var url =AppConstats.SITEURL + "_api/web/lists/GetByTitle('" + listName + "')/items?$select=*&$filter=CompanyEMail_x0020_ID eq '"+userEmail+"'" ;
         return axios.get(url)
             .then(res => {
                 if (res.data.value != undefined && res.data.value != null) {
@@ -40,6 +41,9 @@ export default class NewEmployeeService implements INewEmpRequestService {
                 console.log(error)
             });
     }
+   
+
+    
 
     private getOptionsFromChoiceField(listName, columnName): Promise<any> {
         // return pnp.sp.web.fields.getByTitle("Gender").select("Choices").get().then(response => {
@@ -150,6 +154,56 @@ export default class NewEmployeeService implements INewEmpRequestService {
 
     }
     //End HR Section
+    //Start EducationDetail Section
+    getEduDataFromList(listName,userEmail): Promise<any> {
+        //Get data from Master lists
+        debugger;
+        var url =AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + listName + "')/items?$select=*&$filter=empTableID/CompanyEMail_x0020_ID eq '"+userEmail+"'" ;
+        return axios.get(url)
+            .then(res => {
+                if (res.data.value != undefined && res.data.value != null) {
+                    return res.data.value;
+                }
+            }).catch(error => {
+                console.log('error while getOptionsFromMaster');
+                console.log(error)
+            });
+    }
+
+    saveEduDataInList(educationData: IEducationDetailState,userEmail): Promise<any> {
+       debugger;
+      
+       let web = new Web(AppConstats.SITEURL);
+       let batch= web.createBatch()
+        return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.select("ID","CompanyEMail_x0020_ID").getAll().then((items: any[])=>{
+            //gets the main list id for acessing child list
+            let mainListID = items.filter(element=>(element.CompanyEMail_x0020_ID==userEmail))[0].ID
+           
+           
+                var url =AppConstats.SITEURL + "_api/web/lists/GetByTitle('" + ListNames.EducationDetail + "')/items?$select=ID&$filter=empTableID/ID eq " +mainListID ;
+                return axios.get(url)
+                    .then(res => {
+                        if (res.data.value != undefined && res.data.value != null) {
+                            let idData=  res.data.value;
+                            idData.forEach(e => {e["ID"]
+                                
+                            });
+                        }
+                    }).catch(error => {
+                        console.log('error while getOptionsFromMaster');
+                        console.log(error)
+                    });
+                
+               
+            })
+            
+    }
+    saveEducationDetails(mainListID){}
+    saveCertificationDetails(mainListID){}
+
+
+
+    //End EducationDetail Section
     //Start Professional Detail Section
     getPDFormControlState(): Promise<any> {
         let pdControlsState = {} as IProfessionalDetailState;
