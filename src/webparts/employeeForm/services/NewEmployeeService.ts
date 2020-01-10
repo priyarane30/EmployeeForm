@@ -177,4 +177,28 @@ export default class NewEmployeeService implements INewEmpRequestService {
             return payrollControlsState;
         });
     }
+    
+        //Save HR
+        PayrollAddEmployee(empReqData: IPayrollState): Promise<any> {
+            let web = new Web(AppConstats.SITEURL);
+            return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
+                //UserAlies: empReqData.UserAlies,
+                ESINo: empReqData.ESINo,
+                ESIDispensary : empReqData.ESIDispensary
+                // Manager: empReqData.Manager,
+                // employementStatus: empReqData.employementStatus,
+                // DateOfLeaving: empReqData.DateOfLeaving,
+                // reasonForLeaving: empReqData.reasonForLeaving,
+                // ResigntionDate: empReqData.ResigntionDate,
+                // EligibleforRehire: empReqData.EligibleforRehire,
+            }).then((result: ItemAddResult) => {
+                let mainListID = result.data.Id;
+                console.log("Employee request created : " + mainListID);
+    
+            }).catch(error => {
+                console.log("error while adding an employee");
+            });
+    
+        }
+
 }

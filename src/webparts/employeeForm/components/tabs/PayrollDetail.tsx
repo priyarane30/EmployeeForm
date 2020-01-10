@@ -3,7 +3,7 @@ import { Form, Control, Field } from 'react-redux-form';
 import { ICommonState } from '../../state/ICommonState';
 import {IPayrollState} from '../../state/IPayrollState';
 import { connect } from "react-redux";
-import {GetPayrollAction,SetTabName} from '../../actions/PayrollFormControlsValuesAction'
+import {GetPayrollAction,SetTabName,PayrollAddEmployee} from '../../actions/PayrollFormControlsValuesAction'
 
 // Represents the connected dispatch
 interface IPayrollConnectedDispatch {
@@ -11,7 +11,8 @@ interface IPayrollConnectedDispatch {
     
     getPayrollFormControls: () => void;
   
-
+   //save data
+   PayrollAddEmployee: (empHrData: IPayrollState) => void;
 }
 
  class PayrollDetail extends React.Component <any>{
@@ -113,7 +114,9 @@ const mapDispatchToProps = (dispatch): IPayrollConnectedDispatch => {
         getPayrollFormControls: () => {
             return dispatch(GetPayrollAction());
         },
-       
+        PayrollAddEmployee: (empHrData: IPayrollState) => {
+            return dispatch(PayrollAddEmployee(empHrData));
+        }
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(PayrollDetail);

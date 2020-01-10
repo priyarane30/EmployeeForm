@@ -19,7 +19,7 @@ export const ActionTypes = {
     SetInitialFormState:'SET_INITIAL_FORM_STATE',
     AddNewEmployee:'ADD_NEW_EMPLOYEE',
     GetPayrollFormControls: 'GET_PAYROLL_FORM_CONTROLS',
-    PayrollAddNewEmployee:'ADD_PAYROLL_DATA'
+    PayrollAddNewEmployee:'ADD_PAYROLL_DATA',
     AddValueFromHR:'ADD_VALUE_FROM_HR'
 
 
