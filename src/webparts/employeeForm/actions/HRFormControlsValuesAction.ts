@@ -4,29 +4,49 @@ import NewEmployeeService from '../services/NewEmployeeService';
 import { ActionTypes } from '../AppConstants';
 import NewEmpService from '../services/NewEmployeeService';
 
+//Get all Control's Values
 export function GetInitialControlValuesAction() {
     return dispatch => {
 
         let formControlState = {
             employmentStatusOptions: [],
-            reasonOfLeavingOptions: []
+            reasonOfLeavingOptions: [],
+            UserAlies: '',
+            ADLogin: '',
+            Manager: '',
+            employementStatus: '',
+            DateOfLeaving: '', //dateTime?
+            reasonForLeaving: '',
+            ResigntionDate: '', //datetime?
+            EligibleforRehire: false,
         } as IHRState;
 
         let newEmpServiceObj: NewEmpService = new NewEmpService();
-
         newEmpServiceObj.getHRFormControlState().then((resp: IHRState) => {
-          //  formControlState.employmentStatusOptions = resp.employmentStatusOptions;
+
+            //DropDown Field Value
             formControlState.reasonOfLeavingOptions = resp.reasonOfLeavingOptions;
+            formControlState.employmentStatusOptions=[];
+            //textbox Values
+            formControlState.UserID=resp.UserID;
+            formControlState.UserAlies = resp.UserAlies;
+            formControlState.ADLogin = resp.ADLogin;
+            formControlState.Manager = resp.Manager;
+            formControlState.employementStatus =resp.employementStatus;
+            formControlState.DateOfLeaving = resp.DateOfLeaving;
+            formControlState.reasonForLeaving = resp.reasonForLeaving;
+            formControlState.ResigntionDate =resp.ResigntionDate;
+            formControlState.EligibleforRehire = true;
             dispatch({
-                type: ActionTypes.GetDefaultFormControls,
+                type: ActionTypes.GetHRFormControls,
                 payload: formControlState
             });
         });
     };
 }
+
 // Creates a new employee request.
 export function HrAddNewEmployee(empReqData: IHRState) {
-    debugger
     return dispatch => {
         let newEmpReqServiceObj: NewEmployeeService = new NewEmpService();
         newEmpReqServiceObj.HrAddNewEmployee(empReqData).then(resp => {
@@ -37,11 +57,14 @@ export function HrAddNewEmployee(empReqData: IHRState) {
         });
 
         dispatch({
-            type: "ADD_NEW_EMPLOYEE",
+            type: ActionTypes.AddValueFromHR,
             payload: empReqData
         });
     }
 }
+
+
+
 export function SetTabName(tabData: ICommonState) {
     return ({
         type: "SET_TAB",

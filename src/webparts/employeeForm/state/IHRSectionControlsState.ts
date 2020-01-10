@@ -1,6 +1,7 @@
 export interface IHRState {
     //form controls
-    userAlias: string;
+    UserID:number;
+    UserAlies: string;
     ADLogin: string;
     Manager: string;
     employementStatus: string;

@@ -2,10 +2,23 @@ import * as React from 'react';
 import { Form, Control, Field } from 'react-redux-form';
 import { ICommonState } from '../../state/ICommonState';
 import {IPayrollState} from '../../state/IPayrollState';
+import { connect } from "react-redux";
+import {GetPayrollAction,SetTabName,PayrollAddEmployee} from '../../actions/PayrollFormControlsValuesAction'
 
-export default class PayrollDetail extends React.Component <any>{
+// Represents the connected dispatch
+interface IPayrollConnectedDispatch {
+    setTabName: (tabName: ICommonState) => void;
+    
+    getPayrollFormControls: () => void;
+  
+   //save data
+   PayrollAddEmployee: (empPayrollData: IPayrollState) => void;
+}
+
+ class PayrollDetail extends React.Component <any>{
     constructor(props) {
         super(props);
+        this.props.getPayrollFormControls();
     }
    
     handleSubmit(formValues) {
@@ -19,11 +32,10 @@ export default class PayrollDetail extends React.Component <any>{
         const CommonState: ICommonState = { CurrentForm: "Payroll" };
         this.props.setTabName(CommonState);
 
-        //     // Do whatever you like in here.
-        //     // If you connect the UserForm to the Redux store,
-        //     // you can dispatch actions such as:
-        //     // dispatch(actions.submit('user', somePromise));
-        //     // etc.
+        let empPayrollData = {} as IPayrollState;
+        empPayrollData = formValues;
+        // Call the connected dispatch to create new purchase request
+        this.props.PayrollAddEmployee(empPayrollData);
     }
 
     public render() {
@@ -44,9 +56,9 @@ export default class PayrollDetail extends React.Component <any>{
                         <Control.text model='.ESIDispensary' id='.ESIDispensary' />
                     </div>
                     <div className='col'>
-                    <label>PF Applicable?</label>
+                    {/* <label>PF Applicable?</label>
                         <Control.checkbox model='Payroll.PFApplicable'/>
-                        Yes, Applicable
+                        Yes, Applicable */}
 
                     <label>PF Applicable:</label>
                     <Control.checkbox model='Payroll.PFApplicable' id='Payroll.PFApplicable' />
@@ -86,3 +98,24 @@ export default class PayrollDetail extends React.Component <any>{
 
     }
 }
+
+
+const mapStateToProps = function (state) {
+    console.log(state)
+    return state;
+}
+
+// Maps dispatch to props
+const mapDispatchToProps = (dispatch): IPayrollConnectedDispatch => {
+    return {
+        setTabName: SetTabName,
+        //setReqDigest : SetReqDigest,
+        getPayrollFormControls: () => {
+            return dispatch(GetPayrollAction());
+        },
+        PayrollAddEmployee: (empHrData: IPayrollState) => {
+            return dispatch(PayrollAddEmployee(empHrData));
+        }
+    };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(PayrollDetail);

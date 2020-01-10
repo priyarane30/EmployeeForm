@@ -63,5 +63,3 @@ export default class BasicDetail extends React.Component <any>{
 
     }
 }
-
-

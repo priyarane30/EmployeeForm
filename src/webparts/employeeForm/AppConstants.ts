@@ -26,5 +26,12 @@ export const ActionTypes = {
     RemoveEducationDetailRow:'REMOVE_EDUCATIONDETAIL_ROW',
     AddEducationDetailRow:'ADD_NEW_EDUCATION_ROW',
     AddCertiDetailRow:'ADD_NEW_CERTIDETAIL_ROW',
-    RemoveCertiDetailRow:'REMOVE_CERTIDETAIL_ROW'
+    RemoveCertiDetailRow:'REMOVE_CERTIDETAIL_ROW',
+    GetHRFormControls: 'GET_HR_FORM_CONTROLS',
+    GetPdFromControls:'GET_PD_FORM_CONTROLS',
+    GetPayrollFormControls: 'GET_PAYROLL_FORM_CONTROLS',
+    PayrollAddNewEmployee:'ADD_PAYROLL_DATA',
+    AddValueFromHR:'ADD_VALUE_FROM_HR'
+
+
 }

@@ -7,7 +7,8 @@ import axios from 'axios';
 import { AppConstats, ListNames } from '../AppConstants';
 import pnp from "sp-pnp-js";
 import { sp, ItemAddResult, Web } from "sp-pnp-js";
-
+import { IPayrollState } from '../state/IPayrollState';
+import jquery from 'jquery'
 export default class NewEmployeeService implements INewEmpRequestService {
 
 
@@ -34,7 +35,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
         return axios.get(url)
             .then(res => {
                 if (res.data.value != undefined && res.data.value != null) {
-                    return res.data.value;
+                    return res.data.value[0];
                 }
             }).catch(error => {
                 console.log('error while getOptionsFromMaster');
@@ -100,22 +101,8 @@ export default class NewEmployeeService implements INewEmpRequestService {
                 // Creates the multiple purchase items in batch.
                 let web = new Web(AppConstats.SITEURL);
                 let batch = web.createBatch();
-
-                // empData.childDetailItems.forEach(child => {
-                //     web.lists.getByTitle("PurchaseRequestItems").items.inBatch(batch).add({
-                //         ProductCode: child.ChildName,
-                //         Quantity: child.DateOfBirth,
-                //         RequestID: mainListID
-                //     });
-                // });
-
-                // batch.execute().then(() => {
-                //     console.log("children details added to the list....");
-                // });
             }
-            // else {
-            //     alert('Select atleast one purchase item.');
-            // }
+
         }).catch(error => {
             console.log("error while adding an employee");
         });
@@ -123,25 +110,38 @@ export default class NewEmployeeService implements INewEmpRequestService {
 
     //Start HR Section
 
-    //Get HR
+    //Get Data for HR  FORM
     getHRFormControlState(): Promise<any> {
         let hrControlsState = {} as IHRState;
         return this.getOptionsFromMaster(ListNames.REASONFORLEAVING, 'Title').then(statusResp => {
             hrControlsState.reasonOfLeavingOptions = statusResp;
-            return hrControlsState;
+
+            return this.getDataFromList(ListNames.EMPLOYEECONTACT, 'hitaxi.kachhadiya@synoverge.com').then(Resp => {
+                debugger
+                hrControlsState.UserAlies = Resp.UserAlies;
+                hrControlsState.UserID = Resp.Id;
+                hrControlsState.ADLogin = Resp.ADLoginId;//'Hitaxi Kachhadiya';//Resp.ADLogin;
+                hrControlsState.Manager = Resp.ManagerId;//'Krishna Soni';//Resp.Manager;
+                hrControlsState.employementStatus = Resp.employementStatus;
+                hrControlsState.DateOfLeaving = Resp.DateOfLeaving;
+                if (Resp.reasonForLeaving == null)
+                    hrControlsState.reasonForLeaving = '--Select--';//Resp.reasonForLeaving;
+                else
+                    hrControlsState.reasonForLeaving = Resp.reasonForLeaving;
+                hrControlsState.ResigntionDate = Resp.ResigntionDate;
+                hrControlsState.EligibleforRehire = Resp.EligibleforRehire;
+
+                return hrControlsState;
+            });
         });
     }
-    //Save HR
+    //Save HR FORM Data
     HrAddNewEmployee(empReqData: IHRState): Promise<any> {
-        debugger
         let web = new Web(AppConstats.SITEURL);
-        return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
-            userAlias:empReqData.userAlias,
-            ADLogin:empReqData.ADLogin,
-            Manager: empReqData.Manager,
-            employementStatus: empReqData.employementStatus,
+        return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empReqData.UserID).update({
+        // return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
             DateOfLeaving: empReqData.DateOfLeaving,
-            reasonForLeaving: empReqData.reasonForLeaving,
+            //reasonForLeaving: empReqData.reasonForLeaving,
             ResigntionDate: empReqData.ResigntionDate,
             EligibleforRehire: empReqData.EligibleforRehire,
         }).then((result: ItemAddResult) => {
@@ -151,8 +151,9 @@ export default class NewEmployeeService implements INewEmpRequestService {
         }).catch(error => {
             console.log("error while adding an employee");
         });
-
+       
     }
+
     //End HR Section
     //Start EducationDetail Section
     getEduDataFromList(listName,userEmail): Promise<any> {
@@ -214,4 +215,39 @@ export default class NewEmployeeService implements INewEmpRequestService {
     }
 
     //End Professional Detail Section
+
+    //Get Payroll
+    getPayrollControlState(): Promise<any> {
+        let payrollControlsState = {} as IPayrollState;
+        return this.getDataFromList(ListNames.EMPLOYEECONTACT, 'hirvita.rajyaguru@synoverge.com').then(statusResp => {
+            payrollControlsState = statusResp;
+            return payrollControlsState;
+        });
+    }
+    
+        //Save HR
+        PayrollAddEmployee(empReqData: IPayrollState): Promise<any> {
+            let web = new Web(AppConstats.SITEURL);
+            return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
+                //ESIApplicable:empReqData.ESIApplicable,
+                ESINo: empReqData.ESINo,
+                ESIDispensary : empReqData.ESIDispensary,
+                PFNo:empReqData.PFNo,
+                PFNoforDeptFile: empReqData.PFNoforDeptFile,
+                RestrictPF:empReqData.RestrictPF,
+                ZeroPension: empReqData.ZeroPension,
+                ZeroPT: empReqData.ZeroPT,
+                Ward_x002f_Circle: empReqData.Ward_x002f_Circle,
+                Director: empReqData.Director
+            }).then((result: ItemAddResult) => {
+                let mainListID = result.data.Id;
+                console.log("Employee request created : " + mainListID);
+    
+            }).catch(error => {
+                console.log("error while adding an employee");
+            });
+        }
+
+
+
 }

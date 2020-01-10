@@ -1,7 +1,8 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { NewEmpRequestReducer } from "../reducers/NewEmpRequestReducer";
-import { EducationSectionReducer } from "../reducers/EducationDetailReducer";
+import {  EducationSectionReducer }  from "../reducers/EducationDetailReducer";
 import { HRSectionReducer } from "../reducers/HRSectionReducer";
+import { PayRollSectionReducer } from "../reducers/PayRollReducer";
 import { ProfessionalDetailSectionReducer } from "../reducers/ProfessionalDetailSectionReducer"
 import { CommonReducer } from "../reducers/CommonReducer";
 import thunk from "redux-thunk";
@@ -35,7 +36,8 @@ export const store = createStore(
             Employee: NewEmpRequestReducer,
             HR: HRSectionReducer,
             Education : EducationSectionReducer,
-            ProfessionalDetail:ProfessionalDetailSectionReducer
+            ProfessionalDetail:ProfessionalDetailSectionReducer,
+            Payroll:PayRollSectionReducer
         })
     }),
     applyMiddleware(thunk)
