@@ -10,7 +10,6 @@ export function GetEmpBasicData() {
         let newBasicFormServiceObj: BasicFormService = new BasicFormService();
 
         newBasicFormServiceObj.GetEmpBasicData().then((resp: IBasicDetailState) => {
-            debugger
             basicFormState = resp;
             // basicFormState.technologyOptions = resp.technologyOptions;
 

@@ -13,7 +13,6 @@ export function GetPayrollAction(){
         } as IPayrollState;
 
         let newEmpServiceObj: NewEmpService = new NewEmpService();
-       // debugger
         newEmpServiceObj.getPayrollControlState().then((resp: IPayrollState) => {
             formControlState = resp;
             dispatch({

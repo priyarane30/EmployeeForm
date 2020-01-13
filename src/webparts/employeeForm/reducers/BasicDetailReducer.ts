@@ -13,10 +13,8 @@ import { ActionTypes } from "../AppConstants";
 
 export const BasicDetailSectionReducer = (state: IBasicDetailState = null, action) => {
     switch (action.type) {
-
         // Gets the values for dropdown fields from SharePoint master/choice columns.
         case ActionTypes.GetBasicFormControls:
-            console.log(action)
             state = {
                 ...state,
                 FirstName: action.payload.FirstName,
@@ -38,8 +36,6 @@ export const BasicDetailSectionReducer = (state: IBasicDetailState = null, actio
         // case "ADD_BASIC_FORM":
         //     state = {
         //         ...state,
-
-
         //     };
         //     break;
     }
