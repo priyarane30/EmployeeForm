@@ -146,7 +146,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
 
         let web = new Web(AppConstats.SITEURL);
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
-            userAlias: empReqData.userAlias,
+            userAlias: empReqData.UserAlies,
             ADLogin: empReqData.ADLogin,
             Manager: empReqData.Manager,
             employementStatus: empReqData.employementStatus,
