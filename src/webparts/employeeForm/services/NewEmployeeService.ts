@@ -30,10 +30,9 @@ export default class NewEmployeeService implements INewEmpRequestService {
                 console.log(error)
             });
     }
-     getDataFromList(listName,userEmail): Promise<any> {
+    getDataFromList(listName, userEmail): Promise<any> {
         //Get data from Master lists
 
-    //debugger;
         //var url="http://intranet/_api/web/lists/GetByTitle('" + listName + "')/items?$select=*,ADLogin/Title,Manager/Title&$expand=ADLogin/Id,Manager/Id&$filter=CompanyEMail_x0020_ID eq '" + userEmail + "'";
         var url = AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + listName + "')/items?$select=*&$filter=CompanyEMail_x0020_ID eq '" + userEmail + "'";
 
@@ -123,7 +122,6 @@ export default class NewEmployeeService implements INewEmpRequestService {
             hrControlsState.reasonOfLeavingOptions = statusResp;
 
             return this.getDataFromList(ListNames.EMPLOYEECONTACT, 'hitaxi.kachhadiya@synoverge.com').then(Resp => {
-                //debugger
                 hrControlsState.UserAlies = Resp.UserAlies;
                 hrControlsState.UserID = Resp.Id;
                 hrControlsState.ADLogin = Resp.ADLoginId;//'Hitaxi Kachhadiya';//Resp.ADLogin;
@@ -168,7 +166,6 @@ export default class NewEmployeeService implements INewEmpRequestService {
     //Start EducationDetail Section
     getEduDataFromList(listName, userEmail): Promise<any> {
         //Get data from Master lists
-        debugger;
         var url = AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + listName + "')/items?$select=*&$filter=empTableID/CompanyEMail_x0020_ID eq '" + userEmail + "'";
         return axios.get(url)
             .then(res => {
@@ -182,8 +179,6 @@ export default class NewEmployeeService implements INewEmpRequestService {
     }
 
     saveEduDataInList(educationData: IEducationDetailState, userEmail): Promise<any> {
-        debugger;
-
         let web = new Web(AppConstats.SITEURL);
         let batch = web.createBatch()
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.select("ID", "CompanyEMail_x0020_ID").getAll().then((items: any[]) => {

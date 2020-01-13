@@ -16,7 +16,6 @@ export default class BasicFormService implements IBasicFormService {
 
                 var empId = 1527;
                 return utilityServiceObj.GetEmployeeContactListById(empId).then(techResp => {
-                    debugger
                     //  basicFormControlsState.FirstName = techResp.FirstName;
 
                     return basicFormControlsState;

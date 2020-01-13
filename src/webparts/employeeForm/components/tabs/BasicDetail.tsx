@@ -25,7 +25,6 @@ class BasicDetail extends React.Component<any>{
     handleSubmit(formValues) {
         let newEmpReqServiceObj: BasicService = new BasicService();
         newEmpReqServiceObj.AddBasicDetail(formValues).then(resp => {
-            debugger
             let empIdState = { EmpListID: resp } as IEmpListIdState;
             dispatch => {
                 dispatch({
