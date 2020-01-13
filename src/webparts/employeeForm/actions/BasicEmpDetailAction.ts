@@ -5,7 +5,6 @@ import { ActionTypes } from '../AppConstants';
 import { ICommonState, IEmpListIdState } from '../state/ICommonState';
 export function GetEmpBasicData(empListId) {
     return dispatch => {
-        debugger
         let basicFormState = {} as IBasicDetailState;
         let newBasicFormServiceObj: BasicFormService = new BasicFormService();
 

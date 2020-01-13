@@ -3,6 +3,7 @@ import IBasicFormService from "./IBasicFormService";
 import { ListNames, AppConstats, ActionTypes } from "../AppConstants";
 import UtilityService from "./UtilityService";
 import { sp, ItemAddResult, Web } from "sp-pnp-js";
+import { IEmpListIdState } from "../state/ICommonState";
 
 export default class BasicFormService implements IBasicFormService {
     //Get Emp Basic Data when Id = 0
@@ -55,6 +56,30 @@ export default class BasicFormService implements IBasicFormService {
             let mainListID = result.data.Id;
             console.log("Basic Details has been saved");
             return mainListID;
+
+        }).catch(error => {
+            console.log("error while adding an employee");
+        });
+    }
+
+    UpdateBasicDetail(basicData: IBasicDetailState, empListId): Promise<any> {
+        debugger
+
+        let web = new Web(AppConstats.SITEURL);
+        return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empListId.EmpListID).update({
+            FirstName: basicData.FirstName,
+            LastName: basicData.LastName,
+            // Designation: basicData.Designation,
+            // Technology: basicData.Technology,
+            // DateofJoining: basicData.DateofJoining,//datetime?
+            // CompanyEmail: basicData.CompanyEmail
+        }).then((result: ItemAddResult) => {
+            debugger
+            result
+            console.log("Basic Details has been updated");
+            let mainListID = result.data.Id;
+            return mainListID;
+
 
         }).catch(error => {
             console.log("error while adding an employee");

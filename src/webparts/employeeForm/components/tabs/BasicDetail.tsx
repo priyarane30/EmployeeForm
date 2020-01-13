@@ -6,6 +6,7 @@ import { ICommonState, IEmpListIdState } from '../../state/ICommonState';
 import { IBasicDetailState } from '../../state/IBasicDetailState';
 import BasicService from '../../services/BasicFormService'
 import { ActionTypes } from '../../AppConstants';
+import { store } from '../../store/ConfigureStore';
 interface IBasicFormConnectedDispatch {
     //Get Employee Id using Current User Email
 
@@ -25,17 +26,32 @@ class BasicDetail extends React.Component<any>{
 
     handleSubmit(formValues) {
         let newEmpReqServiceObj: BasicService = new BasicService();
-        newEmpReqServiceObj.AddBasicDetail(formValues).then(resp => {
-            let empIdState = { EmpListID: resp } as IEmpListIdState;
-            dispatch => {
-                dispatch({
-                    type: ActionTypes.GetEmpID,
-                    payload: empIdState
-                });
-            }
-        }).catch(() => {
-            alert("Sorry. Error while adding employee...");
-        });
+        // let idState = {
+        //     EmpListID: store.getState().EmpListId
+        // } as IEmpListIdState;
+
+        const idState = store.getState().EmpListId;
+        if (idState != null && idState != undefined) {
+            newEmpReqServiceObj.UpdateBasicDetail(formValues, idState).then(resp => {
+                debugger
+
+            }).catch(() => {
+                alert("Sorry. Error while adding employee...");
+            });
+        }
+        else {
+            newEmpReqServiceObj.AddBasicDetail(formValues).then(resp => {
+                let empIdState = { EmpListID: resp } as IEmpListIdState;
+                dispatch => {
+                    dispatch({
+                        type: ActionTypes.GetEmpID,
+                        payload: empIdState
+                    });
+                }
+            }).catch(() => {
+                alert("Sorry. Error while adding employee...");
+            });
+        }
     }
 
     async componentDidMount() {
