@@ -1,21 +1,23 @@
 import * as React from 'react';
 import { Form, Control } from 'react-redux-form';
 import { connect } from "react-redux";
-import { GetEmpBasicData, SetTabName, GetEmpListIdUsingUserEmail } from "../../actions/BasicEmpDetailAction";
+import { GetEmpBasicData, SetTabName, GetEmpListIdByUserEmail, SetEmpIdInStore } from "../../actions/BasicEmpDetailAction";
 import { ICommonState, IEmpListIdState } from '../../state/ICommonState';
 import { IBasicDetailState } from '../../state/IBasicDetailState';
 import BasicService from '../../services/BasicFormService'
 import { ActionTypes } from '../../AppConstants';
-
+import { store } from '../../store/ConfigureStore';
 interface IBasicFormConnectedDispatch {
     //Get Employee Id using Current User Email
-    getEmpId: (currUserEmail) => void;
+
+    setEmpId: (empId) => void;
     setTabName: (tabName: ICommonState) => void;
     // Gets the options for dropdown fields
-    getBasicDatail: () => void;
+    getBasicDatail: (empListId) => void;
     //save data
     addBasicDetails: (empData: IBasicDetailState) => void;
 }
+
 
 class BasicDetail extends React.Component<any>{
     constructor(props) {
@@ -24,28 +26,44 @@ class BasicDetail extends React.Component<any>{
 
     handleSubmit(formValues) {
         let newEmpReqServiceObj: BasicService = new BasicService();
-        newEmpReqServiceObj.AddBasicDetail(formValues).then(resp => {
-            let empIdState = { EmpListID: resp } as IEmpListIdState;
-            dispatch => {
-                dispatch({
-                    type: ActionTypes.GetEmpID,
-                    payload: empIdState
-                });
-            }
-        }).catch(() => {
-            alert("Sorry. Error while adding employee...");
-        });
+        // let idState = {
+        //     EmpListID: store.getState().EmpListId
+        // } as IEmpListIdState;
+
+        const idState = store.getState().EmpListId;
+        if (idState != null && idState != undefined) {
+            newEmpReqServiceObj.UpdateBasicDetail(formValues, idState).then(resp => {
+                debugger
+
+            }).catch(() => {
+                alert("Sorry. Error while adding employee...");
+            });
+        }
+        else {
+            newEmpReqServiceObj.AddBasicDetail(formValues).then(resp => {
+                let empIdState = { EmpListID: resp } as IEmpListIdState;
+                dispatch => {
+                    dispatch({
+                        type: ActionTypes.GetEmpID,
+                        payload: empIdState
+                    });
+                }
+            }).catch(() => {
+                alert("Sorry. Error while adding employee...");
+            });
+        }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         console.log("Basic Details");
-        this.props.getBasicDatail();
-
+        var eId = await GetEmpListIdByUserEmail(this.props.empEmail)
+        if (eId != null && eId != undefined) {
+            //set empId in store
+            this.props.setEmpId(eId);
+            this.props.getBasicDatail(eId);
+        }
         const CommonState: ICommonState = { CurrentForm: "Employee" };
         this.props.setTabName(CommonState);
-
-        // console.log(this.props.empEmail);
-        this.props.getEmpId(this.props.empEmail);
     }
 
     public render() {
@@ -112,14 +130,14 @@ const mapStateToProps = function (state) {
 // Maps dispatch to props
 const mapDispatchToProps = (dispatch): IBasicFormConnectedDispatch => {
     return {
-        getEmpId: (currUserEmail) => {
-            return dispatch(GetEmpListIdUsingUserEmail(currUserEmail));
+        setEmpId: (empId) => {
+            return dispatch(SetEmpIdInStore(empId));
         },
         setTabName: (tabData: ICommonState) => {
             return dispatch(SetTabName(tabData));
         },
-        getBasicDatail: () => {
-            return dispatch(GetEmpBasicData());
+        getBasicDatail: (empListId) => {
+            return dispatch(GetEmpBasicData(empListId));
         },
         addBasicDetails: (empData: IBasicDetailState) => {
             // return dispatch(AddNewEmployee(empData));

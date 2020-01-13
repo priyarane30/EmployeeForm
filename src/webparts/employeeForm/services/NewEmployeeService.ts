@@ -143,7 +143,11 @@ export default class NewEmployeeService implements INewEmpRequestService {
     HrAddNewEmployee(empReqData: IHRState): Promise<any> {
 
         let web = new Web(AppConstats.SITEURL);
-        return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
+
+        return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empReqData.UserID).update({
+        // return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
+
+       // return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
             userAlias: empReqData.UserAlies,
             ADLogin: empReqData.ADLogin,
             Manager: empReqData.Manager,

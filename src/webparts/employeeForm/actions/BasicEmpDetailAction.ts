@@ -3,21 +3,29 @@ import BasicFormService from '../services/BasicFormService';
 import UtilityService from '../services/UtilityService';
 import { ActionTypes } from '../AppConstants';
 import { ICommonState, IEmpListIdState } from '../state/ICommonState';
-export function GetEmpBasicData() {
+export function GetEmpBasicData(empListId) {
     return dispatch => {
-
         let basicFormState = {} as IBasicDetailState;
         let newBasicFormServiceObj: BasicFormService = new BasicFormService();
 
-        newBasicFormServiceObj.GetEmpBasicData().then((resp: IBasicDetailState) => {
-            basicFormState = resp;
-            // basicFormState.technologyOptions = resp.technologyOptions;
-
-            dispatch({
-                type: ActionTypes.GetBasicFormControls,
-                payload: basicFormState
+        if (empListId.EmpListID > 0) {
+            newBasicFormServiceObj.GetEmpBasicDataById(empListId.EmpListID).then((resp: IBasicDetailState) => {
+                basicFormState = resp;
+                dispatch({
+                    type: ActionTypes.GetBasicFormControls,
+                    payload: basicFormState
+                });
             });
-        });
+        }
+        else {
+            newBasicFormServiceObj.GetEmpBasicData().then((resp: IBasicDetailState) => {
+                basicFormState = resp;
+                dispatch({
+                    type: ActionTypes.GetBasicFormControls,
+                    payload: basicFormState
+                });
+            });
+        }
     }
 }
 
@@ -30,19 +38,22 @@ export function SetTabName(tabData) {
     }
 }
 
-export function GetEmpListIdUsingUserEmail(currUserEmail) {
-    return dispatch => {
-        let newEmpServiceObj: UtilityService = new UtilityService();
-        let empIdState = { EmpListID: 0 } as IEmpListIdState;
-        newEmpServiceObj.GetEmpIdByUserEmail(currUserEmail).then((resp) => {
-            if (resp != null && resp != undefined && resp != 0) {
-                empIdState.EmpListID = resp;
-            }
-            dispatch({
-                type: ActionTypes.GetEmpID,
-                payload: empIdState
-            });
-        });
+export async function GetEmpListIdByUserEmail(currUserEmail) {
+    let newEmpServiceObj: UtilityService = new UtilityService();
+    let empIdState = { EmpListID: 0 } as IEmpListIdState;
+    await newEmpServiceObj.GetEmpIdByUserEmail(currUserEmail).then((resp) => {
+        if (resp != null && resp != undefined && resp != 0) {
+            empIdState.EmpListID = resp;
+        }
+    });
+    return empIdState;
+}
 
+export function SetEmpIdInStore(empListId) {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.SetEmpID,
+            payload: empListId
+        });
     }
 }

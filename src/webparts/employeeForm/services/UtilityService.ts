@@ -46,7 +46,7 @@ export default class BasicFormService {
         return Axios.get(url)
             .then(res => {
                 if (res.data != null && res.data != undefined && res.data.ID != 0) {
-                    return res.data.value;
+                    return res.data;
                 }
             }).catch(error => {
                 console.log('error while getOptionsFromMaster');

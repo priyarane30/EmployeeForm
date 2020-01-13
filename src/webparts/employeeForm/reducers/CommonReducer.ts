@@ -8,6 +8,11 @@ export const EmpListIdReducer = (state: IEmpListIdState = null, action) => {
                 ...state,
                 EmpListID: action.payload.EmpListID
             }
+        case ActionTypes.SetEmpID:
+            state = {
+                ...state,
+                EmpListID: action.payload.EmpListID
+            }
     }
     return state;
 }
