@@ -142,8 +142,8 @@ export default class NewEmployeeService implements INewEmpRequestService {
     //Save HR FORM Data
     HrAddNewEmployee(empReqData: IHRState): Promise<any> {
         let web = new Web(AppConstats.SITEURL);
-      //  return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empReqData.UserID).update({
-         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
+        return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empReqData.UserID).update({
+        // return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
             DateOfLeaving: empReqData.DateOfLeaving,
             //reasonForLeaving: empReqData.reasonForLeaving,
             ResigntionDate: empReqData.ResigntionDate,
