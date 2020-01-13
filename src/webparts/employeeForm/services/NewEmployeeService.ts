@@ -164,9 +164,9 @@ export default class NewEmployeeService implements INewEmpRequestService {
 
     //End HR Section
     //Start EducationDetail Section
-    getEduDataFromList(listName, userEmail): Promise<any> {
+    getEduDataFromList(listName, EmpListID): Promise<any> {
         //Get data from Master lists
-        var url = AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + listName + "')/items?$select=*&$filter=empTableID/CompanyEMail_x0020_ID eq '" + userEmail + "'";
+        var url = AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + listName + "')/items?$select=*&$filter=empTableID/ID eq '" + EmpListID + "'";
         return axios.get(url)
             .then(res => {
                 if (res.data.value != undefined && res.data.value != null) {
@@ -177,36 +177,105 @@ export default class NewEmployeeService implements INewEmpRequestService {
                 console.log(error)
             });
     }
-
-    saveEduDataInList(educationData: IEducationDetailState, userEmail): Promise<any> {
+   
+    async saveEduDataInList(eduData: IEducationDetailState, EmpListID) {
+       await this.saveEducationDetails(eduData.educationDetails,EmpListID)
+       await this.saveCertificationDetails(eduData.certificationDetails,EmpListID)
+            }
+    saveEducationDetails(educationDetails,EmpListID) {
         let web = new Web(AppConstats.SITEURL);
         let batch = web.createBatch()
-        return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.select("ID", "CompanyEMail_x0020_ID").getAll().then((items: any[]) => {
-            //gets the main list id for acessing child list
-            let mainListID = items.filter(element => (element.CompanyEMail_x0020_ID == userEmail))[0].ID
-
-
-            var url = AppConstats.SITEURL + "_api/web/lists/GetByTitle('" + ListNames.EducationDetail + "')/items?$select=ID&$filter=empTableID/ID eq " + mainListID;
+            var url = AppConstats.SITEURL + "_api/web/lists/GetByTitle('" + ListNames.EducationDetail + "')/items?$select=ID&$filter=empTableID/ID eq " + EmpListID;
             return axios.get(url)
-                .then(res => {
-                    if (res.data.value != undefined && res.data.value != null) {
+                .then(res => { debugger;
+                    if (res.data.value.length>0) {
                         let idData = res.data.value;
                         idData.forEach(e => {
-                            e["ID"]
-
+                            
+                            web.lists.getByTitle(ListNames.EducationDetail).items.getById(e["ID"]).inBatch(batch).delete()
+                            .then(r => {
+                                console.log("deleted");
+                              });
                         });
+                        batch.execute().then(() => {console.log("All deleted")
+                        educationDetails.forEach(detailRow=>{
+                            web.lists.getByTitle(ListNames.EducationDetail).items.inBatch(batch).add({
+                                qualification:detailRow.DiplomaDegree,
+                                grade:detailRow.Grade,
+                                startYear:detailRow.Grade,
+                                yearOfCompletion:detailRow.EndYear,
+                                board:detailRow.Board,
+                                school:detailRow.SchoolCollege,
+                                degree:detailRow.DegreeName,
+                                empTableIDId:EmpListID
+                            });
+                        });
+                        batch.execute().then(()=>console.log("all added"))});
+                    }
+                    else{educationDetails.forEach(detailRow=>{
+                        web.lists.getByTitle(ListNames.EducationDetail).items.inBatch(batch).add({
+                            qualification:detailRow.DiplomaDegree,
+                            grade:detailRow.Grade,
+                            startYear:detailRow.Grade,
+                            yearOfCompletion:detailRow.EndYear,
+                            board:detailRow.Board,
+                            school:detailRow.SchoolCollege,
+                            degree:detailRow.DegreeName,
+                            empTableIDId:EmpListID
+                        });
+                    });
+                    batch.execute().then(()=>console.log("all added"))
+                        
                     }
                 }).catch(error => {
                     console.log('error while getOptionsFromMaster');
                     console.log(error)
                 });
+     }
+    saveCertificationDetails(certificationDetails,EmpListID) {
+        let web = new Web(AppConstats.SITEURL);
+        let certibatch = web.createBatch()       
+            var urlCerti = AppConstats.SITEURL + "_api/web/lists/GetByTitle('" + ListNames.CertificationDetail + "')/items?$select=ID&$filter=empTableID/ID eq " + EmpListID;
+                return axios.get(urlCerti)
+                .then(res => { debugger;
+                    if (res.data.value.length>0) {
+                        let idData = res.data.value;
+                        idData.forEach(e => {
+                            
+                            web.lists.getByTitle(ListNames.CertificationDetail).items.getById(e["ID"]).inBatch(certibatch).delete()
+                            .then(r => {
+                                console.log("deleted");
 
-
-        })
-
-    }
-    saveEducationDetails(mainListID) { }
-    saveCertificationDetails(mainListID) { }
+                              });
+                        });
+                        certibatch.execute().then(() => {console.log("All deleted")
+                        certificationDetails.forEach(detailRow=>{
+                            web.lists.getByTitle(ListNames.CertificationDetail).items.inBatch(certibatch).add({
+                                certification:detailRow.Certification,
+                                startYear:detailRow.StartYear,
+                                yearOfCompletion:detailRow.YearOfCompletion,
+                                institution:detailRow.InstituteName,
+                                GradeOrPercent:detailRow.GradePercentage,
+                                empTableIDId:EmpListID
+                            });
+                        });
+                        certibatch.execute().then(()=>console.log("all added"))});
+                    }
+                    else{
+                        certificationDetails.forEach(detailRow=>{
+                            web.lists.getByTitle(ListNames.CertificationDetail).items.inBatch(certibatch).add({
+                                certification:detailRow.Certification,
+                                startYear:detailRow.StartYear,
+                                yearOfCompletion:detailRow.YearOfCompletion,
+                                institution:detailRow.InstituteName,
+                                GradeOrPercent:detailRow.GradePercentage,
+                                empTableIDId:EmpListID
+                            });
+                        });
+                        certibatch.execute().then(()=>console.log("all added"));
+                    }
+                });
+     }
 
 
 

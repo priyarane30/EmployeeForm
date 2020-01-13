@@ -6,14 +6,14 @@ import NewEmpService from '../services/NewEmployeeService';
 import { actions } from 'react-redux-form';
 
 //gets initial value for all controls in the form
-export function GetInitialControlValuesAction() {
+export function GetInitialControlValuesAction(EmpListID) {
     return dispatch => {
         let newEmpServiceObj: NewEmpService = new NewEmpService();
         let payLoadArrayEducationDetail=[];
         let payLoadArrayCertificationDetail=[];
        
        //gets already set education details for user
-        newEmpServiceObj.getEduDataFromList(ListNames.EducationDetail, "adit.pandey@synoverge.com")
+        newEmpServiceObj.getEduDataFromList(ListNames.EducationDetail, EmpListID)
         .then((resp) => {
             console.log(resp)
             resp.forEach(element => {
@@ -31,7 +31,7 @@ export function GetInitialControlValuesAction() {
             });
         });
         //get already existing certification details for user
-        newEmpServiceObj.getEduDataFromList(ListNames.CertificationDetail,"adit.pandey@synoverge.com")
+        newEmpServiceObj.getEduDataFromList(ListNames.CertificationDetail,EmpListID)
         .then((resp)=>{
             resp.forEach(element=>{
                 payLoadArrayCertificationDetail.push({
@@ -116,9 +116,10 @@ export function removeEducationDetailRow(section,index){
 }
 
 //saves data in sp  list
-export function SaveDataToSPList(eduData){
+export function SaveDataToSPList(eduData,EmpListID){
     return dispatch => {
         let newEmpServiceObj: NewEmpService = new NewEmpService();
-        newEmpServiceObj.saveEduDataInList(eduData,"adit.pandey@synoverge.com")
+        debugger;
+        newEmpServiceObj.saveEduDataInList(eduData,EmpListID)
     }
 }
