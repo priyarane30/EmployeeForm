@@ -5,7 +5,21 @@ import UtilityService from "./UtilityService";
 import { sp, ItemAddResult, Web } from "sp-pnp-js";
 
 export default class BasicFormService implements IBasicFormService {
+    //Get Emp Basic Data when Id = 0
     GetEmpBasicData(): Promise<IBasicDetailState> {
+        let basicFormControlsState = {} as IBasicDetailState;
+        let utilityServiceObj: UtilityService = new UtilityService();
+        return utilityServiceObj.getOptionsFromMaster(ListNames.DESIGNATION, 'Designation').then(desigResp => {
+            basicFormControlsState.designationOptions = desigResp;
+            return utilityServiceObj.getOptionsFromMaster(ListNames.TECHNOLOGY, 'Title').then(techResp => {
+                basicFormControlsState.technologyOptions = techResp;
+                return basicFormControlsState;
+            });
+        });
+    }
+
+    //Get Emp Basic Data when Id = 0
+    GetEmpBasicDataById(empListId): Promise<IBasicDetailState> {
         let basicFormControlsState = {} as IBasicDetailState;
         let utilityServiceObj: UtilityService = new UtilityService();
         return utilityServiceObj.getOptionsFromMaster(ListNames.DESIGNATION, 'Designation').then(desigResp => {
@@ -14,10 +28,14 @@ export default class BasicFormService implements IBasicFormService {
             return utilityServiceObj.getOptionsFromMaster(ListNames.TECHNOLOGY, 'Title').then(techResp => {
                 basicFormControlsState.technologyOptions = techResp;
 
-                var empId = 1527;
-                return utilityServiceObj.GetEmployeeContactListById(empId).then(techResp => {
-                    //  basicFormControlsState.FirstName = techResp.FirstName;
-
+                return utilityServiceObj.GetEmployeeContactListById(empListId).then(mainListResp => {
+                    debugger
+                    basicFormControlsState.FirstName = mainListResp.FirstName;
+                    basicFormControlsState.LastName = mainListResp.LastName;
+                    basicFormControlsState.CompanyEmail = mainListResp.CompanyEmail;
+                    basicFormControlsState.DateofJoining = "";
+                    basicFormControlsState.Designation = "";
+                    basicFormControlsState.Technology = "";
                     return basicFormControlsState;
                 });
             });
