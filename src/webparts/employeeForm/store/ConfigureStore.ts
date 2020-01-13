@@ -1,10 +1,11 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
+import { BasicDetailSectionReducer } from "../reducers/BasicDetailReducer";
 import { NewEmpRequestReducer } from "../reducers/NewEmpRequestReducer";
-import {  EducationSectionReducer }  from "../reducers/EducationDetailReducer";
+import { EducationSectionReducer } from "../reducers/EducationDetailReducer";
 import { HRSectionReducer } from "../reducers/HRSectionReducer";
 import { PayRollSectionReducer } from "../reducers/PayRollReducer";
 import { ProfessionalDetailSectionReducer } from "../reducers/ProfessionalDetailSectionReducer"
-import { CommonReducer } from "../reducers/CommonReducer";
+import { CommonReducer, EmpListIdReducer } from "../reducers/CommonReducer";
 import thunk from "redux-thunk";
 // import { reducer as formReducer } from 'redux-form';
 import { combineForms, createForms } from 'react-redux-form';
@@ -30,9 +31,10 @@ import { combineForms, createForms } from 'react-redux-form';
 // If you want your entire store to have the form state...
 export const store = createStore(
     combineReducers({
+        EmpListId: EmpListIdReducer,
         CommonReducer: CommonReducer,
         ...createForms({
-            //BasicEmployee: BasicEmpReducer,
+            Basic: BasicDetailSectionReducer,
             Employee: NewEmpRequestReducer,
             HR: HRSectionReducer,
             Education : EducationSectionReducer,

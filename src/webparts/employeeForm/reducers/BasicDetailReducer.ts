@@ -1,39 +1,43 @@
 import { IBasicDetailState } from "../state/IBasicDetailState";
+import { ActionTypes } from "../AppConstants";
 //Initialise state of Education 
-export const BasicDetailState: IBasicDetailState = {
-    FirstName: '',
-    LastName: '',
-    Gender: '',
-    DateofJoining: '', //datetime?
-    Designation: '',
-    Technology: '',
-    CompanyEmail: '',
-};
+// export const BasicDetailState: IBasicDetailState = {
+//     FirstName: '',
+//     LastName: '',
+//     Gender: '',
+//     DateofJoining: '', //datetime?
+//     Designation: '',
+//     Technology: '',
+//     CompanyEmail: '',
+// };
 
-
-export const BasicDetailSectionReducer = (state: IBasicDetailState = BasicDetailState, action) => {
+export const BasicDetailSectionReducer = (state: IBasicDetailState = null, action) => {
     switch (action.type) {
-
         // Gets the values for dropdown fields from SharePoint master/choice columns.
-        case "GET_DEFAULT_FORM_CONTROLS":
+        case ActionTypes.GetBasicFormControls:
             state = {
                 ...state,
-                
+                FirstName: action.payload.FirstName,
+                LastName: action.payload.LastName,
+                DateofJoining: action.payload.DateofJoining, //datetime?
+                Designation: action.payload.Designation,
+                Technology: action.payload.Technology,
+                CompanyEmail: action.payload.CompanyEmail,
+                designationOptions: action.payload.designationOptions,
+                technologyOptions: action.payload.technologyOptions,
             };
             break;
-        case "SET_INITIAL_FORM_STATE":
-            state = {
-                ...state,
-               
-            };
-            break;
-        case "ADD_NEW_EMPLOYEE":
-            state = {
-                ...state,
-               
-
-            };
-            break;
+        // case ActionTypes.SetTabName:
+        //     state = {
+        //         ...state,
+        //         CurrentForm: action.payload.CurrentForm
+        //     };
+        //     break;
+        // case "ADD_BASIC_FORM":
+        //     state = {
+        //         ...state,
+        //     };
+        //     break;
     }
     return state;
 };

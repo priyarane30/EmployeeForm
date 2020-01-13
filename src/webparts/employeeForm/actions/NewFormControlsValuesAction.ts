@@ -23,7 +23,7 @@ export function GetInitialControlValuesAction() {
             genderOptions: [],
             designationOptions: [],
             maritalStatusOptions: [],
-            technologyOptions: []
+            technologyOptions : []            
         } as INewFormState;
 
         let newEmpServiceObj: NewEmpService = new NewEmpService();
@@ -62,7 +62,7 @@ export function AddNewEmployee(empReqData: INewFormState) {
 export function SetTabName(tabData: ICommonState) {
     return dispatch => {
         dispatch({
-            type: "SET_TAB",
+            type: ActionTypes.SetTabName,
             payload: tabData
         });
     }

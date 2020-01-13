@@ -1,27 +1,60 @@
 import { IBasicDetailState } from '../state/IBasicDetailState';
-import NewEmpService from '../services/NewEmployeeService';
+import BasicFormService from '../services/BasicFormService';
+import UtilityService from '../services/UtilityService';
 import { ActionTypes } from '../AppConstants';
-export function GetAllFormFields() {
+import { ICommonState, IEmpListIdState } from '../state/ICommonState';
+export function GetEmpBasicData(empListId) {
     return dispatch => {
+        debugger
+        let basicFormState = {} as IBasicDetailState;
+        let newBasicFormServiceObj: BasicFormService = new BasicFormService();
 
-        let formControlState = {
-            // genderOptions: [],
-            // designationOptions: [],
-            // maritalStatusOptions: [],
-            // technologyOptions: []
-        } as IBasicDetailState;
-
-        let newEmpServiceObj: NewEmpService = new NewEmpService();
-
-        newEmpServiceObj.getNewFormControlState().then((resp: IBasicDetailState) => {
-            // formControlState.genderOptions = resp.genderOptions;
-            // formControlState.designationOptions = resp.designationOptions;
-            // formControlState.maritalStatusOptions = resp.maritalStatusOptions;
-            // formControlState.technologyOptions = resp.technologyOptions;
-            dispatch({
-                type: ActionTypes.GetDefaultFormControls,
-                payload: formControlState
+        if (empListId.EmpListID > 0) {
+            newBasicFormServiceObj.GetEmpBasicDataById(empListId.EmpListID).then((resp: IBasicDetailState) => {
+                basicFormState = resp;
+                dispatch({
+                    type: ActionTypes.GetBasicFormControls,
+                    payload: basicFormState
+                });
             });
+        }
+        else {
+            newBasicFormServiceObj.GetEmpBasicData().then((resp: IBasicDetailState) => {
+                basicFormState = resp;
+                dispatch({
+                    type: ActionTypes.GetBasicFormControls,
+                    payload: basicFormState
+                });
+            });
+        }
+    }
+}
+
+export function SetTabName(tabData) {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.SetTabName,
+            payload: tabData
+        });
+    }
+}
+
+export async function GetEmpListIdByUserEmail(currUserEmail) {
+    let newEmpServiceObj: UtilityService = new UtilityService();
+    let empIdState = { EmpListID: 0 } as IEmpListIdState;
+    await newEmpServiceObj.GetEmpIdByUserEmail(currUserEmail).then((resp) => {
+        if (resp != null && resp != undefined && resp != 0) {
+            empIdState.EmpListID = resp;
+        }
+    });
+    return empIdState;
+}
+
+export function SetEmpIdInStore(empListId) {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.SetEmpID,
+            payload: empListId
         });
     }
 }

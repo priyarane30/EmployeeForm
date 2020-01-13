@@ -45,6 +45,7 @@ export const EducationSectionReducer = (state: IEducationDetailState = eduDetail
         // Sets initial or already filled values in state from sp list 
         case "SET_INITIAL_EDUDETAIL_FORM_STATE":
            // debugger;
+
             state = {
                 ...state,
                 educationDetails:action.payload
