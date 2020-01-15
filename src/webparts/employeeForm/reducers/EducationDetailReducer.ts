@@ -1,6 +1,6 @@
 import { IEducationDetailState } from "../state/IEducationDetailState";
 import { ActionTypes, AppConstats, ListNames } from '../AppConstants';
-import EducationDetail from "../components/tabs/EducationDetail/EducationDetail";
+import EducationDetail from "../components/tabs/EducationDetail";
 import { actions } from "react-redux-form";
 //Initialise state of Education 
 export const eduDetailState: IEducationDetailState = {

@@ -1,17 +1,17 @@
 import * as React from "react";
 import { Form, Control } from "react-redux-form";
-import { ICommonState, IEmpListIdState } from "../../../state/ICommonState";
+import { ICommonState, IEmpListIdState } from "../../state/ICommonState";
 import {
   SetTabName,
   GetInitialControlValuesAction,
   addEducationDetailRow,
   removeEducationDetailRow,
  
-} from "../../../actions/EducationDetailAction";
+} from "../../actions/EducationDetailAction";
 import { connect } from "react-redux";
-import { IEducationDetailState } from "../../../state/IEducationDetailState";
-import { store } from "../../../store/ConfigureStore";
-import NewEmpService from '../../../services/NewEmployeeService';
+import { IEducationDetailState } from "../../state/IEducationDetailState";
+import { store } from "../../store/ConfigureStore";
+import NewEmpService from '../../services/NewEmployeeService';
 interface buttonStatus {
   buttonDisabled: boolean
 }
@@ -139,10 +139,8 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                   <button type="button" onClick={() => this.handleRowRemove("Certification", i)}>-</button></td>
               </tr>)
             })}
-
           </table>
           <button type="submit" disabled={this.state.buttonDisabled}>Submit</button>
-
         </Form >
       </div >
     );
