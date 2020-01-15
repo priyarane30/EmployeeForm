@@ -182,14 +182,14 @@ export default class NewEmployeeService implements INewEmpRequestService {
             });
     }
    
-    async saveEduDataInList(eduData: IEducationDetailState, EmpListID) {
-       await this.saveEducationDetails(eduData.educationDetails,EmpListID)
-       await this.saveCertificationDetails(eduData.certificationDetails,EmpListID)
+    async saveEduDataInList(eduData: IEducationDetailState, empListId) {
+       await this.saveEducationDetails(eduData.educationDetails,empListId)
+       await this.saveCertificationDetails(eduData.certificationDetails,empListId)
             }
-    saveEducationDetails(educationDetails,EmpListID) {
+    saveEducationDetails(educationDetails,empListId) {
         let web = new Web(AppConstats.SITEURL);
         let batch = web.createBatch()
-            var url = AppConstats.SITEURL + "_api/web/lists/GetByTitle('" + ListNames.EducationDetail + "')/items?$select=ID&$filter=empTableID/ID eq " + EmpListID;
+            var url = AppConstats.SITEURL + "_api/web/lists/GetByTitle('" + ListNames.EducationDetail + "')/items?$select=ID&$filter=empTableID/ID eq " + empListId.EmpListID;
             return axios.get(url)
                 .then(res => { debugger;
                     if (res.data.value.length>0) {
@@ -211,7 +211,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                                 board:detailRow.Board,
                                 school:detailRow.SchoolCollege,
                                 degree:detailRow.DegreeName,
-                                empTableIDId:EmpListID
+                                empTableIDId:empListId.EmpListID
                             });
                         });
                         batch.execute().then(()=>console.log("all added"))});
@@ -225,7 +225,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                             board:detailRow.Board,
                             school:detailRow.SchoolCollege,
                             degree:detailRow.DegreeName,
-                            empTableIDId:EmpListID
+                            empTableIDId:empListId.EmpListID
                         });
                     });
                     batch.execute().then(()=>console.log("all added"))
@@ -236,10 +236,10 @@ export default class NewEmployeeService implements INewEmpRequestService {
                     console.log(error)
                 });
      }
-    saveCertificationDetails(certificationDetails,EmpListID) {
+    saveCertificationDetails(certificationDetails,empListId) {
         let web = new Web(AppConstats.SITEURL);
         let certibatch = web.createBatch()       
-            var urlCerti = AppConstats.SITEURL + "_api/web/lists/GetByTitle('" + ListNames.CertificationDetail + "')/items?$select=ID&$filter=empTableID/ID eq " + EmpListID;
+            var urlCerti = AppConstats.SITEURL + "_api/web/lists/GetByTitle('" + ListNames.CertificationDetail + "')/items?$select=ID&$filter=empTableID/ID eq " + empListId.EmpListID;
                 return axios.get(urlCerti)
                 .then(res => { debugger;
                     if (res.data.value.length>0) {
@@ -260,7 +260,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                                 yearOfCompletion:detailRow.YearOfCompletion,
                                 institution:detailRow.InstituteName,
                                 GradeOrPercent:detailRow.GradePercentage,
-                                empTableIDId:EmpListID
+                                empTableIDId:empListId.EmpListID
                             });
                         });
                         certibatch.execute().then(()=>console.log("all added"))});
@@ -273,7 +273,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                                 yearOfCompletion:detailRow.YearOfCompletion,
                                 institution:detailRow.InstituteName,
                                 GradeOrPercent:detailRow.GradePercentage,
-                                empTableIDId:EmpListID
+                                empTableIDId:empListId.EmpListID
                             });
                         });
                         certibatch.execute().then(()=>console.log("all added"));

@@ -59,7 +59,7 @@ class EducationDetail extends React.Component<any, buttonStatus> {
 
   }
 
-  handleSubmit(formValues) {
+  async handleSubmit(formValues) {
     // Do anything you want with the form value
     const CommonState: ICommonState = { CurrentForm: "Education" };
     this.props.setTabName(CommonState);
@@ -72,7 +72,8 @@ class EducationDetail extends React.Component<any, buttonStatus> {
     this.setState({ buttonDisabled: true })
     let newEmpServiceObj: NewEmpService = new NewEmpService();
     debugger;
-    newEmpServiceObj.saveEduDataInList(eduData,empListId)
+    await newEmpServiceObj.saveEduDataInList(eduData,empListId)
+    this.setState({ buttonDisabled: false})
   }
 
   public render() {
