@@ -33,7 +33,7 @@ class BasicDetail extends React.Component<any>{
         const idState = store.getState().EmpListId;
         if (idState != null && idState != undefined) {
             newEmpReqServiceObj.UpdateBasicDetail(formValues, idState).then(resp => {
-                debugger
+                //debugger
 
             }).catch(() => {
                 alert("Sorry. Error while adding employee...");
@@ -123,7 +123,7 @@ class BasicDetail extends React.Component<any>{
 }
 
 const mapStateToProps = function (state) {
-    console.log(state)
+   // console.log(state)
     return state;
 }
 

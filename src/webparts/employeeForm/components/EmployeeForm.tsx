@@ -24,6 +24,7 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, {}
               <BasicDetail empEmail={this.props.userEmail} />
             </div>
             <Pivot aria-label="Employee Form">
+            
               <PivotItem headerText="Employee Details">
                 <EmployeeDetail />
               </PivotItem>
@@ -42,7 +43,7 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, {}
             </Pivot>
           </div>
         </div>
-      </Provider>
+        </Provider>
     );
   }
 }

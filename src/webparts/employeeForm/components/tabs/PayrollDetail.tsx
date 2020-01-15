@@ -27,7 +27,7 @@ interface IState {
     }
    
     componentDidMount(){
-        console.log("componentDidMount");
+        console.log("Payroll Details");
         this.props.getPayrollFormControls();
     }
 

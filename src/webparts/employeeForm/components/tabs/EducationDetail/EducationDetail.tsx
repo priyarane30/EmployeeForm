@@ -11,6 +11,7 @@ import {
 import { connect } from "react-redux";
 import { IEducationDetailState } from "../../../state/IEducationDetailState";
 import { store } from "../../../store/ConfigureStore";
+import NewEmpService from '../../../services/NewEmployeeService';
 interface buttonStatus {
   buttonDisabled: boolean
 }
@@ -27,7 +28,7 @@ interface IEducationDetailConnectedDispatch {
   removeEducationDetailRow: (section, index) => void;
 
   //save data in SP list
-  saveDataToSPList: (eduData: IEducationDetailState, empListId: IEmpListIdState) => void;
+  //saveDataToSPList: (eduData: IEducationDetailState, empListId: IEmpListIdState) => void;
 }
 
 class EducationDetail extends React.Component<any, buttonStatus> {
@@ -37,20 +38,14 @@ class EducationDetail extends React.Component<any, buttonStatus> {
     this.state = { buttonDisabled: false }
   }
   componentDidMount() {
-
+    console.log("Eduction Details");
     const empListId = store.getState().EmpListId;
-    debugger
+    //debugger
     this.props.getDefaultControlsData(empListId);
   }
   //adds row in grids
   handleRowAdd(section) {
-    if (section == "Education") {
       this.props.addEducationDetailRow(section);
-    }
-    else {
-      this.props.addEducationDetailRow(section);
-    }
-
   }
 
   //removes row from grid
@@ -73,8 +68,11 @@ class EducationDetail extends React.Component<any, buttonStatus> {
     eduData = formValues;
     const empListId = store.getState().EmpListId;
     // Call the connected dispatch to create new purchase request
-    this.props.saveDataToSPList(eduData, empListId);
+    // this.props.saveDataToSPList(eduData, empListId);
     this.setState({ buttonDisabled: true })
+    let newEmpServiceObj: NewEmpService = new NewEmpService();
+    debugger;
+    newEmpServiceObj.saveEduDataInList(eduData,empListId)
   }
 
   public render() {
@@ -89,11 +87,21 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                 <button type="button" onClick={() => this.handleRowAdd("Education")}>+</button>
               </td>
             </tr>
-            {console.log(this.props)}
+            {console.log(this.props.Education)}
             {
 
               this.props.Education.educationDetails.map((education, i) => {
-                return (<tr key={i}><td><label>Diploma/Degree</label><Control.select model={`Education.educationDetails[${i}].DiplomaDegree`} defaultValue={education.DiplomaDegree} id="education.DiplomaDegree"><option></option><option value="Graduation">Graduation</option><option value="Diploma">Diploma</option><option value="12th Education">12th Education</option><option value="10th Education">10th Education</option></Control.select></td><td><label>Grade</label><Control.text model={`Education.educationDetails[${i}].Grade`} id={education.Grade}></Control.text></td><td><label>StartYear</label><Control.text model={`Education.educationDetails[${i}].StartYear`} id={education.StartYear} placeholder="YYYY"></Control.text></td><td><label>EndYear</label><Control.text model={`Education.educationDetails[${i}].EndYear`} id={education.EndYear} placeholder="YYYY"></Control.text></td><td><label>Board</label><Control.text model={`Education.educationDetails[${i}].Board`} id={education.Board}></Control.text></td> <td><label>SchoolCollege</label><Control.text model={`Education.educationDetails[${i}].SchoolCollege`} id={education.SchoolCollege}></Control.text></td><td><label>DegreeName</label><Control.text model={`Education.educationDetails[${i}].DegreeName`} id={education.DegreeName}></Control.text></td><td><button type="button" onClick={() => this.handleRowRemove("Education", i)}>-</button></td></tr>)
+                return (
+                <tr>
+                  <td><label>Diploma/Degree</label>
+                <Control.select  model={`Education.educationDetails[${i}].DiplomaDegree`}  id={i}><option></option>
+                <option value="Graduation">Graduation</option><option value="Diploma">Diploma</option><option value="12th Education">12th Education</option>
+                <option value="10th Education">10th Education</option></Control.select></td>
+                
+                <td><label>Grade</label>
+                <Control.text model={`Education.educationDetails[${i}].Grade`} id={education.Grade}>
+                  </Control.text></td><td><label>StartYear</label><Control.text model={`Education.educationDetails[${i}].StartYear`} id={education.StartYear} placeholder="YYYY"></Control.text></td><td><label>EndYear</label><Control.text model={`Education.educationDetails[${i}].EndYear`} id={education.EndYear} placeholder="YYYY"></Control.text></td><td><label>Board</label><Control.text model={`Education.educationDetails[${i}].Board`} id={education.Board}></Control.text></td> <td><label>SchoolCollege</label><Control.text model={`Education.educationDetails[${i}].SchoolCollege`} id={education.SchoolCollege}></Control.text></td><td><label>DegreeName</label><Control.text model={`Education.educationDetails[${i}].DegreeName`} id={education.DegreeName}></Control.text></td><td>
+                  <button type="button" onClick={() => this.handleRowRemove("Education", i)}>-</button></td></tr>)
               })}
 
           </table >
@@ -118,7 +126,7 @@ class EducationDetail extends React.Component<any, buttonStatus> {
   }
 }
 const mapStateToProps = function (state) {
-  console.log(state)
+  //console.log(state)
   return state;
 }
 
@@ -137,9 +145,9 @@ const mapDispatchToProps = (dispatch): IEducationDetailConnectedDispatch => {
     removeEducationDetailRow: (section, index) => {
       return dispatch(removeEducationDetailRow(section, index))
     },
-    saveDataToSPList: (eduData, empListId) => {
-      return dispatch(SaveDataToSPList(eduData, empListId.EmpListID))
-    }
+    // saveDataToSPList: (eduData, empListId) => {
+    //   return dispatch(SaveDataToSPList(eduData, empListId.EmpListID))
+    // }
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(EducationDetail);

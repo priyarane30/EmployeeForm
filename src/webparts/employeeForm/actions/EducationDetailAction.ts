@@ -61,8 +61,9 @@ export function SetTabName(tabData: ICommonState) {
 
 //add rows in detail grids
 export function addEducationDetailRow(section){
-    return dispatch=>{
-        if(section=="Education"){
+    var actionObj;
+        if(section=="Education")
+        {
         //add row in education detail grid
         let initialEducationDetailGrid=
         {
@@ -73,12 +74,13 @@ export function addEducationDetailRow(section){
             Board: "",
             SchoolCollege:"",
             DegreeName:"" 
-         } 
-          dispatch({
+         }
+
+         actionObj = {
               type:ActionTypes.AddEducationDetailRow,
               payload:initialEducationDetailGrid
           }
-          )
+          
         }
         //add row in certification detail grid
         else{
@@ -89,13 +91,14 @@ export function addEducationDetailRow(section){
                 InstituteName: '',
                 GradePercentage: ''
             }
-            dispatch({
+            actionObj = {
                 type:ActionTypes.AddCertiDetailRow,
                 payload:initialCertificationDetailGrid
-            })
+            }
         }
+
+        return actionObj;
     }
-}
 
 //remove rows from detail grids
 export function removeEducationDetailRow(section,index){
