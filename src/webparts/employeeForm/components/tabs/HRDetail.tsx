@@ -61,7 +61,7 @@ class HRDetail extends React.Component<any> {
                     </div>
                     <div className='col'> {/* Employment Status */}
                         <label>Employment Status:</label>
-                        <Control.select model="HR.employementStatus" id="HR.employementStatus">
+                        <Control.select model="HR.employementStatus" id="HR.employementStatus" value="HR.employeeStatus">
                             <option>Assigned to HR</option>
                             {/* {this.props.HR.employmentStatusOptions.map(empstatus => {
                                 return <option key={empstatus} value={empstatus}>{empstatus}</option>

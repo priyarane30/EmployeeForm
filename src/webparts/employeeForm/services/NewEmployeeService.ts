@@ -2,7 +2,6 @@ import INewEmpRequestService from './INewEmpRequestService';
 import { INewFormState } from "../state/INewFormControlsState";
 import { IHRState } from "../state/IHRSectionControlsState";
 import { IEducationDetailState } from "../state/IEducationDetailState";
-import { IProfessionalDetailState } from "../state/IProfessionalDetailControlState";
 import axios from 'axios';
 import { AppConstats, ListNames } from '../AppConstants';
 import pnp from "sp-pnp-js";
@@ -284,13 +283,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
 
     //End EducationDetail Section
     //Start Professional Detail Section
-    getPDFormControlState(): Promise<any> {
-        let pdControlsState = {} as IProfessionalDetailState;
-        return this.getOptionsFromMaster(ListNames.REASONFORLEAVING, 'Title').then(statusResp => {
-            pdControlsState.reasonOfLeavingOptions = statusResp;
-            return pdControlsState;
-        });
-    }
+    
 
     //End Professional Detail Section
 

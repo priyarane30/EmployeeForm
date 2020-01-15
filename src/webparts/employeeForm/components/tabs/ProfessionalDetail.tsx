@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { Form, Control } from 'react-redux-form';
-import { ICommonState } from '../../state/ICommonState';
+import { ICommonState, IEmpListIdState } from "../../state/ICommonState";
 import { connect } from "react-redux";
-import { SetTabName, GetInitialControlValuesAction} from "../../actions/ProfessionalDetailFormControlsValuesAction";
+//import { SetTabName, GetInitialControlValuesAction} from "../../actions/ProfessionalDetailFormControlsValuesAction";
 import { IProfessionalDetailState } from '../../state/IProfessionalDetailControlState';
-
+import { store } from "../../store/ConfigureStore";
+import NewEmpService from '../../services/NewEmployeeService';
 // Represents the connected dispatch
 interface IPDConnectedDispatch {
     setTabName: (tabName: ICommonState) => void;
@@ -15,7 +16,7 @@ interface IPDConnectedDispatch {
 
 }
 
-class ProfessionalDetail extends React.Component<any> {
+export default class ProfessionalDetail extends React.Component<any> {
     constructor(props) {
         super(props);
     }
@@ -35,7 +36,8 @@ class ProfessionalDetail extends React.Component<any> {
                     <label>Fresher:</label>
                     <Control.checkbox model='ProfessionalDetail.Fresher' id='ProfessionalDetail.Fresher' />
                 </div>
-                <Form model="ProfessionalDetail" onSubmit={(val) => this.handleSubmit(val)}>
+                <Control.text model ='ProfessionalDetail.Fresher' id= 'ProfessionalDetail.Fresher'/>
+                <Form model="ProfessionalDetail.Fresher" onSubmit={(val) => this.handleSubmit(val)}>
                     <table >
                         <tr>
                             <th>Organization</th>
@@ -75,19 +77,19 @@ class ProfessionalDetail extends React.Component<any> {
     }
 }
 
-const mapStateToProps = function (state) {
-    console.log(state)
-    return state;
-}
+// const mapStateToProps = function (state) {
+//     console.log(state)
+//     return state;
+// }
 
-// Maps dispatch to props
-const mapDispatchToProps = (dispatch): IPDConnectedDispatch => {
-    return {
-        setTabName: SetTabName,
-        //setReqDigest : SetReqDigest,
-        getDefaultControlsData: () => {
-            return dispatch(GetInitialControlValuesAction());
-        }
-    };
-};
-export default connect(mapStateToProps, mapDispatchToProps)(ProfessionalDetail);
+// // Maps dispatch to props
+// const mapDispatchToProps = (dispatch): IPDConnectedDispatch => {
+//     return {
+//         setTabName: SetTabName,
+//         //setReqDigest : SetReqDigest,
+//         getDefaultControlsData: () => {
+//             return dispatch(GetInitialControlValuesAction());
+//         }
+//     };
+// };
+// export default connect(mapStateToProps, mapDispatchToProps)(ProfessionalDetail);
