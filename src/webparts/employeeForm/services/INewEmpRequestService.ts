@@ -11,9 +11,9 @@ export default interface INewEmpRequestService {
     getusingCallback: (name: string) => object;
 
     //Start HR Section
-    getHRFormControlState(): Promise<any>;
+    getHRFormControlState(EmpListID): Promise<any>;
 
-    HrAddNewEmployee(empReqData: IHRState): Promise<any>;
+    HrAddNewEmployee(empReqData: IHRState,EmpListID): Promise<any>;
     //End HR Section
 
     /**End HR Section*/
