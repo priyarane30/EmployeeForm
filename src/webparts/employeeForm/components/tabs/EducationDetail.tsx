@@ -6,7 +6,6 @@ import {
   GetInitialControlValuesAction,
   addEducationDetailRow,
   removeEducationDetailRow,
- 
 } from "../../actions/EducationDetailAction";
 import { connect } from "react-redux";
 import { IEducationDetailState } from "../../state/IEducationDetailState";
@@ -35,7 +34,6 @@ class EducationDetail extends React.Component<any, buttonStatus> {
     this.state = { buttonDisabled: false }
   }
   componentDidMount() {
-    console.log("Eduction Details");
     const empListId = store.getState().EmpListId;
     //debugger
     this.props.getDefaultControlsData(empListId);
@@ -83,9 +81,7 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                 <button type="button" onClick={() => this.handleRowAdd("Education")}>+</button>
               </td>
             </tr>
-            {console.log(this.props.Education)}
             {
-
               this.props.Education.educationDetails.map((education, i) => {
                 return (
                 <tr>
@@ -117,7 +113,7 @@ class EducationDetail extends React.Component<any, buttonStatus> {
           <table>
 
             <tr>
-              <th colSpan={2} style={{ textAlign: "left" }}>Education details</th>
+              <th colSpan={2} style={{ textAlign: "left" }}>Certification details</th>
               <td colSpan={4} style={{ textAlign: "left" }}>
                 <button type="button" onClick={() => this.handleRowAdd("Certification")}>+</button>
               </td>
