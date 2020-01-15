@@ -1,17 +1,16 @@
 import * as React from "react";
 import { Form, Control } from "react-redux-form";
-import { ICommonState, IEmpListIdState } from "../../../state/ICommonState";
+import { ICommonState, IEmpListIdState } from "../../state/ICommonState";
 import {
   SetTabName,
   GetInitialControlValuesAction,
   addEducationDetailRow,
   removeEducationDetailRow,
-  SaveDataToSPList
-} from "../../../actions/EducationDetailAction";
+} from "../../actions/EducationDetailAction";
 import { connect } from "react-redux";
-import { IEducationDetailState } from "../../../state/IEducationDetailState";
-import { store } from "../../../store/ConfigureStore";
-import NewEmpService from '../../../services/NewEmployeeService';
+import { IEducationDetailState } from "../../state/IEducationDetailState";
+import { store } from "../../store/ConfigureStore";
+import NewEmpService from '../../services/NewEmployeeService';
 interface buttonStatus {
   buttonDisabled: boolean
 }
@@ -26,9 +25,6 @@ interface IEducationDetailConnectedDispatch {
 
   //removes selected array from state
   removeEducationDetailRow: (section, index) => void;
-
-  //save data in SP list
-  //saveDataToSPList: (eduData: IEducationDetailState, empListId: IEmpListIdState) => void;
 }
 
 class EducationDetail extends React.Component<any, buttonStatus> {
@@ -38,7 +34,6 @@ class EducationDetail extends React.Component<any, buttonStatus> {
     this.state = { buttonDisabled: false }
   }
   componentDidMount() {
-    console.log("Eduction Details");
     const empListId = store.getState().EmpListId;
     //debugger
     this.props.getDefaultControlsData(empListId);
@@ -59,7 +54,7 @@ class EducationDetail extends React.Component<any, buttonStatus> {
 
   }
 
-  handleSubmit(formValues) {
+  async handleSubmit(formValues) {
     // Do anything you want with the form value
     const CommonState: ICommonState = { CurrentForm: "Education" };
     this.props.setTabName(CommonState);
@@ -68,11 +63,10 @@ class EducationDetail extends React.Component<any, buttonStatus> {
     eduData = formValues;
     const empListId = store.getState().EmpListId;
     // Call the connected dispatch to create new purchase request
-    // this.props.saveDataToSPList(eduData, empListId);
     this.setState({ buttonDisabled: true })
     let newEmpServiceObj: NewEmpService = new NewEmpService();
-    debugger;
-    newEmpServiceObj.saveEduDataInList(eduData,empListId)
+    await newEmpServiceObj.saveEduDataInList(eduData,empListId)
+    this.setState({ buttonDisabled: false})
   }
 
   public render() {
@@ -87,39 +81,62 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                 <button type="button" onClick={() => this.handleRowAdd("Education")}>+</button>
               </td>
             </tr>
-            {console.log(this.props.Education)}
             {
-
               this.props.Education.educationDetails.map((education, i) => {
                 return (
                 <tr>
                   <td><label>Diploma/Degree</label>
-                <Control.select  model={`Education.educationDetails[${i}].DiplomaDegree`}  id={i}><option></option>
-                <option value="Graduation">Graduation</option><option value="Diploma">Diploma</option><option value="12th Education">12th Education</option>
-                <option value="10th Education">10th Education</option></Control.select></td>
-                
-                <td><label>Grade</label>
-                <Control.text model={`Education.educationDetails[${i}].Grade`} id={education.Grade}>
-                  </Control.text></td><td><label>StartYear</label><Control.text model={`Education.educationDetails[${i}].StartYear`} id={education.StartYear} placeholder="YYYY"></Control.text></td><td><label>EndYear</label><Control.text model={`Education.educationDetails[${i}].EndYear`} id={education.EndYear} placeholder="YYYY"></Control.text></td><td><label>Board</label><Control.text model={`Education.educationDetails[${i}].Board`} id={education.Board}></Control.text></td> <td><label>SchoolCollege</label><Control.text model={`Education.educationDetails[${i}].SchoolCollege`} id={education.SchoolCollege}></Control.text></td><td><label>DegreeName</label><Control.text model={`Education.educationDetails[${i}].DegreeName`} id={education.DegreeName}></Control.text></td><td>
-                  <button type="button" onClick={() => this.handleRowRemove("Education", i)}>-</button></td></tr>)
+                  <Control.select  model={`Education.educationDetails[${i}].DiplomaDegree`}  id={i}>
+                  <option value="Graduation">Graduation</option>
+                  <option value="Diploma">Diploma</option>
+                  <option value="12th Education">12th Education</option>
+                  <option value="10th Education">10th Education</option></Control.select></td>
+                  <td><label>Grade</label>
+                  <Control.text model={`Education.educationDetails[${i}].Grade`} id={education.Grade}>
+                  </Control.text></td>
+                  <td><label>StartYear</label>
+                  <Control.text model={`Education.educationDetails[${i}].StartYear`} id={education.StartYear} placeholder="YYYY"></Control.text></td>
+                  <td><label>EndYear</label>
+                  <Control.text model={`Education.educationDetails[${i}].EndYear`} id={education.EndYear} placeholder="YYYY"></Control.text></td>
+                  <td><label>Board</label>
+                  <Control.text model={`Education.educationDetails[${i}].Board`} id={education.Board}></Control.text></td>
+                  <td><label>SchoolCollege</label>
+                  <Control.text model={`Education.educationDetails[${i}].SchoolCollege`} id={education.SchoolCollege}></Control.text></td>
+                  <td><label>DegreeName</label>
+                  <Control.text model={`Education.educationDetails[${i}].DegreeName`} id={education.DegreeName}></Control.text></td>
+                  <td>
+                  <button type="button" onClick={() => this.handleRowRemove("Education", i)}>-</button></td>
+                </tr>)
               })}
 
           </table >
           <table>
 
             <tr>
-              <th colSpan={2} style={{ textAlign: "left" }}>Education details</th>
+              <th colSpan={2} style={{ textAlign: "left" }}>Certification details</th>
               <td colSpan={4} style={{ textAlign: "left" }}>
                 <button type="button" onClick={() => this.handleRowAdd("Certification")}>+</button>
               </td>
             </tr>
             {this.props.Education.certificationDetails.map((certification, i) => {
-              return (<tr key={i}><td><label>Certification</label><Control.text model={`Education.certificationDetails[${i}].Certification`} id="certification.Certification"></Control.text></td><td><label>Start Year</label><Control.text model={`Education.certificationDetails[${i}].StartYear`} id="certification.StartYear" placeholder="YYYY"></Control.text></td><td><label>YearOfCompletion</label><Control.text model={`Education.certificationDetails[${i}].YearOfCompletion`} id="certification.YearOfCompletion" placeholder="YYYY"></Control.text></td><td><label>InstituteName</label><Control.text model={`Education.certificationDetails[${i}].InstituteName`} id="certification.InstituteName"></Control.text></td><td><label>GradePercentage</label><Control.text model={`Education.certificationDetails[${i}].GradePercentage`} id="certification.GradePercentage"></Control.text></td><td><button type="button" onClick={() => this.handleRowRemove("Certification", i)}>-</button></td></tr>)
+              return (
+              <tr>
+                <td><label>Certification</label>
+                <Control.text model={`Education.certificationDetails[${i}].Certification`} id="certification.Certification"></Control.text></td>
+                <td><label>Start Year</label>
+                <Control.text model={`Education.certificationDetails[${i}].StartYear`} id="certification.StartYear" placeholder="YYYY"></Control.text></td>
+                <td><label>YearOfCompletion</label>
+                <Control.text model={`Education.certificationDetails[${i}].YearOfCompletion`} id="certification.YearOfCompletion" placeholder="YYYY"></Control.text></td>
+                <td><label>InstituteName</label>
+                <Control.text model={`Education.certificationDetails[${i}].InstituteName`} id="certification.InstituteName"></Control.text></td>
+                <td><label>GradePercentage</label>
+                <Control.text model={`Education.certificationDetails[${i}].GradePercentage`} id="certification.GradePercentage"></Control.text></td>
+                <td>
+                  <button type="button" onClick={() => this.handleRowRemove("Certification", i)}>-</button></td>
+              </tr>)
             })}
-
           </table>
           <button type="submit" disabled={this.state.buttonDisabled}>Submit</button>
-
         </Form >
       </div >
     );
@@ -145,9 +162,6 @@ const mapDispatchToProps = (dispatch): IEducationDetailConnectedDispatch => {
     removeEducationDetailRow: (section, index) => {
       return dispatch(removeEducationDetailRow(section, index))
     },
-    // saveDataToSPList: (eduData, empListId) => {
-    //   return dispatch(SaveDataToSPList(eduData, empListId.EmpListID))
-    // }
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(EducationDetail);
