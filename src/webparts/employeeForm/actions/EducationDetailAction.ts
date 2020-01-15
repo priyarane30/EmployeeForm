@@ -117,12 +117,3 @@ export function removeEducationDetailRow(section,index){
         }
     }
 }
-
-//saves data in sp  list
-export function SaveDataToSPList(eduData,EmpListID){
-    return dispatch => {
-        let newEmpServiceObj: NewEmpService = new NewEmpService();
-        debugger;
-        newEmpServiceObj.saveEduDataInList(eduData,EmpListID)
-    }
-}

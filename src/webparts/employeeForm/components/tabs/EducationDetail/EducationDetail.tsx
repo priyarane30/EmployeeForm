@@ -6,7 +6,7 @@ import {
   GetInitialControlValuesAction,
   addEducationDetailRow,
   removeEducationDetailRow,
-  SaveDataToSPList
+ 
 } from "../../../actions/EducationDetailAction";
 import { connect } from "react-redux";
 import { IEducationDetailState } from "../../../state/IEducationDetailState";
@@ -26,9 +26,6 @@ interface IEducationDetailConnectedDispatch {
 
   //removes selected array from state
   removeEducationDetailRow: (section, index) => void;
-
-  //save data in SP list
-  //saveDataToSPList: (eduData: IEducationDetailState, empListId: IEmpListIdState) => void;
 }
 
 class EducationDetail extends React.Component<any, buttonStatus> {
@@ -68,10 +65,8 @@ class EducationDetail extends React.Component<any, buttonStatus> {
     eduData = formValues;
     const empListId = store.getState().EmpListId;
     // Call the connected dispatch to create new purchase request
-    // this.props.saveDataToSPList(eduData, empListId);
     this.setState({ buttonDisabled: true })
     let newEmpServiceObj: NewEmpService = new NewEmpService();
-    debugger;
     await newEmpServiceObj.saveEduDataInList(eduData,empListId)
     this.setState({ buttonDisabled: false})
   }
@@ -146,9 +141,6 @@ const mapDispatchToProps = (dispatch): IEducationDetailConnectedDispatch => {
     removeEducationDetailRow: (section, index) => {
       return dispatch(removeEducationDetailRow(section, index))
     },
-    // saveDataToSPList: (eduData, empListId) => {
-    //   return dispatch(SaveDataToSPList(eduData, empListId.EmpListID))
-    // }
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(EducationDetail);
