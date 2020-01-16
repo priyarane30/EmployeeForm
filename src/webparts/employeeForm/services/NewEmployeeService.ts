@@ -288,10 +288,11 @@ export default class NewEmployeeService implements INewEmpRequestService {
     //End Professional Detail Section
 
     //Get Payroll
-    getPayrollControlState(): Promise<any> {
+    getPayrollControlState(EmpListID): Promise<any> {
         let payrollControlsState = {} as IPayrollState;
-        return this.getDataFromList(ListNames.EMPLOYEECONTACT, 'hirvita.rajyaguru@synoverge.com').then(statusResp => {
+       // return this.getDataFromList(ListNames.EMPLOYEECONTACT, 'hirvita.rajyaguru@synoverge.com').then(statusResp => {
             //payrollControlsState = statusResp;
+            return this.getDataFromList(ListNames.EMPLOYEECONTACT, EmpListID).then(statusResp => {           
             payrollControlsState.UserID = statusResp.UserID;
             payrollControlsState.ESINo = statusResp.ESINo;
             payrollControlsState.ESIDispensary = statusResp.ESIDispensary;
@@ -308,10 +309,10 @@ export default class NewEmployeeService implements INewEmpRequestService {
     }
 
     //Save Payroll
-    PayrollAddEmployee(empReqData: IPayrollState): Promise<any> {
+    PayrollAddEmployee(empReqData: IPayrollState,EmpListID): Promise<any> {
         let web = new Web(AppConstats.SITEURL);
-        // return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empReqData.UserID).update({
-        return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
+         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(EmpListID).update({ 
+       // return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
             //ESIApplicable:empReqData.ESIApplicable,
             ESINo: empReqData.ESINo,
             ESIDispensary: empReqData.ESIDispensary,

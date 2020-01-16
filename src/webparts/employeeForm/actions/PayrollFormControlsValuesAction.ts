@@ -5,7 +5,7 @@ import NewEmpService from '../services/NewEmployeeService';
 import NewEmployeeService from '../services/NewEmployeeService';
 
 
-export function GetPayrollAction(){
+export function GetPayrollAction(EmpListID){
     return dispatch => {
           
         let formControlState = {
@@ -13,7 +13,7 @@ export function GetPayrollAction(){
         } as IPayrollState;
 
         let newEmpServiceObj: NewEmpService = new NewEmpService();
-        newEmpServiceObj.getPayrollControlState().then((resp: IPayrollState) => {
+        newEmpServiceObj.getPayrollControlState(EmpListID).then((resp: IPayrollState) => {
             formControlState = resp;
             dispatch({
                 type: ActionTypes.GetPayrollFormControls,
@@ -23,11 +23,11 @@ export function GetPayrollAction(){
     }
 }
 
-// Creates a new employee request.
-export function PayrollAddEmployee(empReqData: IPayrollState) {
+//Creates a new employee request.
+export function PayrollAddEmployee(empReqData: IPayrollState,EmpListID) {
     return dispatch => {
         let newEmpReqServiceObj: NewEmployeeService = new NewEmpService();
-        newEmpReqServiceObj.PayrollAddEmployee(empReqData).then(resp => {
+        newEmpReqServiceObj.PayrollAddEmployee(empReqData,EmpListID).then(resp => {
             console.log(resp);
             alert("New Employee is added successfully");
         }).catch(() => {
@@ -35,7 +35,7 @@ export function PayrollAddEmployee(empReqData: IPayrollState) {
         });
 
         dispatch({
-            type: "ADD_PAYROLL_DATA",
+            type: ActionTypes.AddValueFromPayroll,
             payload: empReqData
         });
     }
