@@ -34,8 +34,8 @@ class EducationDetail extends React.Component<any, buttonStatus> {
     this.state = { buttonDisabled: false }
   }
   componentDidMount() {
+    console.log("did mount")
     const empListId = store.getState().EmpListId;
-    //debugger
     this.props.getDefaultControlsData(empListId);
   }
   //adds row in grids
@@ -70,7 +70,9 @@ class EducationDetail extends React.Component<any, buttonStatus> {
   }
 
   public render() {
+    {console.log("render")}
     return (
+      
       <div>
         <Form model="Education" onSubmit={val => this.handleSubmit(val)}>
 

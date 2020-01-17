@@ -15,11 +15,12 @@ export default interface INewEmpRequestService {
     getHRFormControlState(EmpListID): Promise<any>;
 
     //Save value in EmpListID
-    HrAddNewEmployee(empReqData: IHRState,EmpListID): Promise<any>;
-    
+    HrAddNewEmployee(empReqData: IHRState, EmpListID): Promise<any>;
+
 
     /**Start PayRoll Details Section*/
-    //getPDFormControlState(): Promise<any>;
+    getProfessionalDetailsFromList(listName, EmpListID): Promise<any>;
+    getTechnicalDetailsFromList(listName, EmpListID): Promise<any>;
     /**End PayRoll Details Section*/
     /**
      class CallbackTest

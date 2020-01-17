@@ -49,7 +49,6 @@ export function HrAddNewEmployee(empReqData: IHRState,EmpListID) {
     return dispatch => {
         let newEmpReqServiceObj: NewEmployeeService = new NewEmpService();
         newEmpReqServiceObj.HrAddNewEmployee(empReqData,EmpListID).then(resp => {
-            console.log(resp);
             alert("New Employee is added successfully");
         }).catch(() => {
             alert("Sorry. Error while adding employee...");
@@ -59,7 +58,7 @@ export function HrAddNewEmployee(empReqData: IHRState,EmpListID) {
             type: ActionTypes.AddValueFromHR,
             payload: empReqData
         });
-    }
+    };
 }
 
 
@@ -68,5 +67,5 @@ export function SetTabName(tabData: ICommonState) {
     return ({
         type: "SET_TAB",
         payload: tabData
-    })
+    });
 }

@@ -1,23 +1,23 @@
 import { IHRState } from '../state/IHRSectionControlsState';
 
 //Initialise state of HR 
-// export const hrInitialState: IHRState = {
-//     UserAlies: 'Hitaxi',
-//     ADLogin: '',
-//     Manager: '',
-//     employementStatus: '',
-//     DateOfLeaving: '', //dateTime?
-//     reasonForLeaving: '',
-//     ResigntionDate: '', //datetime?
-//     EligibleforRehire: false,
+export const hrInitialState: IHRState = {
+    UserAlies: '',
+    ADLogin: '',
+    Manager: '',
+    employementStatus: '',
+    DateOfLeaving: '', //dateTime?
+    reasonForLeaving: '',
+    ResigntionDate: '', //datetime?
+    EligibleforRehire: false,
 
-//     //Represent the choices to be displayed in dropdown when the form loads.
-//     employmentStatusOptions: [],
-//     reasonOfLeavingOptions: []
-// };
+    //Represent the choices to be displayed in dropdown when the form loads.
+    employmentStatusOptions: [],
+    reasonOfLeavingOptions: []
+};
 
 
-export const HRSectionReducer = (state: IHRState = null, action) => {
+export const HRSectionReducer = (state: IHRState = hrInitialState, action) => {
     switch (action.type) {
 
         // Gets the values for all fields from SharePoint master/choice columns.

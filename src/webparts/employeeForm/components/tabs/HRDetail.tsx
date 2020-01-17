@@ -22,17 +22,16 @@ class HRDetail extends React.Component<any> {
     constructor(props) {
         super(props);
     }
-    componentDidMount() {
+    public componentDidMount() {
         console.log("HR Details");
         const empListId = store.getState().EmpListId;
-        console.log(empListId);
         this.props.getDefaultControlsData(empListId);
     }
-    handleSubmit(formValues) {
+    public handleSubmit = (formValues) => {
         console.log(formValues);
         const CommonState: ICommonState = { CurrentForm: "HR" };
         this.props.setTabName(CommonState);
-        
+
         //Save The Data
         let empHrData = {} as IHRState;
         empHrData = formValues;
@@ -42,8 +41,7 @@ class HRDetail extends React.Component<any> {
     }
 
     public render() {
-        console.log(this.props)
-        if (!this.props.HR) return (<div> Loading.... </div>)
+        if (!this.props.HR) return (<div> Loading.... </div>);
         return (
             <div>
                 <Form model="HR" onSubmit={(val) => this.handleSubmit(val)}>
@@ -61,14 +59,11 @@ class HRDetail extends React.Component<any> {
                     </div>
                     <div className='col'> {/* Employment Status */}
                         <label>Employment Status:</label>
-                        <Control.select model="HR.employementStatus" id="HR.employementStatus" value="HR.employeeStatus">
-                            <option>Assigned to HR</option>
-                            {/* {this.props.HR.employmentStatusOptions.map(empstatus => {
-                                return <option key={empstatus} value={empstatus}>{empstatus}</option>
-                            })}; */}
-                            <option>Active</option>
-                            <option>Inactive</option>
-                            <option>Saved</option>
+                        <Control.select model="HR.employementStatus" id="HR.employementStatus" >
+                            <option value="Assigned to HR">Assigned to HR</option>
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                            <option value="Saved">Saved</option>
                         </Control.select>
                     </div>
                     <div className='col'> {/* Date of leaving*/}
@@ -81,7 +76,8 @@ class HRDetail extends React.Component<any> {
                             <option>--Select--</option>
 
                             {this.props.HR.reasonOfLeavingOptions.map(reasons => {
-                                return <option key={reasons} value={reasons}>{reasons}</option>
+                                return (<option key={reasons}
+                                    value={reasons}>{reasons}</option>);
                             })};
                         </Control.select>
                     </div>
@@ -98,10 +94,10 @@ class HRDetail extends React.Component<any> {
             </div>);
     }
 }
-const mapStateToProps = function (state) {
-    console.log(state)
+const mapStateToProps = (state) => {
+    console.log(state);
     return state;
-}
+};
 
 // Maps dispatch to props
 const mapDispatchToProps = (dispatch): IHRConnectedDispatch => {
