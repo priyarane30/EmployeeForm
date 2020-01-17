@@ -13,7 +13,7 @@ export function GetInitialControlValuesAction(EmpListID) {
         let payLoadArrayCertificationDetail=[];
        
        //gets already set education details for user
-        newEmpServiceObj.getEduDataFromList(ListNames.EducationDetail, EmpListID)
+        newEmpServiceObj.getMultipleDataFromListUsingParentID(ListNames.EducationDetail, EmpListID)
         .then((resp) => {
             console.log(resp)
             resp.forEach(element => {
@@ -31,7 +31,7 @@ export function GetInitialControlValuesAction(EmpListID) {
             });
         });
         //get already existing certification details for user
-        newEmpServiceObj.getEduDataFromList(ListNames.CertificationDetail,EmpListID)
+        newEmpServiceObj.getMultipleDataFromListUsingParentID(ListNames.CertificationDetail,EmpListID)
         .then((resp)=>{
             resp.forEach(element=>{
                 payLoadArrayCertificationDetail.push({

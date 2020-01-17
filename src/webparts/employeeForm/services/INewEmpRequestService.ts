@@ -3,9 +3,9 @@ import { IHRState } from '../state/IHRSectionControlsState';
 // Represents the service to interact with SharePoint to work with employee detail request.
 export default interface INewEmpRequestService {
     //Start Employee Detail Form
-    getNewFormControlState(): Promise<any>;
+    getNewFormControlState(EmpListId): Promise<any>;
 
-    AddNewEmpRequest(empData: INewFormState): Promise<any>;
+    AddEmpFormData(empData: INewFormState,EmpListId): Promise<any>;
     //End  Employee Detail Form
     //public myCallback: (name: type) => returntype;
     getusingCallback: (name: string) => object;
@@ -15,11 +15,12 @@ export default interface INewEmpRequestService {
     getHRFormControlState(EmpListID): Promise<any>;
 
     //Save value in EmpListID
-    HrAddNewEmployee(empReqData: IHRState,EmpListID): Promise<any>;
-    
+    HrAddNewEmployee(empReqData: IHRState, EmpListID): Promise<any>;
+
 
     /**Start PayRoll Details Section*/
-    //getPDFormControlState(): Promise<any>;
+    getProfessionalDetailsFromList(listName, EmpListID): Promise<any>;
+    getTechnicalDetailsFromList(listName, EmpListID): Promise<any>;
     /**End PayRoll Details Section*/
     /**
      class CallbackTest

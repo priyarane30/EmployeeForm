@@ -11,6 +11,7 @@ import { connect } from "react-redux";
 import { IEducationDetailState } from "../../state/IEducationDetailState";
 import { store } from "../../store/ConfigureStore";
 import NewEmpService from '../../services/NewEmployeeService';
+
 interface buttonStatus {
   buttonDisabled: boolean
 }
@@ -34,8 +35,8 @@ class EducationDetail extends React.Component<any, buttonStatus> {
     this.state = { buttonDisabled: false }
   }
   componentDidMount() {
+    console.log("did mount")
     const empListId = store.getState().EmpListId;
-    //debugger
     this.props.getDefaultControlsData(empListId);
   }
   //adds row in grids
@@ -45,12 +46,9 @@ class EducationDetail extends React.Component<any, buttonStatus> {
 
   //removes row from grid
   handleRowRemove(section, index) {
-    if (section == "Education") {
+    
       this.props.removeEducationDetailRow(section, index);
-    }
-    else {
-      this.props.removeEducationDetailRow(section, index);
-    }
+    
 
   }
 
@@ -70,7 +68,9 @@ class EducationDetail extends React.Component<any, buttonStatus> {
   }
 
   public render() {
+    {console.log("render")}
     return (
+      
       <div>
         <Form model="Education" onSubmit={val => this.handleSubmit(val)}>
 
