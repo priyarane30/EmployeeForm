@@ -10,15 +10,17 @@ export default interface INewEmpRequestService {
     //public myCallback: (name: type) => returntype;
     getusingCallback: (name: string) => object;
 
-    //Start HR Section
-    getHRFormControlState(): Promise<any>;
+    /**Start HR Section*/
+    //get value from List where id =EmpListID
+    getHRFormControlState(EmpListID): Promise<any>;
 
-    HrAddNewEmployee(empReqData: IHRState): Promise<any>;
-    //End HR Section
+    //Save value in EmpListID
+    HrAddNewEmployee(empReqData: IHRState,EmpListID): Promise<any>;
+    
 
-    /**End HR Section*/
-    getPDFormControlState(): Promise<any>;
-    /**End HR Section*/
+    /**Start PayRoll Details Section*/
+    //getPDFormControlState(): Promise<any>;
+    /**End PayRoll Details Section*/
     /**
      class CallbackTest
         {

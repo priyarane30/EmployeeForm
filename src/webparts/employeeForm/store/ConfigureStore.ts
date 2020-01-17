@@ -4,7 +4,7 @@ import { NewEmpRequestReducer } from "../reducers/NewEmpRequestReducer";
 import { EducationSectionReducer } from "../reducers/EducationDetailReducer";
 import { HRSectionReducer } from "../reducers/HRSectionReducer";
 import { PayRollSectionReducer } from "../reducers/PayRollReducer";
-import { ProfessionalDetailSectionReducer } from "../reducers/ProfessionalDetailSectionReducer"
+//import { ProfessionalDetailSectionReducer } from "../reducers/ProfessionalDetailSectionReducer"
 import { CommonReducer, EmpListIdReducer } from "../reducers/CommonReducer";
 import thunk from "redux-thunk";
 // import { reducer as formReducer } from 'redux-form';
@@ -38,7 +38,7 @@ export const store = createStore(
             Employee: NewEmpRequestReducer,
             HR: HRSectionReducer,
             Education : EducationSectionReducer,
-            ProfessionalDetail:ProfessionalDetailSectionReducer,
+          //  ProfessionalDetail:ProfessionalDetailSectionReducer,
             Payroll:PayRollSectionReducer
         })
     }),

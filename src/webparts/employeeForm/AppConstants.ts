@@ -34,6 +34,6 @@ export const ActionTypes = {
     RemoveCertiDetailRow: 'REMOVE_CERTIDETAIL_ROW',
     GetPdFromControls: 'GET_PD_FORM_CONTROLS',
     GetPayrollFormControls: 'GET_PAYROLL_FORM_CONTROLS',
-    PayrollAddNewEmployee: 'ADD_PAYROLL_DATA',
+    AddValueFromPayroll: 'ADD_PAYROLL_DATA',
     AddValueFromHR: 'ADD_VALUE_FROM_HR'
 }

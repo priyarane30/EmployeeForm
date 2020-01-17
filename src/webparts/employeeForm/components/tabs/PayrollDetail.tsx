@@ -1,20 +1,21 @@
 import * as React from 'react';
 import { Form, Control, Field } from 'react-redux-form';
-import { ICommonState } from '../../state/ICommonState';
+import { ICommonState, IEmpListIdState } from '../../state/ICommonState';
 import {IPayrollState} from '../../state/IPayrollState';
 import { connect } from "react-redux";
 import NewEmpService from '../../services/NewEmployeeService';
 import NewEmployeeService from '../../services/NewEmployeeService';
 import {GetPayrollAction,SetTabName,PayrollAddEmployee} from '../../actions/PayrollFormControlsValuesAction'
+import { store } from "../../store/ConfigureStore";
 
 // Represents the connected dispatch
 interface IPayrollConnectedDispatch {
     setTabName: (tabName: ICommonState) => void;
     
-    getPayrollFormControls: () => void;
+    getPayrollFormControls: (empListId:IEmpListIdState) => void;
   
    //save data
-   PayrollAddEmployee: (empPayrollData: IPayrollState) => void;
+   AddValueFromPayroll: (empPayrollData: IPayrollState,empListId:IEmpListIdState) => void;
 }
 
 interface IState {
@@ -28,7 +29,11 @@ interface IState {
    
     componentDidMount(){
         console.log("Payroll Details");
-        this.props.getPayrollFormControls();
+        //this.props.getPayrollFormControls();
+
+        const empListId = store.getState().EmpListId;
+        console.log(empListId);
+        this.props.getPayrollFormControls(empListId);
     }
 
     handleSubmit(formValues) {
@@ -47,8 +52,13 @@ interface IState {
         // Call the connected dispatch to create new purchase request
         //this.props.PayrollAddEmployee(empPayrollData);
 
+        //Save The Data
+        const empListId = store.getState().EmpListId;
+        this.props.AddValueFromPayroll(empPayrollData, empListId);
+        //EndSave The Data
+
         let newEmpReqServiceObj: NewEmployeeService = new NewEmpService();
-        newEmpReqServiceObj.PayrollAddEmployee(empPayrollData).then(resp => {
+        newEmpReqServiceObj.PayrollAddEmployee(empPayrollData,empListId).then(resp => {
             console.log(resp);
            this.setState({isVisible:true})
             alert("New Employee is added successfully");
@@ -134,12 +144,14 @@ const mapDispatchToProps = (dispatch): IPayrollConnectedDispatch => {
     return {
         setTabName: SetTabName,
         //setReqDigest : SetReqDigest,
-        getPayrollFormControls: () => {
-            return dispatch(GetPayrollAction());
+        getPayrollFormControls: (empListId) => {
+            return dispatch(GetPayrollAction(empListId.EmpListID));
         },
-        PayrollAddEmployee: (empHrData: IPayrollState) => {
-            return dispatch(PayrollAddEmployee(empHrData));
+        AddValueFromPayroll: (empPayrollData: IPayrollState,empListId) => {
+            return dispatch(PayrollAddEmployee(empPayrollData,empListId.EmpListID));
         }
     };
+
+  
 };
 export default connect(mapStateToProps, mapDispatchToProps)(PayrollDetail);

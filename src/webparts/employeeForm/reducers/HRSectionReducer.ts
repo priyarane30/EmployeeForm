@@ -26,7 +26,6 @@ export const HRSectionReducer = (state: IHRState = null, action) => {
                 ...state,
                 employmentStatusOptions: action.payload.employmentStatusOptions,
                 reasonOfLeavingOptions: action.payload.reasonOfLeavingOptions,
-                UserID: action.payload.UserID,
                 UserAlies: action.payload.UserAlies,
                 ADLogin: action.payload.ADLogin,
                 Manager: action.payload.Manager,
