@@ -11,6 +11,7 @@ export const newEmpFormControlsInitialState: INewFormState = {
     // CompanyEmail : '',
     PersonalEmail: '',
     Mobile: '',
+   
     DateOfBirth: '',//dateTime?
     Age: 0,
     BloodGroup: '',
