@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { Form, Control,createFieldClass } from 'react-redux-form';
+import { Form, Control,createFieldClass,controls } from 'react-redux-form';
 import { connect } from "react-redux";
 import { SetTabName, GetInitialControlValuesAction, AddDetailRowToGrid,RemoveDetailRowFromGrid } from "../../actions/NewFormControlsValuesAction";
 import { ICommonState } from '../../state/ICommonState';
 import { INewFormState } from '../../state/INewFormControlsState';
 import { store } from "../../store/ConfigureStore";
 import NewEmpService from '../../services/NewEmployeeService';
-import DateField from '../Fabric Components/DatePicker'
+import FabricField from '../Fabric Components/DatePicker'
 import { DatePicker } from 'office-ui-fabric-react/lib/DatePicker';
-
+import {Dropdown} from 'office-ui-fabric-react/lib/Dropdown';
 
 interface buttonStatus {
     buttonDisabled: boolean
@@ -82,14 +82,17 @@ handleRowRemove(section, index) {
 
                     <div className='col'>
                         <label>Gender:</label>
-                        <Control.select model="Employee.Gender" id=".Gender" >
-                            <option>--Select--</option>
-                            {this.props.Employee.genderOptions.map(gender => { return <option key={gender} value={gender} >{gender}</option> })};
+                        <Control.select model="Employee.Gender" id=".Gender" component={Dropdown}>
+                        mapProps={{se: (props) =>{return props.viewValue},
+                            onChange:(props)=>{return props.onChange},
+                            options:(props)=>{return props.option}}}
+                        <option>--Select--</option>
+                            {this.props.Employee.genderOptions.map(gender => { return <option key={gender} value={gender} >{gender}</option> })}; 
                         </Control.select>
-                    </div>
+                     </div>
                     <div className='col'>
                         <label>Date Of Birth:</label>
-                        <Control model='.DateOfBirth' component={DateField} 
+                        <Control model='.DateOfBirth' component={DatePicker} 
                     mapProps={{value: (props) =>{return props.viewValue},
                             onSelectDate:(props)=>{return props.onChange}}}
                     ></Control>
@@ -189,7 +192,7 @@ handleRowRemove(section, index) {
                     </div>
                     <div className='col'>
                     <label>Passport Validity</label>
-                    <Control model='.PassportValidity' component={DateField} 
+                    <Control model='.PassportValidity' component={DatePicker} 
                     mapProps={{value: (props) =>{return props.viewValue},
                             onSelectDate:(props)=>{return props.onChange}}}
                     ></Control>
@@ -211,7 +214,7 @@ handleRowRemove(section, index) {
       </div>
       <div className='col'>
           <label>Spouse DOB:</label>
-          <Control model='.SpouceDOB' id='.SpouceDOB' component={DateField} 
+          <Control model='.SpouceDOB' id='.SpouceDOB' component={DatePicker} 
                     mapProps={{value: (props) =>{return props.viewValue},
                             onSelectDate:(props)=>{return props.onChange}}}
                     ></Control>
@@ -234,7 +237,7 @@ handleRowRemove(section, index) {
                   </td>
                   <td>
                       <label>Date Of Birth</label>
-                      <Control model={`Employee.childDetailItems[${i}].DateOfBirth`} id={child.DateOfBirth} component={DateField} 
+                      <Control model={`Employee.childDetailItems[${i}].DateOfBirth`} id={child.DateOfBirth} component={DatePicker} 
                     mapProps={{value: (props) =>{return props.viewValue},
                             onSelectDate:(props)=>{return props.onChange}}}
                     ></Control>
@@ -276,6 +279,7 @@ const mapDispatchToProps = (dispatch): INewFormConnectedDispatch => {
         }
     };
 };
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(EmployeeDetail);
 
