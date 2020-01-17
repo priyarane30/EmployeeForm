@@ -2,7 +2,7 @@ export interface IBasicDetailState {
     //form controls
     FirstName: string;
     LastName: string;
-    DateofJoining: string; //datetime?
+    DateofJoining: Date; //datetime?
     Designation: string;
     Technology: string;
     CompanyEmail: string;

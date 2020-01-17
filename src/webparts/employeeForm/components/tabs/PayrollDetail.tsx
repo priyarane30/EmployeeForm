@@ -5,8 +5,9 @@ import {IPayrollState} from '../../state/IPayrollState';
 import { connect } from "react-redux";
 import NewEmpService from '../../services/NewEmployeeService';
 import NewEmployeeService from '../../services/NewEmployeeService';
-import {GetPayrollAction,SetTabName,PayrollAddEmployee} from '../../actions/PayrollFormControlsValuesAction'
+import {GetPayrollAction,SetTabName} from '../../actions/PayrollFormControlsValuesAction'
 import { store } from "../../store/ConfigureStore";
+import { ActionTypes } from '../../../employeeForm/AppConstants';
 
 // Represents the connected dispatch
 interface IPayrollConnectedDispatch {
@@ -15,7 +16,7 @@ interface IPayrollConnectedDispatch {
     getPayrollFormControls: (empListId:IEmpListIdState) => void;
   
    //save data
-   AddValueFromPayroll: (empPayrollData: IPayrollState,empListId:IEmpListIdState) => void;
+   //AddValueFromPayroll: (empPayrollData: IPayrollState,empListId:IEmpListIdState) => void;
 }
 
 interface IState {
@@ -36,40 +37,20 @@ interface IState {
         this.props.getPayrollFormControls(empListId);
     }
 
-    handleSubmit(formValues) {
-        // Do anything you want with the form value
-        console.log(formValues);
-        // Do whatever you like in here.
-        // If you connect the UserForm to the Redux store,
-        // you can dispatch actions such as:
-        // dispatch(actions.submit('user', somePromise));
-        // etc.
+   async handleSubmit(formValues) {
         const CommonState: ICommonState = { CurrentForm: "Payroll" };
         this.props.setTabName(CommonState);
-
         let empPayrollData = {} as IPayrollState;
         empPayrollData = formValues;
-        // Call the connected dispatch to create new purchase request
-        //this.props.PayrollAddEmployee(empPayrollData);
-
-        //Save The Data
-        const empListId = store.getState().EmpListId;
-        this.props.AddValueFromPayroll(empPayrollData, empListId);
-        //EndSave The Data
-
-        let newEmpReqServiceObj: NewEmployeeService = new NewEmpService();
-        newEmpReqServiceObj.PayrollAddEmployee(empPayrollData,empListId).then(resp => {
-            console.log(resp);
-           this.setState({isVisible:true})
-            alert("New Employee is added successfully");
-        }).catch(() => {
-            alert("Sorry. Error while adding employee...");
-        });
-        this.setState({isVisible:false})
+         const empListId = store.getState().EmpListId;
+          this.setState({isVisible:true})
+          debugger;
+          let newEmpServiceObj: NewEmpService = new NewEmpService();
+         await newEmpServiceObj.PayrollAddEmployee(empPayrollData,empListId)
+         alert("New Employee payroll is added ");
+         this.setState({ isVisible: false})
         
-    }
-
-
+}
 
     public render() {
         console.log(this.state.isVisible)
@@ -146,10 +127,10 @@ const mapDispatchToProps = (dispatch): IPayrollConnectedDispatch => {
         //setReqDigest : SetReqDigest,
         getPayrollFormControls: (empListId) => {
             return dispatch(GetPayrollAction(empListId.EmpListID));
-        },
-        AddValueFromPayroll: (empPayrollData: IPayrollState,empListId) => {
-            return dispatch(PayrollAddEmployee(empPayrollData,empListId.EmpListID));
         }
+        // AddValueFromPayroll: (empPayrollData: IPayrollState,empListId) => {
+        //     return dispatch(PayrollAddEmployee(empPayrollData,empListId.EmpListID));
+        // }
     };
 
   

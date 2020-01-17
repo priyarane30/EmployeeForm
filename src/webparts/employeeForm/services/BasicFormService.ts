@@ -33,10 +33,10 @@ export default class BasicFormService implements IBasicFormService {
                     debugger
                     basicFormControlsState.FirstName = mainListResp.FirstName;
                     basicFormControlsState.LastName = mainListResp.LastName;
-                    basicFormControlsState.CompanyEmail = mainListResp.CompanyEmail;
-                    basicFormControlsState.DateofJoining = "";
-                    basicFormControlsState.Designation = "";
-                    basicFormControlsState.Technology = "";
+                    basicFormControlsState.CompanyEmail = mainListResp.Email;
+                    basicFormControlsState.DateofJoining =new Date(mainListResp.DateofJoining);
+                    basicFormControlsState.Designation = mainListResp.CurrentDesignation;
+                    basicFormControlsState.Technology = mainListResp.Technology;
                     return basicFormControlsState;
                 });
             });
@@ -48,10 +48,10 @@ export default class BasicFormService implements IBasicFormService {
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
             FirstName: empData.FirstName,
             LastName: empData.LastName,
-            Designation: empData.Designation,
+            CurrentDesignation: empData.Designation,
             Technology: empData.Technology,
-            DateofJoining: empData.DateofJoining,//datetime?
-            CompanyEmail: empData.CompanyEmail
+            DateofJoining:empData.DateofJoining,//datetime?
+            Email: empData.CompanyEmail
         }).then((result: ItemAddResult) => {
             let mainListID = result.data.Id;
             console.log("Basic Details has been saved");
@@ -64,15 +64,15 @@ export default class BasicFormService implements IBasicFormService {
 
     UpdateBasicDetail(basicData: IBasicDetailState, empListId): Promise<any> {
         debugger
-
+       // var itemDate = new Date(date);
         let web = new Web(AppConstats.SITEURL);
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empListId.EmpListID).update({
             FirstName: basicData.FirstName,
             LastName: basicData.LastName,
-            // Designation: basicData.Designation,
-            // Technology: basicData.Technology,
-            // DateofJoining: basicData.DateofJoining,//datetime?
-            // CompanyEmail: basicData.CompanyEmail
+            CurrentDesignation: basicData.Designation,
+             Technology: basicData.Technology,
+             DateofJoining: basicData.DateofJoining,//datetime?
+            Email: basicData.CompanyEmail
         }).then((result: ItemAddResult) => {
             debugger
             result
