@@ -559,9 +559,10 @@ export default class NewEmployeeService implements INewEmpRequestService {
     }
 
     //Save Payroll
-    PayrollAddEmployee(empReqData: IPayrollState,EmpListID): Promise<any> {
+    PayrollAddEmployee(empReqData: IPayrollState,empListId): Promise<any> {
         let web = new Web(AppConstats.SITEURL);
-         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(EmpListID).update({ 
+        debugger;
+         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empListId.EmpListID).update({ 
        // return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
             //ESIApplicable:empReqData.ESIApplicable,
             ESINo: empReqData.ESINo,
