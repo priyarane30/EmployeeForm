@@ -38,9 +38,7 @@ export function GetInitialControlValuesAction(EmpListID) {
                                 type: ActionTypes.SetInitialTechnologyFromState,
                                 payload: formcontrol
                             })
-
                         });
-                    // });
                 }
                 dispatch({
                     type: ActionTypes.GetProfessionalDetailForm,
