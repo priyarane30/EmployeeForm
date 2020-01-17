@@ -23,6 +23,8 @@ export const ActionTypes = {
     SetTabName: 'SET_TAB',
     GetEmpID: 'GET_EMP_ID',
     SetEmpID: 'SET_EMP_ID',
+    RemoveChildDetailRow:'REMOVE_CHILD_DETAIL_ROW',
+    AddChildDetailRow:'ADD_CHILD_DETAIL_ROW',
     //education details form
     SetInitialEduDetailFormState: 'SET_INITIAL_EDUDETAIL_FORM_STATE',
     SetInitialCertiDetailFormState: 'SET_INITIAL_CERTIDETAIL_FORM_STATE',

@@ -16,23 +16,19 @@ import NewEmployeeService from '../services/NewEmployeeService';
 import { ActionTypes } from '../AppConstants';
 
 //get Master Data for dropdown options
-export function GetInitialControlValuesAction() {
+export function GetInitialControlValuesAction(EmpListID) {
     return dispatch => {
 
         let formControlState = {
-            genderOptions: [],
-            designationOptions: [],
-            maritalStatusOptions: [],
-            technologyOptions : []            
+                      
         } as INewFormState;
 
         let newEmpServiceObj: NewEmpService = new NewEmpService();
 
-        newEmpServiceObj.getNewFormControlState().then((resp: INewFormState) => {
-            formControlState.genderOptions = resp.genderOptions;
-            formControlState.designationOptions = resp.designationOptions;
-            formControlState.maritalStatusOptions = resp.maritalStatusOptions;
-            formControlState.technologyOptions = resp.technologyOptions;
+        newEmpServiceObj.getNewFormControlState(EmpListID).then((resp: INewFormState) => {
+            formControlState=resp;
+            debugger;
+
             dispatch({
                 type: ActionTypes.GetDefaultFormControls,
                 payload: formControlState
@@ -42,22 +38,22 @@ export function GetInitialControlValuesAction() {
 }
 
 // Creates a new employee request.
-export function AddNewEmployee(empReqData: INewFormState) {
-    return dispatch => {
-        let newEmpReqServiceObj: NewEmployeeService = new NewEmpService();
-        newEmpReqServiceObj.AddNewEmpRequest(empReqData).then(resp => {
-            if (resp != undefined)
-                alert("New Employee is added successfully");
-        }).catch(() => {
-            alert("Sorry. Error while adding employee...");
-        });
+// export function AddNewEmployee(empReqData: INewFormState) {
+//     return dispatch => {
+//         let newEmpReqServiceObj: NewEmployeeService = new NewEmpService();
+//         newEmpReqServiceObj.AddNewEmpRequest(empReqData).then(resp => {
+//             if (resp != undefined)
+//                 alert("New Employee is added successfully");
+//         }).catch(() => {
+//             alert("Sorry. Error while adding employee...");
+//         });
 
-        dispatch({
-            type: "ADD_NEW_EMPLOYEE",
-            payload: empReqData
-        });
-    }
-}
+//         // dispatch({
+//         //     type: "ADD_NEW_EMPLOYEE",
+//         //     payload: empReqData
+//         // });
+//     }
+// }
 
 export function SetTabName(tabData: ICommonState) {
     return dispatch => {
@@ -67,3 +63,33 @@ export function SetTabName(tabData: ICommonState) {
         });
     }
 }
+export function RemoveDetailRowFromGrid(section,index){
+    return dispatch=>{
+       if(section=="Child")
+          dispatch({
+              type:ActionTypes.RemoveChildDetailRow,
+              payload:index
+          });
+    }
+}
+
+//add rows in detail grids
+export function AddDetailRowToGrid(section){
+    var actionObj;
+        if(section=="Child")
+        {
+        //add row in education detail grid
+        let newChildDetailGridRow=
+        {
+            ChildName:'',
+            DateOfBirth:''
+         }
+
+         actionObj = {
+              type:ActionTypes.AddChildDetailRow,
+              payload:newChildDetailGridRow
+          }
+          
+        }
+        return actionObj;
+    }

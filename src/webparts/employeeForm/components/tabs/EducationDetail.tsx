@@ -11,6 +11,7 @@ import { connect } from "react-redux";
 import { IEducationDetailState } from "../../state/IEducationDetailState";
 import { store } from "../../store/ConfigureStore";
 import NewEmpService from '../../services/NewEmployeeService';
+
 interface buttonStatus {
   buttonDisabled: boolean
 }
@@ -45,12 +46,9 @@ class EducationDetail extends React.Component<any, buttonStatus> {
 
   //removes row from grid
   handleRowRemove(section, index) {
-    if (section == "Education") {
+    
       this.props.removeEducationDetailRow(section, index);
-    }
-    else {
-      this.props.removeEducationDetailRow(section, index);
-    }
+    
 
   }
 
