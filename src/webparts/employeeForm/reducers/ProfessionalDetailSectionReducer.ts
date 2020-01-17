@@ -4,7 +4,7 @@ import ProfessionalDetail from "../components/tabs/ProfessionalDetail";
 import { actions } from "react-redux-form";
 
 export const professionalDetailState: IProfessionalDetailState = {
-    
+
     IsFresher: false,
 
     organizationDetails: [{
@@ -50,7 +50,7 @@ export const ProfessionalDetailSectionReducer = (state: IProfessionalDetailState
 
             state = {
                 ...state,
-                IsFresher:action.payload.IsFresher,
+                IsFresher: action.payload.IsFresher,
                 organizationDetails: action.payload.organizationDetails
             };
             break;
@@ -65,8 +65,10 @@ export const ProfessionalDetailSectionReducer = (state: IProfessionalDetailState
         case "REMOVE_PROFESSIONALDETAIL_ROW":
             state = {
                 ...state,
-                organizationDetails: [...state.organizationDetails.slice(0, action.payload),
-                ...state.organizationDetails.slice(action.payload + 1)]
+                organizationDetails: [
+                    ...state.organizationDetails.slice(0, action.payload),
+                    ...state.organizationDetails.slice(action.payload + 1)
+                ]
             };
             break;
 
@@ -75,7 +77,7 @@ export const ProfessionalDetailSectionReducer = (state: IProfessionalDetailState
         case "SET_INITIAL_TECHNOLOGY_FORM_STATE":
             state = {
                 ...state,
-                IsFresher:action.payload.IsFresher,
+                IsFresher: action.payload.IsFresher,
                 technologyDetails: action.payload.technologyDetails
             };
             break;

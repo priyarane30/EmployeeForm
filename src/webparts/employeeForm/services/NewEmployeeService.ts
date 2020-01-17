@@ -479,44 +479,90 @@ export default class NewEmployeeService implements INewEmpRequestService {
 
     public saveOrgenizationDetail(organizationDetails, empListID) {
         let web = new Web(AppConstats.SITEURL);
-        // var url = AppConstats.SITEURL + "_api/web/lists/GetByTitle('" + ListNames.PROFESSIONALHISTORY + "')/items?$select=ID&$filter=empTableID/ID eq " + empListID.EmpListID;
-        // return axios.get(url)
-        //     .then(res => {
-        //         if (res.data.value.length > 0) {
-        //             let idData = res.data.value;
-        //         }
-        //         else {
-        organizationDetails.forEach(detailRow => {
-            web.lists.getByTitle(ListNames.PROFESSIONALHISTORY).items.add({
-                organization: detailRow.organization,
-                designation: detailRow.designation,
-                startDate: detailRow.startDate,
-                endDate: detailRow.endDate,
-                reportingTo: detailRow.reportingTo,
-                reportingDesignation: detailRow.reportingDesignation,
-                totalExp: detailRow.totalExp,
-                reasonForLeaving: detailRow.reasonForLeaving,
-                empTableID: empListID.EmpListID
-            }).then((result: ItemAddResult) => {
-                let mainListID = result.data.Id;
-                console.log("Employee request created : " + mainListID);
-
-            }).catch(error => {
-                console.log("error while adding an employee");
-            });
-        });
-        //     }
-        // })
-    }
-
-    public saveTechnologyDetail(technologyDetails, empListID) {
-        debugger
-        let web = new Web(AppConstats.SITEURL);
+        let batch = web.createBatch();
         var url = AppConstats.SITEURL + "_api/web/lists/GetByTitle('" + ListNames.PROFESSIONALHISTORY + "')/items?$select=ID&$filter=empTableID/ID eq " + empListID.EmpListID;
         return axios.get(url)
             .then(res => {
                 if (res.data.value.length > 0) {
                     let idData = res.data.value;
+                    idData.forEach(e => {
+
+                        web.lists.getByTitle(ListNames.PROFESSIONALHISTORY).items.getById(e["ID"]).inBatch(batch).delete()
+                            .then(r => {
+                                console.log("deleted");
+                            });
+                    });
+                    batch.execute().then(() => {
+                        console.log("All deleted")
+                        organizationDetails.forEach(detailRow => {
+                            web.lists.getByTitle(ListNames.EducationDetail).items.inBatch(batch).add({
+                                organization: detailRow.organization,
+                                designation: detailRow.designation,
+                                startDate: detailRow.startDate,
+                                endDate: detailRow.endDate,
+                                reportingTo: detailRow.reportingTo,
+                                reportingDesignation: detailRow.reportingDesignation,
+                                totalExp: detailRow.totalExp,
+                                reasonForLeaving: detailRow.reasonForLeaving,
+                                empTableIDId: empListID.EmpListID
+                            });
+                        });
+                        batch.execute().then(() => console.log("all added"))
+                    });
+                }
+                else {
+                    organizationDetails.forEach(detailRow => {
+                        web.lists.getByTitle(ListNames.PROFESSIONALHISTORY).items.add({
+                            organization: detailRow.organization,
+                            designation: detailRow.designation,
+                            startDate: detailRow.startDate,
+                            endDate: detailRow.endDate,
+                            reportingTo: detailRow.reportingTo,
+                            reportingDesignation: detailRow.reportingDesignation,
+                            totalExp: detailRow.totalExp,
+                            reasonForLeaving: detailRow.reasonForLeaving,
+                            empTableIDId: empListID.EmpListID
+                        }).then((result: ItemAddResult) => {
+                            let mainListID = result.data.Id;
+                            console.log("Employee request created : " + mainListID);
+
+                        }).catch(error => {
+                            console.log("error while adding an employee");
+                        });
+                    });
+                }
+            })
+    }
+
+    public saveTechnologyDetail(technologyDetails, empListID) {
+        debugger
+        let web = new Web(AppConstats.SITEURL);
+        let batch = web.createBatch();
+        var url = AppConstats.SITEURL + "_api/web/lists/GetByTitle('" + ListNames.EMPLOYEETECHNICALSKILL + "')/items?$select=ID&$filter=empTableID/ID eq " + empListID.EmpListID;
+        return axios.get(url)
+            .then(res => {
+                if (res.data.value.length > 0) {
+                    let idData = res.data.value;
+                    idData.forEach(e => {
+
+                        web.lists.getByTitle(ListNames.EMPLOYEETECHNICALSKILL).items.getById(e["ID"]).inBatch(batch).delete()
+                            .then(r => {
+                                console.log("deleted");
+                            });
+                    });
+                    batch.execute().then(() => {
+                        console.log("All deleted")
+                        technologyDetails.forEach(detailRow => {
+                            web.lists.getByTitle(ListNames.EMPLOYEETECHNICALSKILL).items.inBatch(batch).add({
+                                Technology: detailRow.Technology,
+                                SinceWhen: detailRow.SinceWhen,
+                                Expertise: detailRow.Expertise,
+                                Rating: detailRow.Rating,
+                                empTableIDId: empListID.EmpListID
+                            });
+                        });
+                        batch.execute().then(() => console.log("all added"))
+                    });
                 }
                 else {
                     debugger
@@ -564,11 +610,11 @@ export default class NewEmployeeService implements INewEmpRequestService {
     }
 
     //Save Payroll
-    PayrollAddEmployee(empReqData: IPayrollState,empListId): Promise<any> {
+    PayrollAddEmployee(empReqData: IPayrollState, empListId): Promise<any> {
         let web = new Web(AppConstats.SITEURL);
         debugger;
-         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empListId.EmpListID).update({ 
-       // return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
+        return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empListId.EmpListID).update({
+            // return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
             //ESIApplicable:empReqData.ESIApplicable,
             ESINo: empReqData.ESINo,
             ESIDispensary: empReqData.ESIDispensary,
