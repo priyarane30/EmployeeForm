@@ -1,11 +1,11 @@
 import { IHRState } from '../state/IHRSectionControlsState';
-import { ICommonState } from '../state/ICommonState';
+import { ICommonState , IEmpListIdState} from '../state/ICommonState';
 import NewEmployeeService from '../services/NewEmployeeService';
 import { ActionTypes } from '../AppConstants';
 import NewEmpService from '../services/NewEmployeeService';
 
 //Get all Control's Values
-export function GetInitialControlValuesAction() {
+export function GetInitialControlValuesAction(EmpListID) {
     return dispatch => {
 
         let formControlState = {
@@ -22,13 +22,12 @@ export function GetInitialControlValuesAction() {
         } as IHRState;
 
         let newEmpServiceObj: NewEmpService = new NewEmpService();
-        newEmpServiceObj.getHRFormControlState().then((resp: IHRState) => {
+        newEmpServiceObj.getHRFormControlState(EmpListID).then((resp: IHRState) => {
 
             //DropDown Field Value
             formControlState.reasonOfLeavingOptions = resp.reasonOfLeavingOptions;
             formControlState.employmentStatusOptions=[];
             //textbox Values
-            formControlState.UserID=resp.UserID;
             formControlState.UserAlies = resp.UserAlies;
             formControlState.ADLogin = resp.ADLogin;
             formControlState.Manager = resp.Manager;
@@ -46,11 +45,10 @@ export function GetInitialControlValuesAction() {
 }
 
 // Creates a new employee request.
-export function HrAddNewEmployee(empReqData: IHRState) {
+export function HrAddNewEmployee(empReqData: IHRState,EmpListID) {
     return dispatch => {
         let newEmpReqServiceObj: NewEmployeeService = new NewEmpService();
-        newEmpReqServiceObj.HrAddNewEmployee(empReqData).then(resp => {
-            console.log(resp);
+        newEmpReqServiceObj.HrAddNewEmployee(empReqData,EmpListID).then(resp => {
             alert("New Employee is added successfully");
         }).catch(() => {
             alert("Sorry. Error while adding employee...");
@@ -60,7 +58,7 @@ export function HrAddNewEmployee(empReqData: IHRState) {
             type: ActionTypes.AddValueFromHR,
             payload: empReqData
         });
-    }
+    };
 }
 
 
@@ -69,5 +67,5 @@ export function SetTabName(tabData: ICommonState) {
     return ({
         type: "SET_TAB",
         payload: tabData
-    })
+    });
 }

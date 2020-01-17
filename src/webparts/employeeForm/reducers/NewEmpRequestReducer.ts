@@ -1,18 +1,10 @@
 import { INewFormState } from '../state/INewFormControlsState';
-
+import { ActionTypes, AppConstats, ListNames } from '../AppConstants';
 //Initialise state of Employee Detail
 export const newEmpFormControlsInitialState: INewFormState = {
-    // FirstName: '',
-    // LastName: '',
-    // Gender: '',
-    // DateofJoining: '',//datetime?
-    // Designation: '',
-    // Technology :'',
-    // CompanyEmail : '',
     PersonalEmail: '',
     Mobile: '',
-   
-    DateOfBirth: '',//dateTime?
+    DateOfBirth: null,//dateTime?
     Age: 0,
     BloodGroup: '',
     FatherName: '',
@@ -20,7 +12,7 @@ export const newEmpFormControlsInitialState: INewFormState = {
     MaritalStatus: '',
     SpouceName: '',
     SpouseOccupation: '',
-    SpouceDOB: '', //dateTime?
+    SpouceDOB: null, //dateTime?
     EmergencyNo: '',
     RelationWithEmergencyNo: '',
     CurrentAddress: '',
@@ -30,7 +22,8 @@ export const newEmpFormControlsInitialState: INewFormState = {
     AadharNo: '',
     IsPassAvail: false,
     PassportNo: '',
-    PassportValidity: '',
+    PassportValidity: null,
+    Gender:'',
 
     // Represent the choices to be displayed in dropdown when the form loads.
     genderOptions: [],
@@ -39,43 +32,44 @@ export const newEmpFormControlsInitialState: INewFormState = {
     technologyOptions: [],
 
     //tran list Items
-    childDetailItems: []
+    childDetailItems:[]
 };
 
 
 export const NewEmpRequestReducer = (state: INewFormState = null, action) => {
+    console.log(action);
     switch (action.type) {
 
         // Gets the values for dropdown fields from SharePoint master/choice columns.
         case "GET_DEFAULT_FORM_CONTROLS":
-            state = {
+            state = { 
                 ...state,
-                PersonalEmail: '',
-                Mobile: '',
-                DateOfBirth: '',//dateTime?
-                Age: 0,
-                BloodGroup: '',
-                FatherName: '',
-                MotherName: '',
-                MaritalStatus: '',
-                SpouceName: '',
-                SpouseOccupation: '',
-                SpouceDOB: '', //dateTime?
-                EmergencyNo: '',
-                RelationWithEmergencyNo: '',
-                CurrentAddress: '',
-                IsSameAsCurrAddress: false,
-                PermanentAddress: '',
-                PanNo: '',
-                AadharNo: '',
-                IsPassAvail: false,
-                PassportNo: '',
-                PassportValidity: '',
+                childDetailItems: action.payload.childDetailItems,
+                PersonalEmail: action.payload.PersonalEmail,
+                Mobile: action.payload.Mobile,
+                DateOfBirth:action.payload.DateOfBirth,//dateTime?
+                Age: action.payload.Age,
+                BloodGroup: action.payload.BloodGroup,
+                FatherName: action.payload.FatherName,
+                MotherName: action.payload.MotherName,
+                MaritalStatus: action.payload.MaritalStatus,
+                SpouceName: action.payload.SpouceName,
+                SpouseOccupation: action.payload.SpouseOccupation,
+                SpouceDOB: action.payload.SpouceDOB, //dateTime?
+                EmergencyNo:action.payload.EmergencyNo,
+                RelationWithEmergencyNo: action.payload.RelationWithEmergencyNo,
+                CurrentAddress: action.payload.CurrentAddress,
+                IsSameAsCurrAddress: action.payload.IsSameAsCurrAddress,
+                PermanentAddress: action.payload.PermanentAddress,
+                PanNo: action.payload.PanNo,
+                AadharNo: action.payload.AadharNo,
+                IsPassAvail: action.payload.IsPassAvail,
+                PassportNo: action.payload.PassportNo,
+                PassportValidity: action.payload.PassportValidity,
+                Gender:action.payload.Gender,
                 genderOptions: action.payload.genderOptions,
-                //designationOptions: action.payload.designationOptions,
-                maritalStatusOptions: action.payload.maritalStatusOptions,
-                //technologyOptions: action.payload.technologyOptions,
-
+                maritalStatusOptions: action.payload.maritalStatusOptions
+               
             };
             break;
         case "SET_INITIAL_STATE":
@@ -144,6 +138,19 @@ export const NewEmpRequestReducer = (state: INewFormState = null, action) => {
 
                 //tran list Items
                 childDetailItems: action.payload.childDetailItems
+            };
+            break;
+        case ActionTypes.AddChildDetailRow:
+            state={
+                ...state,
+                childDetailItems:[...state.childDetailItems,action.payload]
+            };
+            break;
+        case ActionTypes.RemoveChildDetailRow:
+            state={
+                ...state,
+                childDetailItems:[...state.childDetailItems.slice(0,action.payload),
+                                  ...state.childDetailItems.slice(action.payload+1) ]
             };
             break;
     }

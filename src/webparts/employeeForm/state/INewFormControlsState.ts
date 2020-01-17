@@ -10,7 +10,7 @@ export interface INewFormState {
     // CompanyEmail: string;
     PersonalEmail: string;
     Mobile: string;
-    DateOfBirth: string;//dateTime?
+    DateOfBirth: Date;//dateTime?
     Age: number;
     BloodGroup: string;
     FatherName: string;
@@ -18,7 +18,7 @@ export interface INewFormState {
     MaritalStatus: string;
     SpouceName: string;
     SpouseOccupation: string;
-    SpouceDOB: string; //dateTime?
+    SpouceDOB: Date; //dateTime?
     EmergencyNo: string;
     RelationWithEmergencyNo: string;
     CurrentAddress: string;
@@ -28,7 +28,8 @@ export interface INewFormState {
     AadharNo: string;
     IsPassAvail: boolean;
     PassportNo: string;
-    PassportValidity: string; //datetime?
+    PassportValidity: Date; //datetime?
+    Gender:string;
 
     // Represent the choices to be displayed in dropdown when the form loads.
     genderOptions: string[];
@@ -37,11 +38,9 @@ export interface INewFormState {
     technologyOptions: string[];
 
     //tran list Items
-    childDetailItems: IChildDetailItem[];
+    childDetailItems: Array<{
+        ChildName:string;
+        DateOfBirth:Date;
+    }>;
 }
 
-// Represents one child detail in the Employee request.
-export interface IChildDetailItem {
-    ChildName: string;
-    DateOfBirth: string;//dateTime??
-}

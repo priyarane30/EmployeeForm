@@ -1,5 +1,6 @@
 import { IEducationDetailState } from "../state/IEducationDetailState";
-import EducationDetail from "../components/tabs/EducationDetail/EducationDetail";
+import { ActionTypes, AppConstats, ListNames } from '../AppConstants';
+import EducationDetail from "../components/tabs/EducationDetail";
 import { actions } from "react-redux-form";
 //Initialise state of Education 
 export const eduDetailState: IEducationDetailState = {
@@ -22,9 +23,8 @@ export const eduDetailState: IEducationDetailState = {
 
 
 export const EducationSectionReducer = (state: IEducationDetailState = eduDetailState, action) => {
-   // debugger;
+    console.log(action);
     switch (action.type) {
-
         // Gets the values for dropdown fields from SharePoint master/choice columns.
         case "GET_DEFAULT_FORM_CONTROLS":
             state = {
@@ -52,14 +52,15 @@ export const EducationSectionReducer = (state: IEducationDetailState = eduDetail
             }
             break;
         //adds empty array from payload to state.educationdetails
-        case "ADD_NEW_EDUCATION_ROW":
+        case ActionTypes.AddEducationDetailRow:
+            //debugger
             state={
                 ...state,
                 educationDetails:[...state.educationDetails,action.payload]
             };
             break;
         //removes array from state.educationdetails on index
-        case "REMOVE_EDUCATIONDETAIL_ROW":
+        case ActionTypes.RemoveEducationDetailRow:
             state={
                 ...state,
                 educationDetails:[...state.educationDetails.slice(0,action.payload),

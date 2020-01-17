@@ -4,7 +4,7 @@ import { IEmployeeFormProps } from './IEmployeeFormProps';
 import { Pivot, PivotItem, PivotLinkSize } from 'office-ui-fabric-react/lib/Pivot';
 import BasicDetail from '../components/tabs/BasicDetail';
 import EmployeeDetail from '../components/tabs/EmployeeDetail';
-import EducationDetail from './tabs/EducationDetail/EducationDetail';
+import EducationDetail from './tabs/EducationDetail';
 import ProfessionalDetail from '../components/tabs/ProfessionalDetail';
 import HRDetail from '../components/tabs/HRDetail';
 import PayrollDetail from '../components/tabs/PayrollDetail';
@@ -24,6 +24,7 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, {}
               <BasicDetail empEmail={this.props.userEmail} />
             </div>
             <Pivot aria-label="Employee Form">
+            
               <PivotItem headerText="Employee Details">
                 <EmployeeDetail />
               </PivotItem>
@@ -42,7 +43,7 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, {}
             </Pivot>
           </div>
         </div>
-      </Provider>
+        </Provider>
     );
   }
 }
