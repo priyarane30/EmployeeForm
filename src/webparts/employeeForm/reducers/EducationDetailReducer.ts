@@ -60,7 +60,7 @@ export const EducationSectionReducer = (state: IEducationDetailState = eduDetail
             };
             break;
         //removes array from state.educationdetails on index
-        case "REMOVE_EDUCATIONDETAIL_ROW":
+        case ActionTypes.RemoveEducationDetailRow:
             state={
                 ...state,
                 educationDetails:[...state.educationDetails.slice(0,action.payload),

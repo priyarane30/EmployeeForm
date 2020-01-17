@@ -28,7 +28,9 @@ export const ActionTypes = {
     SetTabName: 'SET_TAB',
     GetEmpID: 'GET_EMP_ID',
     SetEmpID: 'SET_EMP_ID',
-    //education details Start
+    RemoveChildDetailRow:'REMOVE_CHILD_DETAIL_ROW',
+    AddChildDetailRow:'ADD_CHILD_DETAIL_ROW',
+    //education details form
     SetInitialEduDetailFormState: 'SET_INITIAL_EDUDETAIL_FORM_STATE',
     SetInitialCertiDetailFormState: 'SET_INITIAL_CERTIDETAIL_FORM_STATE',
     RemoveEducationDetailRow: 'REMOVE_EDUCATIONDETAIL_ROW',
@@ -46,5 +48,6 @@ export const ActionTypes = {
     RemoveProfessionalDetailRow: 'REMOVE_PROFESSIONALDETAIL_ROW',
     SetInitialTechnologyFromState: 'SET_INITIAL_TECHNOLOGY_FORM_STATE',
     AddTechnologyDetailRow: 'ADD_NEW_TECHNOLOGY_ROW',
-    RemoveTechnologyRow: 'REMOVE_TECHNOLOGY_ROW'
+    RemoveTechnologyRow: 'REMOVE_TECHNOLOGY_ROW',
+    AddValueFromPayroll: 'ADD_PAYROLL_DATA',
 }
