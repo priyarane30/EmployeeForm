@@ -1,18 +1,18 @@
 import * as React from 'react';
-import { Form, Control,createFieldClass,controls } from 'react-redux-form';
+import { Form, Control, createFieldClass, controls } from 'react-redux-form';
 import { connect } from "react-redux";
-import { SetTabName, GetInitialControlValuesAction, AddDetailRowToGrid,RemoveDetailRowFromGrid } from "../../actions/NewFormControlsValuesAction";
+import { SetTabName, GetInitialControlValuesAction, AddDetailRowToGrid, RemoveDetailRowFromGrid } from "../../actions/NewFormControlsValuesAction";
 import { ICommonState } from '../../state/ICommonState';
 import { INewFormState } from '../../state/INewFormControlsState';
 import { store } from "../../store/ConfigureStore";
 import NewEmpService from '../../services/NewEmployeeService';
 import FabricField from '../Fabric Components/DatePicker'
 import { DatePicker } from 'office-ui-fabric-react/lib/DatePicker';
-import {Dropdown} from 'office-ui-fabric-react/lib/Dropdown';
+import { Dropdown } from 'office-ui-fabric-react/lib/Dropdown';
 
 interface buttonStatus {
     buttonDisabled: boolean
-  }
+}
 // Represents the connected dispatch
 interface INewFormConnectedDispatch {
     setTabName: (tabName: ICommonState) => void;
@@ -21,11 +21,11 @@ interface INewFormConnectedDispatch {
     getDefaultControlsData: (EmpListID) => void;
 
     //save data
-    
 
-    AddDetailRowToGrid:(section)=>void;
 
-    RemoveDetailRowFromGrid:(section,index)=>void;
+    AddDetailRowToGrid: (section) => void;
+
+    RemoveDetailRowFromGrid: (section, index) => void;
 }
 // interface ICommonDispatch {
 //     setTabName: (tabName: ICommonState) => void;
@@ -35,18 +35,20 @@ class EmployeeDetail extends React.Component<any> {
     constructor(props) {
         super(props);
         const buttonState = {} as buttonStatus
-        this.state = { buttonDisabled: false
-    }}
-    
-  //adds row in grids
-  handleRowAdd(section) {
-    this.props.AddDetailRowToGrid(section);
-}
+        this.state = {
+            buttonDisabled: false
+        }
+    }
 
-//removes row from grid
-handleRowRemove(section, index) {
-    this.props.RemoveDetailRowFromGrid(section, index);
-}
+    //adds row in grids
+    handleRowAdd(section) {
+        this.props.AddDetailRowToGrid(section);
+    }
+
+    //removes row from grid
+    handleRowRemove(section, index) {
+        this.props.RemoveDetailRowFromGrid(section, index);
+    }
 
     async handleSubmit(formValues) {
 
@@ -63,16 +65,16 @@ handleRowRemove(section, index) {
         let empData = {} as INewFormState;
         empData = formValues;
         this.setState({ buttonDisabled: true })
-    let newEmpServiceObj: NewEmpService = new NewEmpService();
-     // Call the connected dispatch to create new purchase request
-    await newEmpServiceObj.AddEmpFormData(empData,empListId)
-    this.setState({ buttonDisabled: false})
-       
-      
-    }
-    
+        let newEmpServiceObj: NewEmpService = new NewEmpService();
+        // Call the connected dispatch to create new purchase request
+        await newEmpServiceObj.AddEmpFormData(empData, empListId)
+        this.setState({ buttonDisabled: false })
 
-    public  render() {
+
+    }
+
+
+    public render() {
         // let i = 0;
         console.log(this.props)
         if (!this.props.Employee) return (<div> Loading.... </div>)
@@ -83,19 +85,23 @@ handleRowRemove(section, index) {
                     <div className='col'>
                         <label>Gender:</label>
                         <Control.select model="Employee.Gender" id=".Gender" component={Dropdown}>
-                        mapProps={{se: (props) =>{return props.viewValue},
-                            onChange:(props)=>{return props.onChange},
-                            options:(props)=>{return props.option}}}
-                        <option>--Select--</option>
-                            {this.props.Employee.genderOptions.map(gender => { return <option key={gender} value={gender} >{gender}</option> })}; 
+                            mapProps={{
+                                selected: (props) => { return props.viewValue },
+                                onChange: (props) => { return props.onChange },
+                                options: (props) => { return props.option }
+                            }}
+                            <option>--Select--</option>
+                            {this.props.Employee.genderOptions.map(gender => { return <option key={gender} value={gender} >{gender}</option> })};
                         </Control.select>
-                     </div>
+                    </div>
                     <div className='col'>
                         <label>Date Of Birth:</label>
-                        <Control model='.DateOfBirth' component={DatePicker} 
-                    mapProps={{value: (props) =>{return props.viewValue},
-                            onSelectDate:(props)=>{return props.onChange}}}
-                    ></Control>
+                        <Control model='.DateOfBirth' component={DatePicker}
+                            mapProps={{
+                                value: (props) => { return props.viewValue },
+                                onSelectDate: (props) => { return props.onChange }
+                            }}
+                        ></Control>
                     </div>
                     <div className='col'>
                         <label>Age:</label>
@@ -117,7 +123,7 @@ handleRowRemove(section, index) {
                         </Control.select>
                     </div>
                     {this.isMarried(this.props.Employee)}
-                    
+
                     <div className='col'>
                         <label>Personal Email:</label>
                         <Control.text model='.PersonalEmail' id='.PersonalEmail' />
@@ -144,25 +150,25 @@ handleRowRemove(section, index) {
                     </div>
                     <div className='col'>
                         <label>Permanent Resident Address:Is Same as Current Address?</label>
-                           <Control.checkbox model=".IsSameAsCurrAddress" />
+                        <Control.checkbox model=".IsSameAsCurrAddress" />
                     </div>
                     {this.isSameAsCurrentAdress(this.props.Employee)}
                     <div className='col'>
-                    <label>Aadhar No:</label>
-                    <Control.text model='.AadharNo' id='.AadharNo' />
+                        <label>Aadhar No:</label>
+                        <Control.text model='.AadharNo' id='.AadharNo' />
                     </div>
                     <div className='col'>
-                    <label>Pan No:</label>
-                    <Control.text model='.PanNo' id='.PanNo' />
+                        <label>Pan No:</label>
+                        <Control.text model='.PanNo' id='.PanNo' />
                     </div>
                     <div className='col'>
-                    <label>Is Passport available:</label>
-                    <Control.checkbox model='.IsPassAvail'/>
+                        <label>Is Passport available:</label>
+                        <Control.checkbox model='.IsPassAvail' />
                     </div>
                     {this.isPassportAvailable(this.props.Employee)}
-                    
-                    
-                   
+
+
+
                     <button type="submit">Submit</button>
                 </Form>
             </div>);
@@ -175,82 +181,89 @@ handleRowRemove(section, index) {
         this.props.getDefaultControlsData(empListID);
 
     }
-    isSameAsCurrentAdress(props){
-        if(props.IsSameAsCurrAddress==false){
-            return(<div className='col'>
-            <Control.textarea model='.PermanentAddress' id='.PermanentAddress' />
-        </div>)
+    isSameAsCurrentAdress(props) {
+        if (props.IsSameAsCurrAddress == false) {
+            return (<div className='col'>
+                <Control.textarea model='.PermanentAddress' id='.PermanentAddress' />
+            </div>)
         }
-        }
-    
-    isPassportAvailable(props){
-        if(props.IsPassAvail!=false){
-        return(<div>
-            <div className='col'>
+    }
+
+    isPassportAvailable(props) {
+        if (props.IsPassAvail != false) {
+            return (<div>
+                <div className='col'>
                     <label>Passport No:</label>
                     <Control.text model='.PassportNo' id='.PassportNo' />
+                </div>
+                <div className='col'>
+                    <label>Passport Validity</label>
+                    <Control model='.PassportValidity' component={DatePicker}
+                        mapProps={{
+                            value: (props) => { return props.viewValue },
+                            onSelectDate: (props) => { return props.onChange }
+                        }}
+                    ></Control>
+                </div>
+            </div>
+            )
+        }
+    }
+    isMarried(props) {
+        if (props.MaritalStatus == "Married") {
+            return (
+                <div>
+                    <div className='col'>
+                        <label>Spouse Name:</label>
+                        <Control.text model='.SpouceName' id='.SpouceName'></Control.text>
                     </div>
                     <div className='col'>
-                    <label>Passport Validity</label>
-                    <Control model='.PassportValidity' component={DatePicker} 
-                    mapProps={{value: (props) =>{return props.viewValue},
-                            onSelectDate:(props)=>{return props.onChange}}}
-                    ></Control>
+                        <label>Spouse Occupation:</label>
+                        <Control.text model='.SpouseOccupation' id='.SpouseOccupation' />
                     </div>
-                </div>
-        )}
-    }
-    isMarried(props){
-        if(props.MaritalStatus=="Married"){
-          return(
-              <div>
-          <div className='col'>
-          <label>Spouse Name:</label>
-          <Control.text model='.SpouceName' id='.SpouceName'></Control.text>
-      </div>
-      <div className='col'>
-          <label>Spouse Occupation:</label>
-          <Control.text model='.SpouseOccupation' id='.SpouseOccupation'/>
-      </div>
-      <div className='col'>
-          <label>Spouse DOB:</label>
-          <Control model='.SpouceDOB' id='.SpouceDOB' component={DatePicker} 
-                    mapProps={{value: (props) =>{return props.viewValue},
-                            onSelectDate:(props)=>{return props.onChange}}}
-                    ></Control>
-      </div>
-      <div>
-          
-          <table>
-              <tr>
-                  <td><label>Children Details</label></td>
-                  <td  style={{ textAlign: "left" }}>
-                <button type="button" onClick={() => this.handleRowAdd("Child")}>+</button>
-              </td>
-                </tr>
-          {props.childDetailItems.map((child,i)=>{
-          return(
-              <tr>
-                  <td>
-                      <label>Child Name</label>
-                      <Control.text model={`Employee.childDetailItems[${i}].ChildName`} id={child.ChildName}></Control.text>
-                  </td>
-                  <td>
-                      <label>Date Of Birth</label>
-                      <Control model={`Employee.childDetailItems[${i}].DateOfBirth`} id={child.DateOfBirth} component={DatePicker} 
-                    mapProps={{value: (props) =>{return props.viewValue},
-                            onSelectDate:(props)=>{return props.onChange}}}
-                    ></Control>
-                  </td>
-                  <td>
-                  <button type="button" onClick={() => this.handleRowRemove("Child", i)}>-</button>
-                  </td>
-              </tr>
-          )
-          })}
-          </table>
-          
-      </div></div>)
+                    <div className='col'>
+                        <label>Spouse DOB:</label>
+                        <Control model='.SpouceDOB' id='.SpouceDOB' component={DatePicker}
+                            mapProps={{
+                                value: (props) => { return props.viewValue },
+                                onSelectDate: (props) => { return props.onChange }
+                            }}
+                        ></Control>
+                    </div>
+                    <div>
+
+                        <table>
+                            <tr>
+                                <td><label>Children Details</label></td>
+                                <td style={{ textAlign: "left" }}>
+                                    <button type="button" onClick={() => this.handleRowAdd("Child")}>+</button>
+                                </td>
+                            </tr>
+                            {props.childDetailItems.map((child, i) => {
+                                return (
+                                    <tr>
+                                        <td>
+                                            <label>Child Name</label>
+                                            <Control.text model={`Employee.childDetailItems[${i}].ChildName`} id={child.ChildName}></Control.text>
+                                        </td>
+                                        <td>
+                                            <label>Date Of Birth</label>
+                                            <Control model={`Employee.childDetailItems[${i}].DateOfBirth`} id={child.DateOfBirth} component={DatePicker}
+                                                mapProps={{
+                                                    value: (props) => { return props.viewValue },
+                                                    onSelectDate: (props) => { return props.onChange }
+                                                }}
+                                            ></Control>
+                                        </td>
+                                        <td>
+                                            <button type="button" onClick={() => this.handleRowRemove("Child", i)}>-</button>
+                                        </td>
+                                    </tr>
+                                )
+                            })}
+                        </table>
+
+                    </div></div>)
         }
     }
 
@@ -270,12 +283,12 @@ const mapDispatchToProps = (dispatch): INewFormConnectedDispatch => {
         getDefaultControlsData: (empListId) => {
             return dispatch(GetInitialControlValuesAction(empListId.EmpListID));
         },
-       
-        AddDetailRowToGrid:(section)=>{
+
+        AddDetailRowToGrid: (section) => {
             return dispatch(AddDetailRowToGrid(section));
         },
-        RemoveDetailRowFromGrid:(section,index)=>{
-            return dispatch(RemoveDetailRowFromGrid(section,index));
+        RemoveDetailRowFromGrid: (section, index) => {
+            return dispatch(RemoveDetailRowFromGrid(section, index));
         }
     };
 };
