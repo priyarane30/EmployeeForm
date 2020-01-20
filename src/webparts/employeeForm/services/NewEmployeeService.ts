@@ -257,7 +257,6 @@ export default class NewEmployeeService implements INewEmpRequestService {
                 hrControlsState.ResigntionDate = Resp.ResigntionDate;
                 hrControlsState.EligibleforRehire = Resp.EligibleforRehire;//Resp.EligibleforRehire;
 
-
                 return hrControlsState;
             });
         });
@@ -401,10 +400,8 @@ export default class NewEmployeeService implements INewEmpRequestService {
     //Start Professional Detail Section
     public getIsFreshers(EmpListID): Promise<any> {
         let freshervalue = {} as IProfessionalDetailState
-        debugger
         return this.getDataFromListUsingID(ListNames.EMPLOYEECONTACT, EmpListID).then(Resp => {
             freshervalue.IsFresher = Resp.Fresher
-            debugger
             return freshervalue;
         })
     }
@@ -535,7 +532,6 @@ export default class NewEmployeeService implements INewEmpRequestService {
     }
 
     public saveTechnologyDetail(technologyDetails, empListID) {
-        debugger
         let web = new Web(AppConstats.SITEURL);
         let batch = web.createBatch();
         var url = AppConstats.SITEURL + "_api/web/lists/GetByTitle('" + ListNames.EMPLOYEETECHNICALSKILL + "')/items?$select=ID&$filter=empTableID/ID eq " + empListID.EmpListID;
@@ -565,9 +561,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                     });
                 }
                 else {
-                    debugger
                     technologyDetails.forEach(detailRow => {
-                        debugger
                         web.lists.getByTitle(ListNames.EMPLOYEETECHNICALSKILL).items.add({
                             Technology: detailRow.Technology,
                             SinceWhen: detailRow.SinceWhen,

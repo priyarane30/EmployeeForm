@@ -9,7 +9,6 @@ export function GetInitialControlValuesAction(EmpListID) {
     let formcontrol = {} as IProfessionalDetailState
     return dispatch => {
         let newEmpServiceObj: NewEmpService = new NewEmpService();
-        debugger;
         newEmpServiceObj.getIsFreshers(EmpListID)
             .then((resp) => {
                 formcontrol.IsFresher = resp.IsFresher

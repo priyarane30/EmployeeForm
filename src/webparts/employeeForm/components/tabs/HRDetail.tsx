@@ -5,6 +5,13 @@ import { connect } from "react-redux";
 import { SetTabName, GetInitialControlValuesAction, HrAddNewEmployee } from "../../actions/HRFormControlsValuesAction";
 import { IHRState } from '../../state/IHRSectionControlsState';
 import { store } from "../../store/ConfigureStore";
+import { TextField } from "office-ui-fabric-react/lib/TextField";
+import { Dropdown } from 'office-ui-fabric-react/lib/Dropdown';
+
+import peoplepicker from '../peoplepicker';
+const MyTextInput = (props) => <input className="my-input" {...props} />;
+
+
 // Represents the connected dispatch
 interface IHRConnectedDispatch {
     setTabName: (tabName: ICommonState) => void;
@@ -45,52 +52,74 @@ class HRDetail extends React.Component<any> {
         return (
             <div>
                 <Form model="HR" onSubmit={(val) => this.handleSubmit(val)}>
-                    <div className='col'> {/* User Alias*/}
-                        <label>User Alias:</label>
-                        <Control.text model='HR.UserAlies' id='.UserAlies' disabled />
-                    </div>
-                    <div className='col'> {/* Name of employee*/}
-                        <label>AD Login Name of Employee:</label>
-                        <Control.text model='HR.ADLogin' id='HR.ADLogin' />
-                    </div>
-                    <div className='col'> {/* Manager*/}
-                        <label>Manager:</label>
-                        <Control.text model='HR.Manager' id='HR.Manager' />
-                    </div>
-                    <div className='col'> {/* Employment Status */}
-                        <label>Employment Status:</label>
-                        <Control.select model="HR.employementStatus" id="HR.employementStatus" >
-                            <option value="Assigned to HR">Assigned to HR</option>
-                            <option value="Active">Active</option>
-                            <option value="Inactive">Inactive</option>
-                            <option value="Saved">Saved</option>
-                        </Control.select>
-                    </div>
-                    <div className='col'> {/* Date of leaving*/}
-                        <label>Date of leaving:</label>
-                        <Control.text model='HR.DateOfLeaving' id='HR.DateOfLeaving' placeholder='dd-MM-yyyy' />
-                    </div>
-                    <div className='col'>{/* Reason for leaving */}
-                        <label>Reason for leaving:</label>
-                        <Control.select model="HR.reasonForLeaving" id="HR.reasonForLeaving">
-                            <option>--Select--</option>
 
-                            {this.props.HR.reasonOfLeavingOptions.map(reasons => {
-                                return (<option key={reasons}
-                                    value={reasons}>{reasons}</option>);
-                            })};
+                    <div className="ms-Grid">
+                        <div className="ms-Grid-row">
+                            {/* User Alias*/}
+                            <div className='ms-Grid-col ms-u-md2 '>
+                                <label>User Alias:</label>
+                            </div>
+                            <div className='ms-Grid-col ms-u-md4 '>
+                                <Control.text model='HR.UserAlies' id='.UserAlies' component={TextField} />
+                            </div>
+                            {/* Name of employee*/}
+                            <div className='ms-Grid-col ms-u-md2'>
+
+                                <label>AD Login Name of Employee:</label>
+                            </div>
+                            <div className='ms-Grid-col ms-u-md4'>
+                                <Control.text model='HR.ADLogin' id='HR.ADLogin' component={TextField} />
+                            </div>
+                        </div>
+                        <div className='col'> {/* Manager*/}
+                            <label>Manager:</label>
+                            <Control.text model='HR.Manager' id='HR.Manager' component={TextField} />
+                            {/* <Control model='HR.Manager' component={peoplepicker}
+                                mapProps={{
+                                    value: (props) => { return props.viewValue }
+                                }}
+                            ></Control> */}
+                        </div>
+                        <div className='col'> {/* Employment Status */}
+                            <label>Employment Status:</label>
+                            <Control.select model="HR.employementStatus" id="HR.employementStatus">
+                                <option value="Assigned to HR">Assigned to HR</option>
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                                <option value="Saved">Saved</option>
+                            </Control.select>
+                        </div>
+                        <div className='col'> {/* Date of leaving*/}
+                            <label>Date of leaving:</label>
+                            <Control.text model='HR.DateOfLeaving' id='HR.DateOfLeaving' component={TextField} placeholder='dd-MM-yyyy' />
+                        </div>
+                        <div className='col'>{/* Reason for leaving */}
+                            <label>Reason for leaving:</label>
+                            <Control.select model="HR.reasonForLeaving" id="HR.reasonForLeaving">
+                                <option>--Select--</option>
+
+                                {this.props.HR.reasonOfLeavingOptions.map(reasons => {
+                                    return (<option key={reasons}
+                                        value={reasons}>{reasons}</option>);
+                                })};
                         </Control.select>
-                    </div>
-                    <div className='col'> {/* Date of Resignation*/}
-                        <label>Resignation Date:</label>
-                        <Control.text model='HR.ResigntionDate' id='HR.ResigntionDate' placeholder='dd-MM-yyyy' />
-                    </div>
-                    <div className='col'> {/* Eligible for rehire*/}
-                        <label>Eligible for Rehire:</label>
-                        <Control.checkbox model='HR.EligibleforRehire' id='HR.EligibleforRehire' />
+                        </div>
+                        <div className='col'> {/* Date of Resignation*/}
+                            <label>Resignation Date:</label>
+                            <Control.text model='HR.ResigntionDate' id='HR.ResigntionDate' component={TextField} placeholder='dd-MM-yyyy' />
+                        </div>
+                        <div className='col'> {/* Eligible for rehire*/}
+                            <label>Eligible for Rehire:</label>
+                            <Control.checkbox model='HR.EligibleforRehire' id='HR.EligibleforRehire' />
+                        </div>
+                        <div className="ms-Grid-col ms-u-sm1 ">1</div>
+
+
                     </div>
                     <button type="submit">Save</button>
                 </Form>
+
+
             </div>);
     }
 }
