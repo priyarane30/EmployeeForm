@@ -41,14 +41,14 @@ class EducationDetail extends React.Component<any, buttonStatus> {
   }
   //adds row in grids
   handleRowAdd(section) {
-      this.props.addEducationDetailRow(section);
+    this.props.addEducationDetailRow(section);
   }
 
   //removes row from grid
   handleRowRemove(section, index) {
-    
-      this.props.removeEducationDetailRow(section, index);
-    
+
+    this.props.removeEducationDetailRow(section, index);
+
 
   }
 
@@ -63,14 +63,14 @@ class EducationDetail extends React.Component<any, buttonStatus> {
     // Call the connected dispatch to create new purchase request
     this.setState({ buttonDisabled: true })
     let newEmpServiceObj: NewEmpService = new NewEmpService();
-    await newEmpServiceObj.saveEduDataInList(eduData,empListId)
-    this.setState({ buttonDisabled: false})
+    await newEmpServiceObj.saveEduDataInList(eduData, empListId)
+    this.setState({ buttonDisabled: false })
   }
 
   public render() {
-    {console.log("render")}
+    { console.log("render") }
     return (
-      
+
       <div>
         <Form model="Education" onSubmit={val => this.handleSubmit(val)}>
 
@@ -84,29 +84,29 @@ class EducationDetail extends React.Component<any, buttonStatus> {
             {
               this.props.Education.educationDetails.map((education, i) => {
                 return (
-                <tr>
-                  <td><label>Diploma/Degree</label>
-                  <Control.select  model={`Education.educationDetails[${i}].DiplomaDegree`}  id={i}>
-                  <option value="Graduation">Graduation</option>
-                  <option value="Diploma">Diploma</option>
-                  <option value="12th Education">12th Education</option>
-                  <option value="10th Education">10th Education</option></Control.select></td>
-                  <td><label>Grade</label>
-                  <Control.text model={`Education.educationDetails[${i}].Grade`} id={education.Grade}>
-                  </Control.text></td>
-                  <td><label>StartYear</label>
-                  <Control.text model={`Education.educationDetails[${i}].StartYear`} id={education.StartYear} placeholder="YYYY"></Control.text></td>
-                  <td><label>EndYear</label>
-                  <Control.text model={`Education.educationDetails[${i}].EndYear`} id={education.EndYear} placeholder="YYYY"></Control.text></td>
-                  <td><label>Board</label>
-                  <Control.text model={`Education.educationDetails[${i}].Board`} id={education.Board}></Control.text></td>
-                  <td><label>SchoolCollege</label>
-                  <Control.text model={`Education.educationDetails[${i}].SchoolCollege`} id={education.SchoolCollege}></Control.text></td>
-                  <td><label>DegreeName</label>
-                  <Control.text model={`Education.educationDetails[${i}].DegreeName`} id={education.DegreeName}></Control.text></td>
-                  <td>
-                  <button type="button" onClick={() => this.handleRowRemove("Education", i)}>-</button></td>
-                </tr>)
+                  <tr>
+                    <td><label>Diploma/Degree</label>
+                      <Control.select model={`Education.educationDetails[${i}].DiplomaDegree`} id={i}>
+                        <option value="Graduation">Graduation</option>
+                        <option value="Diploma">Diploma</option>
+                        <option value="12th Education">12th Education</option>
+                        <option value="10th Education">10th Education</option></Control.select></td>
+                    <td><label>Grade</label>
+                      <Control.text model={`Education.educationDetails[${i}].Grade`} id={education.Grade}>
+                      </Control.text></td>
+                    <td><label>StartYear</label>
+                      <Control.text model={`Education.educationDetails[${i}].StartYear`} id={education.StartYear} placeholder="YYYY"></Control.text></td>
+                    <td><label>EndYear</label>
+                      <Control.text model={`Education.educationDetails[${i}].EndYear`} id={education.EndYear} placeholder="YYYY"></Control.text></td>
+                    <td><label>Board</label>
+                      <Control.text model={`Education.educationDetails[${i}].Board`} id={education.Board}></Control.text></td>
+                    <td><label>SchoolCollege</label>
+                      <Control.text model={`Education.educationDetails[${i}].SchoolCollege`} id={education.SchoolCollege}></Control.text></td>
+                    <td><label>DegreeName</label>
+                      <Control.text model={`Education.educationDetails[${i}].DegreeName`} id={education.DegreeName}></Control.text></td>
+                    <td>
+                      <button type="button" onClick={() => this.handleRowRemove("Education", i)}>-</button></td>
+                  </tr>)
               })}
 
           </table >
@@ -120,20 +120,20 @@ class EducationDetail extends React.Component<any, buttonStatus> {
             </tr>
             {this.props.Education.certificationDetails.map((certification, i) => {
               return (
-              <tr>
-                <td><label>Certification</label>
-                <Control.text model={`Education.certificationDetails[${i}].Certification`} id="certification.Certification"></Control.text></td>
-                <td><label>Start Year</label>
-                <Control.text model={`Education.certificationDetails[${i}].StartYear`} id="certification.StartYear" placeholder="YYYY"></Control.text></td>
-                <td><label>YearOfCompletion</label>
-                <Control.text model={`Education.certificationDetails[${i}].YearOfCompletion`} id="certification.YearOfCompletion" placeholder="YYYY"></Control.text></td>
-                <td><label>InstituteName</label>
-                <Control.text model={`Education.certificationDetails[${i}].InstituteName`} id="certification.InstituteName"></Control.text></td>
-                <td><label>GradePercentage</label>
-                <Control.text model={`Education.certificationDetails[${i}].GradePercentage`} id="certification.GradePercentage"></Control.text></td>
-                <td>
-                  <button type="button" onClick={() => this.handleRowRemove("Certification", i)}>-</button></td>
-              </tr>)
+                <tr>
+                  <td><label>Certification</label>
+                    <Control.text model={`Education.certificationDetails[${i}].Certification`} id="certification.Certification"></Control.text></td>
+                  <td><label>Start Year</label>
+                    <Control.text model={`Education.certificationDetails[${i}].StartYear`} id="certification.StartYear" placeholder="YYYY"></Control.text></td>
+                  <td><label>YearOfCompletion</label>
+                    <Control.text model={`Education.certificationDetails[${i}].YearOfCompletion`} id="certification.YearOfCompletion" placeholder="YYYY"></Control.text></td>
+                  <td><label>InstituteName</label>
+                    <Control.text model={`Education.certificationDetails[${i}].InstituteName`} id="certification.InstituteName"></Control.text></td>
+                  <td><label>GradePercentage</label>
+                    <Control.text model={`Education.certificationDetails[${i}].GradePercentage`} id="certification.GradePercentage"></Control.text></td>
+                  <td>
+                    <button type="button" onClick={() => this.handleRowRemove("Certification", i)}>-</button></td>
+                </tr>)
             })}
           </table>
           <button type="submit" disabled={this.state.buttonDisabled}>Submit</button>

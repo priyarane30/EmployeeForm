@@ -1,13 +1,6 @@
 // Represents a employee detail
 export interface INewFormState {
     //form controls
-    // FirstName: string;
-    // LastName: string;
-    // Gender: string;
-    // DateofJoining: string; //datetime?
-    // Designation: string;
-    // Technology: string;
-    // CompanyEmail: string;
     PersonalEmail: string;
     Mobile: string;
     DateOfBirth: Date;//dateTime?
@@ -29,7 +22,7 @@ export interface INewFormState {
     IsPassAvail: boolean;
     PassportNo: string;
     PassportValidity: Date; //datetime?
-    Gender:string;
+    Gender: string;
 
     // Represent the choices to be displayed in dropdown when the form loads.
     genderOptions: string[];
@@ -39,8 +32,17 @@ export interface INewFormState {
 
     //tran list Items
     childDetailItems: Array<{
-        ChildName:string;
-        DateOfBirth:Date;
+        ChildName: string;
+        DateOfBirth: Date;
+    }>;
+
+    visaDetailItems: Array<{
+        ValidVisa: boolean;
+        VisaOfCountry: string;
+        VisaNo: string;
+        Entry: string;
+        VisaValidity: Date;
+        IsTravelled: boolean;
     }>;
 }
 
