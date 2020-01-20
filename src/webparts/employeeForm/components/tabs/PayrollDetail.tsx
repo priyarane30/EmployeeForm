@@ -59,8 +59,7 @@ interface IState {
                 <Form model="Payroll" onSubmit={(val) => this.handleSubmit(val)} >
                     <div className='col'>
                         <label>ESI Applicable:</label>
-                        <Control.checkbox model='Payroll.ESIApplicable'/>
-                      
+                        <Control.text model='.ESIApplicable' id='.ESIApplicable' />
                     </div>
                     <div className='col'>
                     <label>ESI No:</label>
@@ -71,13 +70,8 @@ interface IState {
                         <Control.text model='.ESIDispensary' id='.ESIDispensary' />
                     </div>
                     <div className='col'>
-                    {/* <label>PF Applicable?</label>
-                        <Control.checkbox model='Payroll.PFApplicable'/>
-                        Yes, Applicable */}
-
                     <label>PF Applicable:</label>
-                    <Control.checkbox model='Payroll.PFApplicable' id='Payroll.PFApplicable' />
-
+                    <Control.text model='.PFApplicable' id='.PFApplicable' />
                     </div>
                     <div className='col'>
                     <label>PF No:</label>
