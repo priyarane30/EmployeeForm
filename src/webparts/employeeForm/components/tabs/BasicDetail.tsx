@@ -77,6 +77,7 @@ class BasicDetail extends React.Component<any>{
             //set empId in store
             this.props.setEmpId(eId);
             this.props.getBasicDatail(eId);
+            this.props.showTabs(eId);
         }
         const CommonState: ICommonState = { CurrentForm: "Employee" };
         this.props.setTabName(CommonState);
@@ -96,7 +97,7 @@ class BasicDetail extends React.Component<any>{
 
 
         return (
-                <div>
+            <div>
                 <Form model="Basic" onSubmit={(val) => this.handleSubmit(val)}  >
 
                     <div className='col'>
@@ -148,7 +149,7 @@ class BasicDetail extends React.Component<any>{
                     <button type="submit">Submit</button>
                 </Form>
             </div>
-            );
+        );
 
     }
     private _onSelectDate = (date: Date | null | undefined): void => {
@@ -161,7 +162,7 @@ class BasicDetail extends React.Component<any>{
 }
 
 const mapStateToProps = function (state) {
-   // console.log(state)
+    // console.log(state)
     return state;
 }
 

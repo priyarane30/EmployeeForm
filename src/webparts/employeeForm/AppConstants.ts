@@ -28,8 +28,8 @@ export const ActionTypes = {
     SetTabName: 'SET_TAB',
     GetEmpID: 'GET_EMP_ID',
     SetEmpID: 'SET_EMP_ID',
-    RemoveChildDetailRow:'REMOVE_CHILD_DETAIL_ROW',
-    AddChildDetailRow:'ADD_CHILD_DETAIL_ROW',
+    RemoveChildDetailRow: 'REMOVE_CHILD_DETAIL_ROW',
+    AddChildDetailRow: 'ADD_CHILD_DETAIL_ROW',
     //education details form
     SetInitialEduDetailFormState: 'SET_INITIAL_EDUDETAIL_FORM_STATE',
     SetInitialCertiDetailFormState: 'SET_INITIAL_CERTIDETAIL_FORM_STATE',
@@ -50,4 +50,6 @@ export const ActionTypes = {
     AddTechnologyDetailRow: 'ADD_NEW_TECHNOLOGY_ROW',
     RemoveTechnologyRow: 'REMOVE_TECHNOLOGY_ROW',
     AddValueFromPayroll: 'ADD_PAYROLL_DATA',
+    AddVisaDetailRow: 'ADD_VISA_DETAIL_ROW',
+    RemoveVisaDetailRow: 'REMOVE_VISA_DETAIL_ROW'
 }

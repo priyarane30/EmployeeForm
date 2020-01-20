@@ -9,7 +9,7 @@
 
 // The file contains actions for the NewEmployeeReducer
 
-import {INewFormState} from '../state/INewFormControlsState';
+import { INewFormState } from '../state/INewFormControlsState';
 import { ICommonState } from '../state/ICommonState';
 import NewEmpService from '../services/NewEmployeeService';
 import NewEmployeeService from '../services/NewEmployeeService';
@@ -20,15 +20,13 @@ export function GetInitialControlValuesAction(EmpListID) {
     return dispatch => {
 
         let formControlState = {
-                      
+
         } as INewFormState;
 
         let newEmpServiceObj: NewEmpService = new NewEmpService();
 
         newEmpServiceObj.getNewFormControlState(EmpListID).then((resp: INewFormState) => {
-            formControlState=resp;
-            debugger;
-
+            formControlState = resp;
             dispatch({
                 type: ActionTypes.GetDefaultFormControls,
                 payload: formControlState
@@ -63,33 +61,57 @@ export function SetTabName(tabData: ICommonState) {
         });
     }
 }
-export function RemoveDetailRowFromGrid(section,index){
-    return dispatch=>{
-       if(section=="Child")
-          dispatch({
-              type:ActionTypes.RemoveChildDetailRow,
-              payload:index
-          });
+export function RemoveDetailRowFromGrid(section, index) {
+    return dispatch => {
+        if (section == "Child")
+            dispatch({
+                type: ActionTypes.RemoveChildDetailRow,
+                payload: index
+            });
+        if (section == "Visa")
+            dispatch({
+                type: ActionTypes.RemoveVisaDetailRow,
+                payload: index
+            });
     }
 }
 
 //add rows in detail grids
-export function AddDetailRowToGrid(section){
+export function AddDetailRowToGrid(section) {
     var actionObj;
-        if(section=="Child")
-        {
+    if (section == "Child") {
         //add row in education detail grid
-        let newChildDetailGridRow=
+        let newChildDetailGridRow =
         {
-            ChildName:'',
-            DateOfBirth:''
-         }
-
-         actionObj = {
-              type:ActionTypes.AddChildDetailRow,
-              payload:newChildDetailGridRow
-          }
-          
+            ChildName: '',
+            DateOfBirth: ''
         }
-        return actionObj;
+
+        actionObj = {
+            type: ActionTypes.AddChildDetailRow,
+            payload: newChildDetailGridRow
+        }
+
     }
+    else if (section == "Visa") {
+        //add row in education detail grid
+        let newVisaDetailGridRow =
+        {
+            ValidVisa: false,
+            VisaOfCountry: '',
+            VisaNo: '',
+            Entry: '',
+            VisaValidity: null,
+            IsTravelled: false
+        }
+
+        actionObj = {
+            type: ActionTypes.AddVisaDetailRow,
+            payload: newVisaDetailGridRow
+        }
+
+    }
+    return actionObj;
+}
+
+

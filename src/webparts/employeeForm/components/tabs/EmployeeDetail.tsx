@@ -223,6 +223,61 @@ class EmployeeDetail extends React.Component<any> {
                         }}
                     ></Control>
                 </div>
+                <div>
+                    <table>
+                        <tr>
+                            <td><label>Visa Details</label></td>
+                            <td style={{ textAlign: "left" }}>
+                                <button type="button" onClick={() => this.handleRowAdd("Visa")}>+</button>
+                            </td>
+                        </tr>
+                        {props.visaDetailItems.map((visa, i) => {
+                            return (
+                                <tr>
+                                    <td>
+                                        <label>Valid Visa</label>
+                                        <Control.checkbox model={`Employee.visaDetailItems[${i}].ValidVisa`} id={visa.ValidVisa} ></Control.checkbox>
+                                    </td>
+                                    <td>
+                                        <label>Visa Of Country</label>
+                                        <Control.text model={`Employee.visaDetailItems[${i}].VisaOfCountry`} id={visa.VisaOfCountry}></Control.text>
+                                    </td>
+                                    <td>
+                                        <label>Visa No</label>
+                                        <Control.text model={`Employee.visaDetailItems[${i}].VisaNo`} id={visa.VisaNo}></Control.text>
+                                    </td>
+                                    <td>
+                                        <label>Entry</label>
+                                        <Control.select model={`Employee.visaDetailItems[${i}].Entry`} id={visa.Entry}>
+                                            <option>--Select--</option>
+                                            <option key='Single Entry' value='Single Entry'>Single Entry</option>
+                                            <option key='Multiple Entry' value='Multiple Entry'>Multiple Entry</option>
+                                        </Control.select>
+                                    </td>
+                                    <td>
+                                        <label>Visa Validity</label>
+                                        <Control model={`Employee.visaDetailItems[${i}].VisaValidity`} id={visa.VisaValidity} component={DatePicker}
+                                            mapProps={{
+                                                value: (props) => { return props.viewValue },
+                                                onSelectDate: (props) => { return props.onChange }
+                                            }}
+                                        ></Control>
+                                    </td>
+                                    <td>
+                                        <label>Is Travelled</label>
+                                        <Control.checkbox model={`Employee.visaDetailItems[${i}].IsTravelled`}  id={`Employee.visaDetailItems[${i}].IsTravelled`} />
+                                    </td>
+
+                                    <td>
+                                        <button type="button" onClick={() => this.handleRowRemove("Visa", i)}>-</button>
+                                    </td>
+                                </tr>
+                            )
+                        })}
+                    </table>
+
+                </div>
+
             </div>
             )
         }
@@ -249,7 +304,6 @@ class EmployeeDetail extends React.Component<any> {
                         ></Control>
                     </div>
                     <div>
-
                         <table>
                             <tr>
                                 <td><label>Children Details</label></td>
@@ -281,7 +335,8 @@ class EmployeeDetail extends React.Component<any> {
                             })}
                         </table>
 
-                    </div></div>)
+                    </div>
+                </div>)
         }
     }
 

@@ -8,7 +8,7 @@ import { store } from "../../store/ConfigureStore";
 import { TextField } from "office-ui-fabric-react/lib/TextField";
 import { Dropdown } from 'office-ui-fabric-react/lib/Dropdown';
 
-import peoplepicker from '../peoplepicker';
+//import peoplepicker from '../peoplepicker';
 const MyTextInput = (props) => <input className="my-input" {...props} />;
 
 
