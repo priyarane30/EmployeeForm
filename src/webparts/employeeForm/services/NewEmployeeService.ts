@@ -125,7 +125,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                             newFormControlsState.PermanentAddress = res.PermanentAddress;
                             newFormControlsState.PanNo = res.PanNo;
                             newFormControlsState.IsPassAvail = (res.Passport == "Yes") ? true : false;
-                            newFormControlsState.PassportValidity = new Date(res.PassportValidity); 
+                            newFormControlsState.PassportValidity = new Date(res.PassportValidity);
                             newFormControlsState.PassportNo = res.PassportNo;
                             newFormControlsState.Gender = res.Gender
                             return this.getMultipleDataFromListUsingParentID(ListNames.CHILDDETAILS, EmpListID).then((res) => {
@@ -166,11 +166,6 @@ export default class NewEmployeeService implements INewEmpRequestService {
         debugger;
         let web = new Web(AppConstats.SITEURL);
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empListId.EmpListID).update({
-            // FirstName: empData.FirstName,
-            // LastName: empData.LastName,
-            // Designation: empData.Designation,
-            // Gender: empData.Gender,
-            // Technology: empData.Technology,
             Gender: empData.Gender,
             DateOfBirth: empData.DateOfBirth,
             Age: empData.Age,
@@ -249,7 +244,6 @@ export default class NewEmployeeService implements INewEmpRequestService {
                 var url = AppConstats.SITEURL + "_api/web/lists/GetByTitle('" + ListNames.VISADETAILS + "')/items?$select=ID&$filter=empTableID/ID eq " + empListId.EmpListID;
                 return axios.get(url)
                     .then(res => {
-                        debugger;
                         if (res.data.value.length > 0) {
                             let idData = res.data.value;
                             idData.forEach(e => {
@@ -292,9 +286,6 @@ export default class NewEmployeeService implements INewEmpRequestService {
                         console.log(error)
                     });
             }
-
-
-
         }).catch(error => {
             console.log("error while adding an employee");
         });
@@ -674,7 +665,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
         debugger;
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empListId.EmpListID).update({
             // return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
-            ESIApplicable:empReqData.ESIApplicable,
+            ESIApplicable: empReqData.ESIApplicable,
             ESINo: empReqData.ESINo,
             ESIDispensary: empReqData.ESIDispensary,
             PFNo: empReqData.PFNo,
