@@ -183,7 +183,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
             PassportValidity: empData.PassportValidity
         }).then((result: ItemUpdateResult) => {
             console.log(result);
-            if (empData.MaritalStatus == "Married" && empData.childDetailItems != null && empData.childDetailItems.length > 0) {
+            if (empData.MaritalStatus == "Married") {
                 // Creates the multiple purchase items in batch.
                 let web = new Web(AppConstats.SITEURL);
                 let batch = web.createBatch();
