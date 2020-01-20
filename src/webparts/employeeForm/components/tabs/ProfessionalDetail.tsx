@@ -64,7 +64,6 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
         const empListId = store.getState().EmpListId;
         console.log(pdData)
         let newEmpServiceObj: NewEmpService = new NewEmpService();
-        debugger;
         await newEmpServiceObj.saveProfessionalDetailInList(pdData, empListId)
         // Call the connected dispatch to create new purchase request
         // this.props.saveDataToSPList(eduData, empListId);
