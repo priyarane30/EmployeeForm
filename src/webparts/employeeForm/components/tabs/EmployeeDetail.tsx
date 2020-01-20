@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Form, Control, createFieldClass, controls } from 'react-redux-form';
+import { Form, Control, createFieldClass, controls,Errors } from 'react-redux-form';
 import { connect } from "react-redux";
 import { SetTabName, GetInitialControlValuesAction, AddDetailRowToGrid, RemoveDetailRowFromGrid } from "../../actions/NewFormControlsValuesAction";
 import { ICommonState } from '../../state/ICommonState';
@@ -9,6 +9,7 @@ import NewEmpService from '../../services/NewEmployeeService';
 import FabricField from '../Fabric Components/DatePicker'
 import { DatePicker } from 'office-ui-fabric-react/lib/DatePicker';
 import { Dropdown } from 'office-ui-fabric-react/lib/Dropdown';
+import { optionProperties } from 'office-ui-fabric-react/lib/Utilities';
 
 interface buttonStatus {
     buttonDisabled: boolean
@@ -73,7 +74,7 @@ class EmployeeDetail extends React.Component<any> {
 
     }
 
-
+    
     public render() {
         // let i = 0;
         console.log(this.props)
@@ -88,7 +89,15 @@ class EmployeeDetail extends React.Component<any> {
                             mapProps={{
                                 selected: (props) => { return props.viewValue },
                                 onChange: (props) => { return props.onChange },
-                                options: (props) => { return props.option }
+                               options:(props)=>{return  [ 
+                                { key: 'A', text: 'Option a' },  
+                                { key: 'B', text: 'Option b' },  
+                                { key: 'C', text: 'Option c' },  
+                                { key: 'D', text: 'Option d' },  
+                                { key: 'E', text: 'Option e' },  
+                                { key: 'F', text: 'Option f' },  
+                                { key: 'G', text: 'Option g' },  
+                              ] }
                             }}
                             <option>--Select--</option>
                             {this.props.Employee.genderOptions.map(gender => { return <option key={gender} value={gender} >{gender}</option> })};
@@ -117,20 +126,42 @@ class EmployeeDetail extends React.Component<any> {
                     </div>
                     <div className='col'>
                         <label>Marital Status:</label>
-                        <Control.select model=".MaritalStatus" id=".MaritalStatus">
+                        <Control.select model=".MaritalStatus" id=".MaritalStatus"
+                         validators={{
+                            requiredMaritalStatus: (val) =>  val && val!="--Select--"
+                          }}>
                             <option>--Select--</option>
                             {this.props.Employee.maritalStatusOptions.map(mStatus => { return <option key={mStatus} value={mStatus}>{mStatus}</option> })};
                         </Control.select>
+                        <Errors
+                            model=".MaritalStatus"
+                            messages={{
+                                requiredMaritalStatus: 'Please Select Marital Status.'
+                            }}
+                        />
+                        
                     </div>
                     {this.isMarried(this.props.Employee)}
-
                     <div className='col'>
                         <label>Personal Email:</label>
-                        <Control.text model='.PersonalEmail' id='.PersonalEmail' />
+                        <Control.text model='.PersonalEmail' id='.PersonalEmail'
+                            validators={{
+                                requiredEmail: (val) => val && val.length,
+                                isEmail: (val) => (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(val)) // ES6 property shorthand
+                            }}
+                        />
+                        <Errors
+                            model=".PersonalEmail"
+                            messages={{
+                                requiredEmail: 'Please provide an email address.',
+                                isEmail: (val) => `${val} is not a valid email.`,
+                            }}
+                        />
+                         
                     </div>
                     <div className='col'>
                         <label>Mobile No:</label>
-                        <Control.text model='.Mobile' id='.Mobile' />
+                        <Control.text model='.Mobile' id='.Mobile'/>
                     </div>
                     <div className='col'>
                         <label>Emergency Contact No:</label>
@@ -209,7 +240,7 @@ class EmployeeDetail extends React.Component<any> {
             )
         }
     }
-    isMarried(props) {
+      isMarried(props) {
         if (props.MaritalStatus == "Married") {
             return (
                 <div>

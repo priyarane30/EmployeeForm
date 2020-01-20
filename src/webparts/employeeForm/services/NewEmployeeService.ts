@@ -125,7 +125,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                             newFormControlsState.PermanentAddress = res.PermanentAddress;
                             newFormControlsState.PanNo = res.PanNo;
                             newFormControlsState.IsPassAvail = (res.Passport == "Yes") ? true : false;
-                            newFormControlsState.PassportValidity = res.PassportValidity;
+                            newFormControlsState.PassportValidity = new Date(res.PassportValidity);
                             newFormControlsState.PassportNo = res.PassportNo;
                             newFormControlsState.Gender = res.Gender
                             return this.getMultipleDataFromListUsingParentID(ListNames.CHILDDETAILS, EmpListID).then((res) => {
