@@ -125,7 +125,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                             newFormControlsState.PermanentAddress = res.PermanentAddress;
                             newFormControlsState.PanNo = res.PanNo;
                             newFormControlsState.IsPassAvail = (res.Passport == "Yes") ? true : false;
-                            newFormControlsState.PassportValidity = res.PassportValidity;
+                            newFormControlsState.PassportValidity = new Date(res.PassportValidity); 
                             newFormControlsState.PassportNo = res.PassportNo;
                             newFormControlsState.Gender = res.Gender
                             return this.getMultipleDataFromListUsingParentID(ListNames.CHILDDETAILS, EmpListID).then((res) => {
@@ -653,6 +653,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
         //payrollControlsState = statusResp;
         return this.getDataFromListUsingID(ListNames.EMPLOYEECONTACT, EmpListID).then(statusResp => {
             payrollControlsState.UserID = statusResp.UserID;
+            payrollControlsState.ESIApplicable = statusResp.ESIApplicable;
             payrollControlsState.ESINo = statusResp.ESINo;
             payrollControlsState.ESIDispensary = statusResp.ESIDispensary;
             payrollControlsState.PFNo = statusResp.PFNo;
@@ -673,7 +674,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
         debugger;
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empListId.EmpListID).update({
             // return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
-            //ESIApplicable:empReqData.ESIApplicable,
+            ESIApplicable:empReqData.ESIApplicable,
             ESINo: empReqData.ESINo,
             ESIDispensary: empReqData.ESIDispensary,
             PFNo: empReqData.PFNo,

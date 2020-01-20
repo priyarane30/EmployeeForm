@@ -24,10 +24,10 @@ export const PayRollSectionReducer = (state: IPayrollState = null, action) => {
             state = {
                 ...state,
                UserID: action.payload.UserID,
-               ESIApplicable:true,
+               ESIApplicable:action.payload.ESIApplicable,
                ESINo:action.payload.ESINo,
                ESIDispensary:action.payload.ESIDispensary,
-               PFApplicable:false,
+               PFApplicable:action.payload.PFApplicable,
                PFNo:action.payload.PFNo,
                PFNoforDeptFile:action.payload.PFNoforDeptFile,
                RestrictPF:action.payload.RestrictPF,

@@ -14,5 +14,6 @@
   "externals": {},
   "localizedResources": {
     "EmployeeFormWebPartStrings": "lib/webparts/employeeForm/loc/{locale}.js"
+    
   }
 }
