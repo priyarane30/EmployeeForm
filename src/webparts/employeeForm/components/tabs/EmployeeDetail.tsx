@@ -76,22 +76,7 @@ class EmployeeDetail extends React.Component<any> {
 
                     <div className='col'>
                         <label>Gender:</label>
-                        <Control.select model="Employee.Gender" id=".Gender" component={Dropdown}>
-                            mapProps={{
-                                selected: (props) => { return props.viewValue },
-                                onChange: (props) => { return props.onChange },
-                                options: (props) => {
-                                    return [
-                                        { key: 'A', text: 'Option a' },
-                                        { key: 'B', text: 'Option b' },
-                                        { key: 'C', text: 'Option c' },
-                                        { key: 'D', text: 'Option d' },
-                                        { key: 'E', text: 'Option e' },
-                                        { key: 'F', text: 'Option f' },
-                                        { key: 'G', text: 'Option g' },
-                                    ]
-                                }
-                            }}
+                        <Control.select model="Employee.Gender" id=".Gender" >
                             <option>--Select--</option>
                             {this.props.Employee.genderOptions.map(gender => { return <option key={gender} value={gender} >{gender}</option> })};
                         </Control.select>
