@@ -12,6 +12,7 @@ import {
 import { store } from "../../store/ConfigureStore";
 import { ActionTypes } from "../../../employeeForm/AppConstants";
 import { TextField } from "office-ui-fabric-react/lib/TextField";
+import styles from "../EmployeeForm.module.scss";
 
 // Represents the connected dispatch
 interface IPayrollConnectedDispatch {
@@ -60,126 +61,118 @@ class PayrollDetail extends React.Component<any, IState> {
     return (
       <div>
         <Form model="Payroll" onSubmit={val => this.handleSubmit(val)}>
-          <div className="ms-Grid">
-            <div className="ms-Grid-row">
-              <div className="ms-Grid-col ms-u-md2 ">
-                <label>ESI Applicable:</label>
-              </div>
-              <div className="ms-Grid-col ms-u-md4 ">
-                <Control.text
-                  model=".ESIApplicable"
-                  id=".ESIApplicable"
-                  component={TextField}
-                />
-              </div>
-              <div className="ms-Grid-col ms-u-md2 ">
-                <label>ESI No:</label>
-              </div>
-              <div className="ms-Grid-col ms-u-md4 ">
-                <Control.text
-                  model=".ESINo"
-                  id=".ESINo"
-                  component={TextField}
-                />
-              </div>
-            </div>
-            <div className="ms-Grid-row">
-              <div className="ms-Grid-col ms-u-md2 ">
-                <label>ESIDispensary:</label>
-              </div>
-              <div className="ms-Grid-col ms-u-md4 ">
-                <Control.text
-                  model=".ESIDispensary"
-                  id=".ESIDispensary"
-                  component={TextField}
-                />
-              </div>
-              <div className="ms-Grid-col ms-u-md2 ">
-                <label>PF Applicable:</label>
-              </div>
-              <div className="ms-Grid-col ms-u-md4 ">
-                <Control.text
-                  model=".PFApplicable"
-                  id=".PFApplicable"
-                  component={TextField}
-                />
-              </div>
-            </div>
-            <div className="ms-Grid-row">
-              <div className="ms-Grid-col ms-u-md2 ">
-                <label>PF No:</label>
-              </div>
-              <div className="ms-Grid-col ms-u-md4 ">
-                <Control.text model=".PFNo" id=".PFNo" component={TextField} />
-              </div>
-              <div className="ms-Grid-col ms-u-md2 ">
-                <label>PF No for Dept file:</label>
-              </div>
-              <div className="ms-Grid-col ms-u-md4 ">
-                <Control.text
-                  model=".PFNoforDeptFile"
-                  id=".PFNoforDeptFile"
-                  component={TextField}
-                />
-              </div>
-            </div>
-            <div className="ms-Grid-row">
-              <div className="ms-Grid-col ms-u-md2 ">
-                <label>Restrict PF:</label>
-              </div>
-              <div className="ms-Grid-col ms-u-md4 ">
-                <Control.text
-                  model=".RestrictPF"
-                  id=".RestrictPF"
-                  component={TextField}
-                />
-              </div>
-              <div className="ms-Grid-col ms-u-md2 ">
-                <label>Zero Pension:</label>
-              </div>
-              <div className="ms-Grid-col ms-u-md4 ">
-                <Control.text
-                  model=".ZeroPension"
-                  id=".ZeroPension"
-                  component={TextField}
-                />
-              </div>
-            </div>
-            <div className="ms-Grid-row">
-              <div className="ms-Grid-col ms-u-md2 ">
-                <label>Zero PT:</label>
-              </div>
-              <div className="ms-Grid-col ms-u-md4 ">
-                <Control.text
-                  model=".ZeroPT"
-                  id=".ZeroPT"
-                  component={TextField}
-                />
-              </div>
-              <div className="ms-Grid-col ms-u-md2 ">
-                <label>Ward/Circle:</label>
-              </div>
-              <div className="ms-Grid-col ms-u-md4 ">
-                <Control.text
-                  model=".Ward_x002f_Circle"
-                  id=".Ward_x002f_Circle"
-                  component={TextField}
-                />
-              </div>
-            </div>
-            <div className="ms-Grid-row">
-              <div className="ms-Grid-col ms-u-md2 ">
-                <label>Director:</label>
-              </div>
-              <div className="ms-Grid-col ms-u-md4 ">
-                <Control.text
+          <div className={styles.employeeForm}>
+            <div className={styles.container}>
+              <div className={`ms-Grid-row  ms-fontColor-white ${styles.row}`}>
+                  <div className="ms-Grid-col ms-u-sm4 block">
+                    <label>ESI Applicable:</label>
+                  </div>
+                  <div className="ms-Grid-col ms-u-sm8 block">
+                    <Control.text className={styles.marginb}
+                      model=".ESIApplicable"
+                      id=".ESIApplicable"
+                      component={TextField}
+                    />
+                  </div>
+                  <div className="ms-Grid-col ms-u-sm4 block">
+                    <label>ESI No:</label>
+                  </div>
+                  <div className="ms-Grid-col ms-u-sm8 block">
+                    <Control.text className={styles.marginb}
+                      model=".ESINo"
+                      id=".ESINo"
+                      component={TextField}
+                    />
+                  </div>          
+                  <div className="ms-Grid-col ms-u-sm4 block">
+                    <label>ESIDispensary:</label>
+                </div>
+                  <div className="ms-Grid-col ms-u-sm8 block">
+                    <Control.text className={styles.marginb}
+                      model=".ESIDispensary"
+                      id=".ESIDispensary"
+                      component={TextField}
+                    />
+                  </div>
+                  <div className="ms-Grid-col ms-u-sm4 block">
+                    <label>PF Applicable:</label>
+                  </div>
+                  <div className="ms-Grid-col ms-u-sm8 block">
+                    <Control.text className={styles.marginb}
+                      model=".PFApplicable"
+                      id=".PFApplicable"
+                      component={TextField}
+                    />
+                  </div>
+                  <div className="ms-Grid-col ms-u-sm4 block">
+                    <label>PF No:</label>
+                  </div>
+                  <div className="ms-Grid-col ms-u-sm8 block">
+                    <Control.text  className={styles.marginb} model=".PFNo" id=".PFNo" component={TextField} />
+                  </div>
+                  <div className="ms-Grid-col ms-u-sm4 block">
+                    <label>PF No for Dept file:</label>
+                  </div>
+                  <div className="ms-Grid-col ms-u-sm8 block">
+                    <Control.text className={styles.marginb}
+                      model=".PFNoforDeptFile"
+                      id=".PFNoforDeptFile"
+                      component={TextField}
+                    />
+                  </div>
+                  <div className="ms-Grid-col ms-u-sm4 block">
+                    <label>Restrict PF:</label>
+                  </div>
+                  <div className="ms-Grid-col ms-u-sm8 block">
+                    <Control.text className={styles.marginb}
+                      model=".RestrictPF"
+                      id=".RestrictPF"
+                      component={TextField}
+                    />
+                  </div>
+                  <div className="ms-Grid-col ms-u-sm4 block">
+                    <label>Zero Pension:</label>
+                  </div>
+                  <div className="ms-Grid-col ms-u-sm8 block">
+                    <Control.text className={styles.marginb}
+                      model=".ZeroPension"
+                      id=".ZeroPension"
+                      component={TextField}
+                    />
+                  </div>
+                  <div className="ms-Grid-col ms-u-sm4 block">
+                    <label>Zero PT:</label>
+                  </div>
+                  <div className="ms-Grid-col ms-u-sm8 block">
+                    <Control.text className={styles.marginb}
+                      model=".ZeroPT"
+                      id=".ZeroPT"
+                      component={TextField}
+                    />
+                  </div>
+                  <div className="ms-Grid-col ms-u-sm4 block">
+                    <label>Ward/Circle:</label>
+                  </div>
+                  <div className="ms-Grid-col ms-u-sm8 block">
+                    <Control.text className={styles.marginb}
+                      model=".Ward_x002f_Circle"
+                      id=".Ward_x002f_Circle"
+                      component={TextField}
+                    />
+                  </div>
+                  <div className="ms-Grid-col ms-u-sm4 block">
+                    <label>Director:</label>
+                  </div>
+                  <div className="ms-Grid-col ms-u-sm8 block">
+                <Control.text className={styles.marginb}
                   model=".Director"
                   id=".Director"
                   component={TextField}
                 />
+              </div>            
+                </div>
               </div>
             </div>
-          </div>
           <button disabled={!this.state.isVisible} type="submit">
             Submit
           </button>

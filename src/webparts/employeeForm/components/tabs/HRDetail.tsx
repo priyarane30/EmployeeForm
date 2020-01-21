@@ -7,6 +7,8 @@ import { IHRState } from '../../state/IHRSectionControlsState';
 import { store } from "../../store/ConfigureStore";
 import { TextField } from "office-ui-fabric-react/lib/TextField";
 import { Dropdown } from 'office-ui-fabric-react/lib/Dropdown';
+import { IEmployeeFormProps } from '../IEmployeeFormProps';
+import { PeoplePicker, PrincipalType } from "@pnp/spfx-controls-react/lib/PeoplePicker";
 
 //import peoplepicker from '../peoplepicker';
 const MyTextInput = (props) => <input className="my-input" {...props} />;
@@ -33,6 +35,8 @@ class HRDetail extends React.Component<any> {
         console.log("HR Details");
         const empListId = store.getState().EmpListId;
         this.props.getDefaultControlsData(empListId);
+      //  this.props.passprop(this.props.context);
+        console.log(this.props.context)
     }
     public handleSubmit = (formValues) => {
         console.log(formValues);
@@ -46,11 +50,27 @@ class HRDetail extends React.Component<any> {
         this.props.AddValueFromHR(empHrData, empListId);
         //EndSave The Data
     }
-
+    private _getPeoplePickerItems(items: any[]) {
+        console.log('Items:', items);
+    }
     public render() {
         if (!this.props.HR) return (<div> Loading.... </div>);
         return (
             <div>
+                {/* <PeoplePicker
+                    context={this.props.context}
+                    titleText="People Picker"
+                    personSelectionLimit={3}
+                    groupName={"Leadership Connection Owners"} // Leave this blank in case you want to filter from all users    
+                    showtooltip={true}
+                    isRequired={true}
+                    disabled={false}
+                    ensureUser={true}
+                    selectedItems={this._getPeoplePickerItems}
+                    showHiddenInUI={false}
+                    principalTypes={[PrincipalType.User]}
+                    resolveDelay={1000}
+                /> */}
                 <Form model="HR" onSubmit={(val) => this.handleSubmit(val)}>
 
                     <div className="ms-Grid">
@@ -112,9 +132,6 @@ class HRDetail extends React.Component<any> {
                             <label>Eligible for Rehire:</label>
                             <Control.checkbox model='HR.EligibleforRehire' id='HR.EligibleforRehire' />
                         </div>
-                        <div className="ms-Grid-col ms-u-sm1 ">1</div>
-
-
                     </div>
                     <button type="submit">Save</button>
                 </Form>

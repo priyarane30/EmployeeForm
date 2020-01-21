@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Form, Control, createFieldClass, controls,Errors } from 'react-redux-form';
+import { Form, Control, createFieldClass, controls, Errors } from 'react-redux-form';
 import { connect } from "react-redux";
 import { SetTabName, GetInitialControlValuesAction, AddDetailRowToGrid, RemoveDetailRowFromGrid } from "../../actions/NewFormControlsValuesAction";
 import { ICommonState } from '../../state/ICommonState';
@@ -56,12 +56,6 @@ class EmployeeDetail extends React.Component<any> {
         // Do anything you want with the form value
         const CommonState: ICommonState = { CurrentForm: "Employee" };
         this.props.setTabName(CommonState);
-
-        // Do whatever you like in here.
-        // If you connect the UserForm to the Redux store,
-        // you can dispatch actions such as:
-        // dispatch(actions.submit('user', somePromise));
-        // etc.
         const empListId = store.getState().EmpListId;
         let empData = {} as INewFormState;
         empData = formValues;
@@ -70,11 +64,8 @@ class EmployeeDetail extends React.Component<any> {
         // Call the connected dispatch to create new purchase request
         await newEmpServiceObj.AddEmpFormData(empData, empListId)
         this.setState({ buttonDisabled: false })
-
-
     }
 
-    
     public render() {
         // let i = 0;
         console.log(this.props)
@@ -114,9 +105,9 @@ class EmployeeDetail extends React.Component<any> {
                     <div className='col'>
                         <label>Marital Status:</label>
                         <Control.select model=".MaritalStatus" id=".MaritalStatus"
-                         validators={{
-                            requiredMaritalStatus: (val) =>  val && val!="--Select--"
-                          }}>
+                            validators={{
+                                requiredMaritalStatus: (val) => val && val != "--Select--"
+                            }}>
                             <option>--Select--</option>
                             {this.props.Employee.maritalStatusOptions.map(mStatus => { return <option key={mStatus} value={mStatus}>{mStatus}</option> })};
                         </Control.select>
@@ -126,7 +117,7 @@ class EmployeeDetail extends React.Component<any> {
                                 requiredMaritalStatus: 'Please Select Marital Status.'
                             }}
                         />
-                        
+
                     </div>
                     {this.isMarried(this.props.Employee)}
                     <div className='col'>
@@ -144,11 +135,11 @@ class EmployeeDetail extends React.Component<any> {
                                 isEmail: (val) => `${val} is not a valid email.`,
                             }}
                         />
-                         
+
                     </div>
                     <div className='col'>
                         <label>Mobile No:</label>
-                        <Control.text model='.Mobile' id='.Mobile'/>
+                        <Control.text model='.Mobile' id='.Mobile' />
                     </div>
                     <div className='col'>
                         <label>Emergency Contact No:</label>
@@ -265,7 +256,7 @@ class EmployeeDetail extends React.Component<any> {
                                     </td>
                                     <td>
                                         <label>Is Travelled</label>
-                                        <Control.checkbox model={`Employee.visaDetailItems[${i}].IsTravelled`}  id={`Employee.visaDetailItems[${i}].IsTravelled`} />
+                                        <Control.checkbox model={`Employee.visaDetailItems[${i}].IsTravelled`} id={`Employee.visaDetailItems[${i}].IsTravelled`} />
                                     </td>
 
                                     <td>
@@ -282,7 +273,7 @@ class EmployeeDetail extends React.Component<any> {
             )
         }
     }
-      isMarried(props) {
+    isMarried(props) {
         if (props.MaritalStatus == "Married") {
             return (
                 <div>
