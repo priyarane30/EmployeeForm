@@ -62,7 +62,6 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
         let pdData = {} as IProfessionalDetailState;
         pdData = formValues;
         const empListId = store.getState().EmpListId;
-        console.log(pdData)
         let newEmpServiceObj: NewEmpService = new NewEmpService();
         await newEmpServiceObj.saveProfessionalDetailInList(pdData, empListId)
         // Call the connected dispatch to create new purchase request
@@ -214,7 +213,6 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
     }
 }
 const mapStateToProps = function (state) {
-    //console.log(state)
     return state;
 }
 

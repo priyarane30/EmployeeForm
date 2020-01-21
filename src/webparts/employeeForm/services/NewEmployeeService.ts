@@ -277,31 +277,27 @@ export default class NewEmployeeService implements INewEmpRequestService {
             //'hitaxi.kachhadiya@synoverge.com'
             return this.getDataFromListUsingID(ListNames.EMPLOYEECONTACT, EmpListID).then(Resp => {
                 hrControlsState.UserAlies = Resp.UserAlies;
-                hrControlsState.ADLogin = Resp.ADLoginId;//'Hitaxi Kachhadiya';//Resp.ADLogin;
-                hrControlsState.Manager = Resp.ManagerId;//'Krishna Soni';//Resp.Manager;
+                hrControlsState.ADLogin = Resp.ADLoginId;
+                hrControlsState.Manager = Resp.ManagerId;
                 hrControlsState.employementStatus = Resp.EmploymentStatus;
                 hrControlsState.DateOfLeaving = Resp.DateOfLeaving;
                 if (Resp.reasonForLeaving == null)
-                    hrControlsState.reasonForLeaving = '--Select--';//Resp.reasonForLeaving;
+                    hrControlsState.reasonForLeaving = '--Select--';
                 else
                     hrControlsState.reasonForLeaving = Resp.reasonForLeaving;
                 hrControlsState.ResigntionDate = Resp.ResigntionDate;
-                hrControlsState.EligibleforRehire = Resp.EligibleforRehire;//Resp.EligibleforRehire;
+                hrControlsState.EligibleforRehire = Resp.EligibleforRehire;
 
                 return hrControlsState;
             });
         });
     }
     //Save HR FORM Data
-    public HrAddNewEmployee(empReqData: IHRState, EmpListID): Promise<any> {
+    public HrAddNewEmployee(empReqData: IHRState, managerdata, empListID): Promise<any> {
         let web = new Web(AppConstats.SITEURL);
-        return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(EmpListID).update({
-            // return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
-
-            // return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
-            // userAlias: empReqData.UserAlies,
-            // ADLogin: empReqData.ADLogin,
-            // Manager: empReqData.Manager,
+        return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empListID.EmpListID).update({
+           
+            ManagerId: managerdata,
             EmploymentStatus: empReqData.employementStatus,
             DateOfLeaving: empReqData.DateOfLeaving,
             //reasonForLeaving: empReqData.reasonForLeaving,

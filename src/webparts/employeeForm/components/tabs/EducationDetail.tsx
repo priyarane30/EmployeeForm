@@ -1,6 +1,7 @@
 import * as React from "react";
-import { Form, Control } from "react-redux-form";
+import { Form, Control, Errors } from "react-redux-form";
 import { ICommonState, IEmpListIdState } from "../../state/ICommonState";
+import styles from '../EmployeeForm.module.scss';
 import {
   SetTabName,
   GetInitialControlValuesAction,
@@ -34,10 +35,10 @@ class EducationDetail extends React.Component<any, buttonStatus> {
     const buttonState = {} as buttonStatus
     this.state = { buttonDisabled: false }
   }
-  componentDidMount() {
+  async componentDidMount() {
     console.log("did mount")
     const empListId = store.getState().EmpListId;
-    this.props.getDefaultControlsData(empListId);
+    await this.props.getDefaultControlsData(empListId);
   }
   //adds row in grids
   handleRowAdd(section) {
@@ -69,12 +70,13 @@ class EducationDetail extends React.Component<any, buttonStatus> {
 
   public render() {
     { console.log("render") }
+    if (!this.props.Education.educationDetails  || !this.props.Education.certificationDetails) return (<div> Loading.... </div>)
     return (
 
       <div>
         <Form model="Education" onSubmit={val => this.handleSubmit(val)}>
 
-          <table style={{ width: "100%", tableLayout: "fixed" }}>
+          <table style={{ width: "100%" }}>
             <tr>
               <th colSpan={2} style={{ textAlign: "left" }}>Education details</th>
               <td colSpan={6} style={{ textAlign: "left" }}>
@@ -86,24 +88,95 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                 return (
                   <tr>
                     <td><label>Diploma/Degree</label>
-                      <Control.select model={`Education.educationDetails[${i}].DiplomaDegree`} id={i}>
+                      <Control.select model={`Education.educationDetails[${i}].DiplomaDegree`} id={i}
+                      validators={{requiredQualification: (val) => val && val!="--Select--"}}>
+                        <option>--Select--</option>
                         <option value="Graduation">Graduation</option>
                         <option value="Diploma">Diploma</option>
                         <option value="12th Education">12th Education</option>
-                        <option value="10th Education">10th Education</option></Control.select></td>
+                        <option value="10th Education">10th Education</option></Control.select>
+                    <Errors
+                      className={styles.errors}
+                      show="touched"
+                      model={`Education.educationDetails[${i}].DiplomaDegree`}
+                      messages={{
+                        requiredQualification: 'Required'
+                      }}
+                    ></Errors></td>
                     <td><label>Grade</label>
-                      <Control.text model={`Education.educationDetails[${i}].Grade`} id={education.Grade}>
-                      </Control.text></td>
+                      <Control.text model={`Education.educationDetails[${i}].Grade`} id={education.Grade}
+                      validators={{requiredGrade: (val) => val && val.length}}
+                      ></Control.text>
+                      <Errors
+                      className={styles.errors}
+                      show="touched"
+                      model={`Education.educationDetails[${i}].Grade`}
+                      messages={{
+                        requiredGrade: 'Required'
+                      }}
+                    ></Errors></td>
                     <td><label>StartYear</label>
-                      <Control.text model={`Education.educationDetails[${i}].StartYear`} id={education.StartYear} placeholder="YYYY"></Control.text></td>
+                      <Control.text model={`Education.educationDetails[${i}].StartYear`} 
+                      id={education.StartYear} 
+                      placeholder="YYYY"
+                      validators={{requiredStartYearEdu: (val) => val && val.length}}
+                      ></Control.text>
+                      <Errors
+                      className={styles.errors}
+                      show="touched"
+                      model={`Education.educationDetails[${i}].StartYear`}
+                      messages={{
+                        requiredStartYearEdu: 'Required'
+                      }}
+                    ></Errors></td>
                     <td><label>EndYear</label>
-                      <Control.text model={`Education.educationDetails[${i}].EndYear`} id={education.EndYear} placeholder="YYYY"></Control.text></td>
+                      <Control.text model={`Education.educationDetails[${i}].EndYear`} id={education.EndYear} placeholder="YYYY"
+                      validators={{requiredEndYear: (val) => val && val.length}}
+                      ></Control.text>
+                      <Errors
+                      className={styles.errors}
+                      show="touched"
+                      model={`Education.educationDetails[${i}].EndYear`}
+                      messages={{
+                        requiredEndYear: 'Required'
+                      }}
+                    ></Errors></td>
                     <td><label>Board</label>
-                      <Control.text model={`Education.educationDetails[${i}].Board`} id={education.Board}></Control.text></td>
+                      <Control.text model={`Education.educationDetails[${i}].Board`} id={education.Board}
+                      validators={{requiredEducationBoard: (val) => val && val.length}}
+                      ></Control.text>
+                      <Errors
+                      className={styles.errors}
+                      show="touched"
+                      model={`Education.educationDetails[${i}].Board`}
+                      messages={{
+                        requiredEducationBoard: 'Required'
+                      }}
+                    ></Errors></td>
                     <td><label>SchoolCollege</label>
-                      <Control.text model={`Education.educationDetails[${i}].SchoolCollege`} id={education.SchoolCollege}></Control.text></td>
+                      <Control.text model={`Education.educationDetails[${i}].SchoolCollege`} id={education.SchoolCollege}
+                      validators={{requiredSchoolCollege: (val) => val && val.length}}
+                      ></Control.text>
+                      <Errors
+                      className={styles.errors}
+                      show="touched"
+                      model={`Education.educationDetails[${i}].SchoolCollege`}
+                      messages={{
+                        requiredSchoolCollege: 'Required'
+                      }}
+                    ></Errors></td>
                     <td><label>DegreeName</label>
-                      <Control.text model={`Education.educationDetails[${i}].DegreeName`} id={education.DegreeName}></Control.text></td>
+                      <Control.text model={`Education.educationDetails[${i}].DegreeName`} id={education.DegreeName}
+                      validators={{requiredDegreeName: (val) => val && val.length}}
+                      ></Control.text>
+                      <Errors
+                      className={styles.errors}
+                      show="touched"
+                      model={`Education.educationDetails[${i}].DegreeName`}
+                      messages={{
+                        requiredDegreeName: 'Required.'
+                      }}
+                    ></Errors></td>
                     <td>
                       <button type="button" onClick={() => this.handleRowRemove("Education", i)}>-</button></td>
                   </tr>)
@@ -122,15 +195,65 @@ class EducationDetail extends React.Component<any, buttonStatus> {
               return (
                 <tr>
                   <td><label>Certification</label>
-                    <Control.text model={`Education.certificationDetails[${i}].Certification`} id="certification.Certification"></Control.text></td>
+                    <Control.text model={`Education.certificationDetails[${i}].Certification`} id="certification.Certification"
+                    validators={{requiredCertification: (val) => val && val.length}}></Control.text>
+                    <Errors
+                      className={styles.errors}
+                      show="touched"
+                      model={`Education.certificationDetails[${i}].Certification`}
+                      messages={{
+                        requiredCertification: 'Required'
+                      }}
+                    ></Errors>
+                    </td>
                   <td><label>Start Year</label>
-                    <Control.text model={`Education.certificationDetails[${i}].StartYear`} id="certification.StartYear" placeholder="YYYY"></Control.text></td>
+                    <Control.text model={`Education.certificationDetails[${i}].StartYear`} id="certification.StartYear" placeholder="YYYY"
+                    validators={{requiredStartYear: (val) => val && val.length}}></Control.text>
+                    <Errors
+                      className={styles.errors}
+                      show="touched"
+                      model={`Education.certificationDetails[${i}].StartYear`}
+                      messages={{
+                        requiredStartYear: 'Required'
+                      }}
+                    ></Errors>
+                    </td>
                   <td><label>YearOfCompletion</label>
-                    <Control.text model={`Education.certificationDetails[${i}].YearOfCompletion`} id="certification.YearOfCompletion" placeholder="YYYY"></Control.text></td>
+                    <Control.text model={`Education.certificationDetails[${i}].YearOfCompletion`} id="certification.YearOfCompletion" placeholder="YYYY"
+                    validators={{requiredYearofCompletion: (val) => val && val.length}}></Control.text>
+                    <Errors
+                      className={styles.errors}
+                      show="touched"
+                      model={`Education.certificationDetails[${i}].YearOfCompletion`}
+                      messages={{
+                        requiredYearofCompletion: 'Required'
+                      }}
+                    ></Errors>
+                    </td>
                   <td><label>InstituteName</label>
-                    <Control.text model={`Education.certificationDetails[${i}].InstituteName`} id="certification.InstituteName"></Control.text></td>
+                    <Control.text model={`Education.certificationDetails[${i}].InstituteName`} id="certification.InstituteName"
+                    validators={{requiredInstituteName: (val) => val && val.length}}></Control.text>
+                    <Errors
+                      className={styles.errors}
+                      show="touched"
+                      model={`Education.certificationDetails[${i}].InstituteName`}
+                      messages={{
+                        requiredInstituteName: 'Required'
+                      }}
+                    ></Errors>
+                    </td>
                   <td><label>GradePercentage</label>
-                    <Control.text model={`Education.certificationDetails[${i}].GradePercentage`} id="certification.GradePercentage"></Control.text></td>
+                    <Control.text model={`Education.certificationDetails[${i}].GradePercentage`} id="certification.GradePercentage"
+                    validators={{requiredGradePercentage: (val) => val && val.length}}></Control.text>
+                    <Errors
+                      className={styles.errors}
+                      show="touched"
+                      model={`Education.certificationDetails[${i}].GradePercentage`}
+                      messages={{
+                        requiredGradePercentage: 'Required'
+                      }}
+                    ></Errors>
+                    </td>
                   <td>
                     <button type="button" onClick={() => this.handleRowRemove("Certification", i)}>-</button></td>
                 </tr>)

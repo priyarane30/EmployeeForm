@@ -625,7 +625,8 @@ const mapDispatchToProps = (dispatch): INewFormConnectedDispatch => {
         },
         RemoveDetailRowFromGrid: (section, index) => {
             return dispatch(RemoveDetailRowFromGrid(section, index));
-        }
+        },
+        
     };
 };
 

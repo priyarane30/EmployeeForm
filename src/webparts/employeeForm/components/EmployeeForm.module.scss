@@ -1,7 +1,6 @@
 @import '~office-ui-fabric-react/dist/sass/References.scss';
 
 .employeeForm {
-
   .errors {
     margin: 0.5rem 0;
     color: red;
@@ -16,7 +15,6 @@
     box-sizing: border-box;
     position: relative;
   }
-
   .container {
     max-width: 700px;
     margin: 0px auto;
@@ -52,7 +50,9 @@
     @include ms-font-l;
     @include ms-fontColor-white;
   }
-
+ .marginb{
+  margin-bottom: 7px!important;
+}
   .button {
     // Our button
     text-decoration: none;

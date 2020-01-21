@@ -22,7 +22,7 @@ export const eduDetailState: IEducationDetailState = {
 };
 
 
-export const EducationSectionReducer = (state: IEducationDetailState = eduDetailState, action) => {
+export const EducationSectionReducer = (state: IEducationDetailState = null, action) => {
     console.log(action);
     switch (action.type) {
         // Gets the values for dropdown fields from SharePoint master/choice columns.
