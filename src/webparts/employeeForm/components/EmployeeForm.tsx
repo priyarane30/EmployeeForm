@@ -17,13 +17,13 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, an
     super(props);
     this.state = {
       isEmpIdExists: false
-    }
+    };
     this.showTabs = this.showTabs.bind(this);
   }
 
-  async showTabs(empId) {
+  public async showTabs(empId) {
     if (empId != null && empId != undefined && empId.EmpListID > 0)
-      await this.setState({ isEmpIdExists: true })
+      await this.setState({ isEmpIdExists: true });
   }
 
   public render(): React.ReactElement<IEmployeeFormProps> {
@@ -42,7 +42,7 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, an
     );
   }
 
-  IsEmpIdExists() {
+  private IsEmpIdExists() {
     if (this.state.isEmpIdExists)
       return (
         <Pivot aria-label="Employee Form">

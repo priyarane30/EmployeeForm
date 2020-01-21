@@ -1,6 +1,22 @@
 @import '~office-ui-fabric-react/dist/sass/References.scss';
 
 .employeeForm {
+
+  .errors {
+    margin: 0.5rem 0;
+    color: red;
+    
+    > span {
+      display: block;
+      font-size: 0.8rem;
+    }
+  }
+  
+  *, *:before, *:after {
+    box-sizing: border-box;
+    position: relative;
+  }
+
   .container {
     max-width: 700px;
     margin: 0px auto;
@@ -71,4 +87,8 @@
       display: inline-block;
     }
   }
+
+  
+
+
 }

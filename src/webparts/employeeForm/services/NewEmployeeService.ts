@@ -29,7 +29,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                 }
             }).catch(error => {
                 console.log('error while getOptionsFromMaster');
-                console.log(error)
+                console.log(error);
             });
     }
     getDataFromListUsingParentID(listName, EmpListID): Promise<any> {
@@ -41,12 +41,11 @@ export default class NewEmployeeService implements INewEmpRequestService {
         return axios.get(url)
             .then(res => {
                 if (res.data.value != undefined && res.data.value != null) {
-                    debugger;
                     return res.data.value[0];
                 }
             }).catch(error => {
                 console.log('error while getOptionsFromMaster');
-                console.log(error)
+                console.log(error);
             });
     }
     getDataFromListUsingID(listName, EmpListID): Promise<any> {
@@ -58,7 +57,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                 }
             }).catch(error => {
                 console.log('error while getOptionsFromMaster');
-                console.log(error)
+                console.log(error);
             });
     }
     getMultipleDataFromListUsingParentID(listName, EmpListID): Promise<any> {
@@ -70,7 +69,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                 }
             }).catch(error => {
                 console.log('error while getOptionsFromMaster');
-                console.log(error)
+                console.log(error);
             });
     }
 
@@ -93,7 +92,6 @@ export default class NewEmployeeService implements INewEmpRequestService {
     // Gets the choices to be displayed in the dropdown fields.
     getNewFormControlState(EmpListID): Promise<any> {
         let newFormControlsState = {} as INewFormState;
-        debugger
         return this.getOptionsFromChoiceField(ListNames.EMPLOYEECONTACT, 'Gender').then(genderResp => {
             newFormControlsState.genderOptions = genderResp;
 
@@ -129,13 +127,13 @@ export default class NewEmployeeService implements INewEmpRequestService {
                             newFormControlsState.PassportNo = res.PassportNo;
                             newFormControlsState.Gender = res.Gender
                             return this.getMultipleDataFromListUsingParentID(ListNames.CHILDDETAILS, EmpListID).then((res) => {
-                                var childItemArray = []
+                                var childItemArray = [];
                                 res.forEach(element => {
-                                    childItemArray.push({ ChildName: element.ChildName, DateOfBirth: new Date(element.ChildDOB) })
+                                    childItemArray.push({ ChildName: element.ChildName, DateOfBirth: new Date(element.ChildDOB) });
                                 });
                                 newFormControlsState.childDetailItems = childItemArray;
                                 return this.getMultipleDataFromListUsingParentID(ListNames.VISADETAILS, EmpListID).then((res) => {
-                                    var visaItemArray = []
+                                    var visaItemArray = [];
                                     res.forEach(element => {
                                         visaItemArray.push({
                                             ValidVisa: element.ValidVisa,
@@ -144,7 +142,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                                             Entry: element.Entry,
                                             IsTravelled: element.IsTravelled,
                                             VisaValidity: new Date(element.VisaValidity)
-                                        })
+                                        });
                                     });
                                     newFormControlsState.visaDetailItems = visaItemArray;
                                     return newFormControlsState;
@@ -168,7 +166,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empListId.EmpListID).update({
             Gender: empData.Gender,
             DateOfBirth: empData.DateOfBirth,
-            Age: empData.Age,
+            Age: this.getAge(empData.DateOfBirth),
             BloodGroup: empData.BloodGroup,
             FatherName: empData.FatherName,
             MotherName: empData.MotherName,
@@ -197,7 +195,6 @@ export default class NewEmployeeService implements INewEmpRequestService {
                 var url = AppConstats.SITEURL + "_api/web/lists/GetByTitle('" + ListNames.CHILDDETAILS + "')/items?$select=ID&$filter=empTableID/ID eq " + empListId.EmpListID;
                 return axios.get(url)
                     .then(res => {
-                        debugger;
                         if (res.data.value.length > 0) {
                             let idData = res.data.value;
                             idData.forEach(e => {
@@ -289,6 +286,20 @@ export default class NewEmployeeService implements INewEmpRequestService {
         }).catch(error => {
             console.log("error while adding an employee");
         });
+    }
+
+
+    getAge(DOB) {
+        debugger
+        var today = new Date();
+        var birthDate = new Date(DOB);
+        var age = today.getFullYear() - birthDate.getFullYear();
+        var m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age = age - 1;
+        }
+
+        return age;
     }
 
     //Start HR Section
@@ -509,7 +520,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
 
     //Save Professional Details
     async saveProfessionalDetailInList(professionalDetailData: IProfessionalDetailState, EmpListID) {
-        await this.saveIsFresher(professionalDetailData, EmpListID)
+        await this.saveIsFresher(professionalDetailData, EmpListID);
         if (professionalDetailData.IsFresher == true) {
             this.saveTechnologyDetail(professionalDetailData.technologyDetails, EmpListID);
         } else {
@@ -545,7 +556,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                             });
                     });
                     batch.execute().then(() => {
-                        console.log("All deleted")
+                        console.log("All deleted");
                         organizationDetails.forEach(detailRow => {
                             web.lists.getByTitle(ListNames.EducationDetail).items.inBatch(batch).add({
                                 organization: detailRow.organization,
@@ -559,7 +570,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                                 empTableIDId: empListID.EmpListID
                             });
                         });
-                        batch.execute().then(() => console.log("all added"))
+                        batch.execute().then(() => console.log("all added"));
                     });
                 }
                 else {
@@ -583,7 +594,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                         });
                     });
                 }
-            })
+            });
     }
 
     public saveTechnologyDetail(technologyDetails, empListID) {
@@ -662,7 +673,6 @@ export default class NewEmployeeService implements INewEmpRequestService {
     //Save Payroll
     PayrollAddEmployee(empReqData: IPayrollState, empListId): Promise<any> {
         let web = new Web(AppConstats.SITEURL);
-        debugger;
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empListId.EmpListID).update({
             // return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
             ESIApplicable: empReqData.ESIApplicable,
