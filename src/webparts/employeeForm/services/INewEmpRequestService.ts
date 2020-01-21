@@ -6,16 +6,16 @@ export default interface INewEmpRequestService {
     getNewFormControlState(EmpListId): Promise<any>;
 
     AddEmpFormData(empData: INewFormState,EmpListId): Promise<any>;
-    //End  Employee Detail Form
+   
     //public myCallback: (name: type) => returntype;
-    getusingCallback: (name: string) => object;
+    //getusingCallback: (name: string) => object;
 
     /**Start HR Section*/
     //get value from List where id =EmpListID
     getHRFormControlState(EmpListID): Promise<any>;
 
     //Save value in EmpListID
-    HrAddNewEmployee(empReqData: IHRState, EmpListID): Promise<any>;
+    HrAddNewEmployee(empReqData: IHRState,managerdata, EmpListID): Promise<any>;
 
 
     /**Start PayRoll Details Section*/
