@@ -95,20 +95,41 @@ class BasicDetail extends React.Component<any>{
             }
         }
 
+        console.log(this.props)
+        if (!this.props.Employee) return (<div> Loading.... </div>)
 
         return (
             <div>
                 <Form model="Basic" onSubmit={(val) => this.handleSubmit(val)}  >
-
                     <div className='col'>
                         <label>First Name:</label>
 
-                        <Control.text model=".FirstName" id='.FirstName' component={TextField} />
+                        <Control.text model=".FirstName" id='.FirstName' component={TextField}
+                          validators={{
+                            requiredFirstName: (val) => val && val.length,
+                          
+                        }} />
+                         <Errors
+                            model=".FirstName"
+                            messages={{
+                                requiredFirstName: 'Please provide an email address.',
+                            }}
+                        />
 
                     </div>
                     <div className='col'>
                         <label>Last Name:</label>
-                        <Control.text model=".LastName" id='.LastName' component={TextField} />
+                        <Control.text model=".LastName" id='.LastName' component={TextField}
+                        validators={{
+                            requiredLastName: (val) => val && val.length,
+                          
+                        }}  />
+                         <Errors
+                            model=".LastName"
+                            messages={{
+                                requiredLastName: 'Please provide an email address.',
+                            }}
+                        />
 
 
                     </div>
@@ -123,26 +144,53 @@ class BasicDetail extends React.Component<any>{
                     </div>
                     <div className='col'>
                         <label>Designation:</label>
-                        <Control.select model=".Designation" id=".Designation"  >
+                        <Control.select model=".Designation" id=".Designation"  validators={{
+                            requiredDesignationStatus: (val) =>  val && val!="--Select--"
+                          }} >
                             <option>--Select--</option>
                             {/*
                                 this.props.Basic.designationOptions.map(desig => { return <option key={desig} value={desig}>{desig}</option> })
                             */}
                             {desigOpt}
                         </Control.select>
+                        <Errors
+                            model=".Designation"
+                            messages={{
+                                requiredDesignationStatus: 'Please Select Designation.'
+                            }}
+                        />
                     </div>
                     <div className='col'>
                         <label>Technology:</label>
-                        <Control.select model=".Technology" id=".Technology"   >
+                        <Control.select model=".Technology" id=".Technology" validators={{
+                            requiredTechnology: (val) =>  val && val!="--Select--"
+                          }}   >
                             <option>--Select--</option>
                             {/* {technologies.map(tech => { return <option key={tech} value={tech}>{tech}</option> })} */}
 
                             {techOpts}
                         </Control.select>
+                        <Errors
+                            model=".Technology"
+                            messages={{
+                                requiredTechnology: 'Please Select Technology.'
+                            }}
+                        />
                     </div>
                     <div className='col'>
                         <label>Company Email:</label>
-                        <Control.text model=".CompanyEmail" id='.CompanyEmail' component={TextField} />
+                        <Control.text model=".CompanyEmail" id='.CompanyEmail' component={TextField} 
+                         validators={{
+                            requiredEmail: (val) => val && val.length,
+                            isEmail: (val) => (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(val)) // ES6 property shorthand
+                        }}/>
+                        <Errors
+                            model=".PersonalEmail"
+                            messages={{
+                                requiredEmail: 'Please provide an email address.',
+                                isEmail: (val) => `${val} is not a valid email.`,
+                            }}
+                        />
 
 
                     </div>
