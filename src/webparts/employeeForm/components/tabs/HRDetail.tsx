@@ -7,7 +7,7 @@ import { IHRState } from '../../state/IHRSectionControlsState';
 import { store } from "../../store/ConfigureStore";
 import { TextField } from "office-ui-fabric-react/lib/TextField";
 import { Dropdown } from 'office-ui-fabric-react/lib/Dropdown';
-import { PeoplePicker, PrincipalType } from "@pnp/spfx-controls-react/lib/PeoplePicker";
+//import { PeoplePicker, PrincipalType } from "@pnp/spfx-controls-react/lib/PeoplePicker";
 import pnp from 'sp-pnp-js';
 import NewEmployeeService from '../../services/NewEmployeeService'
 export interface IControls {
@@ -94,7 +94,7 @@ class HRDetail extends React.Component<any, IControls> {
                             <label>Manager:</label>
 
                             <Control.text model='HR.Manager' id='HR.Manager' component={TextField} />
-                            <PeoplePicker
+                            {/* <PeoplePicker
                                 context={this.props.context}
                                 titleText="People Picker"
                                 personSelectionLimit={1}
@@ -108,7 +108,7 @@ class HRDetail extends React.Component<any, IControls> {
                                 principalTypes={[PrincipalType.User]}
                                 resolveDelay={1000}
                                 defaultSelectedUsers={this.state.Manager?this.state.Manager:null}
-                            />
+                            /> */}
                         </div>
                         <div className='col'> {/* Employment Status */}
                             <label>Employment Status:</label>
