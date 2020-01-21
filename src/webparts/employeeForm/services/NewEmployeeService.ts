@@ -43,6 +43,13 @@ export default class NewEmployeeService implements INewEmpRequestService {
             });
     }
 
+    deleteDataFromListUsingID(id,listName){
+        let web = new Web(AppConstats.SITEURL);
+        web.lists.getByTitle(listName).items.getById(id).delete().then(r => {
+            console.log("deleted");
+        });
+    }
+
     getMultipleDataFromListUsingParentID(listName, EmpListID): Promise<any> {
         var url = AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + listName + "')/items?$select=*&$filter=empTableID/ID eq '" + EmpListID + "'";
         return axios.get(url)
@@ -329,102 +336,66 @@ export default class NewEmployeeService implements INewEmpRequestService {
     }
     saveEducationDetails(educationDetails, empListId) {
         let web = new Web(AppConstats.SITEURL);
-        let batch = web.createBatch()
-        var url = AppConstats.SITEURL + "_api/web/lists/GetByTitle('" + ListNames.EducationDetail + "')/items?$select=ID&$filter=empTableID/ID eq " + empListId.EmpListID;
-        return axios.get(url)
-            .then(res => {
-                if (res.data.value.length > 0) {
-                    let idData = res.data.value;
-                    idData.forEach(e => {
+        let eduBatch = web.createBatch()
+        educationDetails.forEach(detailRow => {
+            if (detailRow.educationId == 0) {
+                web.lists.getByTitle(ListNames.EducationDetail).items.inBatch(eduBatch).add({
+                    qualification: detailRow.DiplomaDegree,
+                    grade: detailRow.Grade,
+                    startYear: detailRow.StartYear,
+                    yearOfCompletion: detailRow.EndYear,
+                    board: detailRow.Board,
+                    school: detailRow.SchoolCollege,
+                    degree: detailRow.DegreeName,
+                    empTableIDId: empListId.EmpListID
+                })
+            }
+            else if (detailRow.educationId>0) {
+                web.lists.getByTitle(ListNames.EducationDetail).items.getById(detailRow.educationId).inBatch(eduBatch).update({
+                    qualification: detailRow.DiplomaDegree,
+                    grade: detailRow.Grade,
+                    startYear: detailRow.StartYear,
+                    yearOfCompletion: detailRow.EndYear,
+                    board: detailRow.Board,
+                    school: detailRow.SchoolCollege,
+                    degree: detailRow.DegreeName,
+                    empTableIDId: empListId.EmpListID
+                })
+            }
+        })
+        eduBatch.execute().then(()=>{"edu updated"}).catch(()=>alert("Oops! Error occured in saving Education Details"));
 
-                        web.lists.getByTitle(ListNames.EducationDetail).items.getById(e["ID"]).inBatch(batch).delete()
-                            .then(r => {
-                                console.log("deleted");
-                            });
-                    });
-                    batch.execute().then(() => {
-                        console.log("All deleted")
-                        educationDetails.forEach(detailRow => {
-                            web.lists.getByTitle(ListNames.EducationDetail).items.inBatch(batch).add({
-                                qualification: detailRow.DiplomaDegree,
-                                grade: detailRow.Grade,
-                                startYear: detailRow.Grade,
-                                yearOfCompletion: detailRow.EndYear,
-                                board: detailRow.Board,
-                                school: detailRow.SchoolCollege,
-                                degree: detailRow.DegreeName,
-                                empTableIDId: empListId.EmpListID
-                            });
-                        });
-                        batch.execute().then(() => console.log("all added"))
-                    });
-                }
-                else {
-                    educationDetails.forEach(detailRow => {
-                        web.lists.getByTitle(ListNames.EducationDetail).items.inBatch(batch).add({
-                            qualification: detailRow.DiplomaDegree,
-                            grade: detailRow.Grade,
-                            startYear: detailRow.Grade,
-                            yearOfCompletion: detailRow.EndYear,
-                            board: detailRow.Board,
-                            school: detailRow.SchoolCollege,
-                            degree: detailRow.DegreeName,
-                            empTableIDId: empListId.EmpListID
-                        });
-                    });
-                    batch.execute().then(() => console.log("all added"))
 
-                }
-            }).catch(error => {
-                console.log('error while getOptionsFromMaster');
-                console.log(error)
-            });
     }
     saveCertificationDetails(certificationDetails, empListId) {
         let web = new Web(AppConstats.SITEURL);
         let certibatch = web.createBatch()
-        var urlCerti = AppConstats.SITEURL + "_api/web/lists/GetByTitle('" + ListNames.CertificationDetail + "')/items?$select=ID&$filter=empTableID/ID eq " + empListId.EmpListID;
-        return axios.get(urlCerti)
-            .then(res => {
-                if (res.data.value.length > 0) {
-                    let idData = res.data.value;
-                    idData.forEach(e => {
 
-                        web.lists.getByTitle(ListNames.CertificationDetail).items.getById(e["ID"]).inBatch(certibatch).delete()
-                            .then(r => {
-                                console.log("deleted");
+        certificationDetails.forEach(detailRow => {
+            if (detailRow.certificationId == 0) {
+                web.lists.getByTitle(ListNames.CertificationDetail).items.inBatch(certibatch).add({
+                    certification: detailRow.Certification,
+                    startYear: detailRow.StartYear,
+                    yearOfCompletion: detailRow.YearOfCompletion,
+                    institution: detailRow.InstituteName,
+                    GradeOrPercent: detailRow.GradePercentage,
+                    empTableIDId: empListId.EmpListID
+                })
+            }
+            else if (detailRow.certificationId > 0) {
+                web.lists.getByTitle(ListNames.CertificationDetail).items.getById(detailRow.certificationId).inBatch(certibatch).update({
+                    certification: detailRow.Certification,
+                    startYear: detailRow.StartYear,
+                    yearOfCompletion: detailRow.YearOfCompletion,
+                    institution: detailRow.InstituteName,
+                    GradeOrPercent: detailRow.GradePercentage,
+                    empTableIDId: empListId.EmpListID
+                })
+            }
+        });
+        certibatch.execute().then(()=>{"certi updated"}).catch(()=>alert("Oops! Error occured in saving Education Details"));
 
-                            });
-                    });
-                    certibatch.execute().then(() => {
-                        console.log("All deleted")
-                        certificationDetails.forEach(detailRow => {
-                            web.lists.getByTitle(ListNames.CertificationDetail).items.inBatch(certibatch).add({
-                                certification: detailRow.Certification,
-                                startYear: detailRow.StartYear,
-                                yearOfCompletion: detailRow.YearOfCompletion,
-                                institution: detailRow.InstituteName,
-                                GradeOrPercent: detailRow.GradePercentage,
-                                empTableIDId: empListId.EmpListID
-                            });
-                        });
-                        certibatch.execute().then(() => console.log("all added"))
-                    });
-                }
-                else {
-                    certificationDetails.forEach(detailRow => {
-                        web.lists.getByTitle(ListNames.CertificationDetail).items.inBatch(certibatch).add({
-                            certification: detailRow.Certification,
-                            startYear: detailRow.StartYear,
-                            yearOfCompletion: detailRow.YearOfCompletion,
-                            institution: detailRow.InstituteName,
-                            GradeOrPercent: detailRow.GradePercentage,
-                            empTableIDId: empListId.EmpListID
-                        });
-                    });
-                    certibatch.execute().then(() => console.log("all added"));
-                }
-            });
+
     }
     //#endregion EducationDetail Section
 
