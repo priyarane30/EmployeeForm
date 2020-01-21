@@ -6,7 +6,7 @@ import NewEmpService from '../services/NewEmployeeService';
 import { actions } from 'react-redux-form';
 
 //gets initial value for all controls in the form
-export function GetInitialControlValuesAction(EmpListID) {
+export  function GetInitialControlValuesAction(EmpListID) {
     return dispatch => {
         let newEmpServiceObj: NewEmpService = new NewEmpService();
         let payLoadArrayEducationDetail=[];
@@ -30,9 +30,12 @@ export function GetInitialControlValuesAction(EmpListID) {
                 payload:payLoadArrayEducationDetail
             });
         });
+
+
         //get already existing certification details for user
         newEmpServiceObj.getMultipleDataFromListUsingParentID(ListNames.CertificationDetail,EmpListID)
         .then((resp)=>{
+            debugger;
             resp.forEach(element=>{
                 payLoadArrayCertificationDetail.push({
                     Certification: element.certification,
@@ -40,7 +43,7 @@ export function GetInitialControlValuesAction(EmpListID) {
                     YearOfCompletion: element.yearOfCompletion,
                     InstituteName: element.institution,
                     GradePercentage: element.GradeOrPercent
-                })
+                });
                 dispatch({
                     type:ActionTypes.SetInitialCertiDetailFormState,
                     payload:payLoadArrayCertificationDetail
@@ -48,7 +51,7 @@ export function GetInitialControlValuesAction(EmpListID) {
 
             });
 
-        })
+        });
     }; 
 }
 

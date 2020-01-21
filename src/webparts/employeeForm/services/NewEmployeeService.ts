@@ -29,7 +29,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                 console.log(error);
             });
     }
-    
+
     getDataFromListUsingID(listName, EmpListID): Promise<any> {
         var url = AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + listName + "')/items?$select=*&$filter=ID eq '" + EmpListID + "'";
         return axios.get(url)
@@ -104,6 +104,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                                     var visaItemArray = [];
                                     res.forEach(element => {
                                         visaItemArray.push({
+                                            Id: element.Id,
                                             ValidVisa: element.ValidVisa,
                                             VisaOfCountry: element.VisaOfCountry,
                                             VisaNo: element.VisaNo,
@@ -175,6 +176,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                                 console.log("All deleted")
                                 empData.childDetailItems.forEach(detailRow => {
                                     web.lists.getByTitle(ListNames.CHILDDETAILS).items.inBatch(batch).add({
+
                                         ChildName: detailRow.ChildName,
                                         ChildDOB: detailRow.DateOfBirth,
                                         empTableIDId: empListId.EmpListID,
@@ -187,6 +189,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                         else {
                             empData.childDetailItems.forEach(detailRow => {
                                 web.lists.getByTitle(ListNames.CHILDDETAILS).items.inBatch(batch).add({
+
                                     ChildName: detailRow.ChildName,
                                     ChildDOB: detailRow.DateOfBirth,
                                     empTableIDId: empListId.EmpListID,
@@ -250,7 +253,9 @@ export default class NewEmployeeService implements INewEmpRequestService {
                         console.log(error)
                     });
             }
+            alert("Employee details saved successfully");
         }).catch(error => {
+            alert("Oops! Error while saving Employee details");
             console.log("error while adding an employee");
         });
     }
@@ -296,7 +301,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
     public HrAddNewEmployee(empReqData: IHRState, managerdata, empListID): Promise<any> {
         let web = new Web(AppConstats.SITEURL);
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empListID.EmpListID).update({
-           
+
             ManagerId: managerdata,
             EmploymentStatus: empReqData.employementStatus,
             DateOfLeaving: empReqData.DateOfLeaving,

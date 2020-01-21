@@ -23,17 +23,15 @@ interface INewFormConnectedDispatch {
     getDefaultControlsData: (EmpListID) => void;
 
     //save data
-
-
     AddDetailRowToGrid: (section) => void;
 
     RemoveDetailRowFromGrid: (section, index) => void;
 }
-// interface ICommonDispatch {
-//     setTabName: (tabName: ICommonState) => void;
-// }
 
-class EmployeeDetail extends React.Component<any> {
+const isNumber = (val) => !isNaN(Number(val));
+const maxLength = (len) => (val) => val.length <= len;
+
+class EmployeeDetail extends React.Component<any, buttonStatus> {
     constructor(props) {
         super(props);
         const buttonState = {} as buttonStatus;
@@ -80,7 +78,8 @@ class EmployeeDetail extends React.Component<any> {
                         <Control.select model="Employee.Gender"
                             id=".Gender"
                             validators={{
-                                requiredGender: (val) => val && val.length && val != '--Select--',
+                                requiredGender: (val) => val && val.length && val != '--Select--'
+
                             }}
                         >
                             <option>--Select--</option>
@@ -127,6 +126,7 @@ class EmployeeDetail extends React.Component<any> {
                             id='.FatherName'
                             validators={{
                                 requiredFatherName: (val) => val && val.length,
+                                maxLength: maxLength(255)
                             }}
                         />
                         <Errors
@@ -134,7 +134,8 @@ class EmployeeDetail extends React.Component<any> {
                             show="touched"
                             model=".FatherName"
                             messages={{
-                                requiredFatherName: 'Please enter father name.'
+                                requiredFatherName: 'Please enter father name.',
+                                maxLength: 'Must be 255 characters or less',
                             }}
                         ></Errors>
                     </div>
@@ -143,6 +144,7 @@ class EmployeeDetail extends React.Component<any> {
                         <Control.text model='.MotherName' id='.MotherName'
                             validators={{
                                 requiredMotherName: (val) => val && val.length,
+                                maxLength: maxLength(255)
                             }}
                         />
                         <Errors
@@ -150,7 +152,8 @@ class EmployeeDetail extends React.Component<any> {
                             show="touched"
                             model=".MotherName"
                             messages={{
-                                requiredMotherName: 'Please enter mother name.'
+                                requiredMotherName: 'Please enter mother name.',
+                                maxLength: 'Must be 255 characters or less'
                             }}
                         ></Errors>
                     </div>
@@ -192,7 +195,8 @@ class EmployeeDetail extends React.Component<any> {
                         <label>Mobile No:</label>
                         <Control.text model='.Mobile' id='.Mobile'
                             validators={{
-                                requiredMobile: (val) => val && val.length,
+                                requiredMobile: (val) => val && val.length && val.length == 10,
+                                isNumber
                             }}
                         />
                         <Errors
@@ -200,7 +204,8 @@ class EmployeeDetail extends React.Component<any> {
                             show="touched"
                             model=".Mobile"
                             messages={{
-                                requiredMobile: 'Please enter mobile no.'
+                                requiredMobile: 'Please enter mobile no.(10 digits)',
+                                isNumber: 'only numbers allowed'
                             }}
                         ></Errors>
                     </div>
@@ -209,6 +214,7 @@ class EmployeeDetail extends React.Component<any> {
                         <Control.text model='.EmergencyNo' id='.EmergencyNo'
                             validators={{
                                 requiredEmergencyNo: (val) => val && val.length,
+                                isNumber
                             }}
                         />
                         <Errors
@@ -216,7 +222,8 @@ class EmployeeDetail extends React.Component<any> {
                             show="touched"
                             model=".EmergencyNo"
                             messages={{
-                                requiredEmergencyNo: 'Please enter emergency no.'
+                                requiredEmergencyNo: 'Please enter emergency no.',
+                                isNumber: 'only numbers allowed'
                             }}
                         ></Errors>
                     </div>
@@ -277,7 +284,8 @@ class EmployeeDetail extends React.Component<any> {
                         <label>Aadhar No:</label>
                         <Control.text model='.AadharNo' id='.AadharNo'
                             validators={{
-                                requiredAadharNo: (val) => val && val.length,
+                                requiredAadharNo: (val) => val && val.length && val.length == 12,
+                                isNumber
                             }}
                         />
                         <Errors
@@ -285,7 +293,8 @@ class EmployeeDetail extends React.Component<any> {
                             show="touched"
                             model=".AadharNo"
                             messages={{
-                                requiredAadharNo: 'Please enter aadhar no.'
+                                requiredAadharNo: 'Please enter aadhar no.(12 digits)',
+                                isNumber: 'only numbers allowed'
                             }}
                         ></Errors>
                     </div>
@@ -313,7 +322,7 @@ class EmployeeDetail extends React.Component<any> {
 
 
 
-                    <button type="submit">Submit</button>
+                    <button type="submit" disabled={this.state.buttonDisabled}>Submit</button>
                 </Form>
             </div>);
 
@@ -626,7 +635,7 @@ const mapDispatchToProps = (dispatch): INewFormConnectedDispatch => {
         RemoveDetailRowFromGrid: (section, index) => {
             return dispatch(RemoveDetailRowFromGrid(section, index));
         },
-        
+
     };
 };
 
