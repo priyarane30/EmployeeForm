@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Form, Control, Errors } from 'react-redux-form';
-
 import { DefaultButton,PrimaryButton } from "office-ui-fabric-react/lib/Button";
 import { TextField } from "office-ui-fabric-react/lib/TextField";
 import { connect } from "react-redux";
@@ -23,26 +22,32 @@ interface IBasicFormConnectedDispatch {
     addBasicDetails: (empData: IBasicDetailState) => void;
 }
 
-class BasicDetail extends React.Component<any>{
+interface IButtonState {
+    isDisable: boolean;
+  }
+
+class BasicDetail extends React.Component<any,IButtonState>{
     constructor(props) {
         super(props);
-        //  this.state = { DateofJoining: null };
+        this.state = { isDisable: true };
     }
-
-
+    
+    //On Button Save : Basic Details saved In List
     handleSubmit(formValues) {
         let newEmpReqServiceObj: BasicService = new BasicService();
-        //  let date=this.state.DateofJoining;
         const idState = store.getState().EmpListId;
-        if (idState != null && idState != undefined) {
-            newEmpReqServiceObj.UpdateBasicDetail(formValues, idState).then(resp => {
-                //debugger
+        this.setState({ isDisable: true });
 
+        if (idState != null && idState != undefined) {
+            //Edit Form when ID is not null
+            newEmpReqServiceObj.UpdateBasicDetail(formValues, idState).then(resp => {
+                this.setState({ isDisable: false });
             }).catch(() => {
                 alert("Sorry. Error while adding employee...");
             });
         }
         else {
+            //New Form 
             newEmpReqServiceObj.AddBasicDetail(formValues).then(resp => {
                 let empIdState = { EmpListID: resp } as IEmpListIdState;
                 dispatch => {
@@ -51,6 +56,7 @@ class BasicDetail extends React.Component<any>{
                         payload: empIdState
                     });
                 }
+                this.setState({ isDisable: false });
             }).catch(() => {
                 alert("Sorry. Error while adding employee...");
             });
@@ -63,6 +69,7 @@ class BasicDetail extends React.Component<any>{
         if (eId != null && eId != undefined) {
             //set empId in store
             this.props.setEmpId(eId);
+            //get Basic Details 
             this.props.getBasicDatail(eId);
             this.props.showTabs(eId);
         }
@@ -81,8 +88,6 @@ class BasicDetail extends React.Component<any>{
                 techOpts = this.props.Basic.technologyOptions.map(tech => { return <option key={tech} value={tech}>{tech}</option> });
             }
         }
-
-        console.log(this.props)
         if (!this.props.Employee) return (<div> Loading.... </div>)
 
         return (
@@ -91,41 +96,21 @@ class BasicDetail extends React.Component<any>{
                     <div className={styles.container}>
                         <div className={`ms-Grid-row  ms-fontColor-white ${styles.row}`}>
                             <Form model="Basic" onSubmit={(val) => this.handleSubmit(val)}  >
-
                                 <div className='ms-Grid-col ms-u-sm4 block'>
                                     <label>First Name *:</label>
                                 </div>
                                 <div className="ms-Grid-col ms-u-sm8 block">
                                     <Control.text model=".FirstName" id='.FirstName' component={TextField} className={styles.marginb}
-                                        validators={{
-                                            requiredFirstName: (val) => val && val.length,
-
-                                        }} />
-                                    <Errors
-                                        model=".FirstName"
-                                        messages={{
-                                            requiredFirstName: 'Please provide an email address.',
-                                        }}
-                                    />
-
+                                        validators={{ requiredFirstName: (val) => val && val.length }} />
+                                    <Errors model=".FirstName" messages={{requiredFirstName: 'Please provide an email address.'}}/>
                                 </div>
                                 <div className='ms-Grid-col ms-u-sm4 block'>
                                     <label>Last Name *:</label>
                                 </div>
                                 <div className="ms-Grid-col ms-u-sm8 block">
                                     <Control.text model=".LastName" id='.LastName' component={TextField} className={styles.marginb}
-                                        validators={{
-                                            requiredLastName: (val) => val && val.length,
-
-                                        }} />
-                                    <Errors
-                                        model=".LastName"
-                                        messages={{
-                                            requiredLastName: 'Please provide an email address.',
-                                        }}
-                                    />
-
-
+                                        validators={{ requiredLastName: (val) => val && val.length }} />
+                                    <Errors model=".LastName" messages={{requiredLastName: 'Please provide an email address.'}}/>
                                 </div>
 
                                 <div className='ms-Grid-col ms-u-sm4 block'>
@@ -147,9 +132,6 @@ class BasicDetail extends React.Component<any>{
                                         requiredDesignationStatus: (val) => val && val != "--Select--"
                                     }} >
                                         <option>--Select--</option>
-                                        {/*
-                                this.props.Basic.designationOptions.map(desig => { return <option key={desig} value={desig}>{desig}</option> })
-                            */}
                                         {desigOpt}
                                     </Control.select>
                                     <Errors
@@ -167,16 +149,9 @@ class BasicDetail extends React.Component<any>{
                                         requiredTechnology: (val) => val && val != "--Select--"
                                     }}   >
                                         <option>--Select--</option>
-                                        {/* {technologies.map(tech => { return <option key={tech} value={tech}>{tech}</option> })} */}
-
-                                        {techOpts}
+                                       {techOpts}
                                     </Control.select>
-                                    <Errors
-                                        model=".Technology"
-                                        messages={{
-                                            requiredTechnology: 'Please Select Technology.'
-                                        }}
-                                    />
+                                    <Errors model=".Technology" messages={{requiredTechnology: 'Please Select Technology.'}} />
                                 </div>
                                 <div className='ms-Grid-col ms-u-sm4 block'>
                                     <label>Company Email *:</label>
@@ -195,30 +170,13 @@ class BasicDetail extends React.Component<any>{
                                         }}
                                     />
                                 </div>
-                                <div >
-                                    <div >
-                                        <div>
-                                            <DefaultButton id="DefaultSubmit"
-                                                primary={true}
-                                                text={"Submit"}
-                                                type="submit" />
-                                        </div>
-
-                                    </div>
-                                </div>
-
-
-                                {/* <button type="submit">Submit</button> */}
-
-
-                            </Form>
-                        </div>
+                                <DefaultButton id="DefaultSubmit" primary={true}  text={"Submit"} type="submit" disabled={!this.state.isDisable} />
+                           </Form>
+                         </div>
                     </div>
-
-                </div>
+                 </div>
             </div>
         );
-
     }
 }
 
@@ -243,8 +201,6 @@ const mapDispatchToProps = (dispatch): IBasicFormConnectedDispatch => {
         addBasicDetails: (empData: IBasicDetailState) => {
             // return dispatch(AddNewEmployee(empData));
         },
-
-
     };
 };
 
