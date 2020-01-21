@@ -15,7 +15,7 @@ export default interface INewEmpRequestService {
     getHRFormControlState(EmpListID): Promise<any>;
 
     //Save value in EmpListID
-    HrAddNewEmployee(empReqData: IHRState, EmpListID): Promise<any>;
+    HrAddNewEmployee(empReqData: IHRState,managerdata, EmpListID): Promise<any>;
 
 
     /**Start PayRoll Details Section*/

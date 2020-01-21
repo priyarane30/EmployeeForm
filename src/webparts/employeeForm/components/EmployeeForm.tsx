@@ -56,7 +56,7 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, an
             <ProfessionalDetail />
           </PivotItem>
           <PivotItem headerText="HR Detail">
-            <HRDetail />
+            <HRDetail context={this.props.context}/>
           </PivotItem>
           <PivotItem headerText="Payroll Detail">
             <PayrollDetail />

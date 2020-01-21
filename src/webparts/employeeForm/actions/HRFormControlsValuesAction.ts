@@ -45,10 +45,10 @@ export function GetInitialControlValuesAction(EmpListID) {
 }
 
 // Creates a new employee request.
-export function HrAddNewEmployee(empReqData: IHRState,EmpListID) {
+export function HrAddNewEmployee(empReqData: IHRState,managerdata,EmpListID) {
     return dispatch => {
         let newEmpReqServiceObj: NewEmployeeService = new NewEmpService();
-        newEmpReqServiceObj.HrAddNewEmployee(empReqData,EmpListID).then(resp => {
+        newEmpReqServiceObj.HrAddNewEmployee(empReqData,managerdata,EmpListID).then(resp => {
             alert("New Employee is added successfully");
         }).catch(() => {
             alert("Sorry. Error while adding employee...");
