@@ -53,6 +53,12 @@
  .marginb{
   margin-bottom: 7px!important;
 }
+.dropdowncustom{
+  margin-bottom: 7px!important;
+  height: 32px!important;
+    width: 435px!important;
+}
+
   .button {
     // Our button
     text-decoration: none;
@@ -62,7 +68,7 @@
     min-width: 80px;
     background-color: $ms-color-themePrimary;
     border-color: $ms-color-themePrimary;
-    color: $ms-color-white;
+    color: black;
 
     // Basic Button
     outline: transparent;
@@ -85,6 +91,11 @@
       margin: 0 4px;
       vertical-align: top;
       display: inline-block;
+      color:black!important;
+      background-color: black;
+    }
+    .ms-Button-label label-167{
+      color: black!important;
     }
   }
 }
