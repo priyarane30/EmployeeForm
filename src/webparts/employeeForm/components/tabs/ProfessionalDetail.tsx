@@ -32,7 +32,6 @@ interface IProfessionalDetailConnectedDispatch {
 class ProfessionalDetail extends React.Component<any, buttonStatus> {
     constructor(props) {
         super(props);
-        const buttonState = {} as buttonStatus
         this.state = { buttonDisabled: false };
     }
     componentDidMount() {
@@ -55,25 +54,23 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
 
     }
     async handleSubmit(formValues) {
-        // Do anything you want with the form value
         const CommonState: ICommonState = { CurrentForm: "Professional Details" };
         this.props.setTabName(CommonState);
 
         let pdData = {} as IProfessionalDetailState;
         pdData = formValues;
         const empListId = store.getState().EmpListId;
+
+        this.setState({ buttonDisabled: true })
         let newEmpServiceObj: NewEmpService = new NewEmpService();
         await newEmpServiceObj.saveProfessionalDetailInList(pdData, empListId)
-        // Call the connected dispatch to create new purchase request
-        // this.props.saveDataToSPList(eduData, empListId);
-        this.setState({ buttonDisabled: true })
+        this.setState({ buttonDisabled: false })
 
     }
    
     public render() {
-        return (<div>
-
-
+        if (!this.props.ProfessionalDetail) return (<div> Loading.... </div>);
+        return (
             <Form model="ProfessionalDetail" onSubmit={val => this.handleSubmit(val)}>
                 <div className='col'> {/* Eligible for rehire*/}
                     <label>Fresher:</label>
@@ -81,9 +78,8 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                 </div>
                 {this.isUserFresher(this.props.ProfessionalDetail)}
                 
-                <button type="submit">Submit</button>
+                <button type="submit"  disabled={this.state.buttonDisabled}>Submit</button>
             </Form>
-        </div>
         );
     }
     

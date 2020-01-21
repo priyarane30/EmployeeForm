@@ -12,6 +12,7 @@ import pnp from 'sp-pnp-js';
 import NewEmployeeService from '../../services/NewEmployeeService'
 export interface IControls {
     Manager: any;
+    buttonDisabled: boolean
 }
 
 export interface IPeoplePickerControl {
@@ -32,23 +33,24 @@ interface IHRConnectedDispatch {
 class HRDetail extends React.Component<any, IControls> {
     constructor(props, ) {
         super(props);
-
         this.state = {
-            Manager: []
+            Manager: [],
+            buttonDisabled: false
         };
     }
     public componentDidMount() {
         console.log("HR Details");
+
         const empListId = store.getState().EmpListId;
         this.props.getDefaultControlsData(empListId);
+
         var myemail = [];
         myemail.push('priya.rane@synoverge.com')
         this.setState({ Manager: myemail })
-        //  this.props.passprop(this.props.context);
-        console.log(this.props.context);
+
         this.PeoplePickerItems = this.PeoplePickerItems.bind(this);
     }
-    public handleSubmit = (formValues) => {
+    async handleSubmit(formValues) {
         console.log(formValues);
         const CommonState: ICommonState = { CurrentForm: "HR" };
         this.props.setTabName(CommonState);
@@ -58,8 +60,11 @@ class HRDetail extends React.Component<any, IControls> {
         empHrData = formValues;
         let managerdata = this.state.Manager
         const empListId = store.getState().EmpListId;
+      
+        this.setState({ buttonDisabled: true })
         let newEmpReqServiceObj: NewEmployeeService = new NewEmployeeService();
-        newEmpReqServiceObj.HrAddNewEmployee(empHrData, managerdata, empListId)
+        await newEmpReqServiceObj.HrAddNewEmployee(empHrData, managerdata, empListId)
+        this.setState({ buttonDisabled: false })
         // this.props.AddValueFromHR(empHrData, managerdata, empListId);
         //EndSave The Data
     }
@@ -91,23 +96,20 @@ class HRDetail extends React.Component<any, IControls> {
                             </div>
                         </div>
                         <div className='col'> {/* Manager*/}
-                            <label>Manager:</label>
-
-                            <Control.text model='HR.Manager' id='HR.Manager' component={TextField} />
                             <PeoplePicker
                                 context={this.props.context}
-                                titleText="People Picker"
+                                titleText="Manager:"
                                 personSelectionLimit={1}
                                 groupName={""} // Leave this blank in case you want to filter from all users
                                 showtooltip={false}
                                 isRequired={true}
                                 disabled={false}
-                                ensureUser={true} 
+                                ensureUser={true}
                                 selectedItems={this.PeoplePickerItems}
                                 showHiddenInUI={false}
                                 principalTypes={[PrincipalType.User]}
                                 resolveDelay={1000}
-                                defaultSelectedUsers={this.state.Manager?this.state.Manager:null}
+                                defaultSelectedUsers={this.state.Manager ? this.state.Manager : null}
                             />
                         </div>
                         <div className='col'> {/* Employment Status */}
@@ -143,7 +145,7 @@ class HRDetail extends React.Component<any, IControls> {
                             <Control.checkbox model='HR.EligibleforRehire' id='HR.EligibleforRehire' />
                         </div>
                     </div>
-                    <button type="submit">Save</button>
+                    <button type="submit" disabled={this.state.buttonDisabled}>Save</button>
                 </Form>
 
 

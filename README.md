@@ -24,3 +24,7 @@ gulp test - TODO
 gulp serve - TODO
 gulp bundle - TODO
 gulp package-solution - TODO
+
+## Install for pnp
+npm install @pnp/spfx-controls-react --save
+​npm i @pnp/logging @pnp/common @pnp/odata @pnp/sp --save
