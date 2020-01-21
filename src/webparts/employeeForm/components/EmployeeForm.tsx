@@ -27,7 +27,7 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, an
   }
 
   public render(): React.ReactElement<IEmployeeFormProps> {
-
+console.log(this.props.context)
     return (
       <Provider store={store}>
         <div className={styles.employeeForm}>

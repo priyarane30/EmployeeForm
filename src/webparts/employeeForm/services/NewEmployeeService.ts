@@ -73,7 +73,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                 console.log(error)
             });
     }
-
+    
 
 
     private getOptionsFromChoiceField(listName, columnName): Promise<any> {

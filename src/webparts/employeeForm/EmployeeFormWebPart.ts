@@ -17,14 +17,17 @@ export interface IEmployeeFormWebPartProps {
 
 export default class EmployeeFormWebPart extends BaseClientSideWebPart<IEmployeeFormWebPartProps> {
   public render(): void {
+    debugger
     const element: React.ReactElement<IEmployeeFormProps> = React.createElement(
+      
       EmployeeForm,
       {
         description: this.properties.description,
         siteUrl:this.context.pageContext.web.absoluteUrl,
         spHttpClient:this.context.spHttpClient,
         userEmail:this.context.pageContext.user.loginName,
-        context: this.context
+        context: this.context,
+        userPermissions : this.context.pageContext.web.permissions
 
       }
     );
