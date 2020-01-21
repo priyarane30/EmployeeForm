@@ -125,7 +125,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                             newFormControlsState.PermanentAddress = res.PermanentAddress;
                             newFormControlsState.PanNo = res.PanNo;
                             newFormControlsState.IsPassAvail = (res.Passport == "Yes") ? true : false;
-                            newFormControlsState.PassportValidity = res.PassportValidity;
+                            newFormControlsState.PassportValidity = new Date(res.PassportValidity);
                             newFormControlsState.PassportNo = res.PassportNo;
                             newFormControlsState.Gender = res.Gender
                             return this.getMultipleDataFromListUsingParentID(ListNames.CHILDDETAILS, EmpListID).then((res) => {
@@ -134,9 +134,21 @@ export default class NewEmployeeService implements INewEmpRequestService {
                                     childItemArray.push({ ChildName: element.ChildName, DateOfBirth: new Date(element.ChildDOB) })
                                 });
                                 newFormControlsState.childDetailItems = childItemArray;
-
-
-                                return newFormControlsState
+                                return this.getMultipleDataFromListUsingParentID(ListNames.VISADETAILS, EmpListID).then((res) => {
+                                    var visaItemArray = []
+                                    res.forEach(element => {
+                                        visaItemArray.push({
+                                            ValidVisa: element.ValidVisa,
+                                            VisaOfCountry: element.VisaOfCountry,
+                                            VisaNo: element.VisaNo,
+                                            Entry: element.Entry,
+                                            IsTravelled: element.IsTravelled,
+                                            VisaValidity: new Date(element.VisaValidity)
+                                        })
+                                    });
+                                    newFormControlsState.visaDetailItems = visaItemArray;
+                                    return newFormControlsState;
+                                });
                             });
                         });
                     });
@@ -154,11 +166,6 @@ export default class NewEmployeeService implements INewEmpRequestService {
         debugger;
         let web = new Web(AppConstats.SITEURL);
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empListId.EmpListID).update({
-            // FirstName: empData.FirstName,
-            // LastName: empData.LastName,
-            // Designation: empData.Designation,
-            // Gender: empData.Gender,
-            // Technology: empData.Technology,
             Gender: empData.Gender,
             DateOfBirth: empData.DateOfBirth,
             Age: empData.Age,
@@ -183,9 +190,9 @@ export default class NewEmployeeService implements INewEmpRequestService {
             PassportValidity: empData.PassportValidity
         }).then((result: ItemUpdateResult) => {
             console.log(result);
-            if (empData.MaritalStatus == "Married" && empData.childDetailItems != null && empData.childDetailItems.length > 0) {
+            let web = new Web(AppConstats.SITEURL);
+            if (empData.MaritalStatus == "Married") {
                 // Creates the multiple purchase items in batch.
-                let web = new Web(AppConstats.SITEURL);
                 let batch = web.createBatch();
                 var url = AppConstats.SITEURL + "_api/web/lists/GetByTitle('" + ListNames.CHILDDETAILS + "')/items?$select=ID&$filter=empTableID/ID eq " + empListId.EmpListID;
                 return axios.get(url)
@@ -231,6 +238,54 @@ export default class NewEmployeeService implements INewEmpRequestService {
                     });
             }
 
+            if (empData.IsPassAvail) {
+
+                let visaBatch = web.createBatch();
+                var url = AppConstats.SITEURL + "_api/web/lists/GetByTitle('" + ListNames.VISADETAILS + "')/items?$select=ID&$filter=empTableID/ID eq " + empListId.EmpListID;
+                return axios.get(url)
+                    .then(res => {
+                        if (res.data.value.length > 0) {
+                            let idData = res.data.value;
+                            idData.forEach(e => {
+
+                                web.lists.getByTitle(ListNames.VISADETAILS).items.getById(e["ID"]).inBatch(visaBatch).delete()
+                                    .then(r => {
+                                        console.log("visa deleted");
+                                    });
+                            });
+                            visaBatch.execute().then(() => {
+                                console.log("All visa deleted")
+                                empData.visaDetailItems.forEach(detailRow => {
+                                    web.lists.getByTitle(ListNames.VISADETAILS).items.inBatch(visaBatch).add({
+                                        ValidVisa: detailRow.ValidVisa,
+                                        VisaNo: detailRow.VisaNo,
+                                        VisaOfCountry: detailRow.VisaOfCountry,
+                                        Entry: detailRow.Entry,
+                                        empTableIDId: empListId.EmpListID,
+                                        IsTravelled: detailRow.IsTravelled ? "Yes" : "No"
+                                    });
+                                });
+                                visaBatch.execute().then(() => console.log("all visa added"))
+                            });
+                        }
+                        else {
+                            empData.visaDetailItems.forEach(detailRow => {
+                                web.lists.getByTitle(ListNames.VISADETAILS).items.inBatch(visaBatch).add({
+                                    ValidVisa: detailRow.ValidVisa,
+                                    VisaNo: detailRow.VisaNo,
+                                    VisaOfCountry: detailRow.VisaOfCountry,
+                                    Entry: detailRow.Entry,
+                                    empTableIDId: empListId.EmpListID,
+                                    IsTravelled: detailRow.IsTravelled ? "Yes" : "No"
+                                });
+                            });
+                            visaBatch.execute().then(() => console.log("all visa added"))
+                        }
+                    }).catch(error => {
+                        console.log('error while getOptionsFromMaster');
+                        console.log(error)
+                    });
+            }
         }).catch(error => {
             console.log("error while adding an employee");
         });
@@ -589,6 +644,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
         //payrollControlsState = statusResp;
         return this.getDataFromListUsingID(ListNames.EMPLOYEECONTACT, EmpListID).then(statusResp => {
             payrollControlsState.UserID = statusResp.UserID;
+            payrollControlsState.ESIApplicable = statusResp.ESIApplicable;
             payrollControlsState.ESINo = statusResp.ESINo;
             payrollControlsState.ESIDispensary = statusResp.ESIDispensary;
             payrollControlsState.PFNo = statusResp.PFNo;
@@ -609,7 +665,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
         debugger;
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empListId.EmpListID).update({
             // return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
-            //ESIApplicable:empReqData.ESIApplicable,
+            ESIApplicable: empReqData.ESIApplicable,
             ESINo: empReqData.ESINo,
             ESIDispensary: empReqData.ESIDispensary,
             PFNo: empReqData.PFNo,

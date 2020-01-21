@@ -23,7 +23,7 @@ export const newEmpFormControlsInitialState: INewFormState = {
     IsPassAvail: false,
     PassportNo: '',
     PassportValidity: null,
-    Gender:'',
+    Gender: '',
 
     // Represent the choices to be displayed in dropdown when the form loads.
     genderOptions: [],
@@ -32,7 +32,8 @@ export const newEmpFormControlsInitialState: INewFormState = {
     technologyOptions: [],
 
     //tran list Items
-    childDetailItems:[]
+    childDetailItems: [],
+    visaDetailItems: []
 };
 
 
@@ -41,13 +42,12 @@ export const NewEmpRequestReducer = (state: INewFormState = null, action) => {
     switch (action.type) {
 
         // Gets the values for dropdown fields from SharePoint master/choice columns.
-        case "GET_DEFAULT_FORM_CONTROLS":
-            state = { 
+        case ActionTypes.GetDefaultFormControls:
+            state = {
                 ...state,
-                childDetailItems: action.payload.childDetailItems,
                 PersonalEmail: action.payload.PersonalEmail,
                 Mobile: action.payload.Mobile,
-                DateOfBirth:action.payload.DateOfBirth,//dateTime?
+                DateOfBirth: action.payload.DateOfBirth,//dateTime?
                 Age: action.payload.Age,
                 BloodGroup: action.payload.BloodGroup,
                 FatherName: action.payload.FatherName,
@@ -56,7 +56,7 @@ export const NewEmpRequestReducer = (state: INewFormState = null, action) => {
                 SpouceName: action.payload.SpouceName,
                 SpouseOccupation: action.payload.SpouseOccupation,
                 SpouceDOB: action.payload.SpouceDOB, //dateTime?
-                EmergencyNo:action.payload.EmergencyNo,
+                EmergencyNo: action.payload.EmergencyNo,
                 RelationWithEmergencyNo: action.payload.RelationWithEmergencyNo,
                 CurrentAddress: action.payload.CurrentAddress,
                 IsSameAsCurrAddress: action.payload.IsSameAsCurrAddress,
@@ -66,10 +66,11 @@ export const NewEmpRequestReducer = (state: INewFormState = null, action) => {
                 IsPassAvail: action.payload.IsPassAvail,
                 PassportNo: action.payload.PassportNo,
                 PassportValidity: action.payload.PassportValidity,
-                Gender:action.payload.Gender,
+                Gender: action.payload.Gender,
                 genderOptions: action.payload.genderOptions,
-                maritalStatusOptions: action.payload.maritalStatusOptions
-               
+                maritalStatusOptions: action.payload.maritalStatusOptions,
+                childDetailItems: action.payload.childDetailItems,
+                visaDetailItems: action.payload.visaDetailItems
             };
             break;
         case "SET_INITIAL_STATE":
@@ -101,13 +102,6 @@ export const NewEmpRequestReducer = (state: INewFormState = null, action) => {
         case "ADD_NEW_EMPLOYEE":
             state = {
                 ...state,
-                //FirstName: action.payload.FirstName,
-                // LastName: action.payload.LastName,
-                // Gender: action.payload.Gender,
-                // DateofJoining: action.payload.DateofJoining,//datetime?
-                // Designation: action.payload.Designation,
-                // Technology: action.payload.Technology,
-                // CompanyEmail: action.payload.CompanyEmail,
                 PersonalEmail: action.payload.PersonalEmail,
                 Mobile: action.payload.Mobile,
                 DateOfBirth: action.payload.DateOfBirth,
@@ -136,23 +130,37 @@ export const NewEmpRequestReducer = (state: INewFormState = null, action) => {
                 maritalStatusOptions: action.payload.maritalStatusOptions,
                 technologyOptions: action.payload.technologyOptions,
 
-                //tran list Items
-                childDetailItems: action.payload.childDetailItems
+                // //tran list Items
+                // childDetailItems: action.payload.childDetailItems,
+                // visaDetailItems: action.payload.visaDetailItems
             };
             break;
         case ActionTypes.AddChildDetailRow:
-            state={
+            state = {
                 ...state,
-                childDetailItems:[...state.childDetailItems,action.payload]
+                childDetailItems: [...state.childDetailItems, action.payload]
             };
             break;
         case ActionTypes.RemoveChildDetailRow:
-            state={
+            state = {
                 ...state,
-                childDetailItems:[...state.childDetailItems.slice(0,action.payload),
-                                  ...state.childDetailItems.slice(action.payload+1) ]
+                childDetailItems: [...state.childDetailItems.slice(0, action.payload),
+                ...state.childDetailItems.slice(action.payload + 1)]
             };
             break;
+            case ActionTypes.AddVisaDetailRow:
+                state = {
+                    ...state,
+                    visaDetailItems: [...state.visaDetailItems, action.payload]
+                };
+                break;
+            case ActionTypes.RemoveVisaDetailRow:
+                state = {
+                    ...state,
+                    visaDetailItems: [...state.visaDetailItems.slice(0, action.payload),
+                    ...state.visaDetailItems.slice(action.payload + 1)]
+                };
+                break;
     }
     return state;
 };

@@ -11,8 +11,20 @@ import PayrollDetail from '../components/tabs/PayrollDetail';
 import { Provider } from 'react-redux';
 import { store } from "../store/ConfigureStore";
 
-export default class EmployeeForm extends React.Component<IEmployeeFormProps, {}> {
+export default class EmployeeForm extends React.Component<IEmployeeFormProps, any>{
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      isEmpIdExists: false
+    }
+    this.showTabs = this.showTabs.bind(this);
+  }
+
+  async showTabs(empId) {
+    if (empId != null && empId != undefined && empId.EmpListID > 0)
+      await this.setState({ isEmpIdExists: true })
+  }
 
   public render(): React.ReactElement<IEmployeeFormProps> {
 
@@ -21,29 +33,36 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, {}
         <div className={styles.employeeForm}>
           <div className={styles.container}>
             <div>
-              <BasicDetail empEmail={this.props.userEmail} />
+              <BasicDetail empEmail={this.props.userEmail} showTabs={this.showTabs} />
             </div>
-            <Pivot aria-label="Employee Form">
-            
-              <PivotItem headerText="Employee Details">
-                <EmployeeDetail />
-              </PivotItem>
-              <PivotItem headerText="Education Details">
-                <EducationDetail />
-              </PivotItem>
-              <PivotItem headerText="Professional Detail">
-                <ProfessionalDetail />
-              </PivotItem>
-              <PivotItem headerText="HR Detail">
-                <HRDetail />
-              </PivotItem>
-              <PivotItem headerText="Payroll Detail">
-                <PayrollDetail />
-              </PivotItem>
-            </Pivot>
+            {this.IsEmpIdExists()}
           </div>
         </div>
-        </Provider>
+      </Provider>
     );
+  }
+
+  IsEmpIdExists() {
+    if (this.state.isEmpIdExists)
+      return (
+        <Pivot aria-label="Employee Form">
+          <PivotItem headerText="Employee Details">
+            <EmployeeDetail />
+          </PivotItem>
+          <PivotItem headerText="Education Details">
+            <EducationDetail />
+          </PivotItem>
+          <PivotItem headerText="Professional Detail">
+            <ProfessionalDetail />
+          </PivotItem>
+          <PivotItem headerText="HR Detail">
+            <HRDetail />
+          </PivotItem>
+          <PivotItem headerText="Payroll Detail">
+            <PayrollDetail />
+          </PivotItem>
+        </Pivot>
+      );
+
   }
 }

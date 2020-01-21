@@ -1,10 +1,10 @@
 export interface IPayrollState {
     //form controls
     UserID:number;
-    ESIApplicable: boolean;
+    ESIApplicable: string;
     ESINo: string;
     ESIDispensary: string;
-    PFApplicable: boolean;
+    PFApplicable: string;
     PFNo: string;
     PFNoforDeptFile: string;
     RestrictPF: string;
