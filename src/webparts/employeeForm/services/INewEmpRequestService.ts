@@ -6,9 +6,9 @@ export default interface INewEmpRequestService {
     getNewFormControlState(EmpListId): Promise<any>;
 
     AddEmpFormData(empData: INewFormState,EmpListId): Promise<any>;
-    //End  Employee Detail Form
+   
     //public myCallback: (name: type) => returntype;
-    getusingCallback: (name: string) => object;
+    //getusingCallback: (name: string) => object;
 
     /**Start HR Section*/
     //get value from List where id =EmpListID

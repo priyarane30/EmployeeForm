@@ -30,11 +30,10 @@ export default class BasicFormService implements IBasicFormService {
                 basicFormControlsState.technologyOptions = techResp;
 
                 return utilityServiceObj.GetEmployeeContactListById(empListId).then(mainListResp => {
-                    debugger
                     basicFormControlsState.FirstName = mainListResp.FirstName;
                     basicFormControlsState.LastName = mainListResp.LastName;
                     basicFormControlsState.CompanyEmail = mainListResp.Email;
-                    basicFormControlsState.DateofJoining =new Date(mainListResp.DateofJoining);
+                    basicFormControlsState.DateofJoining = new Date(mainListResp.DateofJoining);
                     basicFormControlsState.Designation = mainListResp.CurrentDesignation;
                     basicFormControlsState.Technology = mainListResp.Technology;
                     return basicFormControlsState;
@@ -50,7 +49,7 @@ export default class BasicFormService implements IBasicFormService {
             LastName: empData.LastName,
             CurrentDesignation: empData.Designation,
             Technology: empData.Technology,
-            DateofJoining:empData.DateofJoining,//datetime?
+            DateofJoining: empData.DateofJoining,//datetime?
             Email: empData.CompanyEmail
         }).then((result: ItemAddResult) => {
             let mainListID = result.data.Id;
@@ -63,19 +62,19 @@ export default class BasicFormService implements IBasicFormService {
     }
 
     UpdateBasicDetail(basicData: IBasicDetailState, empListId): Promise<any> {
-        debugger
-       // var itemDate = new Date(date);
+
+        // var itemDate = new Date(date);
         let web = new Web(AppConstats.SITEURL);
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empListId.EmpListID).update({
             FirstName: basicData.FirstName,
             LastName: basicData.LastName,
             CurrentDesignation: basicData.Designation,
-             Technology: basicData.Technology,
-             DateofJoining: basicData.DateofJoining,//datetime?
+            Technology: basicData.Technology,
+            DateofJoining: basicData.DateofJoining,//datetime?
             Email: basicData.CompanyEmail
         }).then((result: ItemAddResult) => {
-            debugger
-            result
+
+            //result
             console.log("Basic Details has been updated");
             let mainListID = result.data.Id;
             return mainListID;
