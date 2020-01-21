@@ -7,7 +7,6 @@ import { IHRState } from '../../state/IHRSectionControlsState';
 import { store } from "../../store/ConfigureStore";
 import { TextField } from "office-ui-fabric-react/lib/TextField";
 import { Dropdown } from 'office-ui-fabric-react/lib/Dropdown';
-import { IEmployeeFormProps } from '../IEmployeeFormProps';
 import { PeoplePicker, PrincipalType } from "@pnp/spfx-controls-react/lib/PeoplePicker";
 import pnp from 'sp-pnp-js';
 import NewEmployeeService from '../../services/NewEmployeeService'
@@ -21,33 +20,13 @@ export interface IPeoplePickerControl {
     text: string;
     ID: number;
 }
-//import peoplepicker from '../peoplepicker';
-const MyTextInput = (props) => <input className="my-input" {...props} />;
-const peoplepicker = (props: IEmployeeFormProps) =>
-    <PeoplePicker
-        context={props.context} //'https://synoverge.sharepoint.com/'//
-        titleText="People Picker"
-        personSelectionLimit={1}//Leadership Connection Owners
-        groupName={""} // Leave this blank in case you want to filter from all users    
-        showtooltip={true}
-        isRequired={true}
-        disabled={false}
-        ensureUser={true}
-        showHiddenInUI={false}
-        principalTypes={[PrincipalType.User]}
-        resolveDelay={1000}
-    />;
+
 // Represents the connected dispatch
 interface IHRConnectedDispatch {
     setTabName: (tabName: ICommonState) => void;
 
     // Gets the options for dropdown fields
     getDefaultControlsData: (empListId: IEmpListIdState) => void;
-
-
-    //save data
-    AddValueFromHR: (empHrData: IHRState, managerdata, empListId: IEmpListIdState) => void;
-
 
 }
 class HRDetail extends React.Component<any, IControls> {
@@ -115,11 +94,6 @@ class HRDetail extends React.Component<any, IControls> {
                             <label>Manager:</label>
 
                             <Control.text model='HR.Manager' id='HR.Manager' component={TextField} />
-                            {/* <Control model='HR.Manager' component={peoplepicker}
-                                mapProps={{
-                                    value: (props) => { return props.viewValue }
-                                }}
-                            ></Control> */}
                             <PeoplePicker
                                 context={this.props.context}
                                 titleText="People Picker"
@@ -201,9 +175,6 @@ const mapDispatchToProps = (dispatch): IHRConnectedDispatch => {
         //setReqDigest : SetReqDigest,
         getDefaultControlsData: (empListId) => {
             return dispatch(GetInitialControlValuesAction(empListId.EmpListID));
-        },
-        AddValueFromHR: (empHrData: IHRState, managerdata, empListId) => {
-            // return dispatch(HrAddNewEmployee(empHrData, managerdata, empListId.EmpListID));
         }
     };
 };
