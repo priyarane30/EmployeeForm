@@ -68,7 +68,7 @@ class PayrollDetail extends React.Component<any, IState> {
                     <label>ESI Applicable:</label>
                   </div>
                   <div className="ms-Grid-col ms-u-sm8 block">
-                    <Control.text
+                    <Control.text className={styles.marginb}
                       model=".ESIApplicable"
                       id=".ESIApplicable"
                       component={TextField}
@@ -78,7 +78,7 @@ class PayrollDetail extends React.Component<any, IState> {
                     <label>ESI No:</label>
                   </div>
                   <div className="ms-Grid-col ms-u-sm8 block">
-                    <Control.text
+                    <Control.text className={styles.marginb}
                       model=".ESINo"
                       id=".ESINo"
                       component={TextField}
@@ -88,7 +88,7 @@ class PayrollDetail extends React.Component<any, IState> {
                     <label>ESIDispensary:</label>
                 </div>
                   <div className="ms-Grid-col ms-u-sm8 block">
-                    <Control.text
+                    <Control.text className={styles.marginb}
                       model=".ESIDispensary"
                       id=".ESIDispensary"
                       component={TextField}
@@ -98,7 +98,7 @@ class PayrollDetail extends React.Component<any, IState> {
                     <label>PF Applicable:</label>
                   </div>
                   <div className="ms-Grid-col ms-u-sm8 block">
-                    <Control.text
+                    <Control.text className={styles.marginb}
                       model=".PFApplicable"
                       id=".PFApplicable"
                       component={TextField}
@@ -108,13 +108,13 @@ class PayrollDetail extends React.Component<any, IState> {
                     <label>PF No:</label>
                   </div>
                   <div className="ms-Grid-col ms-u-sm8 block">
-                    <Control.text model=".PFNo" id=".PFNo" component={TextField} />
+                    <Control.text  className={styles.marginb} model=".PFNo" id=".PFNo" component={TextField} />
                   </div>
                   <div className="ms-Grid-col ms-u-sm4 block">
                     <label>PF No for Dept file:</label>
                   </div>
                   <div className="ms-Grid-col ms-u-sm8 block">
-                    <Control.text
+                    <Control.text className={styles.marginb}
                       model=".PFNoforDeptFile"
                       id=".PFNoforDeptFile"
                       component={TextField}
@@ -124,7 +124,7 @@ class PayrollDetail extends React.Component<any, IState> {
                     <label>Restrict PF:</label>
                   </div>
                   <div className="ms-Grid-col ms-u-sm8 block">
-                    <Control.text
+                    <Control.text className={styles.marginb}
                       model=".RestrictPF"
                       id=".RestrictPF"
                       component={TextField}
@@ -134,7 +134,7 @@ class PayrollDetail extends React.Component<any, IState> {
                     <label>Zero Pension:</label>
                   </div>
                   <div className="ms-Grid-col ms-u-sm8 block">
-                    <Control.text
+                    <Control.text className={styles.marginb}
                       model=".ZeroPension"
                       id=".ZeroPension"
                       component={TextField}
@@ -144,7 +144,7 @@ class PayrollDetail extends React.Component<any, IState> {
                     <label>Zero PT:</label>
                   </div>
                   <div className="ms-Grid-col ms-u-sm8 block">
-                    <Control.text
+                    <Control.text className={styles.marginb}
                       model=".ZeroPT"
                       id=".ZeroPT"
                       component={TextField}
@@ -154,7 +154,7 @@ class PayrollDetail extends React.Component<any, IState> {
                     <label>Ward/Circle:</label>
                   </div>
                   <div className="ms-Grid-col ms-u-sm8 block">
-                    <Control.text
+                    <Control.text className={styles.marginb}
                       model=".Ward_x002f_Circle"
                       id=".Ward_x002f_Circle"
                       component={TextField}
@@ -164,7 +164,7 @@ class PayrollDetail extends React.Component<any, IState> {
                     <label>Director:</label>
                   </div>
                   <div className="ms-Grid-col ms-u-sm8 block">
-                <Control.text
+                <Control.text className={styles.marginb}
                   model=".Director"
                   id=".Director"
                   component={TextField}
