@@ -72,6 +72,7 @@ class BasicDetail extends React.Component<any,IButtonState>{
             //get Basic Details 
             this.props.getBasicDatail(eId);
             this.props.showTabs(eId);
+            
         }
         const CommonState: ICommonState = { CurrentForm: "Employee" };
         this.props.setTabName(CommonState);
@@ -187,7 +188,6 @@ const mapStateToProps = function (state) {
 
 // Maps dispatch to props
 const mapDispatchToProps = (dispatch): IBasicFormConnectedDispatch => {
-
     return {
         setEmpId: (empId) => {
             return dispatch(SetEmpIdInStore(empId));

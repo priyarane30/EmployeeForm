@@ -4,26 +4,13 @@ import EducationDetail from "../components/tabs/EducationDetail";
 import { actions } from "react-redux-form";
 //Initialise state of Education 
 export const eduDetailState: IEducationDetailState = {
-  educationDetails:[{
-    DiplomaDegree:'',
-    Grade: "",
-    StartYear: '',
-    EndYear: '',
-    Board: '',
-    SchoolCollege: '',
-    DegreeName: ''}],
-  certificationDetails:[ {
-    Certification: '',
-    StartYear: '',
-    YearOfCompletion: '',
-    InstituteName: '',
-    GradePercentage: ''
-  }]
+  educationDetails:[],
+  certificationDetails:[]
 };
 
 
-export const EducationSectionReducer = (state: IEducationDetailState = null, action) => {
-    console.log(action);
+export const EducationSectionReducer = (state: IEducationDetailState = eduDetailState, action) => {
+    debugger;
     switch (action.type) {
         // Gets the values for dropdown fields from SharePoint master/choice columns.
         case "GET_DEFAULT_FORM_CONTROLS":

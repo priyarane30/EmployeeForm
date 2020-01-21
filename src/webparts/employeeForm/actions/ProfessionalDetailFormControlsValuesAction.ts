@@ -3,6 +3,7 @@ import { ICommonState } from '../state/ICommonState';
 import NewEmployeeService from '../services/NewEmployeeService';
 import { ActionTypes, AppConstats, ListNames } from '../AppConstants';
 import NewEmpService from '../services/NewEmployeeService';
+import UtilityService from "../services/UtilityService";
 import { actions } from 'react-redux-form';
 
 export function GetInitialControlValuesAction(EmpListID) {
@@ -59,8 +60,8 @@ export function addProfessionalDetailRow(section) {
     if (section == "ProfessionalDetail") {
         //     //add row in education detail grid
         return dispatch => {
-            let newEmpServiceObj: NewEmpService = new NewEmpService();
-            newEmpServiceObj.getOptionsFromMaster(ListNames.REASONFORLEAVING, 'Title')
+            let utilityServiceObj: UtilityService = new UtilityService();
+            utilityServiceObj.getOptionsFromMaster(ListNames.REASONFORLEAVING, 'Title')
                 .then((ReasonResp) => {
                     let initialOrganizationDetailsGrid =
                     {
@@ -87,8 +88,8 @@ export function addProfessionalDetailRow(section) {
 
     else {
         return dispatch => {
-            let newEmpServiceObj: NewEmpService = new NewEmpService();
-            newEmpServiceObj.getOptionsFromMaster(ListNames.TECHNOLOGY, 'Title')
+            let utilityServiceObj: UtilityService = new UtilityService();
+            utilityServiceObj.getOptionsFromMaster(ListNames.TECHNOLOGY, 'Title')
                 .then((techResp) => {
                     let initialTechnologyDetailGrid = {
                         Technology: '',

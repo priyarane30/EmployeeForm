@@ -6,4 +6,5 @@ export interface IEmployeeFormProps {
   spHttpClient: SPHttpClient;
   userEmail:string;
   context: WebPartContext;
+  userPermission:any;
 }
