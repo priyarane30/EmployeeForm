@@ -1,7 +1,7 @@
 
 export interface IEducationDetailState {
   educationDetails: Array<
-    {
+    { educationId:number;
       DiplomaDegree: string;
       Grade: string;
       StartYear: string;
@@ -12,7 +12,7 @@ export interface IEducationDetailState {
     }
   >
   certificationDetails: Array<
-  {
+  {   certificationId:number;
       Certification: string;
       StartYear: string;
       YearOfCompletion: string;

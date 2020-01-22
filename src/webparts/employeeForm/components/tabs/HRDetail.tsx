@@ -7,11 +7,14 @@ import { IHRState } from '../../state/IHRSectionControlsState';
 import { store } from "../../store/ConfigureStore";
 import { TextField } from "office-ui-fabric-react/lib/TextField";
 import { Dropdown } from 'office-ui-fabric-react/lib/Dropdown';
+import { DefaultButton, PrimaryButton } from "office-ui-fabric-react/lib/Button";
+import styles from "../EmployeeForm.module.scss";
 import { PeoplePicker, PrincipalType } from "@pnp/spfx-controls-react/lib/PeoplePicker";
 import pnp from 'sp-pnp-js';
 import NewEmployeeService from '../../services/NewEmployeeService'
 export interface IControls {
     Manager: any;
+    buttonDisabled: boolean
 }
 
 export interface IPeoplePickerControl {
@@ -32,23 +35,24 @@ interface IHRConnectedDispatch {
 class HRDetail extends React.Component<any, IControls> {
     constructor(props, ) {
         super(props);
-
         this.state = {
-            Manager: []
+            Manager: [],
+            buttonDisabled: false
         };
     }
     public componentDidMount() {
         console.log("HR Details");
+
         const empListId = store.getState().EmpListId;
-        this.props.getDefaultControlsData(empListId);
+        this.props.getDefaultControlsData(empListId);//empListId
+
         var myemail = [];
         myemail.push('priya.rane@synoverge.com')
         this.setState({ Manager: myemail })
-        //  this.props.passprop(this.props.context);
-        console.log(this.props.context);
+
         this.PeoplePickerItems = this.PeoplePickerItems.bind(this);
     }
-    public handleSubmit = (formValues) => {
+    async handleSubmit(formValues) {
         console.log(formValues);
         const CommonState: ICommonState = { CurrentForm: "HR" };
         this.props.setTabName(CommonState);
@@ -58,8 +62,11 @@ class HRDetail extends React.Component<any, IControls> {
         empHrData = formValues;
         let managerdata = this.state.Manager
         const empListId = store.getState().EmpListId;
+
+        this.setState({ buttonDisabled: true })
         let newEmpReqServiceObj: NewEmployeeService = new NewEmployeeService();
-        newEmpReqServiceObj.HrAddNewEmployee(empHrData, managerdata, empListId)
+        await newEmpReqServiceObj.HrAddNewEmployee(empHrData, managerdata, empListId)
+        this.setState({ buttonDisabled: false })
         // this.props.AddValueFromHR(empHrData, managerdata, empListId);
         //EndSave The Data
     }
@@ -70,84 +77,100 @@ class HRDetail extends React.Component<any, IControls> {
         });
         if (!this.props.HR) return (<div> Loading.... </div>);
         return (
-            <div>
-                <Form model="HR" onSubmit={(val) => this.handleSubmit(val)}>
+            <div className={styles.employeeForm}>
+                <div className={styles.container}>
                     <div className="ms-Grid">
-                        <div className="ms-Grid-row">
-                            {/* User Alias*/}
-                            <div className='ms-Grid-col ms-u-md2 '>
-                                <label>User Alias:</label>
-                            </div>
-                            <div className='ms-Grid-col ms-u-md4 '>
-                                <Control.text model='HR.UserAlies' id='.UserAlies' component={TextField} />
-                            </div>
-                            {/* Name of employee*/}
-                            <div className='ms-Grid-col ms-u-md2'>
+                        <div className={`ms-Grid-row  ms-fontColor-white ${styles.row}`}>
+                            <Form model="HR" onSubmit={(val) => this.handleSubmit(val)}>
 
-                                <label>AD Login Name of Employee:</label>
-                            </div>
-                            <div className='ms-Grid-col ms-u-md4'>
-                                <Control.text model='HR.ADLogin' id='HR.ADLogin' component={TextField} />
-                            </div>
-                        </div>
-                        <div className='col'> {/* Manager*/}
-                            <label>Manager:</label>
+                                {/* User Alias*/}
+                                <div className='ms-Grid-col ms-u-sm4'>
+                                    <label>User Alias:</label>
+                                </div>
+                                <div className='ms-Grid-col ms-u-sm8'>
+                                    <Control.text model='HR.UserAlies' id='.UserAlies' component={TextField} />
+                                </div>
+                                {/* Name of employee*/}
+                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                    <label>AD Login Name of Employee:</label>
+                                </div>
+                                <div className='ms-Grid-col ms-u-sm8'>
+                                    <Control.text model='HR.ADLogin' id='HR.ADLogin' component={TextField} />
+                                </div>
+                                {/* Manager*/}
+                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                    <label>Manager:</label>
+                                </div>
+                                <div className='ms-Grid-col ms-u-sm8 block'>
+                                    <PeoplePicker
+                                        context={this.props.context}
+                                        personSelectionLimit={1}
+                                        groupName={""} // Leave this blank in case you want to filter from all users
+                                        showtooltip={false}
+                                        isRequired={true}
+                                        disabled={false}
+                                        ensureUser={true}
+                                        selectedItems={this.PeoplePickerItems}
+                                        showHiddenInUI={false}
+                                        principalTypes={[PrincipalType.User]}
+                                        resolveDelay={1000}
+                                        defaultSelectedUsers={this.state.Manager ? this.state.Manager : null}
+                                    />
+                                </div>
+                                {/* Employment Status */}
+                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                    <label>Employment Status:</label>
+                                </div>
+                                <div className='ms-Grid-col ms-u-sm8 block'>
+                                    <Control.select model="HR.employementStatus" id="HR.employementStatus">
+                                        <option value="Assigned to HR">Assigned to HR</option>
+                                        <option value="Active">Active</option>
+                                        <option value="Inactive">Inactive</option>
+                                        <option value="Saved">Saved</option>
+                                    </Control.select>
+                                </div>
+                                {/* Date of leaving*/}
+                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                    <label>Date of leaving:</label>
+                                </div>
+                                <div className='ms-Grid-col ms-u-sm8 block'>
+                                    <Control.text model='HR.DateOfLeaving' id='HR.DateOfLeaving' component={TextField} placeholder='dd-MM-yyyy' />
+                                </div>
+                                {/* Reason for leaving */}
+                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                    <label>Reason for leaving:</label>
+                                </div>
+                                <div className='ms-Grid-col ms-u-sm8 block'>
+                                    <Control.select model="HR.reasonForLeaving" id="HR.reasonForLeaving">
+                                        <option>--Select--</option>
 
-                            <Control.text model='HR.Manager' id='HR.Manager' component={TextField} />
-                            <PeoplePicker
-                                context={this.props.context}
-                                titleText="People Picker"
-                                personSelectionLimit={1}
-                                groupName={""} // Leave this blank in case you want to filter from all users
-                                showtooltip={false}
-                                isRequired={true}
-                                disabled={false}
-                                ensureUser={true} 
-                                selectedItems={this.PeoplePickerItems}
-                                showHiddenInUI={false}
-                                principalTypes={[PrincipalType.User]}
-                                resolveDelay={1000}
-                                defaultSelectedUsers={this.state.Manager?this.state.Manager:null}
-                            />
-                        </div>
-                        <div className='col'> {/* Employment Status */}
-                            <label>Employment Status:</label>
-                            <Control.select model="HR.employementStatus" id="HR.employementStatus">
-                                <option value="Assigned to HR">Assigned to HR</option>
-                                <option value="Active">Active</option>
-                                <option value="Inactive">Inactive</option>
-                                <option value="Saved">Saved</option>
-                            </Control.select>
-                        </div>
-                        <div className='col'> {/* Date of leaving*/}
-                            <label>Date of leaving:</label>
-                            <Control.text model='HR.DateOfLeaving' id='HR.DateOfLeaving' component={TextField} placeholder='dd-MM-yyyy' />
-                        </div>
-                        <div className='col'>{/* Reason for leaving */}
-                            <label>Reason for leaving:</label>
-                            <Control.select model="HR.reasonForLeaving" id="HR.reasonForLeaving">
-                                <option>--Select--</option>
-
-                                {this.props.HR.reasonOfLeavingOptions.map(reasons => {
-                                    return (<option key={reasons}
-                                        value={reasons}>{reasons}</option>);
-                                })};
-                        </Control.select>
-                        </div>
-                        <div className='col'> {/* Date of Resignation*/}
-                            <label>Resignation Date:</label>
-                            <Control.text model='HR.ResigntionDate' id='HR.ResigntionDate' component={TextField} placeholder='dd-MM-yyyy' />
-                        </div>
-                        <div className='col'> {/* Eligible for rehire*/}
-                            <label>Eligible for Rehire:</label>
-                            <Control.checkbox model='HR.EligibleforRehire' id='HR.EligibleforRehire' />
+                                        {this.props.HR.reasonOfLeavingOptions.map(reasons => {
+                                            return (<option key={reasons}
+                                                value={reasons}>{reasons}</option>);
+                                        })};
+                                    </Control.select>
+                                </div>
+                                {/* Date of Resignation*/}
+                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                    <label>Resignation Date:</label>
+                                </div>
+                                <div className='ms-Grid-col ms-u-sm8 block'>
+                                    <Control.text model='HR.ResigntionDate' id='HR.ResigntionDate' component={TextField} placeholder='dd-MM-yyyy' />
+                                </div>
+                                {/* Eligible for rehire*/}
+                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                    <label>Eligible for Rehire:</label>
+                                </div>
+                                <div className='ms-Grid-col ms-u-sm8 block'>
+                                    <Control.checkbox model='HR.EligibleforRehire' id='HR.EligibleforRehire' />
+                                </div>
+                                <DefaultButton id="DefaultSubmit" primary={true} text={"Submit"} type="submit"
+                                    disabled={this.state.buttonDisabled} className={styles.button} />
+                            </Form>
                         </div>
                     </div>
-                    <button type="submit">Save</button>
-                </Form>
-
-
-            </div>
+                </div>
+            </div >
         );
     }
     private PeoplePickerItems(items: any[]) {

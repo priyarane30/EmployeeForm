@@ -7,26 +7,8 @@ export const professionalDetailState: IProfessionalDetailState = {
 
     IsFresher: false,
 
-    organizationDetails: [{
-        organization: '',
-        designation: '',
-        startDate: '',//dateTime?
-        endDate: '', //dateTime?
-        reportingTo: '',
-        reportingDesignation: '',
-        totalExp: '',
-        reasonForLeaving: '',
-
-        reasonOfLeavingOptions: [],
-    }],
-    technologyDetails: [{
-        Technology: '',
-        SinceWhen: '',
-        Expertise: '',
-        Rating: '',
-
-        technologyOptions: [],
-    }]
+    organizationDetails: [],
+    technologyDetails: []
 };
 
 export const ProfessionalDetailSectionReducer = (state: IProfessionalDetailState = professionalDetailState, action) => {
