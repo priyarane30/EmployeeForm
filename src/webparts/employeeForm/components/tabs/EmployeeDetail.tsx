@@ -6,10 +6,8 @@ import { ICommonState } from '../../state/ICommonState';
 import { INewFormState } from '../../state/INewFormControlsState';
 import { store } from "../../store/ConfigureStore";
 import NewEmpService from '../../services/NewEmployeeService';
-import FabricField from '../Fabric Components/DatePicker';
-import { DatePicker } from 'office-ui-fabric-react/lib/DatePicker';
-import { Dropdown } from 'office-ui-fabric-react/lib/Dropdown';
-import { optionProperties } from 'office-ui-fabric-react/lib/Utilities';
+import { DatePicker, TextField } from 'office-ui-fabric-react/lib';
+
 import styles from '../EmployeeForm.module.scss';
 
 interface buttonStatus {
@@ -63,6 +61,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
         // Call the connected dispatch to create new purchase request
         await newEmpServiceObj.AddEmpFormData(empData, empListId);
         this.setState({ buttonDisabled: false });
+        this.props.handleTabClick();
     }
 
     public render() {
@@ -71,260 +70,304 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
         if (!this.props.Employee) return (<div> Loading.... </div>);
         return (
             <div>
-                <Form model="Employee" onSubmit={(val) => this.handleSubmit(val)}>
+                <div className={styles.employeeForm}>
+                    <div className={styles.container}>
+                        <div className={`ms-Grid-row  ms-fontColor-white ${styles.row}`}>
+                            <Form model="Employee" onSubmit={(val) => this.handleSubmit(val)}>
 
-                    <div className='col'>
-                        <label>Gender:</label>
-                        <Control.select model="Employee.Gender"
-                            id=".Gender"
-                            validators={{
-                                requiredGender: (val) => val && val.length && val != '--Select--'
+                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                    <label>Gender:</label>
+                                </div>
+                                <div className="ms-Grid-col ms-u-sm8 block">
+                                    <Control.select model="Employee.Gender"
+                                        id=".Gender" className={styles.dropdowncustom}
+                                        validators={{
+                                            requiredGender: (val) => val && val.length && val != '--Select--'
 
-                            }}
-                        >
-                            <option>--Select--</option>
-                            {this.props.Employee.genderOptions.map(gender => { return <option key={gender} value={gender} >{gender}</option>; })};
-                        </Control.select>
-                        <Errors
-                            className={styles.errors}
-                            show="touched"
-                            model=".Gender"
-                            messages={{
-                                requiredGender: 'Please Select Gender.'
-                            }}
-                        ></Errors>
-                    </div>
-                    <div className='col'>
-                        <label>Date Of Birth:</label>
-                        <Control model='.DateOfBirth' component={DatePicker}
-                            mapProps={{
-                                value: (props) => { return props.viewValue; },
-                                onSelectDate: (props) => { return props.onChange; }
-                            }}
-                            validators={{
-                                requiredDateOfBirth: (val) => val,
-                            }}
-                        ></Control>
-                        <Errors
-                            className={styles.errors}
-                            show="touched"
-                            model=".DateOfBirth"
-                            messages={{
-                                requiredDateOfBirth: 'Please Select DOB.'
-                            }}
-                        ></Errors>
-                    </div>
-                    {/* <div className='col'>
-                        <label>Age:</label>
-                        <Control.text model='Employee.Age' id='.Age' />
-                      
-                    </div> */}
-                    <div className='col'>
-                        <label>Father Name:</label>
-                        <Control.text
-                            model='.FatherName'
-                            id='.FatherName'
-                            validators={{
-                                requiredFatherName: (val) => val && val.length,
-                                maxLength: maxLength(255)
-                            }}
-                        />
-                        <Errors
-                            className={styles.errors}
-                            show="touched"
-                            model=".FatherName"
-                            messages={{
-                                requiredFatherName: 'Please enter father name.',
-                                maxLength: 'Must be 255 characters or less',
-                            }}
-                        ></Errors>
-                    </div>
-                    <div className='col'>
-                        <label>Mother Name:</label>
-                        <Control.text model='.MotherName' id='.MotherName'
-                            validators={{
-                                requiredMotherName: (val) => val && val.length,
-                                maxLength: maxLength(255)
-                            }}
-                        />
-                        <Errors
-                            className={styles.errors}
-                            show="touched"
-                            model=".MotherName"
-                            messages={{
-                                requiredMotherName: 'Please enter mother name.',
-                                maxLength: 'Must be 255 characters or less'
-                            }}
-                        ></Errors>
-                    </div>
-                    <div className='col'>
-                        <label>Marital Status:</label>
-                        <Control.select model=".MaritalStatus" id=".MaritalStatus"
-                            validators={{
-                                requiredMaritalStatus: (val) => val && val != "--Select--"
-                            }}>
-                            <option>--Select--</option>
-                            {this.props.Employee.maritalStatusOptions.map(mStatus => { return <option key={mStatus} value={mStatus}>{mStatus}</option>; })};
-                        </Control.select>
-                        <Errors
-                            model=".MaritalStatus"
-                            messages={{
-                                requiredMaritalStatus: 'Please Select Marital Status.'
-                            }}
-                        />
-                    </div>
-                    {this.isMarried(this.props.Employee)}
-                    <div className='col'>
-                        <label>Personal Email:</label>
-                        <Control.text model='.PersonalEmail' id='.PersonalEmail'
-                            validators={{
-                                requiredEmail: (val) => val && val.length,
-                                isEmail: (val) => (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(val)) // ES6 property shorthand
-                            }}
-                        />
-                        <Errors
-                            model=".PersonalEmail"
-                            messages={{
-                                requiredEmail: 'Please provide an email address.',
-                                isEmail: (val) => `${val} is not a valid email.`,
-                            }}
-                        />
+                                        }}>
+                                        <option>--Select--</option>
+                                        {this.props.Employee.genderOptions.map(gender => { return <option key={gender} value={gender} >{gender}</option>; })};
+                                    </Control.select>
+                                    <Errors
+                                        className={styles.errors}
+                                        show="touched"
+                                        model=".Gender"
+                                        messages={{
+                                            requiredGender: 'Please Select Gender.'
+                                        }}
+                                    ></Errors>
+                                </div>
+                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                    <label>Date Of Birth:</label>
+                                </div>
+                                <div className="ms-Grid-col ms-u-sm8 block">
+                                    <Control model='.DateOfBirth' component={DatePicker} className={styles.marginb}
+                                        mapProps={{
+                                            value: (props) => { return props.viewValue; },
+                                            onSelectDate: (props) => { return props.onChange; }
+                                        }}
+                                        validators={{
+                                            requiredDateOfBirth: (val) => val,
+                                        }}
+                                    ></Control>
+                                    <Errors
+                                        className={styles.errors}
+                                        show="touched"
+                                        model=".DateOfBirth"
+                                        messages={{
+                                            requiredDateOfBirth: 'Please Select DOB.'
+                                        }}
+                                    ></Errors>
+                                </div>
+                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                    <label>Father Name:</label>
+                                </div>
+                                <div className="ms-Grid-col ms-u-sm8 block">
+                                    <Control.text
+                                        component={TextField} className={styles.marginb}
+                                        model='.FatherName'
+                                        id='.FatherName'
+                                        validators={{
+                                            requiredFatherName: (val) => val && val.length,
+                                            maxLength: maxLength(255)
+                                        }}
+                                    />
+                                    <Errors
+                                        className={styles.errors}
+                                        show="touched"
+                                        model=".FatherName"
+                                        messages={{
+                                            requiredFatherName: 'Please enter father name.',
+                                            maxLength: 'Must be 255 characters or less',
+                                        }}
+                                    ></Errors>
+                                </div>
+                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                    <label>Mother Name:</label>
+                                </div>
+                                <div className="ms-Grid-col ms-u-sm8 block">
+                                    <Control.text
+                                        component={TextField} className={styles.marginb}
+                                        model='.MotherName' id='.MotherName'
+                                        validators={{
+                                            requiredMotherName: (val) => val && val.length,
+                                            maxLength: maxLength(255)
+                                        }}
+                                    />
+                                    <Errors
+                                        className={styles.errors}
+                                        show="touched"
+                                        model=".MotherName"
+                                        messages={{
+                                            requiredMotherName: 'Please enter mother name.',
+                                            maxLength: 'Must be 255 characters or less'
+                                        }}
+                                    ></Errors>
+                                </div>
+                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                    <label>Marital Status:</label>
+                                </div>
+                                <div className="ms-Grid-col ms-u-sm8 block">
+                                    <Control.select model=".MaritalStatus" id=".MaritalStatus"
+                                        className={styles.dropdowncustom}
+                                        validators={{
+                                            requiredMaritalStatus: (val) => val && val != "--Select--"
+                                        }}>
+                                        <option>--Select--</option>
+                                        {this.props.Employee.maritalStatusOptions.map(mStatus => { return <option key={mStatus} value={mStatus}>{mStatus}</option>; })};
+                                    </Control.select>
+                                    <Errors
+                                        model=".MaritalStatus"
+                                        messages={{
+                                            requiredMaritalStatus: 'Please Select Marital Status.'
+                                        }}
+                                    />
+                                </div>
+                                {this.isMarried(this.props.Employee)}
+                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                    <label>Personal Email:</label>
+                                </div>
+                                <div className="ms-Grid-col ms-u-sm8 block">
+                                    <Control.text
+                                        component={TextField} className={styles.marginb}
+                                        model='.PersonalEmail' id='.PersonalEmail'
+                                        validators={{
+                                            requiredEmail: (val) => val && val.length,
+                                            isEmail: (val) => (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(val)) // ES6 property shorthand
+                                        }}
+                                    />
+                                    <Errors
+                                        model=".PersonalEmail"
+                                        messages={{
+                                            requiredEmail: 'Please provide an email address.',
+                                            isEmail: (val) => `${val} is not a valid email.`,
+                                        }}
+                                    />
+                                </div>
+                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                    <label>Mobile No:</label>
+                                </div>
+                                <div className="ms-Grid-col ms-u-sm8 block">
+                                    <Control.text
+                                        component={TextField} className={styles.marginb}
+                                        model='.Mobile' id='.Mobile'
+                                        validators={{
+                                            requiredMobile: (val) => val && val.length && val.length == 10,
+                                            isNumber
+                                        }}
+                                    />
+                                    <Errors
+                                        className={styles.errors}
+                                        show="touched"
+                                        model=".Mobile"
+                                        messages={{
+                                            requiredMobile: 'Please enter mobile no.(10 digits)',
+                                            isNumber: 'only numbers allowed'
+                                        }}
+                                    ></Errors>
+                                </div>
+                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                    <label>Emergency Contact No:</label>
+                                </div>
+                                <div className="ms-Grid-col ms-u-sm8 block">
+                                    <Control.text
+                                        component={TextField} className={styles.marginb}
+                                        model='.EmergencyNo' id='.EmergencyNo'
+                                        validators={{
+                                            requiredEmergencyNo: (val) => val && val.length,
+                                            isNumber
+                                        }}
+                                    />
+                                    <Errors
+                                        className={styles.errors}
+                                        show="touched"
+                                        model=".EmergencyNo"
+                                        messages={{
+                                            requiredEmergencyNo: 'Please enter emergency no.',
+                                            isNumber: 'only numbers allowed'
+                                        }}
+                                    ></Errors>
+                                </div>
+                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                    <label>Relation with Emergency No:</label>
+                                </div>
+                                <div className="ms-Grid-col ms-u-sm8 block">
+                                    <Control.text
+                                        component={TextField} className={styles.marginb}
+                                        model='.RelationWithEmergencyNo' id='.RelationWithEmergencyNo'
+                                        validators={{
+                                            requiredRelEmergencyNo: (val) => val && val.length,
+                                        }}
+                                    />
+                                    <Errors
+                                        className={styles.errors}
+                                        show="touched"
+                                        model=".RelationWithEmergencyNo"
+                                        messages={{
+                                            requiredRelEmergencyNo: 'Please enter relation with emergency no.'
+                                        }}
+                                    ></Errors>
+                                </div>
+                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                    <label>Blood Group:</label>
+                                </div>
+                                <div className="ms-Grid-col ms-u-sm8 block">
+                                    <Control.text model='.BloodGroup' id='.BloodGroup'
+                                        component={TextField} className={styles.marginb}
+                                        validators={{
+                                            requiredBloodGroup: (val) => val && val.length,
+                                        }}
+                                    />
+                                    <Errors
+                                        className={styles.errors}
+                                        show="touched"
+                                        model=".BloodGroup"
+                                        messages={{
+                                            requiredBloodGroup: 'Please enter blood group.'
+                                        }}
+                                    ></Errors>
+                                </div>
+                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                    <label>Current Resident Address:</label>
+                                </div>
+                                <div className="ms-Grid-col ms-u-sm8 block">
+                                    <Control.textarea model='.CurrentAddress' id='.CurrentAddress'
+                                        className={styles.marginb}
+                                        validators={{
+                                            requiredCurrentAddress: (val) => val && val.length,
+                                        }}
+                                    />
+                                    <Errors
+                                        className={styles.errors}
+                                        show="touched"
+                                        model=".CurrentAddress"
+                                        messages={{
+                                            requiredCurrentAddress: 'Please enter current address.'
+                                        }}
+                                    ></Errors>
+                                </div>
+                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                    <label>Is Same as Current Address?</label>
+                                </div>
+                                <div className="ms-Grid-col ms-u-sm8 block">
+                                    <Control.checkbox model=".IsSameAsCurrAddress" />
+                                </div>
 
+                                {this.isSameAsCurrentAdress(this.props.Employee)}
+                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                    <label>Aadhar No:</label>
+                                </div>
+                                <div className="ms-Grid-col ms-u-sm8 block">
+                                    <Control.text model='.AadharNo' id='.AadharNo'
+                                        component={TextField} className={styles.marginb}
+                                        validators={{
+                                            requiredAadharNo: (val) => val && val.length && val.length == 12,
+                                            isNumber
+                                        }}
+                                    />
+                                    <Errors
+                                        className={styles.errors}
+                                        show="touched"
+                                        model=".AadharNo"
+                                        messages={{
+                                            requiredAadharNo: 'Please enter aadhar no.(12 digits)',
+                                            isNumber: 'only numbers allowed'
+                                        }}
+                                    ></Errors>
+                                </div>
+                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                    <label>Pan No:</label>
+                                </div>
+                                <div className="ms-Grid-col ms-u-sm8 block">
+                                    <Control.text model='.PanNo' id='.PanNo'
+                                        component={TextField} className={styles.marginb}
+                                        validators={{
+                                            requiredPanNo: (val) => val && val.length,
+                                        }}
+                                    />
+                                    <Errors
+                                        className={styles.errors}
+                                        show="touched"
+                                        model=".PanNo"
+                                        messages={{
+                                            requiredPanNo: 'Please enter PAN no.'
+                                        }}
+                                    ></Errors>
+                                </div>
+                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                    <label>Is Passport available:</label>
+                                </div>
+                                <div className="ms-Grid-col ms-u-sm8 block">
+                                    <Control.checkbox model='.IsPassAvail' />
+                                </div>
+                                {this.isPassportAvailable(this.props.Employee)}
+                                <button type="submit" disabled={this.state.buttonDisabled}>Submit</button>
+                            </Form>
+                        </div>
                     </div>
-                    <div className='col'>
-                        <label>Mobile No:</label>
-                        <Control.text model='.Mobile' id='.Mobile'
-                            validators={{
-                                requiredMobile: (val) => val && val.length && val.length == 10,
-                                isNumber
-                            }}
-                        />
-                        <Errors
-                            className={styles.errors}
-                            show="touched"
-                            model=".Mobile"
-                            messages={{
-                                requiredMobile: 'Please enter mobile no.(10 digits)',
-                                isNumber: 'only numbers allowed'
-                            }}
-                        ></Errors>
-                    </div>
-                    <div className='col'>
-                        <label>Emergency Contact No:</label>
-                        <Control.text model='.EmergencyNo' id='.EmergencyNo'
-                            validators={{
-                                requiredEmergencyNo: (val) => val && val.length,
-                                isNumber
-                            }}
-                        />
-                        <Errors
-                            className={styles.errors}
-                            show="touched"
-                            model=".EmergencyNo"
-                            messages={{
-                                requiredEmergencyNo: 'Please enter emergency no.',
-                                isNumber: 'only numbers allowed'
-                            }}
-                        ></Errors>
-                    </div>
-                    <div className='col'>
-                        <label>Relation with Emergency No:</label>
-                        <Control.text model='.RelationWithEmergencyNo' id='.RelationWithEmergencyNo'
-                            validators={{
-                                requiredRelEmergencyNo: (val) => val && val.length,
-                            }}
-                        />
-                        <Errors
-                            className={styles.errors}
-                            show="touched"
-                            model=".RelationWithEmergencyNo"
-                            messages={{
-                                requiredRelEmergencyNo: 'Please enter relation with emergency no.'
-                            }}
-                        ></Errors>
-                    </div>
-                    <div className='col'>
-                        <label>Blood Group:</label>
-                        <Control.text model='.BloodGroup' id='.BloodGroup'
-                            validators={{
-                                requiredBloodGroup: (val) => val && val.length,
-                            }}
-                        />
-                        <Errors
-                            className={styles.errors}
-                            show="touched"
-                            model=".BloodGroup"
-                            messages={{
-                                requiredBloodGroup: 'Please enter blood group.'
-                            }}
-                        ></Errors>
-                    </div>
-                    <div className='col'>
-                        <label>Current Resident Address:</label>
-                        <Control.textarea model='.CurrentAddress' id='.CurrentAddress'
-                            validators={{
-                                requiredCurrentAddress: (val) => val && val.length,
-                            }}
-                        />
-                        <Errors
-                            className={styles.errors}
-                            show="touched"
-                            model=".CurrentAddress"
-                            messages={{
-                                requiredCurrentAddress: 'Please enter current address.'
-                            }}
-                        ></Errors>
-                    </div>
-                    <div className='col'>
-                        <label>Permanent Resident Address:Is Same as Current Address?</label>
-                        <Control.checkbox model=".IsSameAsCurrAddress" />
-                    </div>
-                    {this.isSameAsCurrentAdress(this.props.Employee)}
-                    <div className='col'>
-                        <label>Aadhar No:</label>
-                        <Control.text model='.AadharNo' id='.AadharNo'
-                            validators={{
-                                requiredAadharNo: (val) => val && val.length && val.length == 12,
-                                isNumber
-                            }}
-                        />
-                        <Errors
-                            className={styles.errors}
-                            show="touched"
-                            model=".AadharNo"
-                            messages={{
-                                requiredAadharNo: 'Please enter aadhar no.(12 digits)',
-                                isNumber: 'only numbers allowed'
-                            }}
-                        ></Errors>
-                    </div>
-                    <div className='col'>
-                        <label>Pan No:</label>
-                        <Control.text model='.PanNo' id='.PanNo'
-                            validators={{
-                                requiredPanNo: (val) => val && val.length,
-                            }}
-                        />
-                        <Errors
-                            className={styles.errors}
-                            show="touched"
-                            model=".PanNo"
-                            messages={{
-                                requiredPanNo: 'Please enter PAN no.'
-                            }}
-                        ></Errors>
-                    </div>
-                    <div className='col'>
-                        <label>Is Passport available:</label>
-                        <Control.checkbox model='.IsPassAvail' />
-                    </div>
-                    {this.isPassportAvailable(this.props.Employee)}
-
-
-
-                    <button type="submit" disabled={this.state.buttonDisabled}>Submit</button>
-                </Form>
-            </div>);
+                </div>
+            </div>
+        );
 
     }
 
@@ -336,70 +379,81 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
     }
     private isSameAsCurrentAdress(props) {
         if (props.IsSameAsCurrAddress == false) {
-            return (<div className='col'>
-                <Control.textarea model='.PermanentAddress' id='.PermanentAddress'
-                    validators={{
-                        requiredPermanentAddress: (val) => val && val.length,
-                    }}
-                />
-                <Errors
-                    className={styles.errors}
-                    show="touched"
-                    model=".PermanentAddress"
-                    messages={{
-                        requiredPermanentAddress: 'Please enter permanent address.'
-                    }}
-                ></Errors>
-            </div>);
+            return (
+                <div className='ms-Grid-col ms-u-sm12 block'>
+                    <div className='ms-Grid-col ms-u-sm4 block'>
+                        <label>Permanent Address</label>
+                    </div>
+                    <div className="ms-Grid-col ms-u-sm8 block">
+                        <Control.textarea model='.PermanentAddress' id='.PermanentAddress'
+                            className={styles.marginb}
+                            validators={{
+                                requiredPermanentAddress: (val) => val && val.length,
+                            }}
+                        />
+                        <Errors
+                            className={styles.errors}
+                            show="touched"
+                            model=".PermanentAddress"
+                            messages={{
+                                requiredPermanentAddress: 'Please enter permanent address.'
+                            }}
+                        ></Errors>
+                    </div>
+                </div>);
         }
     }
 
     private isPassportAvailable(props) {
         if (props.IsPassAvail != false) {
-            return (<div>
-                <div className='col'>
-                    <label>Passport No:</label>
-                    <Control.text model='.PassportNo' id='.PassportNo'
-                        validators={{
-                            requiredPassNo: (val) => val && val.length,
-                        }}
-                    />
-                    <Errors
-                        className={styles.errors}
-                        show="touched"
-                        model=".PassportNo"
-                        messages={{
-                            requiredPassNo: 'Please enter passport no.'
-                        }}
-                    ></Errors>
-                </div>
-                <div className='col'>
-                    <label>Passport Validity</label>
-                    <Control model='.PassportValidity' component={DatePicker}
-                        mapProps={{
-                            value: (props) => { return props.viewValue; },
-                            onSelectDate: (props) => { return props.onChange; }
-                        }}
-                        validators={{
-                            requiredPassportValidity: (val) => val,
-                        }}
-                    ></Control>
-                    <Errors
-                        className={styles.errors}
-                        show="touched"
-                        model=".PassportValidity"
-                        messages={{
-                            requiredPassportValidity: 'Please select passport validity.'
-                        }}
-                    ></Errors>
-                </div>
-                <div>
-                    <table>
+            return (
+                <div className="ms-Grid-col ms-u-sm12 block">
+                    <div className='ms-Grid-col ms-u-sm4 block'>
+                        <label>Passport No:</label>
+                    </div>
+                    <div className="ms-Grid-col ms-u-sm8 block">
+                        <Control.text model='.PassportNo' id='.PassportNo'
+                            component={TextField} className={styles.marginb}
+                            validators={{
+                                requiredPassNo: (val) => val && val.length,
+                            }}
+                        />
+                        <Errors
+                            className={styles.errors}
+                            show="touched"
+                            model=".PassportNo"
+                            messages={{
+                                requiredPassNo: 'Please enter passport no.'
+                            }}
+                        ></Errors>
+                    </div>
+                    <div className='ms-Grid-col ms-u-sm4 block'>
+                        <label>Passport Validity</label>
+                    </div>
+                    <div className="ms-Grid-col ms-u-sm8 block">
+                        <Control model='.PassportValidity' component={DatePicker} className={styles.marginb}
+                            mapProps={{
+                                value: (props) => { return props.viewValue; },
+                                onSelectDate: (props) => { return props.onChange; }
+                            }}
+                            validators={{
+                                requiredPassportValidity: (val) => val,
+                            }}
+                        ></Control>
+                        <Errors
+                            className={styles.errors}
+                            show="touched"
+                            model=".PassportValidity"
+                            messages={{
+                                requiredPassportValidity: 'Please select passport validity.'
+                            }}
+                        ></Errors>
+                    </div>
+                    <table className="ms-Grid-col ms-u-sm12 block">
                         <tr>
-                            <td><label>Visa Details</label></td>
-                            <td style={{ textAlign: "left" }}>
+                            <th colSpan={8} style={{ textAlign: "left" }}>Visa Details
                                 <button type="button" onClick={() => this.handleRowAdd("Visa")}>+</button>
-                            </td>
+                            </th>
                         </tr>
                         {props.visaDetailItems.map((visa, i) => {
                             return (
@@ -411,6 +465,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                     <td>
                                         <label>Visa Of Country</label>
                                         <Control.text model={`Employee.visaDetailItems[${i}].VisaOfCountry`} id={visa.VisaOfCountry}
+                                            component={TextField} className={styles.marginb}
                                             validators={{
                                                 requiredVisaOfCountry: (val) => val && val.length,
                                             }}
@@ -430,6 +485,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                             validators={{
                                                 requiredVisaNo: (val) => val && val.length,
                                             }}
+                                            component={TextField} className={styles.marginb}
                                         ></Control.text>
                                         <Errors
                                             className={styles.errors}
@@ -443,10 +499,10 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                     <td>
                                         <label>Entry</label>
                                         <Control.select model={`Employee.visaDetailItems[${i}].Entry`} id={visa.Entry}
+                                            className={styles.dropdowncustom}
                                             validators={{
                                                 requiredEntry: (val) => val && val.length && val != '--Select--',
-                                            }}
-                                        >
+                                            }} >
                                             <option>--Select--</option>
                                             <option key='Single Entry' value='Single Entry'>Single Entry</option>
                                             <option key='Multiple Entry' value='Multiple Entry'>Multiple Entry</option>
@@ -462,15 +518,15 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                     </td>
                                     <td>
                                         <label>Visa Validity</label>
-                                        <Control model={`Employee.visaDetailItems[${i}].VisaValidity`} id={visa.VisaValidity} component={DatePicker}
+                                        <Control model={`Employee.visaDetailItems[${i}].VisaValidity`} id={visa.VisaValidity} component={DatePicker} className={styles.marginb}
                                             mapProps={{
                                                 value: (props) => { return props.viewValue; },
                                                 onSelectDate: (props) => { return props.onChange; }
                                             }}
                                             validators={{
                                                 requiredVisaValidity: (val) => val && val != null,
-                                            }}
-                                        ></Control>
+                                            }}>
+                                        </Control>
                                         <Errors
                                             className={styles.errors}
                                             show="touched"
@@ -485,27 +541,29 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         <Control.checkbox model={`Employee.visaDetailItems[${i}].IsTravelled`} id={`Employee.visaDetailItems[${i}].IsTravelled`} />
                                     </td>
                                     <td>
-                                        <button type="button" onClick={() => this.handleRowRemove("Visa", i)}>-</button>
+                                        <button type="button" style={{ marginTop: "20px" }} onClick={() => this.handleRowRemove("Visa", i)}>-</button>
                                     </td>
                                 </tr>
                             );
                         })}
                     </table>
                 </div>
-            </div>
             );
         }
     }
     private isMarried(props) {
         if (props.MaritalStatus == "Married") {
             return (
-                <div>
-                    <div className='col'>
+                <div className="ms-Grid-col ms-u-sm12 block">
+                    <div className='ms-Grid-col ms-u-sm4 block'>
                         <label>Spouse Name:</label>
+                    </div>
+                    <div className="ms-Grid-col ms-u-sm8 block">
                         <Control.text model='.SpouceName' id='.SpouceName'
                             validators={{
                                 requiredSpouceName: (val) => val && val.length,
                             }}
+                            component={TextField} className={styles.marginb}
                         ></Control.text>
                         <Errors
                             className={styles.errors}
@@ -516,12 +574,15 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                             }}
                         ></Errors>
                     </div>
-                    <div className='col'>
+                    <div className='ms-Grid-col ms-u-sm4 block'>
                         <label>Spouse Occupation:</label>
+                    </div>
+                    <div className="ms-Grid-col ms-u-sm8 block">
                         <Control.text model='.SpouseOccupation' id='.SpouseOccupation'
                             validators={{
                                 requiredSpouseOccupation: (val) => val && val.length,
                             }}
+                            component={TextField} className={styles.marginb}
                         />
                         <Errors
                             className={styles.errors}
@@ -532,9 +593,11 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                             }}
                         ></Errors>
                     </div>
-                    <div className='col'>
+                    <div className='ms-Grid-col ms-u-sm4 block'>
                         <label>Spouse DOB:</label>
-                        <Control model='.SpouceDOB' id='.SpouceDOB' component={DatePicker}
+                    </div>
+                    <div className="ms-Grid-col ms-u-sm8 block">
+                        <Control model='.SpouceDOB' id='.SpouceDOB' component={DatePicker} className={styles.marginb}
                             mapProps={{
                                 value: (props) => { return props.viewValue; },
                                 onSelectDate: (props) => { return props.onChange; }
@@ -552,62 +615,60 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                             }}
                         ></Errors>
                     </div>
-                    <div>
-                        <table>
-                            <tr>
-                                <td><label>Children Details</label></td>
-                                <td style={{ textAlign: "left" }}>
-                                    <button type="button" onClick={() => this.handleRowAdd("Child")}>+</button>
-                                </td>
-                            </tr>
-                            {props.childDetailItems.map((child, i) => {
-                                return (
-                                    <tr>
-                                        <td>
-                                            <label>Child Name</label>
-                                            <Control.text model={`Employee.childDetailItems[${i}].ChildName`} id={child.ChildName}
-                                                validators={{
-                                                    requiredChildName: (val) => val && val.length,
-                                                }}
-                                            ></Control.text>
-                                            <Errors
-                                                className={styles.errors}
-                                                show="touched"
-                                                model={`Employee.childDetailItems[${i}].ChildName`}
-                                                messages={{
-                                                    requiredChildName: 'required'
-                                                }}
-                                            ></Errors>
-                                        </td>
-                                        <td>
-                                            <label>Date Of Birth</label>
-                                            <Control model={`Employee.childDetailItems[${i}].DateOfBirth`} id={child.DateOfBirth} component={DatePicker}
-                                                mapProps={{
-                                                    value: (props) => { return props.viewValue; },
-                                                    onSelectDate: (props) => { return props.onChange; }
-                                                }}
-                                                validators={{
-                                                    requiredDateOfBirth: (val) => val && val.length,
-                                                }}
-                                            ></Control>
-                                            <Errors
-                                                className={styles.errors}
-                                                show="touched"
-                                                model={`Employee.childDetailItems[${i}].DateOfBirth`}
-                                                messages={{
-                                                    requiredDateOfBirth: 'required'
-                                                }}
-                                            ></Errors>
-                                        </td>
-                                        <td>
-                                            <button type="button" onClick={() => this.handleRowRemove("Child", i)}>-</button>
-                                        </td>
-                                    </tr>
-                                );
-                            })}
-                        </table>
-
-                    </div>
+                    <table className="ms-Grid-col ms-u-sm12 block" style={{ width: "100%" }}>
+                        <tr>
+                            <th colSpan={9} style={{ textAlign: "left" }}><label>Children Details</label>
+                                <button type="button" onClick={() => this.handleRowAdd("Child")}>+</button>
+                            </th>
+                        </tr>
+                        {props.childDetailItems.map((child, i) => {
+                            return (
+                                <tr>
+                                    <td>
+                                        <label>Child Name</label>
+                                        <Control.text model={`Employee.childDetailItems[${i}].ChildName`} id={child.ChildName}
+                                            validators={{
+                                                requiredChildName: (val) => val && val.length,
+                                            }}
+                                            component={TextField} className={styles.marginb}
+                                        ></Control.text>
+                                        <Errors
+                                            className={styles.errors}
+                                            show="touched"
+                                            model={`Employee.childDetailItems[${i}].ChildName`}
+                                            messages={{
+                                                requiredChildName: 'required'
+                                            }}
+                                        ></Errors>
+                                    </td>
+                                    <td>
+                                        <label>Date Of Birth</label>
+                                        <Control model={`Employee.childDetailItems[${i}].DateOfBirth`} id={child.DateOfBirth} component={DatePicker}
+                                            className={styles.marginb}
+                                            mapProps={{
+                                                value: (props) => { return props.viewValue; },
+                                                onSelectDate: (props) => { return props.onChange; }
+                                            }}
+                                            validators={{
+                                                requiredDateOfBirth: (val) => val && val.length,
+                                            }}
+                                        ></Control>
+                                        <Errors
+                                            className={styles.errors}
+                                            show="touched"
+                                            model={`Employee.childDetailItems[${i}].DateOfBirth`}
+                                            messages={{
+                                                requiredDateOfBirth: 'required'
+                                            }}
+                                        ></Errors>
+                                    </td>
+                                    <td>
+                                        <button type="button" style={{ marginTop: "20px" }} onClick={() => this.handleRowRemove("Child", i)}>-</button>
+                                    </td>
+                                </tr>
+                            );
+                        })}
+                    </table>
                 </div>);
         }
     }

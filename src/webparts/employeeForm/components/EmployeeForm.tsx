@@ -16,9 +16,15 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, an
   constructor(props) {
     super(props);
     this.state = {
-      isEmpIdExists: false
+      isEmpIdExists: false,
     };
     this.showTabs = this.showTabs.bind(this);
+
+    this.state = {
+      selectedKey: 0
+    };
+    this._handleTabClick = this._handleTabClick.bind(this);
+    this._TabClick = this._TabClick.bind(this);
   }
 
   public async showTabs(empId) {
@@ -27,7 +33,7 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, an
   }
 
   public render(): React.ReactElement<IEmployeeFormProps> {
-console.log(this.props.context)
+    console.log(this.props.context)
     return (
       <Provider store={store}>
         <div className={styles.employeeForm}>
@@ -42,27 +48,37 @@ console.log(this.props.context)
     );
   }
 
+  _handleTabClick(): void {
+    this.setState({ selectedKey: (this.state.selectedKey + 1) % 5 });
+  }
+
+  private _TabClick = (item: PivotItem): void => {
+    this.setState({
+      selectedKey: item.props.itemKey
+    });
+  };
+
+
   private IsEmpIdExists() {
     if (this.state.isEmpIdExists)
       return (
-        <Pivot aria-label="Employee Form">
-          <PivotItem headerText="Employee Details">
-            <EmployeeDetail />
+        <Pivot aria-label="Employee Form" selectedKey={`${this.state.selectedKey}`} onLinkClick={this._TabClick} >
+          <PivotItem headerText="Employee Details" itemKey="0"  >
+            <EmployeeDetail handleTabClick={this._handleTabClick} />
           </PivotItem>
-          <PivotItem headerText="Education Details">
-            <EducationDetail />
+          <PivotItem headerText="Education Details" itemKey="1">
+            <EducationDetail handleTabClick={this._handleTabClick} />
           </PivotItem>
-          <PivotItem headerText="Professional Detail">
-            <ProfessionalDetail />
+          <PivotItem headerText="Professional Detail" itemKey="2">
+            <ProfessionalDetail handleTabClick={this._handleTabClick} />
           </PivotItem>
-          <PivotItem headerText="HR Detail">
-            <HRDetail context={this.props.context}/>
+          <PivotItem headerText="HR Detail" itemKey="3">
+            <HRDetail context={this.props.context} handleTabClick={this._handleTabClick} />
           </PivotItem>
-          <PivotItem headerText="Payroll Detail">
-            <PayrollDetail />
+          <PivotItem headerText="Payroll Detail" itemKey="4">
+            <PayrollDetail handleTabClick={this._handleTabClick} />
           </PivotItem>
         </Pivot>
       );
-
   }
 }

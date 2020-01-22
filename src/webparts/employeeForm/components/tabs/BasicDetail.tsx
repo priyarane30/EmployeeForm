@@ -42,6 +42,7 @@ class BasicDetail extends React.Component<any,IButtonState>{
             //Edit Form when ID is not null
             newEmpReqServiceObj.UpdateBasicDetail(formValues, idState).then(resp => {
                 this.setState({ isDisable: false });
+                alert("Basic details updated successfully");
             }).catch(() => {
                 alert("Sorry. Error while adding employee...");
             });
@@ -57,6 +58,7 @@ class BasicDetail extends React.Component<any,IButtonState>{
                     });
                 }
                 this.setState({ isDisable: false });
+                alert("Basic details saved successfully");
             }).catch(() => {
                 alert("Sorry. Error while adding employee...");
             });

@@ -9,7 +9,7 @@ import { TextField } from "office-ui-fabric-react/lib/TextField";
 import { Dropdown } from 'office-ui-fabric-react/lib/Dropdown';
 import { DefaultButton, PrimaryButton } from "office-ui-fabric-react/lib/Button";
 import styles from "../EmployeeForm.module.scss";
-import { PeoplePicker, PrincipalType } from "@pnp/spfx-controls-react/lib/PeoplePicker";
+//import { PeoplePicker, PrincipalType } from "@pnp/spfx-controls-react/lib/PeoplePicker";
 import pnp from 'sp-pnp-js';
 import NewEmployeeService from '../../services/NewEmployeeService'
 export interface IControls {
@@ -69,6 +69,7 @@ class HRDetail extends React.Component<any, IControls> {
         this.setState({ buttonDisabled: false })
         // this.props.AddValueFromHR(empHrData, managerdata, empListId);
         //EndSave The Data
+        this.props.handleTabClick();
     }
 
     public render() {
@@ -102,7 +103,7 @@ class HRDetail extends React.Component<any, IControls> {
                                     <label>Manager:</label>
                                 </div>
                                 <div className='ms-Grid-col ms-u-sm8 block'>
-                                    <PeoplePicker
+                                    {/* <PeoplePicker
                                         context={this.props.context}
                                         personSelectionLimit={1}
                                         groupName={""} // Leave this blank in case you want to filter from all users
@@ -115,7 +116,7 @@ class HRDetail extends React.Component<any, IControls> {
                                         principalTypes={[PrincipalType.User]}
                                         resolveDelay={1000}
                                         defaultSelectedUsers={this.state.Manager ? this.state.Manager : null}
-                                    />
+                                    /> */}
                                 </div>
                                 {/* Employment Status */}
                                 <div className='ms-Grid-col ms-u-sm4 block'>

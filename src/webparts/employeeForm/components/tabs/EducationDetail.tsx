@@ -71,6 +71,7 @@ class EducationDetail extends React.Component<any, buttonStatus> {
     await newEmpServiceObj.saveEduDataInList(eduData, empListId)
     alert("Education Details saved Succesfully")
     this.setState({ buttonDisabled: false })
+    this.props.handleTabClick();
   }
 
   public render() {
@@ -137,7 +138,7 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                                 isNumber:"Enter a valid Year"
                               }}
                             ></Errors></td>
-                          <td><label>EndYear</label>
+                          <td><label>End Year</label>
                             <Control.text model={`Education.educationDetails[${i}].EndYear`} id={`Education.educationDetails[${i}].EndYear`} placeholder="YYYY"
                               component={TextField}
                               validators={{ requiredEndYear: (val) => val && val.length==4,
