@@ -27,8 +27,10 @@ interface IEducationDetailConnectedDispatch {
   addEducationDetailRow: (section) => void;
 
   //removes selected array from state
-  removeEducationDetailRow: (section, index) => void;
+  removeEducationDetailRow: (removedItem,section, index) => void;
 }
+const isNumber = (val) => !isNaN(Number(val));
+const maxLength = (len) => (val) => val.length <= len;
 
 class EducationDetail extends React.Component<any, buttonStatus> {
   constructor(props) {
@@ -48,8 +50,9 @@ class EducationDetail extends React.Component<any, buttonStatus> {
 
   //removes row from grid
   handleRowRemove(section, index) {
-
-    this.props.removeEducationDetailRow(section, index);
+    debugger;
+    let removedItem=this.props.Education[section][index]
+    this.props.removeEducationDetailRow(removedItem,section, index);
 
 
   }
@@ -66,6 +69,7 @@ class EducationDetail extends React.Component<any, buttonStatus> {
     this.setState({ buttonDisabled: true })
     let newEmpServiceObj: NewEmpService = new NewEmpService();
     await newEmpServiceObj.saveEduDataInList(eduData, empListId)
+    alert("Education Details saved Succesfully")
     this.setState({ buttonDisabled: false })
   }
 
@@ -78,14 +82,14 @@ class EducationDetail extends React.Component<any, buttonStatus> {
               <div className={`ms-Grid-row  ms-fontColor-white ${styles.row}`}>
                 <table style={{ width: "100%" }}>
                   <tr>
-                    <th colSpan={8} style={{ textAlign: "left" }}>Education details <button type="button" onClick={() => this.handleRowAdd("Education")}>+</button></th>
+                    <th colSpan={8} style={{ textAlign: "left" }}>Education details <button type="button" onClick={() => this.handleRowAdd("educationDetails")}>+</button></th>
                   </tr>
                   {
                     this.props.Education.educationDetails.map((education, i) => {
                       return (
                         <tr>
                           <td><label>Diploma/Degree</label>
-                            <Control.select style={{ height: "30px" }} model={`Education.educationDetails[${i}].DiplomaDegree`} id={i}
+                            <Control.select style={{ height: "30px" }} model={`Education.educationDetails[${i}].DiplomaDegree`} id={`Education.educationDetails[${i}].DiplomaDegree`}
                               validators={{ requiredQualification: (val) => val && val != "--Select--" }}>
                               <option>--Select--</option>
                               <option value="Graduation">Graduation</option>
@@ -101,88 +105,102 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                               }}
                             ></Errors></td>
                           <td><label>Grade</label>
-                            <Control.text model={`Education.educationDetails[${i}].Grade`} id={education.Grade}
+                            <Control.text model={`Education.educationDetails[${i}].Grade`} id={`Education.educationDetails[${i}].Grade`}
                               component={TextField}
-                              validators={{ requiredGrade: (val) => val && val.length }}
+                              validators={{ requiredGrade: (val) => val && val.length,
+                                maxLength:maxLength(255) }}
                             ></Control.text>
                             <Errors
                               className={styles.errors}
                               show="touched"
                               model={`Education.educationDetails[${i}].Grade`}
                               messages={{
-                                requiredGrade: 'Required'
+                                requiredGrade: 'Required',
+                                maxLength:"Max Charachters allowed 255"
                               }}
                             ></Errors></td>
                           <td><label>StartYear</label>
                             <Control.text model={`Education.educationDetails[${i}].StartYear`}
-                              id={education.StartYear}
+                              id={`Education.educationDetails[${i}].StartYear`}
                               placeholder="YYYY"
                               component={TextField}
-                              validators={{ requiredStartYearEdu: (val) => val && val.length }}
+                              validators={{ requiredStartYearEdu: (val) => val && val.length==4,
+                                isNumber
+                             }}
                             ></Control.text>
                             <Errors
                               className={styles.errors}
                               show="touched"
                               model={`Education.educationDetails[${i}].StartYear`}
                               messages={{
-                                requiredStartYearEdu: 'Required'
+                                requiredStartYearEdu: 'Enter Year in Format(YYYY)',
+                                isNumber:"Enter a valid Year"
                               }}
                             ></Errors></td>
                           <td><label>EndYear</label>
-                            <Control.text model={`Education.educationDetails[${i}].EndYear`} id={education.EndYear} placeholder="YYYY"
+                            <Control.text model={`Education.educationDetails[${i}].EndYear`} id={`Education.educationDetails[${i}].EndYear`} placeholder="YYYY"
                               component={TextField}
-                              validators={{ requiredEndYear: (val) => val && val.length }}
+                              validators={{ requiredEndYear: (val) => val && val.length==4,
+                                isNumber,
+                                 }} 
                             ></Control.text>
                             <Errors
                               className={styles.errors}
                               show="touched"
                               model={`Education.educationDetails[${i}].EndYear`}
                               messages={{
-                                requiredEndYear: 'Required'
+                                requiredEndYear: 'Enter Year in Format(YYYY)',
+                                isNumber:"Enter a valid Year",
                               }}
                             ></Errors></td>
                           <td><label>Board</label>
-                            <Control.text model={`Education.educationDetails[${i}].Board`} id={education.Board}
+                            <Control.text model={`Education.educationDetails[${i}].Board`} id={`Education.educationDetails[${i}].Board`}
                               component={TextField}
-                              validators={{ requiredEducationBoard: (val) => val && val.length }}
+                              validators={{ requiredEducationBoard: (val) => val && val.length,
+                                maxLength:maxLength(255) }}
                             ></Control.text>
                             <Errors
                               className={styles.errors}
                               show="touched"
                               model={`Education.educationDetails[${i}].Board`}
                               messages={{
-                                requiredEducationBoard: 'Required'
+                                requiredEducationBoard: 'Required',
+                                maxLength:"Max Charachters allowed 255"
                               }}
                             ></Errors></td>
                           <td><label>SchoolCollege</label>
-                            <Control.text model={`Education.educationDetails[${i}].SchoolCollege`} id={education.SchoolCollege}
+                            <Control.text model={`Education.educationDetails[${i}].SchoolCollege`} id={`Education.educationDetails[${i}].SchoolCollege`}
                               component={TextField}
-                              validators={{ requiredSchoolCollege: (val) => val && val.length }}
+                              validators={{ requiredSchoolCollege: (val) => val && val.length,
+                                maxLength:maxLength(255) }}
                             ></Control.text>
                             <Errors
                               className={styles.errors}
                               show="touched"
                               model={`Education.educationDetails[${i}].SchoolCollege`}
                               messages={{
-                                requiredSchoolCollege: 'Required'
+                                requiredSchoolCollege: 'Required',
+                                maxLength:"Max Charachters allowed 255"
                               }}
                             ></Errors></td>
                           <td><label>DegreeName</label>
-                            <Control.text model={`Education.educationDetails[${i}].DegreeName`} id={education.DegreeName}
+                            <Control.text model={`Education.educationDetails[${i}].DegreeName`} id={`Education.educationDetails[${i}].DegreeName`}
                               component={TextField}
-                              validators={{ requiredDegreeName: (val) => val && val.length }}
+                              validators={{ requiredDegreeName: (val) => val && val.length,
+                                maxLength:maxLength(255) }}
                             ></Control.text>
                             <Errors
                               className={styles.errors}
                               show="touched"
                               model={`Education.educationDetails[${i}].DegreeName`}
                               messages={{
-                                requiredDegreeName: 'Required.'
+                                requiredDegreeName: 'Required.',
+                                maxLength:"Max Charachters allowed 255"
                               }}
                             ></Errors></td>
                           <td>
 
-                            <button type="button" style={{ marginTop: "20px" }} onClick={() => this.handleRowRemove("Education", i)}>-</button></td>
+                            <button type="button" style={{ marginTop: "20px" }} onClick={() => this.handleRowRemove("educationDetails", i)}>-</button></td>
                         </tr>)
                     })}
 
@@ -190,79 +208,91 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                 <table>
 
                   <tr>
-                    <th colSpan={6} style={{ textAlign: "left" }}>Certification details <button type="button" onClick={() => this.handleRowAdd("Certification")}>+</button></th>
+                    <th colSpan={6} style={{ textAlign: "left" }}>Certification details <button type="button" onClick={() => this.handleRowAdd("certificationDetails")}>+</button></th>
                   </tr>
 
                   {this.props.Education.certificationDetails.map((certification, i) => {
                     return (
                       <tr>
                         <td><label>Certification</label>
-                          <Control.text model={`Education.certificationDetails[${i}].Certification`} id="certification.Certification"
+                          <Control.text model={`Education.certificationDetails[${i}].Certification`} id={`Education.certificationDetails[${i}].Certification`}
                             component={TextField}
-                            validators={{ requiredCertification: (val) => val && val.length }}></Control.text>
+                            validators={{ requiredCertification: (val) => val && val.length,
+                              maxLength:maxLength(255) }}></Control.text>
                           <Errors
                             className={styles.errors}
                             show="touched"
                             model={`Education.certificationDetails[${i}].Certification`}
                             messages={{
-                              requiredCertification: 'Required'
+                              requiredCertification: 'Required',
+                              maxLength:"Max Charachters allowed 255"
                             }}
                           ></Errors>
                         </td>
                         <td><label>Start Year</label>
-                          <Control.text model={`Education.certificationDetails[${i}].StartYear`} id="certification.StartYear" placeholder="YYYY"
+                          <Control.text model={`Education.certificationDetails[${i}].StartYear`} id={`Education.certificationDetails[${i}].StartYear`} placeholder="YYYY"
                             component={TextField}
-                            validators={{ requiredStartYear: (val) => val && val.length }}></Control.text>
+                            validators={{ requiredStartYear: (val) => val && val.length==4,
+                              isNumber
+                            }}></Control.text>
                           <Errors
                             className={styles.errors}
                             show="touched"
                             model={`Education.certificationDetails[${i}].StartYear`}
                             messages={{
-                              requiredStartYear: 'Required'
+                              requiredStartYear: 'Enter Year in Format(YYYY)',
+                              isNumber:"Enter a valid Year",
                             }}
                           ></Errors>
                         </td>
                         <td><label>YearOfCompletion</label>
-                          <Control.text model={`Education.certificationDetails[${i}].YearOfCompletion`} id="certification.YearOfCompletion" placeholder="YYYY"
+                          <Control.text model={`Education.certificationDetails[${i}].YearOfCompletion`} id={`Education.certificationDetails[${i}].YearOfCompletion`} placeholder="YYYY"
                             component={TextField}
-                            validators={{ requiredYearofCompletion: (val) => val && val.length }}></Control.text>
+                            validators={{ requiredYearofCompletion: (val) => val && val.length==4,
+                              isNumber,
+                              maxLength:maxLength(4) }}></Control.text>
                           <Errors
                             className={styles.errors}
                             show="touched"
                             model={`Education.certificationDetails[${i}].YearOfCompletion`}
                             messages={{
-                              requiredYearofCompletion: 'Required'
+                              requiredYearofCompletion: 'Enter Year in Format(YYYY)',
+                              isNumber:"Enter a valid Year"
                             }}
                           ></Errors>
                         </td>
                         <td><label>InstituteName</label>
-                          <Control.text model={`Education.certificationDetails[${i}].InstituteName`} id="certification.InstituteName"
+                          <Control.text model={`Education.certificationDetails[${i}].InstituteName`} id={`Education.certificationDetails[${i}].InstituteName`}
                             component={TextField}
-                            validators={{ requiredInstituteName: (val) => val && val.length }}></Control.text>
+                            validators={{ requiredInstituteName: (val) => val && val.length,
+                              maxLength:maxLength(255) }}></Control.text>
                           <Errors
                             className={styles.errors}
                             show="touched"
                             model={`Education.certificationDetails[${i}].InstituteName`}
                             messages={{
-                              requiredInstituteName: 'Required'
+                              requiredInstituteName: 'Required',
+                              maxLength:"Max Charachters allowed 255"
                             }}
                           ></Errors>
                         </td>
                         <td><label>GradePercentage</label>
-                          <Control.text model={`Education.certificationDetails[${i}].GradePercentage`} id="certification.GradePercentage"
+                          <Control.text model={`Education.certificationDetails[${i}].GradePercentage`} id={`Education.certificationDetails[${i}].GradePercentage`}
                             component={TextField}
-                            validators={{ requiredGradePercentage: (val) => val && val.length }}></Control.text>
+                            validators={{ requiredGradePercentage: (val) => val && val.length,
+                              maxLength:maxLength(255) }}></Control.text>
                           <Errors
                             className={styles.errors}
                             show="touched"
                             model={`Education.certificationDetails[${i}].GradePercentage`}
                             messages={{
-                              requiredGradePercentage: 'Required'
+                              requiredGradePercentage: 'Required',
+                              maxLength:"Max Charachters allowed 255"
                             }}
                           ></Errors>
                         </td>
                         <td>
-                          <button type="button" style={{ marginTop: "20px" }} onClick={() => this.handleRowRemove("Certification", i)}>-</button></td>
+                          <button type="button" style={{ marginTop: "20px" }} onClick={() => this.handleRowRemove("certificationDetails", i)}>-</button></td>
                       </tr>)
                   })}
                 </table>
@@ -294,8 +324,8 @@ const mapDispatchToProps = (dispatch): IEducationDetailConnectedDispatch => {
     addEducationDetailRow: (section) => {
       return dispatch(addEducationDetailRow(section));
     },
-    removeEducationDetailRow: (section, index) => {
-      return dispatch(removeEducationDetailRow(section, index))
+    removeEducationDetailRow: (removedItem,section, index) => {
+      return dispatch(removeEducationDetailRow(removedItem,section, index))
     },
   };
 };
