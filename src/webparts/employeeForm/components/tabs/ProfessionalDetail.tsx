@@ -78,13 +78,17 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
         return (
             <div className={styles.employeeForm}>
                 <Form model="ProfessionalDetail" onSubmit={val => this.handleSubmit(val)}>
-                    <div className='col'> {/* Eligible for rehire*/}
-                        <label>Fresher:</label>
-                        <Control.checkbox model='ProfessionalDetail.IsFresher' id='ProfessionalDetail.IsFresher' />
-                    </div>
-                    {this.isUserFresher(this.props.ProfessionalDetail)}
+                    <div className={styles.employeeForm}>
+                        <div className={styles.container}>
+                            <div className='col'> {/* Eligible for rehire*/}
+                                <label>Fresher:</label>
+                                <Control.checkbox model='ProfessionalDetail.IsFresher' id='ProfessionalDetail.IsFresher' />
+                            </div>
+                            {this.isUserFresher(this.props.ProfessionalDetail)}
 
-                    <button type="submit" disabled={this.state.buttonDisabled}>Submit</button>
+                            <button type="submit" disabled={this.state.buttonDisabled}>Submit</button>
+                        </div>
+                    </div>
                 </Form>
             </div>
         );
@@ -94,7 +98,7 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
         //If user is come from another orgenization
         if (props.IsFresher == false) {
             return (
-                <div>
+                <div  className={`ms-Grid-row  ms-fontColor-white ${styles.row}`}>
                     <span className={styles.errors}> *Please mention professional details from latest organization</span>
                     <table style={{ width: "100%", tableLayout: "fixed" }}>
                         <tr>
@@ -234,7 +238,7 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
         //If User come from direct College
         else if (props.IsFresher == true) {
             return (
-                <div>
+                <div  className={`ms-Grid-row  ms-fontColor-white ${styles.row}`}>
                     <span className={styles.errors}> *Please mention mininum 1 Technology / Tools in below section</span>
                     <table>
                         <tr>
