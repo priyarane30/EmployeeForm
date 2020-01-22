@@ -4,24 +4,16 @@ import { ICommonState, IEmpListIdState } from "../../state/ICommonState";
 import { IPayrollState } from "../../state/IPayrollState";
 import { connect } from "react-redux";
 import NewEmpService from "../../services/NewEmployeeService";
-import NewEmployeeService from "../../services/NewEmployeeService";
-import {
-  GetPayrollAction,
-  SetTabName
-} from "../../actions/PayrollFormControlsValuesAction";
+import {GetPayrollAction,SetTabName} from "../../actions/PayrollFormControlsValuesAction";
 import { store } from "../../store/ConfigureStore";
-import { ActionTypes } from "../../../employeeForm/AppConstants";
+import { DefaultButton } from "office-ui-fabric-react/lib/Button";
 import { TextField } from "office-ui-fabric-react/lib/TextField";
 import styles from "../EmployeeForm.module.scss";
 
 // Represents the connected dispatch
 interface IPayrollConnectedDispatch {
   setTabName: (tabName: ICommonState) => void;
-
   getPayrollFormControls: (empListId: IEmpListIdState) => void;
-
-  //save data
-  //AddValueFromPayroll: (empPayrollData: IPayrollState,empListId:IEmpListIdState) => void;
 }
 
 interface IState {
@@ -51,7 +43,7 @@ class PayrollDetail extends React.Component<any, IState> {
     this.setState({ isVisible: true });
     let newEmpServiceObj: NewEmpService = new NewEmpService();
     await newEmpServiceObj.PayrollAddEmployee(empPayrollData, empListId);
-    alert("New Employee payroll is added ");
+    alert("New Employee payroll details is added. ");
     this.setState({ isVisible: false });
   }
 
@@ -163,18 +155,17 @@ class PayrollDetail extends React.Component<any, IState> {
                     <label>Director:</label>
                   </div>
                   <div className="ms-Grid-col ms-u-sm8 block">
-                <Control.text className={styles.marginb}
-                  model=".Director"
-                  id=".Director"
-                  component={TextField}
-                />
-              </div>            
-                </div>
+                    <Control.text className={styles.marginb}
+                        model=".Director"
+                        id=".Director"
+                        component={TextField}
+                    />
+                </div>  
+                  <DefaultButton id="DefaultSubmit" primary={true} text={"Submit"} type="submit"
+                                    disabled={!this.state.isVisible} className={styles.button} />   
               </div>
             </div>
-          <button disabled={!this.state.isVisible} type="submit">
-            Submit
-          </button>
+          </div>
         </Form>
       </div>
     );
@@ -190,13 +181,9 @@ const mapStateToProps = function(state) {
 const mapDispatchToProps = (dispatch): IPayrollConnectedDispatch => {
   return {
     setTabName: SetTabName,
-    //setReqDigest : SetReqDigest,
     getPayrollFormControls: empListId => {
       return dispatch(GetPayrollAction(empListId.EmpListID));
     }
-    // AddValueFromPayroll: (empPayrollData: IPayrollState,empListId) => {
-    //     return dispatch(PayrollAddEmployee(empPayrollData,empListId.EmpListID));
-    // }
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(PayrollDetail);
