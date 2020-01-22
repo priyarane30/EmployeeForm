@@ -50,7 +50,6 @@ class EducationDetail extends React.Component<any, buttonStatus> {
 
   //removes row from grid
   handleRowRemove(section, index) {
-    debugger;
     let removedItem=this.props.Education[section][index]
     this.props.removeEducationDetailRow(removedItem,section, index);
 

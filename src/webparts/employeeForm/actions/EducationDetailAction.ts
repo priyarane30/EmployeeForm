@@ -16,7 +16,6 @@ export  function GetInitialControlValuesAction(EmpListID) {
        //gets already set education details for user
         newEmpServiceObj.getMultipleDataFromListUsingParentID(ListNames.EducationDetail, EmpListID)
         .then((resp) => {
-            debugger;
             console.log(resp)
             resp.forEach(element => {
                 payLoadArrayEducationDetail.push({
@@ -39,7 +38,6 @@ export  function GetInitialControlValuesAction(EmpListID) {
         //get already existing certification details for user
         newEmpServiceObj.getMultipleDataFromListUsingParentID(ListNames.CertificationDetail,EmpListID)
         .then((resp)=>{
-            debugger;
             resp.forEach(element=>{
                 payLoadArrayCertificationDetail.push({
                     certificationId:element.ID,
@@ -111,7 +109,6 @@ export function addEducationDetailRow(section){
 
 //remove rows from detail grids
 export function removeEducationDetailRow(removeditem,section,index){
-    debugger
     return dispatch=>{
         let newEmpServiceObj: NewEmpService = new NewEmpService(); 
        if(section=="educationDetails"){

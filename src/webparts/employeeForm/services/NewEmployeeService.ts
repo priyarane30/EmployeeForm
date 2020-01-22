@@ -278,20 +278,18 @@ export default class NewEmployeeService implements INewEmpRequestService {
         let utilityServiceObj: UtilityService = new UtilityService();
         return utilityServiceObj.getOptionsFromMaster(ListNames.REASONFORLEAVING, 'Title').then(statusResp => {
             hrControlsState.reasonOfLeavingOptions = statusResp;
-            //'hitaxi.kachhadiya@synoverge.com'
             return this.getDataFromListUsingID(ListNames.EMPLOYEECONTACT, EmpListID).then(Resp => {
                 hrControlsState.UserAlies = Resp.UserAlies;
                 hrControlsState.ADLogin = Resp.ADLoginId;
                 hrControlsState.Manager = Resp.ManagerId;
                 hrControlsState.employementStatus = Resp.EmploymentStatus;
-                hrControlsState.DateOfLeaving = Resp.DateOfLeaving;
-                if (Resp.reasonForLeaving == null)
+                hrControlsState.DateOfLeaving = new Date(Resp.DateOfLeaving);
+                if (Resp.ReasonForLeaving == null)
                     hrControlsState.reasonForLeaving = '--Select--';
                 else
-                    hrControlsState.reasonForLeaving = Resp.reasonForLeaving;
+                    hrControlsState.reasonForLeaving = Resp.ReasonForLeaving;
                 hrControlsState.ResigntionDate = Resp.ResigntionDate;
                 hrControlsState.EligibleforRehire = Resp.EligibleforRehire;
-
                 return hrControlsState;
             });
         });
@@ -300,11 +298,10 @@ export default class NewEmployeeService implements INewEmpRequestService {
     public HrAddNewEmployee(empReqData: IHRState, managerdata, empListID): Promise<any> {
         let web = new Web(AppConstats.SITEURL);
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empListID.EmpListID).update({
-
             ManagerId: managerdata,
             EmploymentStatus: empReqData.employementStatus,
             DateOfLeaving: empReqData.DateOfLeaving,
-            //reasonForLeaving: empReqData.reasonForLeaving,
+           // ReasonForLeaving: empReqData.reasonForLeaving,
             ResigntionDate: empReqData.ResigntionDate,
             EligibleforRehire: empReqData.EligibleforRehire,
         }).then((result: ItemAddResult) => {
@@ -466,7 +463,6 @@ export default class NewEmployeeService implements INewEmpRequestService {
             Fresher: professionalDetailData.IsFresher
         }).then((result: ItemAddResult) => {
             let mainListID = result.data.Id;
-
         }).catch(error => {
             console.log("error while adding an employee");
         });
@@ -481,7 +477,6 @@ export default class NewEmployeeService implements INewEmpRequestService {
                 if (res.data.value.length > 0) {
                     let idData = res.data.value;
                     idData.forEach(e => {
-
                         web.lists.getByTitle(ListNames.PROFESSIONALHISTORY).items.getById(e["ID"]).inBatch(batch).delete()
                             .then(r => {
                                 console.log("deleted");
@@ -520,7 +515,6 @@ export default class NewEmployeeService implements INewEmpRequestService {
                         }).then((result: ItemAddResult) => {
                             let mainListID = result.data.Id;
                             console.log("Employee request created : " + mainListID);
-
                         }).catch(error => {
                             console.log("error while adding an employee");
                         });
@@ -538,7 +532,6 @@ export default class NewEmployeeService implements INewEmpRequestService {
                 if (res.data.value.length > 0) {
                     let idData = res.data.value;
                     idData.forEach(e => {
-
                         web.lists.getByTitle(ListNames.EMPLOYEETECHNICALSKILL).items.getById(e["ID"]).inBatch(batch).delete()
                             .then(r => {
                                 console.log("deleted");
@@ -569,7 +562,6 @@ export default class NewEmployeeService implements INewEmpRequestService {
                         }).then((result: ItemAddResult) => {
                             let mainListID = result.data.Id;
                             console.log("Employee request created : " + mainListID);
-
                         }).catch(error => {
                             console.log("error while adding an employee");
                         });

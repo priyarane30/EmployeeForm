@@ -1,12 +1,7 @@
 import { IProfessionalDetailState } from "../state/IProfessionalDetailControlState";
-import { ActionTypes, AppConstats, ListNames } from '../AppConstants';
-import ProfessionalDetail from "../components/tabs/ProfessionalDetail";
-import { actions } from "react-redux-form";
 
 export const professionalDetailState: IProfessionalDetailState = {
-
     IsFresher: false,
-
     organizationDetails: [],
     technologyDetails: []
 };

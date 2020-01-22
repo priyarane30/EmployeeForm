@@ -42,13 +42,23 @@ export default class BasicFormService implements IBasicFormService {
         });
     }
 
-    AddBasicDetail(empData: IBasicDetailState): Promise<any> {
+    //Get Emp Technology
+    GetEmpTechnology(empListId): Promise<any> {
+        let technology: any
+        let utilityServiceObj: UtilityService = new UtilityService();
+        return utilityServiceObj.GetEmployeeContactListById(empListId).then(mainListResp => {
+            technology = mainListResp.Technology
+            return technology;
+        });
+
+    }
+    AddBasicDetail(empData: IBasicDetailState,technologydata): Promise<any> {
         let web = new Web(AppConstats.SITEURL);
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
             FirstName: empData.FirstName,
             LastName: empData.LastName,
             CurrentDesignation: empData.Designation,
-            Technology: empData.Technology,
+            Technology: technologydata,//empData.Technology,
             DateofJoining: empData.DateofJoining,//datetime?
             Email: empData.CompanyEmail
         }).then((result: ItemAddResult) => {
@@ -61,7 +71,7 @@ export default class BasicFormService implements IBasicFormService {
         });
     }
 
-    UpdateBasicDetail(basicData: IBasicDetailState, empListId): Promise<any> {
+    UpdateBasicDetail(basicData: IBasicDetailState, technologydata, empListId): Promise<any> {
 
         // var itemDate = new Date(date);
         let web = new Web(AppConstats.SITEURL);
@@ -69,17 +79,14 @@ export default class BasicFormService implements IBasicFormService {
             FirstName: basicData.FirstName,
             LastName: basicData.LastName,
             CurrentDesignation: basicData.Designation,
-            Technology: basicData.Technology,
+            Technology: technologydata,
             DateofJoining: basicData.DateofJoining,//datetime?
             Email: basicData.CompanyEmail
         }).then((result: ItemAddResult) => {
-
             //result
             console.log("Basic Details has been updated");
             let mainListID = result.data.Id;
             return mainListID;
-
-
         }).catch(error => {
             console.log("error while adding an employee");
         });
