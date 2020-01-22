@@ -164,18 +164,17 @@ class PayrollDetail extends React.Component<any, IState> {
                     <label>Director:</label>
                   </div>
                   <div className="ms-Grid-col ms-u-sm8 block">
-                <Control.text className={styles.marginb}
-                  model=".Director"
-                  id=".Director"
-                  component={TextField}
-                />
-              </div>            
-                </div>
+                    <Control.text className={styles.marginb}
+                        model=".Director"
+                        id=".Director"
+                        component={TextField}
+                    />
+                </div>  
+                <button disabled={!this.state.isVisible} type="submit">Submit </button>          
               </div>
             </div>
-          <button disabled={!this.state.isVisible} type="submit">
-            Submit
-          </button>
+          </div>
+        
         </Form>
       </div>
     );
