@@ -49,7 +49,6 @@ class PayrollDetail extends React.Component<any, IState> {
     empPayrollData = formValues;
     const empListId = store.getState().EmpListId;
     this.setState({ isVisible: true });
-    debugger;
     let newEmpServiceObj: NewEmpService = new NewEmpService();
     await newEmpServiceObj.PayrollAddEmployee(empPayrollData, empListId);
     alert("New Employee payroll is added ");

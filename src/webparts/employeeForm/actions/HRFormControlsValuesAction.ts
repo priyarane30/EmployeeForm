@@ -9,16 +9,16 @@ export function GetInitialControlValuesAction(EmpListID) {
     return dispatch => {
 
         let formControlState = {
-            employmentStatusOptions: [],
-            reasonOfLeavingOptions: [],
-            UserAlies: '',
-            ADLogin: '',
-            Manager: '',
-            employementStatus: '',
-            DateOfLeaving: '', //dateTime?
-            reasonForLeaving: '',
-            ResigntionDate: '', //datetime?
-            EligibleforRehire: false,
+            // employmentStatusOptions: [],
+            // reasonOfLeavingOptions: [],
+            // UserAlies: '',
+            // ADLogin: '',
+            // Manager: '',
+            // employementStatus: '',
+            // DateOfLeaving: '', //dateTime?
+            // reasonForLeaving: '',
+            // ResigntionDate: '', //datetime?
+            // EligibleforRehire: false,
         } as IHRState;
 
         let newEmpServiceObj: NewEmpService = new NewEmpService();

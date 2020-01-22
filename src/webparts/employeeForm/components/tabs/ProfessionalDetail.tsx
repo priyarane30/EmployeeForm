@@ -12,6 +12,7 @@ import { IProfessionalDetailState } from "../../state/IProfessionalDetailControl
 import { store } from "../../store/ConfigureStore";
 import NewEmpService from '../../services/NewEmployeeService';
 import styles from "../EmployeeForm.module.scss";
+import { TextField, DefaultButton } from "office-ui-fabric-react/lib";
 
 interface buttonStatus {
     buttonDisabled: boolean
@@ -77,20 +78,18 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
         if (!this.props.ProfessionalDetail) return (<div> Loading.... </div>);
         return (
             <div className={styles.employeeForm}>
-                <Form model="ProfessionalDetail" onSubmit={val => this.handleSubmit(val)}>
-                    <div className={styles.employeeForm}>
-                        <div className={styles.container}>
-                            <div className='col'> {/* Eligible for rehire*/}
-                                <label>Fresher:</label>
-                                <Control.checkbox model='ProfessionalDetail.IsFresher' id='ProfessionalDetail.IsFresher' />
-                            </div>
-                            {this.isUserFresher(this.props.ProfessionalDetail)}
-
-                            <button type="submit" disabled={this.state.buttonDisabled}>Submit</button>
+                <div className={styles.container}>
+                    <Form model="ProfessionalDetail" onSubmit={val => this.handleSubmit(val)}>
+                        <div className='col'> {/* Eligible for rehire*/}
+                            <label>Fresher:</label>
+                            <Control.checkbox model='ProfessionalDetail.IsFresher' id='ProfessionalDetail.IsFresher' />
                         </div>
-                    </div>
-                </Form>
-            </div>
+                        {this.isUserFresher(this.props.ProfessionalDetail)}
+                        <DefaultButton id="DefaultSubmit" primary={true} text={"Submit"} type="submit"
+                            disabled={this.state.buttonDisabled} className={styles.button} />
+                    </Form>
+                </div>
+            </div >
         );
     }
 
@@ -98,7 +97,7 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
         //If user is come from another orgenization
         if (props.IsFresher == false) {
             return (
-                <div  className={`ms-Grid-row  ms-fontColor-white ${styles.row}`}>
+                <div className={`ms-Grid-row  ms-fontColor-white ${styles.row}`}>
                     <span className={styles.errors}> *Please mention professional details from latest organization</span>
                     <table style={{ width: "100%", tableLayout: "fixed" }}>
                         <tr>
@@ -107,36 +106,27 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                 <button type="button" onClick={() => this.handleRowAdd("ProfessionalDetail")}>+</button>
                             </td>
                         </tr>
-                        <tr>
-                            <th>Organization</th>
-                            <th>Designation/Role</th>
-                            <th>Start Month</th>
-                            <th>End Month</th>
-                            <th>Reporting To</th>
-                            <th>Reporting Designation</th>
-                            <th>Total Exp.(Month)</th>
-                            <th>Reason For Leaving</th>
-                            <th>Action</th>
-                        </tr>
                         {
                             this.props.ProfessionalDetail.organizationDetails.map((organizations, i) => {
-
                                 return (
                                     <tr>
-                                        <td><Control.text model={`ProfessionalDetail.organizationDetails[${i}].organization`} id={organizations.organization}
-                                            validators={{ requiredorganization: (val) => val && val.length }} />
+                                        <td> {/* Organization */}
+                                            <label>Organizatio n</label>
+                                            <Control.text model={`ProfessionalDetail.organizationDetails[${i}].organization`} id={organizations.organization}
+                                                validators={{ requiredorganization: (val) => val && val.length && !(Number(val)) }} component={TextField} />
                                             <Errors
                                                 className={styles.errors}
                                                 show="touched"
                                                 model={`ProfessionalDetail.organizationDetails[${i}].organization`}
                                                 messages={{
-                                                    requiredorganization: 'organization Required'
+                                                    requiredorganization: 'organization Name Required'
                                                 }}
                                             />
                                         </td>
-                                        <td>
+                                        <td> {/* Designation/Role */}
+                                            <label>Designation /Role</label>
                                             <Control.text model={`ProfessionalDetail.organizationDetails[${i}].designation`} id={organizations.designation}
-                                                validators={{ requireddesignation: (val) => val && val.length }} />
+                                                validators={{ requireddesignation: (val) => val && val.length && !(Number(val)) }} component={TextField} />
                                             <Errors
                                                 className={styles.errors}
                                                 show="touched"
@@ -146,33 +136,42 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                 }}
                                             />
                                         </td>
-                                        <td>
+                                        <td> {/* Start Month */}
+                                            <label>Start Month</label>
                                             <Control.text model={`ProfessionalDetail.organizationDetails[${i}].startDate`} id={organizations.startDate} placeholder="MMM-YYYY"
-                                                validators={{ requiredstartDate: (val) => val && val.length }} />
+                                                validators={{
+                                                    requiredstartDate: (val) => val && val.length,
+                                                    isStartMonth: (val) => (/^[a-zA-Z\s]{3}-[0-9\s]{4}$/i.test(val))
+                                                }} component={TextField} />
                                             <Errors
                                                 className={styles.errors}
                                                 show="touched"
                                                 model={`ProfessionalDetail.organizationDetails[${i}].startDate`}
                                                 messages={{
-                                                    requiredstartDate: 'start Month Required'
+                                                    requiredstartDate: 'start Month Required',
+                                                    isStartMonth: 'Must be MMM-yyyy',
                                                 }}
                                             />
                                         </td>
-                                        <td>
+                                        <td> {/* End  Month */}
+                                            <label>End  Month</label>
                                             <Control.text model={`ProfessionalDetail.organizationDetails[${i}].endDate`} id={organizations.endDate} placeholder="MMM-YYYY"
-                                                validators={{ requiredendDate: (val) => val && val.length }} />
+                                                validators={{ requiredendDate: (val) => val && val.length,
+                                                    isEndMonth: (val) => (/^[a-zA-Z\s]{3}-[0-9\s]{4}$/i.test(val)) }} component={TextField} />
                                             <Errors
                                                 className={styles.errors}
                                                 show="touched"
                                                 model={`ProfessionalDetail.organizationDetails[${i}].endDate`}
                                                 messages={{
-                                                    requiredendDate: 'End Month Required'
+                                                    requiredendDate: 'End Month Required',
+                                                    isEndMonth: 'Must be MMM-yyyy',
                                                 }}
                                             />
                                         </td>
-                                        <td>
+                                        <td> {/* Reporting To */}
+                                            <label>Reporting To</label>
                                             <Control.text model={`ProfessionalDetail.organizationDetails[${i}].reportingTo`} id={organizations.reportingTo}
-                                                validators={{ requiredreportingTo: (val) => val && val.length }} />
+                                                validators={{ requiredreportingTo: (val) => val && val.length && !(Number(val)) }} component={TextField} />
                                             <Errors
                                                 className={styles.errors}
                                                 show="touched"
@@ -182,9 +181,10 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                 }}
                                             />
                                         </td>
-                                        <td>
+                                        <td> {/* Reporting Designation */}
+                                            <label>Reporting Designation</label>
                                             <Control.text model={`ProfessionalDetail.organizationDetails[${i}].reportingDesignation`} id={organizations.reportingDesignation}
-                                                validators={{ requiredreportingDesignation: (val) => val && val.length }} />
+                                                validators={{ requiredreportingDesignation: (val) => val && val.length && !(Number(val)) }} component={TextField} />
                                             <Errors
                                                 className={styles.errors}
                                                 show="touched"
@@ -194,21 +194,25 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                 }}
                                             />
                                         </td>
-                                        <td>
+                                        <td> {/* Total Exp.(Month) */}
+                                            <label>Total Exp.(Month)</label>
                                             <Control.text model={`ProfessionalDetail.organizationDetails[${i}].totalExp`} id={organizations.totalExp}
-                                                validators={{ requiredtotalExp: (val) => val && val.length }} />
+                                                validators={{
+                                                    requiredtotalExp: (val) => Number(val) && val.length
+                                                }} component={TextField} />
                                             <Errors
                                                 className={styles.errors}
                                                 show="touched"
                                                 model={`ProfessionalDetail.organizationDetails[${i}].totalExp`}
                                                 messages={{
-                                                    requiredtotalExp: 'total Exp Required'
+                                                    requiredtotalExp: 'total Exp in Month(Number) Required'
                                                 }}
                                             />
                                         </td>
-                                        <td>
+                                        <td> {/* Reason For Leaving */}
+                                            <label>Reason For Leaving</label>
                                             <Control.select model={`ProfessionalDetail.organizationDetails[${i}].reasonForLeaving`} id={organizations.reasonForLeaving}
-                                                validators={{ requiredreasonForLeaving: (val) => val && val.length }} >
+                                                validators={{ requiredreasonForLeaving: (val) => val && val != "--Select--" }} style={{ height: "30px", width: "100%" }}>
                                                 <option value="0">--Select--</option>
 
                                                 {this.props.ProfessionalDetail.organizationDetails[i].reasonOfLeavingOptions.map(reasons => {
@@ -224,9 +228,8 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                 }}
                                             />
                                         </td>
-                                        <td>
-                                            <button type="button"
-                                                onClick={() => this.handleRowRemove("ProfessionalDetail", i)}>-</button>
+                                        <td> {/* Action */}
+                                            <button type="button" onClick={() => this.handleRowRemove("ProfessionalDetail", i)} style={{ marginTop: "40px" }}>-</button>
                                         </td>
                                     </tr>
                                 )
@@ -238,7 +241,7 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
         //If User come from direct College
         else if (props.IsFresher == true) {
             return (
-                <div  className={`ms-Grid-row  ms-fontColor-white ${styles.row}`}>
+                <div className={`ms-Grid-row  ms-fontColor-white ${styles.row}`}>
                     <span className={styles.errors}> *Please mention mininum 1 Technology / Tools in below section</span>
                     <table>
                         <tr>
@@ -247,19 +250,13 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                 <button type="button" onClick={() => this.handleRowAdd("Technology")}>+</button>
                             </td>
                         </tr>
-                        <tr>
-                            <th>Technology</th>
-                            <th>SinceWhen</th>
-                            <th>Expertise</th>
-                            <th>Rating</th>
-                            <th>Action</th>
-                        </tr>
                         {this.props.ProfessionalDetail.technologyDetails.map((technologies, i) => {
                             return (
                                 <tr key={i}>
-                                    <td>
+                                    <td> {/* Technology */}
+                                        <label>Technology</label>
                                         <Control.select model={`ProfessionalDetail.technologyDetails[${i}].Technology`} id={technologies.Technology}
-                                            validators={{ requiredtechnology: (val) => val && val != "--Select--" }}>
+                                            validators={{ requiredtechnology: (val) => val && val != "--Select--" }} style={{ height: "30px", width: "100%" }}>
                                             <option value="0">--Select--</option>
                                             {this.props.ProfessionalDetail.technologyDetails[i].technologyOptions.map(technology => {
                                                 return <option key={technology} value={technology}>{technology}</option>
@@ -273,9 +270,10 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                 requiredtechnology: 'Technology Required'
                                             }} />
                                     </td>
-                                    <td>
+                                    <td> {/* SinceWhen */}
+                                        <label>SinceWhen</label>
                                         <Control.select model={`ProfessionalDetail.technologyDetails[${i}].SinceWhen`} id={technologies.SinceWhen}
-                                            validators={{ requiredSincewhen: (val) => val && val.length }}>
+                                            validators={{ requiredSincewhen: (val) => val && val != "--Select--" }} style={{ height: "30px", width: "100%" }}>
                                             <option value="0">--Select--</option>
                                             <option value="Currently using">Currently using</option>
                                             <option value="< 3 months">&lt; 3 months</option>
@@ -292,9 +290,10 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                 requiredSincewhen: 'Since When Required'
                                             }} />
                                     </td>
-                                    <td>
+                                    <td> {/* Expertise */}
+                                        <label>Expertise</label>
                                         <Control.select model={`ProfessionalDetail.technologyDetails[${i}].Expertise`} id={technologies.Expertise}
-                                            validators={{ requiredExpertise: (val) => val && val.length }}>
+                                            validators={{ requiredExpertise: (val) => val && val != "--Select--" }} style={{ height: "30px", width: "100%" }}>
                                             <option value="0">--Select--</option>
                                             <option value="Expert">Expert</option>
                                             <option value="Intermediate">Intermediate</option>
@@ -308,9 +307,10 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                 requiredExpertise: 'Expertise Required'
                                             }} />
                                     </td>
-                                    <td>
+                                    <td> {/* Rating */}
+                                        <label>Rating</label>
                                         <Control.select model={`ProfessionalDetail.technologyDetails[${i}].Rating`} id={technologies.Rating}
-                                            validators={{ requiredRating: (val) => val && val.length }}>
+                                            validators={{ requiredRating: (val) => val && val != "0" }} style={{ height: "30px", width: "100%" }}>
                                             <option value="0">0</option>
                                             <option value="1">1</option>
                                             <option value="2">2</option>
@@ -331,8 +331,8 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                 requiredRating: 'Rating Required'
                                             }} />
                                     </td>
-                                    <td>
-                                        <button type="button" onClick={() => this.handleRowRemove("Technology", i)}>-</button>
+                                    <td> {/* Action */}
+                                        <button type="button" onClick={() => this.handleRowRemove("Technology", i)} style={{ marginTop: "20px" }}>-</button>
                                     </td>
                                 </tr>
                             );
@@ -348,8 +348,6 @@ const mapStateToProps = function (state) {
 }
 
 const mapDispatchToProps = (dispatch): IProfessionalDetailConnectedDispatch => {
-
-
     return {
         setTabName: SetTabName,
         getDefaultControlsData: (empListId) => {

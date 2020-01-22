@@ -33,7 +33,7 @@ console.log(this.props.context)
         <div className={styles.employeeForm}>
           <div className={styles.container}>
             <div>
-              <BasicDetail empEmail={this.props.userEmail} showTabs={this.showTabs} />
+              <BasicDetail empEmail={this.props.userEmail} showTabs={this.showTabs} context={this.props.context}/>
             </div>
             {this.IsEmpIdExists()}
           </div>

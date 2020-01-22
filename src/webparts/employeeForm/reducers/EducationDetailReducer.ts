@@ -10,7 +10,7 @@ export const eduDetailState: IEducationDetailState = {
 
 
 export const EducationSectionReducer = (state: IEducationDetailState = eduDetailState, action) => {
-    debugger;
+  
     switch (action.type) {
         // Gets the values for dropdown fields from SharePoint master/choice columns.
         case "GET_DEFAULT_FORM_CONTROLS":
@@ -31,7 +31,6 @@ export const EducationSectionReducer = (state: IEducationDetailState = eduDetail
         //educationDetail section
         // Sets initial or already filled values in state from sp list 
         case "SET_INITIAL_EDUDETAIL_FORM_STATE":
-           // debugger;
 
             state = {
                 ...state,
@@ -40,7 +39,6 @@ export const EducationSectionReducer = (state: IEducationDetailState = eduDetail
             break;
         //adds empty array from payload to state.educationdetails
         case ActionTypes.AddEducationDetailRow:
-            //debugger
             state={
                 ...state,
                 educationDetails:[...state.educationDetails,action.payload]

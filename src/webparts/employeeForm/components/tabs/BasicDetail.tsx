@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Form, Control, Errors } from 'react-redux-form';
-import { DefaultButton,PrimaryButton } from "office-ui-fabric-react/lib/Button";
+import { DefaultButton, PrimaryButton } from "office-ui-fabric-react/lib/Button";
 import { TextField } from "office-ui-fabric-react/lib/TextField";
 import { connect } from "react-redux";
 import { GetEmpBasicData, SetTabName, GetEmpListIdByUserEmail, SetEmpIdInStore } from "../../actions/BasicEmpDetailAction";
@@ -11,6 +11,7 @@ import { ActionTypes } from '../../AppConstants';
 import { store } from '../../store/ConfigureStore';
 import { DatePicker } from 'office-ui-fabric-react/lib/DatePicker';
 import styles from "../EmployeeForm.module.scss";
+import { ListItemPicker } from '@pnp/spfx-controls-react/lib/listItemPicker';
 
 interface IBasicFormConnectedDispatch {
     //Get Employee Id using Current User Email
@@ -24,23 +25,24 @@ interface IBasicFormConnectedDispatch {
 
 interface IButtonState {
     isDisable: boolean;
-  }
+    selectedTechnologies: any;
+}
 
-class BasicDetail extends React.Component<any,IButtonState>{
+class BasicDetail extends React.Component<any, IButtonState>{
     constructor(props) {
         super(props);
-        this.state = { isDisable: true };
+        this.state = { isDisable: true, selectedTechnologies: '' };
     }
-    
+
     //On Button Save : Basic Details saved In List
     handleSubmit(formValues) {
         let newEmpReqServiceObj: BasicService = new BasicService();
         const idState = store.getState().EmpListId;
         this.setState({ isDisable: true });
-
+        let technologydata = this.state.selectedTechnologies;
         if (idState != null && idState != undefined) {
             //Edit Form when ID is not null
-            newEmpReqServiceObj.UpdateBasicDetail(formValues, idState).then(resp => {
+            newEmpReqServiceObj.UpdateBasicDetail(formValues, technologydata, idState).then(resp => {
                 this.setState({ isDisable: false });
             }).catch(() => {
                 alert("Sorry. Error while adding employee...");
@@ -48,7 +50,7 @@ class BasicDetail extends React.Component<any,IButtonState>{
         }
         else {
             //New Form 
-            newEmpReqServiceObj.AddBasicDetail(formValues).then(resp => {
+            newEmpReqServiceObj.AddBasicDetail(formValues,technologydata).then(resp => {
                 let empIdState = { EmpListID: resp } as IEmpListIdState;
                 dispatch => {
                     dispatch({
@@ -72,25 +74,28 @@ class BasicDetail extends React.Component<any,IButtonState>{
             //get Basic Details 
             this.props.getBasicDatail(eId);
             this.props.showTabs(eId);
-            
+            let newEmpReqServiceObj: BasicService = new BasicService();
+            var technology = await newEmpReqServiceObj.GetEmpTechnology(eId.EmpListID);
+            var TechnologyDropDown = technology.split(",");
+            let final = [];
+            TechnologyDropDown.forEach(tech => {
+                final.push({ 'key': tech, 'name': tech });
+            });
+            this.setState({ selectedTechnologies: final })
         }
         const CommonState: ICommonState = { CurrentForm: "Employee" };
         this.props.setTabName(CommonState);
     }
 
     public render() {
-        let desigOpt, techOpts;
+        let desigOpt;
 
         if (this.props.Basic != null || this.props.Basic != undefined) {
             if (this.props.Basic.designationOptions != null || this.props.Basic.designationOptions != undefined) {
                 desigOpt = this.props.Basic.designationOptions.map(desig => { return <option key={desig} value={desig}>{desig}</option> });
             }
-            if (this.props.Basic.technologyOptions != null || this.props.Basic.technologyOptions != undefined) {
-                techOpts = this.props.Basic.technologyOptions.map(tech => { return <option key={tech} value={tech}>{tech}</option> });
-            }
         }
         if (!this.props.Employee) return (<div> Loading.... </div>)
-
         return (
             <div>
                 <div className={styles.employeeForm}>
@@ -103,7 +108,7 @@ class BasicDetail extends React.Component<any,IButtonState>{
                                 <div className="ms-Grid-col ms-u-sm8 block">
                                     <Control.text model=".FirstName" id='.FirstName' component={TextField} className={styles.marginb}
                                         validators={{ requiredFirstName: (val) => val && val.length }} />
-                                    <Errors model=".FirstName" messages={{requiredFirstName: 'Please provide an email address.'}}/>
+                                    <Errors model=".FirstName" messages={{ requiredFirstName: 'Please provide an email address.' }} />
                                 </div>
                                 <div className='ms-Grid-col ms-u-sm4 block'>
                                     <label>Last Name *:</label>
@@ -111,9 +116,8 @@ class BasicDetail extends React.Component<any,IButtonState>{
                                 <div className="ms-Grid-col ms-u-sm8 block">
                                     <Control.text model=".LastName" id='.LastName' component={TextField} className={styles.marginb}
                                         validators={{ requiredLastName: (val) => val && val.length }} />
-                                    <Errors model=".LastName" messages={{requiredLastName: 'Please provide an email address.'}}/>
+                                    <Errors model=".LastName" messages={{ requiredLastName: 'Please provide an email address.' }} />
                                 </div>
-
                                 <div className='ms-Grid-col ms-u-sm4 block'>
                                     <label>Date Of Joining *:</label>
                                 </div>
@@ -146,13 +150,15 @@ class BasicDetail extends React.Component<any,IButtonState>{
                                     <label>Technology *:</label>
                                 </div>
                                 <div className="ms-Grid-col ms-u-sm8 block">
-                                    <Control.select model=".Technology" id=".Technology" className={styles.dropdowncustom} validators={{
-                                        requiredTechnology: (val) => val && val != "--Select--"
-                                    }}   >
-                                        <option>--Select--</option>
-                                       {techOpts}
-                                    </Control.select>
-                                    <Errors model=".Technology" messages={{requiredTechnology: 'Please Select Technology.'}} />
+                                    <ListItemPicker listId='6fd1826b-625e-4288-8e10-df480fb0d17d'
+                                        columnInternalName='Title'
+                                        itemLimit={2}
+                                        onSelectedItem={this.onSelectedItem}
+                                        context={this.props.context}
+                                        suggestionsHeaderText="Please select asset"
+                                        defaultSelectedItems={this.state.selectedTechnologies}
+                                    />
+                                    <Errors model=".Technology" messages={{ requiredTechnology: 'Please Select Technology.' }} />
                                 </div>
                                 <div className='ms-Grid-col ms-u-sm4 block'>
                                     <label>Company Email *:</label>
@@ -171,13 +177,19 @@ class BasicDetail extends React.Component<any,IButtonState>{
                                         }}
                                     />
                                 </div>
-                                <DefaultButton id="DefaultSubmit" primary={true}  text={"Submit"} type="submit" disabled={!this.state.isDisable} />
-                           </Form>
-                         </div>
+                                <DefaultButton id="DefaultSubmit" primary={true} text={"Submit"} type="submit" disabled={!this.state.isDisable} />
+                            </Form>
+                        </div>
                     </div>
-                 </div>
+                </div>
             </div>
         );
+    }
+    private onSelectedItem = (data: { key: string; name: string }[]): void => {
+        let TechnologyName = []
+        for (var i = 0; i < data.length; i++) { TechnologyName.push(data[i].name) }
+        var TechnologyString = TechnologyName.toString()
+        this.setState({ selectedTechnologies: TechnologyString });
     }
 }
 

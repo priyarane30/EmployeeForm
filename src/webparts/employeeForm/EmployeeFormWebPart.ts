@@ -17,7 +17,6 @@ export interface IEmployeeFormWebPartProps {
 
 export default class EmployeeFormWebPart extends BaseClientSideWebPart<IEmployeeFormWebPartProps> {
   public render(): void {
-    debugger
     const element: React.ReactElement<IEmployeeFormProps> = React.createElement(
       
       EmployeeForm,
