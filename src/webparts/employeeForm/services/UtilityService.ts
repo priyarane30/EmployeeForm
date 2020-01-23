@@ -18,7 +18,6 @@ export default class BasicFormService {
         var url = AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + listName + "')/fields?$filter=EntityPropertyName eq '" + columnName + "'";
         return Axios.get(url)
             .then(res => {
-                console.log(res);
                 return res.data.value[0].Choices;
             }).catch(error => {
                 console.log("Error while getOptionsFromChoiceField");

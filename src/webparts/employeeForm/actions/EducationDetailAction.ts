@@ -12,7 +12,6 @@ export  function GetInitialControlValuesAction(EmpListID) {
        //gets already set education details for user
         newEmpServiceObj.getMultipleDataFromListUsingParentID(ListNames.EducationDetail, EmpListID)
         .then((resp) => {
-            console.log(resp)
             resp.forEach(element => {
                 payLoadArrayEducationDetail.push({
                 educationId:element.ID,
