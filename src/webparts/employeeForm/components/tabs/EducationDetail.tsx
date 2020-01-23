@@ -52,7 +52,8 @@ class EducationDetail extends React.Component<any, buttonStatus> {
     this.props.removeEducationDetailRow(removedItem, section, index);
   }
 
-  public async handleSubmit(formValues) {
+  async handleSubmit(formValues) {
+    this.props.handleSpinner(false);
     const CommonState: ICommonState = { CurrentForm: "Education" };
     this.props.setTabName(CommonState);
     let eduData = {} as IEducationDetailState;
@@ -60,9 +61,10 @@ class EducationDetail extends React.Component<any, buttonStatus> {
     const empListId = store.getState().EmpListId;
     this.setState({ buttonDisabled: true });
     let newEmpServiceObj: NewEmpService = new NewEmpService();
-    await newEmpServiceObj.saveEduDataInList(eduData, empListId);
-    alert("Education Details saved Succesfully");
+    await newEmpServiceObj.saveEduDataInList(eduData, empListId)
+    alert("Education Details saved Succesfully")
     this.setState({ buttonDisabled: false });
+    this.props.handleSpinner(true);
     this.props.handleTabClick();
   }
 

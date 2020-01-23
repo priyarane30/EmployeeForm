@@ -46,6 +46,7 @@ class HRDetail extends React.Component<any, IControls> {
         this.PeoplePickerItems = this.PeoplePickerItems.bind(this);
     }
     public async handleSubmit(formValues) {
+        this.props.handleSpinner(false);
         const CommonState: ICommonState = { CurrentForm: "HR" };
         this.props.setTabName(CommonState);
 
@@ -59,7 +60,7 @@ class HRDetail extends React.Component<any, IControls> {
         let newEmpReqServiceObj: NewEmployeeService = new NewEmployeeService();
         await newEmpReqServiceObj.HrAddNewEmployee(empHrData, managerdata, empListId);
         this.setState({ buttonDisabled: false });
-        
+        this.props.handleSpinner(true);
         //EndSave The Data
         this.props.handleTabClick();
     }
@@ -152,11 +153,11 @@ class HRDetail extends React.Component<any, IControls> {
                                     <label>Resignation Date:</label>
                                 </div>
                                 <div className='ms-Grid-col ms-u-sm8 block'>
-                                <Control model='HR.ResigntionDate' id='HR.ResigntionDate' component={DatePicker} placeholder='dd-MM-yyyy' className={styles.marginb}
-                                    mapProps={{
-                                        value: (props) => { return props.viewValue; },
-                                        onSelectDate: (props) => { return props.onChange; }
-                                    }}></Control>
+                                    <Control model='HR.ResigntionDate' id='HR.ResigntionDate' component={DatePicker} placeholder='dd-MM-yyyy' className={styles.marginb}
+                                        mapProps={{
+                                            value: (props) => { return props.viewValue; },
+                                            onSelectDate: (props) => { return props.onChange; }
+                                        }}></Control>
                                 </div>
                                 {/* Eligible for rehire*/}
                                 <div className='ms-Grid-col ms-u-sm4 block'>

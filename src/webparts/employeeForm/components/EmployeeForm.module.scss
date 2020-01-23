@@ -1,6 +1,13 @@
 @import '~office-ui-fabric-react/dist/sass/References.scss';
 
 .employeeForm {
+
+  .spinner{
+    z-index: 999;
+    position: fixed;
+    margin-left: 20%;
+  }
+
   .errors {
     margin: 0.5rem 0;
     color: red;
