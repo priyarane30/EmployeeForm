@@ -7,7 +7,7 @@ import { IEmpListIdState } from "../state/ICommonState";
 
 export default class BasicFormService implements IBasicFormService {
     //Get Emp Basic Data when Id = 0
-    GetEmpBasicData(): Promise<IBasicDetailState> {
+   public GetEmpBasicData(): Promise<IBasicDetailState> {
         let basicFormControlsState = {} as IBasicDetailState;
         let utilityServiceObj: UtilityService = new UtilityService();
         return utilityServiceObj.getOptionsFromMaster(ListNames.DESIGNATION, 'Designation').then(desigResp => {
@@ -20,7 +20,7 @@ export default class BasicFormService implements IBasicFormService {
     }
 
     //Get Emp Basic Data when Id = 0
-    GetEmpBasicDataById(empListId): Promise<IBasicDetailState> {
+    public GetEmpBasicDataById(empListId): Promise<IBasicDetailState> {
         let basicFormControlsState = {} as IBasicDetailState;
         let utilityServiceObj: UtilityService = new UtilityService();
         return utilityServiceObj.getOptionsFromMaster(ListNames.DESIGNATION, 'Designation').then(desigResp => {
@@ -43,16 +43,16 @@ export default class BasicFormService implements IBasicFormService {
     }
 
     //Get Emp Technology
-    GetEmpTechnology(empListId): Promise<any> {
-        let technology: any
+    public GetEmpTechnology(empListId): Promise<any> {
+        let technology: any;
         let utilityServiceObj: UtilityService = new UtilityService();
         return utilityServiceObj.GetEmployeeContactListById(empListId).then(mainListResp => {
-            technology = mainListResp.Technology
+            technology = mainListResp.Technology;
             return technology;
         });
 
     }
-    AddBasicDetail(empData: IBasicDetailState,technologydata): Promise<any> {
+    public AddBasicDetail(empData: IBasicDetailState,technologydata): Promise<any> {
         let web = new Web(AppConstats.SITEURL);
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
             FirstName: empData.FirstName,
@@ -71,7 +71,7 @@ export default class BasicFormService implements IBasicFormService {
         });
     }
 
-    UpdateBasicDetail(basicData: IBasicDetailState, technologydata, empListId): Promise<any> {
+    public UpdateBasicDetail(basicData: IBasicDetailState, technologydata, empListId): Promise<any> {
 
         // var itemDate = new Date(date);
         let web = new Web(AppConstats.SITEURL);

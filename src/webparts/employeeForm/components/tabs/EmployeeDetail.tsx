@@ -6,8 +6,7 @@ import { ICommonState } from '../../state/ICommonState';
 import { INewFormState } from '../../state/INewFormControlsState';
 import { store } from "../../store/ConfigureStore";
 import NewEmpService from '../../services/NewEmployeeService';
-import { DatePicker, TextField } from 'office-ui-fabric-react/lib';
-
+import { DatePicker, TextField , DefaultButton} from 'office-ui-fabric-react/lib';
 import styles from '../EmployeeForm.module.scss';
 
 interface buttonStatus {
@@ -361,7 +360,8 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                     <Control.checkbox model='.IsPassAvail' />
                                 </div>
                                 {this.isPassportAvailable(this.props.Employee)}
-                                <button type="submit" disabled={this.state.buttonDisabled}>Submit</button>
+                                <DefaultButton id="DefaultSubmit" primary={true} text={"Submit"} type="submit"
+                                    disabled={this.state.buttonDisabled} className={styles.button} />
                             </Form>
                         </div>
                     </div>

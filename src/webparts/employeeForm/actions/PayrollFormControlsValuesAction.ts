@@ -20,7 +20,7 @@ export function GetPayrollAction(EmpListID){
                 payload: formControlState
             });
         });
-    }
+    };
 }
 
 //Creates a new employee request.
@@ -45,5 +45,5 @@ export function SetTabName(tabData: ICommonState) {
     return ({
         type: "SET_TAB",
         payload: tabData
-    })
+    });
 }

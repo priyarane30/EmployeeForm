@@ -27,7 +27,7 @@ interface IEducationDetailConnectedDispatch {
   addEducationDetailRow: (section) => void;
 
   //removes selected array from state
-  removeEducationDetailRow: (removedItem,section, index) => void;
+  removeEducationDetailRow: (removedItem, section, index) => void;
 }
 const isNumber = (val) => !isNaN(Number(val));
 const maxLength = (len) => (val) => val.length <= len;
@@ -50,8 +50,8 @@ class EducationDetail extends React.Component<any, buttonStatus> {
 
   //removes row from grid
   handleRowRemove(section, index) {
-    let removedItem=this.props.Education[section][index]
-    this.props.removeEducationDetailRow(removedItem,section, index);
+    let removedItem = this.props.Education[section][index]
+    this.props.removeEducationDetailRow(removedItem, section, index);
 
 
   }
@@ -107,8 +107,10 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                           <td><label>Grade</label>
                             <Control.text model={`Education.educationDetails[${i}].Grade`} id={`Education.educationDetails[${i}].Grade`}
                               component={TextField}
-                              validators={{ requiredGrade: (val) => val && val.length,
-                                maxLength:maxLength(255) }}
+                              validators={{
+                                requiredGrade: (val) => val && val.length,
+                                maxLength: maxLength(255)
+                              }}
                             ></Control.text>
                             <Errors
                               className={styles.errors}
@@ -116,7 +118,7 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                               model={`Education.educationDetails[${i}].Grade`}
                               messages={{
                                 requiredGrade: 'Required',
-                                maxLength:"Max Charachters allowed 255"
+                                maxLength: "Max Charachters allowed 255"
                               }}
                             ></Errors></td>
                           <td><label>StartYear</label>
@@ -124,9 +126,10 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                               id={`Education.educationDetails[${i}].StartYear`}
                               placeholder="YYYY"
                               component={TextField}
-                              validators={{ requiredStartYearEdu: (val) => val && val.length==4,
+                              validators={{
+                                requiredStartYearEdu: (val) => val && val.length == 4,
                                 isNumber
-                             }}
+                              }}
                             ></Control.text>
                             <Errors
                               className={styles.errors}
@@ -134,15 +137,16 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                               model={`Education.educationDetails[${i}].StartYear`}
                               messages={{
                                 requiredStartYearEdu: 'Enter Year in Format(YYYY)',
-                                isNumber:"Enter a valid Year"
+                                isNumber: "Enter a valid Year"
                               }}
                             ></Errors></td>
                           <td><label>End Year</label>
                             <Control.text model={`Education.educationDetails[${i}].EndYear`} id={`Education.educationDetails[${i}].EndYear`} placeholder="YYYY"
                               component={TextField}
-                              validators={{ requiredEndYear: (val) => val && val.length==4,
+                              validators={{
+                                requiredEndYear: (val) => val && val.length == 4,
                                 isNumber,
-                                 }} 
+                              }}
                             ></Control.text>
                             <Errors
                               className={styles.errors}
@@ -150,14 +154,16 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                               model={`Education.educationDetails[${i}].EndYear`}
                               messages={{
                                 requiredEndYear: 'Enter Year in Format(YYYY)',
-                                isNumber:"Enter a valid Year",
+                                isNumber: "Enter a valid Year",
                               }}
                             ></Errors></td>
                           <td><label>Board</label>
                             <Control.text model={`Education.educationDetails[${i}].Board`} id={`Education.educationDetails[${i}].Board`}
                               component={TextField}
-                              validators={{ requiredEducationBoard: (val) => val && val.length,
-                                maxLength:maxLength(255) }}
+                              validators={{
+                                requiredEducationBoard: (val) => val && val.length,
+                                maxLength: maxLength(255)
+                              }}
                             ></Control.text>
                             <Errors
                               className={styles.errors}
@@ -165,14 +171,16 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                               model={`Education.educationDetails[${i}].Board`}
                               messages={{
                                 requiredEducationBoard: 'Required',
-                                maxLength:"Max Charachters allowed 255"
+                                maxLength: "Max Charachters allowed 255"
                               }}
                             ></Errors></td>
                           <td><label>SchoolCollege</label>
                             <Control.text model={`Education.educationDetails[${i}].SchoolCollege`} id={`Education.educationDetails[${i}].SchoolCollege`}
                               component={TextField}
-                              validators={{ requiredSchoolCollege: (val) => val && val.length,
-                                maxLength:maxLength(255) }}
+                              validators={{
+                                requiredSchoolCollege: (val) => val && val.length,
+                                maxLength: maxLength(255)
+                              }}
                             ></Control.text>
                             <Errors
                               className={styles.errors}
@@ -180,14 +188,16 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                               model={`Education.educationDetails[${i}].SchoolCollege`}
                               messages={{
                                 requiredSchoolCollege: 'Required',
-                                maxLength:"Max Charachters allowed 255"
+                                maxLength: "Max Charachters allowed 255"
                               }}
                             ></Errors></td>
                           <td><label>DegreeName</label>
                             <Control.text model={`Education.educationDetails[${i}].DegreeName`} id={`Education.educationDetails[${i}].DegreeName`}
                               component={TextField}
-                              validators={{ requiredDegreeName: (val) => val && val.length,
-                                maxLength:maxLength(255) }}
+                              validators={{
+                                requiredDegreeName: (val) => val && val.length,
+                                maxLength: maxLength(255)
+                              }}
                             ></Control.text>
                             <Errors
                               className={styles.errors}
@@ -195,7 +205,7 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                               model={`Education.educationDetails[${i}].DegreeName`}
                               messages={{
                                 requiredDegreeName: 'Required.',
-                                maxLength:"Max Charachters allowed 255"
+                                maxLength: "Max Charachters allowed 255"
                               }}
                             ></Errors></td>
                           <td>
@@ -217,22 +227,25 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                         <td><label>Certification</label>
                           <Control.text model={`Education.certificationDetails[${i}].Certification`} id={`Education.certificationDetails[${i}].Certification`}
                             component={TextField}
-                            validators={{ requiredCertification: (val) => val && val.length,
-                              maxLength:maxLength(255) }}></Control.text>
+                            validators={{
+                              requiredCertification: (val) => val && val.length,
+                              maxLength: maxLength(255)
+                            }}></Control.text>
                           <Errors
                             className={styles.errors}
                             show="touched"
                             model={`Education.certificationDetails[${i}].Certification`}
                             messages={{
                               requiredCertification: 'Required',
-                              maxLength:"Max Charachters allowed 255"
+                              maxLength: "Max Charachters allowed 255"
                             }}
                           ></Errors>
                         </td>
                         <td><label>Start Year</label>
                           <Control.text model={`Education.certificationDetails[${i}].StartYear`} id={`Education.certificationDetails[${i}].StartYear`} placeholder="YYYY"
                             component={TextField}
-                            validators={{ requiredStartYear: (val) => val && val.length==4,
+                            validators={{
+                              requiredStartYear: (val) => val && val.length == 4,
                               isNumber
                             }}></Control.text>
                           <Errors
@@ -241,53 +254,59 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                             model={`Education.certificationDetails[${i}].StartYear`}
                             messages={{
                               requiredStartYear: 'Enter Year in Format(YYYY)',
-                              isNumber:"Enter a valid Year",
+                              isNumber: "Enter a valid Year",
                             }}
                           ></Errors>
                         </td>
                         <td><label>YearOfCompletion</label>
                           <Control.text model={`Education.certificationDetails[${i}].YearOfCompletion`} id={`Education.certificationDetails[${i}].YearOfCompletion`} placeholder="YYYY"
                             component={TextField}
-                            validators={{ requiredYearofCompletion: (val) => val && val.length==4,
+                            validators={{
+                              requiredYearofCompletion: (val) => val && val.length == 4,
                               isNumber,
-                              maxLength:maxLength(4) }}></Control.text>
+                              maxLength: maxLength(4)
+                            }}></Control.text>
                           <Errors
                             className={styles.errors}
                             show="touched"
                             model={`Education.certificationDetails[${i}].YearOfCompletion`}
                             messages={{
                               requiredYearofCompletion: 'Enter Year in Format(YYYY)',
-                              isNumber:"Enter a valid Year"
+                              isNumber: "Enter a valid Year"
                             }}
                           ></Errors>
                         </td>
                         <td><label>InstituteName</label>
                           <Control.text model={`Education.certificationDetails[${i}].InstituteName`} id={`Education.certificationDetails[${i}].InstituteName`}
                             component={TextField}
-                            validators={{ requiredInstituteName: (val) => val && val.length,
-                              maxLength:maxLength(255) }}></Control.text>
+                            validators={{
+                              requiredInstituteName: (val) => val && val.length,
+                              maxLength: maxLength(255)
+                            }}></Control.text>
                           <Errors
                             className={styles.errors}
                             show="touched"
                             model={`Education.certificationDetails[${i}].InstituteName`}
                             messages={{
                               requiredInstituteName: 'Required',
-                              maxLength:"Max Charachters allowed 255"
+                              maxLength: "Max Charachters allowed 255"
                             }}
                           ></Errors>
                         </td>
                         <td><label>GradePercentage</label>
                           <Control.text model={`Education.certificationDetails[${i}].GradePercentage`} id={`Education.certificationDetails[${i}].GradePercentage`}
                             component={TextField}
-                            validators={{ requiredGradePercentage: (val) => val && val.length,
-                              maxLength:maxLength(255) }}></Control.text>
+                            validators={{
+                              requiredGradePercentage: (val) => val && val.length,
+                              maxLength: maxLength(255)
+                            }}></Control.text>
                           <Errors
                             className={styles.errors}
                             show="touched"
                             model={`Education.certificationDetails[${i}].GradePercentage`}
                             messages={{
                               requiredGradePercentage: 'Required',
-                              maxLength:"Max Charachters allowed 255"
+                              maxLength: "Max Charachters allowed 255"
                             }}
                           ></Errors>
                         </td>
@@ -297,7 +316,8 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                   })}
                 </table>
                 <div >
-                  <DefaultButton id="DefaultSubmit" primary={true} disabled={this.state.buttonDisabled} text={"Submit"} type="submit" />
+                  <DefaultButton id="DefaultSubmit" primary={true} text={"Submit"} type="submit"
+                    disabled={this.state.buttonDisabled} className={styles.button} />
                 </div>
               </div>
             </div>
@@ -324,8 +344,8 @@ const mapDispatchToProps = (dispatch): IEducationDetailConnectedDispatch => {
     addEducationDetailRow: (section) => {
       return dispatch(addEducationDetailRow(section));
     },
-    removeEducationDetailRow: (removedItem,section, index) => {
-      return dispatch(removeEducationDetailRow(removedItem,section, index))
+    removeEducationDetailRow: (removedItem, section, index) => {
+      return dispatch(removeEducationDetailRow(removedItem, section, index))
     },
   };
 };

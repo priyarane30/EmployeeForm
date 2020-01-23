@@ -1,7 +1,7 @@
 export const AppConstats = {
     SITEURL: 'https://synoverge.sharepoint.com/sites/leadership-connection/',
 
-}
+};
 
 export const ListNames = {
     EMPLOYEECONTACT: 'EmployeeContact',
@@ -14,7 +14,7 @@ export const ListNames = {
     CertificationDetail: 'Certificationdetails',
     PROFESSIONALHISTORY: 'ProfessionalHistory',
     EMPLOYEETECHNICALSKILL: 'EmployeeTechnicalSkill'
-}
+};
 
 export const ActionTypes = {
     GetDefaultFormControls: 'GET_DEFAULT_FORM_CONTROLS',
@@ -52,4 +52,4 @@ export const ActionTypes = {
     AddValueFromPayroll: 'ADD_PAYROLL_DATA',
     AddVisaDetailRow: 'ADD_VISA_DETAIL_ROW',
     RemoveVisaDetailRow: 'REMOVE_VISA_DETAIL_ROW'
-}
+};

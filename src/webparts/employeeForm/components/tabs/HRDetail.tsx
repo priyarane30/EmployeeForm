@@ -11,10 +11,10 @@ import { DefaultButton, PrimaryButton } from "office-ui-fabric-react/lib/Button"
 import styles from "../EmployeeForm.module.scss";
 import { PeoplePicker, PrincipalType } from "@pnp/spfx-controls-react/lib/PeoplePicker";
 import pnp from 'sp-pnp-js';
-import NewEmployeeService from '../../services/NewEmployeeService'
+import NewEmployeeService from '../../services/NewEmployeeService';
 export interface IControls {
     Manager: any;
-    buttonDisabled: boolean
+    buttonDisabled: boolean;
 }
 
 export interface IPeoplePickerControl {
@@ -47,8 +47,8 @@ class HRDetail extends React.Component<any, IControls> {
         this.props.getDefaultControlsData(empListId);//empListId
 
         var myemail = [];
-        myemail.push('priya.rane@synoverge.com')
-        this.setState({ Manager: myemail })
+        myemail.push('priya.rane@synoverge.com');
+        this.setState({ Manager: myemail });
         this.PeoplePickerItems = this.PeoplePickerItems.bind(this);
     }
     async handleSubmit(formValues) {
@@ -58,13 +58,13 @@ class HRDetail extends React.Component<any, IControls> {
         //Save The Data
         let empHrData = {} as IHRState;
         empHrData = formValues;
-        let managerdata = this.state.Manager
+        let managerdata = this.state.Manager;
         const empListId = store.getState().EmpListId;
 
-        this.setState({ buttonDisabled: true })
+        this.setState({ buttonDisabled: true });
         let newEmpReqServiceObj: NewEmployeeService = new NewEmployeeService();
-        await newEmpReqServiceObj.HrAddNewEmployee(empHrData, managerdata, empListId)
-        this.setState({ buttonDisabled: false })
+        await newEmpReqServiceObj.HrAddNewEmployee(empHrData, managerdata, empListId);
+        this.setState({ buttonDisabled: false });
         
         //EndSave The Data
         this.props.handleTabClick();
@@ -183,7 +183,7 @@ class HRDetail extends React.Component<any, IControls> {
     private PeoplePickerItems(items: any[]) {
         this.getUserId(items[0].secondaryText).then(resp => {
             this.setState({ Manager: resp });
-        })
+        });
     }
     public getUserId(email: string): Promise<number> {
         return pnp.sp.site.rootWeb.ensureUser(email).

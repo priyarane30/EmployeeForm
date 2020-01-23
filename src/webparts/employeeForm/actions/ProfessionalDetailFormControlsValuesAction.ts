@@ -13,13 +13,12 @@ export function GetInitialControlValuesAction(EmpListID) {
         newEmpServiceObj.getIsFreshers(EmpListID)
             .then((resp) => {
                 formcontrol.IsFresher = resp.IsFresher
-
                 if (formcontrol.IsFresher == false) {
                     let payLoadArrayOrganizationDetails = [];
                     //gets already set ProfessionalDetails for user
                     newEmpServiceObj.getProfessionalDetailsFromList(ListNames.PROFESSIONALHISTORY, 616)
-                        .then((resp) => {
-                            payLoadArrayOrganizationDetails = resp;
+                        .then((organizationdetailresp) => {
+                            payLoadArrayOrganizationDetails = organizationdetailresp;
                             formcontrol.organizationDetails = payLoadArrayOrganizationDetails;
                             dispatch({
                                 type: ActionTypes.SetInitialProfessionalDetailFormState,
@@ -30,8 +29,8 @@ export function GetInitialControlValuesAction(EmpListID) {
                 //get already existing ProfessionalDetails for user
                 let payLoadArrayTechnologyDetails = [];
                 newEmpServiceObj.getTechnicalDetailsFromList(ListNames.EMPLOYEETECHNICALSKILL, EmpListID)
-                    .then((resp) => {
-                        payLoadArrayTechnologyDetails = resp
+                    .then((technicaldetailsresp) => {
+                        payLoadArrayTechnologyDetails = technicaldetailsresp
                         formcontrol.technologyDetails = payLoadArrayTechnologyDetails;
                         dispatch({
                             type: ActionTypes.SetInitialTechnologyFromState,
