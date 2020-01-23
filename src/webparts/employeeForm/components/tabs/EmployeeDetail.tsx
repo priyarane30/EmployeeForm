@@ -17,7 +17,7 @@ interface INewFormConnectedDispatch {
     setTabName: (tabName: ICommonState) => void;
     getDefaultControlsData: (EmpListID) => void; // Gets the form fields & options for dropdown fields
     AddDetailRowToGrid: (section) => void; //save data in grod row
-    RemoveDetailRowFromGrid: (section, index) => void; //remove row from grid
+    RemoveDetailRowFromGrid: (removedItem,section, index) => void; //remove row from grid
 }
 
 //for validations in form
@@ -39,7 +39,8 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
 
     //removes row from grid
     private handleRowRemove(section, index) {
-        this.props.RemoveDetailRowFromGrid(section, index);
+        let removedItem = this.props.Employee[section][index];
+        this.props.RemoveDetailRowFromGrid(removedItem, section, index);
     }
 
     private async handleSubmit(formValues) {
@@ -438,7 +439,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                     <table className="ms-Grid-col ms-u-sm12 block">
                         <tr>
                             <th colSpan={8} style={{ textAlign: "left" }}>Visa Details
-                                <button type="button" onClick={() => this.handleRowAdd("Visa")}>+</button>
+                                <button type="button" onClick={() => this.handleRowAdd("visaDetailItems")}>+</button>
                             </th>
                         </tr>
                         {props.visaDetailItems.map((visa, i) => {
@@ -527,7 +528,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         <Control.checkbox model={`Employee.visaDetailItems[${i}].IsTravelled`} id={`Employee.visaDetailItems[${i}].IsTravelled`} />
                                     </td>
                                     <td>
-                                        <button type="button" style={{ marginTop: "20px" }} onClick={() => this.handleRowRemove("Visa", i)}>-</button>
+                                        <button type="button" style={{ marginTop: "20px" }} onClick={() => this.handleRowRemove("visaDetailItems", i)}>-</button>
                                     </td>
                                 </tr>
                             );
@@ -590,7 +591,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                 onSelectDate: (props) => { return props.onChange; }
                             }}
                             validators={{
-                                requiredSpouceDOB: (val) => val && val != null,
+                                requiredSpouceDOB: (val) => val ,
                             }}
                         ></Control>
                         <Errors
@@ -605,7 +606,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                     <table className="ms-Grid-col ms-u-sm12 block" style={{ width: "100%" }}>
                         <tr>
                             <th colSpan={9} style={{ textAlign: "left" }}><label>Children Details</label>
-                                <button type="button" onClick={() => this.handleRowAdd("Child")}>+</button>
+                                <button type="button" onClick={() => this.handleRowAdd("childDetailItems")}>+</button>
                             </th>
                         </tr>
                         {props.childDetailItems.map((child, i) => {
@@ -637,7 +638,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                                 onSelectDate: (props) => { return props.onChange; }
                                             }}
                                             validators={{
-                                                requiredDateOfBirth: (val) => val && val.length,
+                                                requiredDateOfBirth: (val) => val ,
                                             }}
                                         ></Control>
                                         <Errors
@@ -650,7 +651,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         ></Errors>
                                     </td>
                                     <td>
-                                        <button type="button" style={{ marginTop: "20px" }} onClick={() => this.handleRowRemove("Child", i)}>-</button>
+                                        <button type="button" style={{ marginTop: "20px" }} onClick={() => this.handleRowRemove("childDetailItems", i)}>-</button>
                                     </td>
                                 </tr>
                             );
@@ -675,8 +676,8 @@ const mapDispatchToProps = (dispatch): INewFormConnectedDispatch => {
         AddDetailRowToGrid: (section) => {
             return dispatch(AddDetailRowToGrid(section));
         },
-        RemoveDetailRowFromGrid: (section, index) => {
-            return dispatch(RemoveDetailRowFromGrid(section, index));
+        RemoveDetailRowFromGrid: (removedItem,section, index) => {
+            return dispatch(RemoveDetailRowFromGrid(removedItem,section, index));
         }
     };
 };

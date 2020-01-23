@@ -9,7 +9,6 @@ import { ItemAddResult, Web } from "sp-pnp-js";
 import { IProfessionalDetailState } from '../state/IProfessionalDetailControlState';
 import UtilityService from '../services/UtilityService';
 import { IPayrollState } from '../state/IPayrollState';
-
 export default class NewEmployeeService implements INewEmpRequestService {
     public getDataFromListUsingParentID(listName, EmpListID): Promise<any> {
         //Get data from Master lists
@@ -99,14 +98,18 @@ export default class NewEmployeeService implements INewEmpRequestService {
                             return this.getMultipleDataFromListUsingParentID(ListNames.CHILDDETAILS, EmpListID).then((childres) => {
                                 var childItemArray = [];
                                 childres.forEach(element => {
-                                    childItemArray.push({ ChildName: element.ChildName, DateOfBirth: new Date(element.ChildDOB) });
+                                    childItemArray.push({
+                                        childDetailId: element.Id,
+                                        ChildName: element.ChildName,
+                                        DateOfBirth: new Date(element.ChildDOB)
+                                    });
                                 });
                                 newFormControlsState.childDetailItems = childItemArray;
                                 return this.getMultipleDataFromListUsingParentID(ListNames.VISADETAILS, EmpListID).then((visares) => {
                                     var visaItemArray = [];
                                     visares.forEach(element => {
                                         visaItemArray.push({
-                                            Id: element.Id,
+                                            visaDetailId: element.Id,
                                             ValidVisa: element.ValidVisa,
                                             VisaOfCountry: element.VisaOfCountry,
                                             VisaNo: element.VisaNo,
@@ -158,89 +161,52 @@ export default class NewEmployeeService implements INewEmpRequestService {
             if (empData.MaritalStatus == "Married") {
                 // Creates the multiple purchase items in batch.
                 let batch = web.createBatch();
-                var url = AppConstats.SITEURL + "_api/web/lists/GetByTitle('" + ListNames.CHILDDETAILS + "')/items?$select=ID&$filter=empTableID/ID eq " + empListId.EmpListID;
-                return axios.get(url)
-                    .then(res => {
-                        if (res.data.value.length > 0) {
-                            let idData = res.data.value;
-                            idData.forEach(e => {
-                                web.lists.getByTitle(ListNames.CHILDDETAILS).items.getById(e["ID"]).inBatch(batch).delete()
-                                    .then(r => {
-                                        console.log("deleted");
-                                    });
-                            });
-                            batch.execute().then(() => {
-                                empData.childDetailItems.forEach(detailRow => {
-                                    web.lists.getByTitle(ListNames.CHILDDETAILS).items.inBatch(batch).add({
-                                        ChildName: detailRow.ChildName,
-                                        ChildDOB: detailRow.DateOfBirth,
-                                        empTableIDId: empListId.EmpListID,
-                                        Title: detailRow.ChildName
-                                    });
-                                });
-                                batch.execute().then(() => console.log("all added"));
-                            });
-                        }
-                        else {
-                            empData.childDetailItems.forEach(detailRow => {
-                                web.lists.getByTitle(ListNames.CHILDDETAILS).items.inBatch(batch).add({
-                                    ChildName: detailRow.ChildName,
-                                    ChildDOB: detailRow.DateOfBirth,
-                                    empTableIDId: empListId.EmpListID,
-                                    Title: detailRow.ChildName
-                                });
-                            });
-                            batch.execute().then(() => console.log("all added"));
-                        }
-                    }).catch(error => {
-                        console.log("error while getting CHILDDETAILS from list");
-                        console.log(error);
-                    });
+                empData.childDetailItems.forEach(detailRow => {
+                    if (detailRow.childDetailId == 0) {
+                        web.lists.getByTitle(ListNames.CHILDDETAILS).items.inBatch(batch).add({
+                            ChildName: detailRow.ChildName,
+                            ChildDOB: detailRow.DateOfBirth,
+                            empTableIDId: empListId.EmpListID,
+                            Title: detailRow.ChildName
+                        });
+                    }
+                    else if (detailRow.childDetailId > 0) {
+                        web.lists.getByTitle(ListNames.CHILDDETAILS).items.getById(detailRow.childDetailId).inBatch(batch).update({
+                            ChildName: detailRow.ChildName,
+                            ChildDOB: detailRow.DateOfBirth,
+                            empTableIDId: empListId.EmpListID,
+                            Title: detailRow.ChildName
+                        });
+                    }
+                });
+                batch.execute().then(() => { }).catch(() => alert("Oops! Error occured in saving Children Details"));
             }
             if (empData.IsPassAvail) {
-                let visaBatch = web.createBatch();
-                var url = AppConstats.SITEURL + "_api/web/lists/GetByTitle('" + ListNames.VISADETAILS + "')/items?$select=ID&$filter=empTableID/ID eq " + empListId.EmpListID;
-                return axios.get(url)
-                    .then(res => {
-                        if (res.data.value.length > 0) {
-                            let idData = res.data.value;
-                            idData.forEach(e => {
-                                web.lists.getByTitle(ListNames.VISADETAILS).items.getById(e["ID"]).inBatch(visaBatch).delete()
-                                    .then(r => {
-                                        console.log("visa deleted");
-                                    });
-                            });
-                            visaBatch.execute().then(() => {
-                                empData.visaDetailItems.forEach(detailRow => {
-                                    web.lists.getByTitle(ListNames.VISADETAILS).items.inBatch(visaBatch).add({
-                                        ValidVisa: detailRow.ValidVisa,
-                                        VisaNo: detailRow.VisaNo,
-                                        VisaOfCountry: detailRow.VisaOfCountry,
-                                        Entry: detailRow.Entry,
-                                        empTableIDId: empListId.EmpListID,
-                                        IsTravelled: detailRow.IsTravelled ? "Yes" : "No"
-                                    });
-                                });
-                                visaBatch.execute().then(() => console.log("all visa added"));
-                            });
-                        }
-                        else {
-                            empData.visaDetailItems.forEach(detailRow => {
-                                web.lists.getByTitle(ListNames.VISADETAILS).items.inBatch(visaBatch).add({
-                                    ValidVisa: detailRow.ValidVisa,
-                                    VisaNo: detailRow.VisaNo,
-                                    VisaOfCountry: detailRow.VisaOfCountry,
-                                    Entry: detailRow.Entry,
-                                    empTableIDId: empListId.EmpListID,
-                                    IsTravelled: detailRow.IsTravelled ? "Yes" : "No"
-                                });
-                            });
-                            visaBatch.execute().then(() => console.log("all visa added"));
-                        }
-                    }).catch(error => {
-                        console.log('error while fetching VISADETAILS');
-                        console.log(error);
-                    });
+                let web = new Web(AppConstats.SITEURL);
+                let batch = web.createBatch();
+                empData.visaDetailItems.forEach(detailRow => {
+                    if (detailRow.visaDetailId == 0) {
+                        web.lists.getByTitle(ListNames.VISADETAILS).items.inBatch(batch).add({
+                            ValidVisa: detailRow.ValidVisa,
+                            VisaNo: detailRow.VisaNo,
+                            VisaOfCountry: detailRow.VisaOfCountry,
+                            Entry: detailRow.Entry,
+                            empTableIDId: empListId.EmpListID,
+                            IsTravelled: detailRow.IsTravelled ? "Yes" : "No"
+                        });
+                    }
+                    else if (detailRow.visaDetailId > 0) {
+                        web.lists.getByTitle(ListNames.VISADETAILS).items.getById(detailRow.visaDetailId).inBatch(batch).update({
+                            ValidVisa: detailRow.ValidVisa,
+                            VisaNo: detailRow.VisaNo,
+                            VisaOfCountry: detailRow.VisaOfCountry,
+                            Entry: detailRow.Entry,
+                            empTableIDId: empListId.EmpListID,
+                            IsTravelled: detailRow.IsTravelled ? "Yes" : "No"
+                        });
+                    }
+                });
+                batch.execute().then(() => { }).catch(() => alert("Oops! Error occured in saving Visa Details"));
             }
             alert("Employee details saved successfully");
         }).catch(error => {
@@ -396,6 +362,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                     .then((reasonResp) => {
                         resp.forEach(element => {
                             payLoadArrayOrganizationDetails.push({
+                                organizationId: element.ID,
                                 organization: element.organization,
                                 designation: element.designation,
                                 startDate: element.startDate,
@@ -421,6 +388,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                     .then((techResp) => {
                         resp.forEach(element => {
                             payLoadArrayTechnologyDetails.push({
+                                technologyId: element.ID,
                                 Technology: element.Technology,
                                 SinceWhen: element.SinceWhen,
                                 Expertise: element.Expertise,
@@ -457,105 +425,63 @@ export default class NewEmployeeService implements INewEmpRequestService {
     public saveOrgenizationDetail(organizationDetails, empListID) {
         let web = new Web(AppConstats.SITEURL);
         let batch = web.createBatch();
-        var url = AppConstats.SITEURL + "_api/web/lists/GetByTitle('" + ListNames.PROFESSIONALHISTORY + "')/items?$select=ID&$filter=empTableID/ID eq " + empListID.EmpListID;
-        return axios.get(url)
-            .then(res => {
-                if (res.data.value.length > 0) {
-                    let idData = res.data.value;
-                    idData.forEach(e => {
-                        web.lists.getByTitle(ListNames.PROFESSIONALHISTORY).items.getById(e["ID"]).inBatch(batch).delete()
-                            .then(r => {
-                                console.log("deleted");
-                            });
-                    });
-                    batch.execute().then(() => {
-                        organizationDetails.forEach(detailRow => {
-                            web.lists.getByTitle(ListNames.EducationDetail).items.inBatch(batch).add({
-                                organization: detailRow.organization,
-                                designation: detailRow.designation,
-                                startDate: detailRow.startDate,
-                                endDate: detailRow.endDate,
-                                reportingTo: detailRow.reportingTo,
-                                reportingDesignation: detailRow.reportingDesignation,
-                                totalExp: detailRow.totalExp,
-                                reasonForLeaving: detailRow.reasonForLeaving,
-                                empTableIDId: empListID.EmpListID
-                            });
-                        });
-                        batch.execute().then(() => console.log("all added"));
-                    }).catch(error => {
-                        console.log("error while adding an organization Details");
-                    });
-                }
-                else {
-                    organizationDetails.forEach(detailRow => {
-                        web.lists.getByTitle(ListNames.PROFESSIONALHISTORY).items.add({
-                            organization: detailRow.organization,
-                            designation: detailRow.designation,
-                            startDate: detailRow.startDate,
-                            endDate: detailRow.endDate,
-                            reportingTo: detailRow.reportingTo,
-                            reportingDesignation: detailRow.reportingDesignation,
-                            totalExp: detailRow.totalExp,
-                            reasonForLeaving: detailRow.reasonForLeaving,
-                            empTableIDId: empListID.EmpListID
-                        }).then((result: ItemAddResult) => {
-                            let mainListID = result.data.Id;
-                        }).catch(error => {
-                            console.log("error while adding an organization Details");
-                        });
-                    });
-                }
-            });
+        organizationDetails.forEach(detailRow => {
+            if (detailRow.organizationId == 0) {
+                web.lists.getByTitle(ListNames.PROFESSIONALHISTORY).items.inBatch(batch).add({
+                    organization: detailRow.organization,
+                    designation: detailRow.designation,
+                    startDate: detailRow.startDate,
+                    endDate: detailRow.endDate,
+                    reportingTo: detailRow.reportingTo,
+                    reportingDesignation: detailRow.reportingDesignation,
+                    totalExp: detailRow.totalExp,
+                    reasonForLeaving: detailRow.reasonForLeaving,
+                    empTableIDId: empListID.EmpListID
+                });
+            }
+            else if (detailRow.organizationId > 0) {
+                web.lists.getByTitle(ListNames.PROFESSIONALHISTORY).items.getById(detailRow.organizationId).inBatch(batch).update({
+                    organization: detailRow.organization,
+                    designation: detailRow.designation,
+                    startDate: detailRow.startDate,
+                    endDate: detailRow.endDate,
+                    reportingTo: detailRow.reportingTo,
+                    reportingDesignation: detailRow.reportingDesignation,
+                    totalExp: detailRow.totalExp,
+                    reasonForLeaving: detailRow.reasonForLeaving,
+                    empTableIDId: empListID.EmpListID
+                });
+            }
+        });
+        batch.execute().then(() => { }).catch(() => alert("Oops! Error occured in saving Technical Details"));
     }
 
     //Save Technology Detail in EmpList Id
     public saveTechnologyDetail(technologyDetails, empListID) {
         let web = new Web(AppConstats.SITEURL);
         let batch = web.createBatch();
-        var url = AppConstats.SITEURL + "_api/web/lists/GetByTitle('" + ListNames.EMPLOYEETECHNICALSKILL + "')/items?$select=ID&$filter=empTableID/ID eq " + empListID.EmpListID;
-        return axios.get(url)
-            .then(res => {
-                if (res.data.value.length > 0) {
-                    let idData = res.data.value;
-                    idData.forEach(e => {
-                        web.lists.getByTitle(ListNames.EMPLOYEETECHNICALSKILL).items.getById(e["ID"]).inBatch(batch).delete()
-                            .then(r => {
-                                console.log("deleted");
-                            });
-                    });
-                    batch.execute().then(() => {
-                        technologyDetails.forEach(detailRow => {
-                            web.lists.getByTitle(ListNames.EMPLOYEETECHNICALSKILL).items.inBatch(batch).add({
-                                Technology: detailRow.Technology,
-                                SinceWhen: detailRow.SinceWhen,
-                                Expertise: detailRow.Expertise,
-                                Rating: detailRow.Rating,
-                                empTableIDId: empListID.EmpListID
-                            });
-                        });
-                        batch.execute().then(() => console.log("all added"));
-                    }).catch(error => {
-                        console.log("error while adding an Technical Details");
-                    });
-                }
-                else {
-                    technologyDetails.forEach(detailRow => {
-                        web.lists.getByTitle(ListNames.EMPLOYEETECHNICALSKILL).items.add({
-                            Technology: detailRow.Technology,
-                            SinceWhen: detailRow.SinceWhen,
-                            Expertise: detailRow.Expertise,
-                            Rating: detailRow.Rating,
-                            empTableIDId: empListID.EmpListID
-                        }).then((result: ItemAddResult) => {
-                            let mainListID = result.data.Id;
-                        }).catch(error => {
-                            console.log("error while adding an Technical Details");
-                        });
-                    });
-                }
-            });
-
+        technologyDetails.forEach(detailRow => {
+            if (detailRow.technologyId == 0) {
+                web.lists.getByTitle(ListNames.EMPLOYEETECHNICALSKILL).items.inBatch(batch).add({
+                    Technology: detailRow.Technology,
+                    SinceWhen: detailRow.SinceWhen,
+                    Expertise: detailRow.Expertise,
+                    Rating: detailRow.Rating,
+                    empTableIDId: empListID.EmpListID
+                });
+            }
+            else if (detailRow.technologyId > 0) {
+                web.lists.getByTitle(ListNames.EMPLOYEETECHNICALSKILL).items.getById(detailRow.organizationId).inBatch(batch).update({
+                    Technology: detailRow.Technology,
+                    SinceWhen: detailRow.SinceWhen,
+                    Expertise: detailRow.Expertise,
+                    Rating: detailRow.Rating,
+                    empTableIDId: empListID.EmpListID
+                });
+            }
+        });
+        batch.execute().then(() => alert("Professional Detail Save Successfully"))
+            .catch(() => alert("Oops! Error occured in saving Technical Details"));
     }
     //#endregion Professional Detail Section
 

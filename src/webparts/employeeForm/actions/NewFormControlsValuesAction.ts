@@ -3,7 +3,7 @@
 import { INewFormState } from '../state/INewFormControlsState';
 import { ICommonState } from '../state/ICommonState';
 import NewEmpService from '../services/NewEmployeeService';
-import { ActionTypes } from '../AppConstants';
+import { ActionTypes, AppConstats, ListNames } from '../AppConstants';
 
 /**Get default values for Emp Details Form from sharepoint lists */
 export function GetInitialControlValuesAction(EmpListID) {
@@ -32,16 +32,19 @@ export function SetTabName(tabData: ICommonState) {
 }
 
 /** Method to remove row from Grids */
-export function RemoveDetailRowFromGrid(section, index) {
+export function RemoveDetailRowFromGrid(removeditem,section, index) {
     return dispatch => {
+        let newEmpServiceObj: NewEmpService = new NewEmpService();
         //remove row from Children detail grid
-        if (section == "Child")
+        if (section == "childDetailItems")
+        newEmpServiceObj.deleteDataFromListUsingID(removeditem.childDetailId, ListNames.CHILDDETAILS);
             dispatch({
                 type: ActionTypes.RemoveChildDetailRow,
                 payload: index
             });
         //remove row from Visa detail grid
-        if (section == "Visa")
+        if (section == "visaDetailItems")
+        newEmpServiceObj.deleteDataFromListUsingID(removeditem.visaDetailId, ListNames.VISADETAILS);
             dispatch({
                 type: ActionTypes.RemoveVisaDetailRow,
                 payload: index
@@ -52,10 +55,11 @@ export function RemoveDetailRowFromGrid(section, index) {
 /** Method to add new blank row in Grids */
 export function AddDetailRowToGrid(section) {
     var actionObj;
-    if (section == "Child") {
+    if (section == "childDetailItems") {
         //add row in Children detail grid
         let newChildDetailGridRow =
         {
+            childDetailId:0,
             ChildName: '',
             DateOfBirth: ''
         };
@@ -64,10 +68,11 @@ export function AddDetailRowToGrid(section) {
             payload: newChildDetailGridRow
         };
     }
-    else if (section == "Visa") {
+    else if (section == "visaDetailItems") {
         //add row in Visa detail grid
         let newVisaDetailGridRow =
         {
+            visaDetailId:0,
             ValidVisa: false,
             VisaOfCountry: '',
             VisaNo: '',

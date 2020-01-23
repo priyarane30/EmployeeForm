@@ -2,6 +2,7 @@ import { INewFormState } from '../state/INewFormControlsState';
 import { IHRState } from '../state/IHRSectionControlsState';
 // Represents the service to interact with SharePoint to work with employee detail request.
 export default interface INewEmpRequestService {
+    
     //Start Employee Detail Form
     getNewFormControlState(EmpListId): Promise<any>;
     AddEmpFormData(empData: INewFormState,EmpListId): Promise<any>;

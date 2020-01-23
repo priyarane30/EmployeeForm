@@ -75,7 +75,7 @@ class BasicDetail extends React.Component<any, IButtonState>{
             this.props.showTabs(eId);
             let newEmpReqServiceObj: BasicService = new BasicService();
             var technology = await newEmpReqServiceObj.GetEmpTechnology(eId.EmpListID);
-            if (technology != null || technology != '') {
+            if (technology != null && technology != '') {
                 var TechnologyDropDown = technology.split(",");
                 let final = [];
                 TechnologyDropDown.forEach(tech => {
