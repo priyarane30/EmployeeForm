@@ -7,12 +7,12 @@ import UtilityService from "../services/UtilityService";
 import { actions } from 'react-redux-form';
 
 export function GetInitialControlValuesAction(EmpListID) {
-    let formcontrol = {} as IProfessionalDetailState
+    let formcontrol = {} as IProfessionalDetailState;
     return dispatch => {
         let newEmpServiceObj: NewEmpService = new NewEmpService();
         newEmpServiceObj.getIsFreshers(EmpListID)
             .then((resp) => {
-                formcontrol.IsFresher = resp.IsFresher
+                formcontrol.IsFresher = resp.IsFresher;
                 if (formcontrol.IsFresher == false) {
                     let payLoadArrayOrganizationDetails = [];
                     //gets already set ProfessionalDetails for user
@@ -30,25 +30,25 @@ export function GetInitialControlValuesAction(EmpListID) {
                 let payLoadArrayTechnologyDetails = [];
                 newEmpServiceObj.getTechnicalDetailsFromList(ListNames.EMPLOYEETECHNICALSKILL, EmpListID)
                     .then((technicaldetailsresp) => {
-                        payLoadArrayTechnologyDetails = technicaldetailsresp
+                        payLoadArrayTechnologyDetails = technicaldetailsresp;
                         formcontrol.technologyDetails = payLoadArrayTechnologyDetails;
                         dispatch({
                             type: ActionTypes.SetInitialTechnologyFromState,
                             payload: formcontrol
-                        })
+                        });
                     });
                 dispatch({
                     type: ActionTypes.GetProfessionalDetailForm,
                     payload: formcontrol
                 });
-            })
+            });
     };
 }
 export function SetTabName(tabData: ICommonState) {
     return ({
         type: "SET_TAB",
         payload: tabData
-    })
+    });
 }
 //add rows in detail grids
 export function addProfessionalDetailRow(section) {
@@ -70,14 +70,14 @@ export function addProfessionalDetailRow(section) {
                         reasonForLeaving: '',
                         // Represent the choices to be displayed in dropdown when the form loads.
                         reasonOfLeavingOptions: ReasonResp,
-                    }
+                    };
 
                     dispatch({
                         type: ActionTypes.AddProfessionalDetailRow,
                         payload: initialOrganizationDetailsGrid
-                    })
+                    });
                 });
-        }
+        };
     }
     //add row in certification detail grid
     else {
@@ -91,13 +91,13 @@ export function addProfessionalDetailRow(section) {
                         Expertise: '',
                         Rating: '',
                         technologyOptions: techResp
-                    }
+                    };
                     dispatch({
                         type: ActionTypes.AddTechnologyDetailRow,
                         payload: initialTechnologyDetailGrid
-                    })
+                    });
                 });
-        }
+        };
     }
     // return actionObj;
 }
@@ -115,7 +115,7 @@ export function removeProfessionalDetailRow(section, index) {
             dispatch({
                 type: ActionTypes.RemoveTechnologyRow,
                 payload: index
-            })
+            });
         }
-    }
+    };
 }

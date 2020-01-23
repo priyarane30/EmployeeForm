@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { GetEmpBasicData, SetTabName, GetEmpListIdByUserEmail, SetEmpIdInStore } from "../../actions/BasicEmpDetailAction";
 import { ICommonState, IEmpListIdState } from '../../state/ICommonState';
 import { IBasicDetailState } from '../../state/IBasicDetailState';
-import BasicService from '../../services/BasicFormService'
+import BasicService from '../../services/BasicFormService';
 import { ActionTypes } from '../../AppConstants';
 import { store } from '../../store/ConfigureStore';
 import { DatePicker } from 'office-ui-fabric-react/lib/DatePicker';
@@ -33,7 +33,7 @@ class BasicDetail extends React.Component<any, IButtonState>{
     }
 
     //On Button Save : Basic Details saved In List
-    handleSubmit(formValues) {
+    public handleSubmit(formValues) {
         let newEmpReqServiceObj: BasicService = new BasicService();
         const idState = store.getState().EmpListId;
         this.setState({ isDisable: true });
@@ -56,7 +56,7 @@ class BasicDetail extends React.Component<any, IButtonState>{
                         type: ActionTypes.GetEmpID,
                         payload: empIdState
                     });
-                }
+                };
                 this.setState({ isDisable: false });
                 alert("Basic details saved successfully");
             }).catch(() => {
@@ -65,8 +65,8 @@ class BasicDetail extends React.Component<any, IButtonState>{
         }
     }
 
-    async componentDidMount() {
-        var eId = await GetEmpListIdByUserEmail(this.props.empEmail)
+    public async componentDidMount() {
+        var eId = await GetEmpListIdByUserEmail(this.props.empEmail);
         if (eId != null && eId != undefined) {
             //set empId in store
             this.props.setEmpId(eId);
@@ -81,7 +81,7 @@ class BasicDetail extends React.Component<any, IButtonState>{
                 TechnologyDropDown.forEach(tech => {
                     final.push({ 'key': tech, 'name': tech });
                 });
-                this.setState({ selectedTechnologies: final })
+                this.setState({ selectedTechnologies: final });
             }
         }
         const CommonState: ICommonState = { CurrentForm: "Employee" };
@@ -92,10 +92,11 @@ class BasicDetail extends React.Component<any, IButtonState>{
         let desigOpt;
         if (this.props.Basic != null || this.props.Basic != undefined) {
             if (this.props.Basic.designationOptions != null || this.props.Basic.designationOptions != undefined) {
-                desigOpt = this.props.Basic.designationOptions.map(desig => { return <option key={desig} value={desig}>{desig}</option> });
+                desigOpt = this.props.Basic.designationOptions.map(desig =>
+                     { return <option key={desig} value={desig}>{desig}</option>; });
             }
         }
-        if (!this.props.Employee) return (<div> Loading.... </div>)
+        if (!this.props.Employee) return (<div> Loading.... </div>);
         return (
             <div>
                 <div className={styles.employeeForm}>
@@ -124,8 +125,8 @@ class BasicDetail extends React.Component<any, IButtonState>{
                                 <div className="ms-Grid-col ms-u-sm8 block">
                                     <Control model='.DateofJoining' id='.DateofJoining' component={DatePicker} className={styles.marginb}
                                         mapProps={{
-                                            value: (props) => { return props.viewValue },
-                                            onSelectDate: (props) => { return props.onChange }
+                                            value: (props) => { return props.viewValue; },
+                                            onSelectDate: (props) => { return props.onChange; }
                                         }}
                                     ></Control>
                                 </div>
@@ -188,16 +189,16 @@ class BasicDetail extends React.Component<any, IButtonState>{
     }
 
     private onSelectedItem = (data: { key: string; name: string }[]): void => {
-        let TechnologyName = []
-        for (var i = 0; i < data.length; i++) { TechnologyName.push(data[i].name) }
-        var TechnologyString = TechnologyName.toString()
+        let TechnologyName = [];
+        for (var i = 0; i < data.length; i++) { TechnologyName.push(data[i].name); }
+        var TechnologyString = TechnologyName.toString();
         this.setState({ selectedTechnologies: TechnologyString });
     }
 }
 
-const mapStateToProps = function (state) {
+const mapStateToProps = (state) => {
     return state;
-}
+};
 
 // Maps dispatch to props
 const mapDispatchToProps = (dispatch): IBasicFormConnectedDispatch => {

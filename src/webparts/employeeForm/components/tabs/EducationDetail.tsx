@@ -15,7 +15,7 @@ import NewEmpService from '../../services/NewEmployeeService';
 import { TextField, DefaultButton } from "office-ui-fabric-react/lib";
 
 interface buttonStatus {
-  buttonDisabled: boolean
+  buttonDisabled: boolean;
 }
 interface IEducationDetailConnectedDispatch {
   setTabName: (tabName: ICommonState) => void;
@@ -35,34 +35,34 @@ const maxLength = (len) => (val) => val.length <= len;
 class EducationDetail extends React.Component<any, buttonStatus> {
   constructor(props) {
     super(props);
-    this.state = { buttonDisabled: false }
+    this.state = { buttonDisabled: false };
   }
-  async componentDidMount() {
+  public async componentDidMount() {
     const empListId = store.getState().EmpListId;
     await this.props.getDefaultControlsData(empListId);
   }
   //adds row in grids
-  handleRowAdd(section) {
+  public handleRowAdd(section) {
     this.props.addEducationDetailRow(section);
   }
 
   //removes row from grid
-  handleRowRemove(section, index) {
-    let removedItem = this.props.Education[section][index]
+  public handleRowRemove(section, index) {
+    let removedItem = this.props.Education[section][index];
     this.props.removeEducationDetailRow(removedItem, section, index);
   }
 
-  async handleSubmit(formValues) {
+  public async handleSubmit(formValues) {
     const CommonState: ICommonState = { CurrentForm: "Education" };
     this.props.setTabName(CommonState);
     let eduData = {} as IEducationDetailState;
     eduData = formValues;
     const empListId = store.getState().EmpListId;
-    this.setState({ buttonDisabled: true })
+    this.setState({ buttonDisabled: true });
     let newEmpServiceObj: NewEmpService = new NewEmpService();
-    await newEmpServiceObj.saveEduDataInList(eduData, empListId)
-    alert("Education Details saved Succesfully")
-    this.setState({ buttonDisabled: false })
+    await newEmpServiceObj.saveEduDataInList(eduData, empListId);
+    alert("Education Details saved Succesfully");
+    this.setState({ buttonDisabled: false });
     this.props.handleTabClick();
   }
 
@@ -203,7 +203,7 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                             ></Errors></td>
                           <td>
                             <button type="button" style={{ marginTop: "20px" }} onClick={() => this.handleRowRemove("educationDetails", i)}>-</button></td>
-                        </tr>)
+                        </tr>);
                     })}
                 </table>
                 <table>
@@ -301,7 +301,8 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                         </td>
                         <td>
                           <button type="button" style={{ marginTop: "20px" }} onClick={() => this.handleRowRemove("certificationDetails", i)}>-</button></td>
-                      </tr>)
+                      </tr>
+                    );
                   })}
                 </table>
                 <div >
@@ -317,9 +318,9 @@ class EducationDetail extends React.Component<any, buttonStatus> {
   }
 }
 
-const mapStateToProps = function (state) {
+const mapStateToProps = (state) => {
   return state;
-}
+};
 
 const mapDispatchToProps = (dispatch): IEducationDetailConnectedDispatch => {
   return {
@@ -331,7 +332,7 @@ const mapDispatchToProps = (dispatch): IEducationDetailConnectedDispatch => {
       return dispatch(addEducationDetailRow(section));
     },
     removeEducationDetailRow: (removedItem, section, index) => {
-      return dispatch(removeEducationDetailRow(removedItem, section, index))
+      return dispatch(removeEducationDetailRow(removedItem, section, index));
     },
   };
 };

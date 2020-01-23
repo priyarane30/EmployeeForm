@@ -358,7 +358,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
         );
     }
 
-    async componentDidMount() {
+    public async componentDidMount() {
         const empListID = await store.getState().EmpListId;
         this.props.getDefaultControlsData(empListID);
     }
@@ -661,7 +661,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
     }
 }
 
-const mapStateToProps = function (state) {
+const mapStateToProps = (state) =>{
     return state;
 };
 

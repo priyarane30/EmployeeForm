@@ -31,7 +31,7 @@ export const EducationSectionReducer = (state: IEducationDetailState = eduDetail
             state = {
                 ...state,
                 educationDetails: action.payload
-            }
+            };
             break;
         //adds empty array from payload to state.educationdetails
         case ActionTypes.AddEducationDetailRow:

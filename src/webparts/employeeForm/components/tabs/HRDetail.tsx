@@ -45,7 +45,7 @@ class HRDetail extends React.Component<any, IControls> {
         this.setState({ Manager: myemail });
         this.PeoplePickerItems = this.PeoplePickerItems.bind(this);
     }
-    async handleSubmit(formValues) {
+    public async handleSubmit(formValues) {
         const CommonState: ICommonState = { CurrentForm: "HR" };
         this.props.setTabName(CommonState);
 
@@ -129,8 +129,8 @@ class HRDetail extends React.Component<any, IControls> {
                                 <div className='ms-Grid-col ms-u-sm8 block'>
                                     <Control model='HR.DateOfLeaving' id='HR.DateOfLeaving' component={DatePicker} placeholder='dd-MM-yyyy' className={styles.marginb}
                                         mapProps={{
-                                            value: (props) => { return props.viewValue },
-                                            onSelectDate: (props) => { return props.onChange }
+                                            value: (props) => { return props.viewValue; },
+                                            onSelectDate: (props) => { return props.onChange; }
                                         }}></Control>
                                 </div>
                                 {/* Reason for leaving */}
@@ -154,8 +154,8 @@ class HRDetail extends React.Component<any, IControls> {
                                 <div className='ms-Grid-col ms-u-sm8 block'>
                                 <Control model='HR.ResigntionDate' id='HR.ResigntionDate' component={DatePicker} placeholder='dd-MM-yyyy' className={styles.marginb}
                                     mapProps={{
-                                        value: (props) => { return props.viewValue },
-                                        onSelectDate: (props) => { return props.onChange }
+                                        value: (props) => { return props.viewValue; },
+                                        onSelectDate: (props) => { return props.onChange; }
                                     }}></Control>
                                 </div>
                                 {/* Eligible for rehire*/}

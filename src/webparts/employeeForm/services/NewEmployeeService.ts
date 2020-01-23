@@ -203,7 +203,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                             batch.execute().then(() => console.log("all added"));
                         }
                     }).catch(error => {
-                        console.log(error)
+                        console.log(error);
                     });
             }
             if (empData.IsPassAvail) {
@@ -220,7 +220,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                                     });
                             });
                             visaBatch.execute().then(() => {
-                                console.log("All visa deleted")
+                                console.log("All visa deleted");
                                 empData.visaDetailItems.forEach(detailRow => {
                                     web.lists.getByTitle(ListNames.VISADETAILS).items.inBatch(visaBatch).add({
                                         ValidVisa: detailRow.ValidVisa,
@@ -339,7 +339,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                     school: detailRow.SchoolCollege,
                     degree: detailRow.DegreeName,
                     empTableIDId: empListId.EmpListID
-                })
+                });
             }
             else if (detailRow.educationId > 0) {
                 web.lists.getByTitle(ListNames.EducationDetail).items.getById(detailRow.educationId).inBatch(eduBatch).update({
@@ -351,16 +351,16 @@ export default class NewEmployeeService implements INewEmpRequestService {
                     school: detailRow.SchoolCollege,
                     degree: detailRow.DegreeName,
                     empTableIDId: empListId.EmpListID
-                })
+                });
             }
-        })
+        });
         eduBatch.execute().then(() => { "edu updated" }).catch(() => alert("Oops! Error occured in saving Education Details"));
 
 
     }
     public saveCertificationDetails(certificationDetails, empListId) {
         let web = new Web(AppConstats.SITEURL);
-        let certibatch = web.createBatch()
+        let certibatch = web.createBatch();
 
         certificationDetails.forEach(detailRow => {
             if (detailRow.certificationId == 0) {
@@ -371,7 +371,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                     institution: detailRow.InstituteName,
                     GradeOrPercent: detailRow.GradePercentage,
                     empTableIDId: empListId.EmpListID
-                })
+                });
             }
             else if (detailRow.certificationId > 0) {
                 web.lists.getByTitle(ListNames.CertificationDetail).items.getById(detailRow.certificationId).inBatch(certibatch).update({
@@ -381,7 +381,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                     institution: detailRow.InstituteName,
                     GradeOrPercent: detailRow.GradePercentage,
                     empTableIDId: empListId.EmpListID
-                })
+                });
             }
         });
         certibatch.execute().then(() => { "certi updated" }).catch(() => alert("Oops! Error occured in saving Education Details"));
@@ -393,11 +393,11 @@ export default class NewEmployeeService implements INewEmpRequestService {
     //#region Professional Detail Section
 
     public getIsFreshers(EmpListID): Promise<any> {
-        let freshervalue = {} as IProfessionalDetailState
+        let freshervalue = {} as IProfessionalDetailState;
         return this.getDataFromListUsingID(ListNames.EMPLOYEECONTACT, EmpListID).then(Resp => {
-            freshervalue.IsFresher = Resp.Fresher
+            freshervalue.IsFresher = Resp.Fresher;
             return freshervalue;
-        })
+        });
     }
 
     public getProfessionalDetailsFromList(listName, EmpListID): Promise<any> {
@@ -418,10 +418,10 @@ export default class NewEmployeeService implements INewEmpRequestService {
                                 totalExp: element.totalExp,
                                 reasonForLeaving: element.reasonForLeaving,
                                 reasonOfLeavingOptions: reasonResp
-                            })
+                            });
                         });
-                        console.log("service Professional Details" + payLoadArrayOrganizationDetails)
-                        return payLoadArrayOrganizationDetails
+                        console.log("service Professional Details" + payLoadArrayOrganizationDetails);
+                        return payLoadArrayOrganizationDetails;
                     });
             });
     }
@@ -441,9 +441,9 @@ export default class NewEmployeeService implements INewEmpRequestService {
                                 InstituteName: element.institution,
                                 Rating: element.Rating,
                                 technologyOptions: techResp
-                            })
+                            });
                         });
-                        return payLoadArrayTechnologyDetails
+                        return payLoadArrayTechnologyDetails;
                     });
             });
     }
@@ -540,7 +540,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                             });
                     });
                     batch.execute().then(() => {
-                        console.log("All deleted")
+                        console.log("All deleted");
                         technologyDetails.forEach(detailRow => {
                             web.lists.getByTitle(ListNames.EMPLOYEETECHNICALSKILL).items.inBatch(batch).add({
                                 Technology: detailRow.Technology,
@@ -550,7 +550,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                                 empTableIDId: empListID.EmpListID
                             });
                         });
-                        batch.execute().then(() => console.log("all added"))
+                        batch.execute().then(() => console.log("all added"));
                     }).catch(error => {
                         console.log("error while adding an Technical Details");
                     });
@@ -571,7 +571,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                         });
                     });
                 }
-            })
+            });
 
     }
     //#endregion Professional Detail Section
