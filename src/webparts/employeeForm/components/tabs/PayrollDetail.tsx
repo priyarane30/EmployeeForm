@@ -30,6 +30,7 @@ class PayrollDetail extends React.Component<any, IState> {
   }
 
   public async handleSubmit(formValues) {
+    this.props.handleSpinner(false);
     const CommonState: ICommonState = { CurrentForm: "Payroll" };
     this.props.setTabName(CommonState);
     let empPayrollData = {} as IPayrollState;
@@ -39,6 +40,7 @@ class PayrollDetail extends React.Component<any, IState> {
     let newEmpServiceObj: NewEmpService = new NewEmpService();
     await newEmpServiceObj.PayrollAddEmployee(empPayrollData, empListId);
     this.setState({ isVisible: false });
+    this.props.handleSpinner(true);
     // redirect HR users from this for Form to ??? 
     // this.props.handleTabClick();
   }

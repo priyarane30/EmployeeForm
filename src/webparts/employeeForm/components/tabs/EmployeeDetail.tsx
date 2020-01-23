@@ -43,6 +43,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
     }
 
     private async handleSubmit(formValues) {
+        this.props.handleSpinner(false);
         const CommonState: ICommonState = { CurrentForm: "Employee" };
         this.props.setTabName(CommonState);
         const empListId = store.getState().EmpListId;
@@ -52,6 +53,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
         let newEmpServiceObj: NewEmpService = new NewEmpService();
         await newEmpServiceObj.AddEmpFormData(empData, empListId);
         this.setState({ buttonDisabled: false });
+        this.props.handleSpinner(true);
         this.props.handleTabClick();
     }
 

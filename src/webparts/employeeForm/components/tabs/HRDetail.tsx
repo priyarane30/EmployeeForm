@@ -46,6 +46,7 @@ class HRDetail extends React.Component<any, IControls> {
         this.PeoplePickerItems = this.PeoplePickerItems.bind(this);
     }
     async handleSubmit(formValues) {
+        this.props.handleSpinner(false);
         const CommonState: ICommonState = { CurrentForm: "HR" };
         this.props.setTabName(CommonState);
 
@@ -59,7 +60,7 @@ class HRDetail extends React.Component<any, IControls> {
         let newEmpReqServiceObj: NewEmployeeService = new NewEmployeeService();
         await newEmpReqServiceObj.HrAddNewEmployee(empHrData, managerdata, empListId);
         this.setState({ buttonDisabled: false });
-        
+        this.props.handleSpinner(true);
         //EndSave The Data
         this.props.handleTabClick();
     }

@@ -5,7 +5,6 @@ import { TextField } from "office-ui-fabric-react/lib/TextField";
 import { connect } from "react-redux";
 import { GetEmpBasicData, SetTabName, GetEmpListIdByUserEmail, SetEmpIdInStore } from "../../actions/BasicEmpDetailAction";
 import { ICommonState, IEmpListIdState } from '../../state/ICommonState';
-import { IBasicDetailState } from '../../state/IBasicDetailState';
 import BasicService from '../../services/BasicFormService'
 import { ActionTypes } from '../../AppConstants';
 import { store } from '../../store/ConfigureStore';
@@ -34,6 +33,7 @@ class BasicDetail extends React.Component<any, IButtonState>{
 
     //On Button Save : Basic Details saved In List
     handleSubmit(formValues) {
+        this.props.handleSpinner(false);
         let newEmpReqServiceObj: BasicService = new BasicService();
         const idState = store.getState().EmpListId;
         this.setState({ isDisable: true });
@@ -63,19 +63,18 @@ class BasicDetail extends React.Component<any, IButtonState>{
                 alert("Sorry. Error while adding employee...");
             });
         }
+        this.props.handleSpinner(true);
     }
 
     async componentDidMount() {
         var eId = await GetEmpListIdByUserEmail(this.props.empEmail)
         if (eId != null && eId != undefined) {
-            //set empId in store
-            this.props.setEmpId(eId);
-            //get Basic Details 
-            this.props.getBasicDatail(eId);
+            this.props.setEmpId(eId);//set empId in store
+            this.props.getBasicDatail(eId); //get Basic Details 
             this.props.showTabs(eId);
             let newEmpReqServiceObj: BasicService = new BasicService();
             var technology = await newEmpReqServiceObj.GetEmpTechnology(eId.EmpListID);
-            if (technology != null || technology != '') {
+            if (technology != null && technology != undefined) {
                 var TechnologyDropDown = technology.split(",");
                 let final = [];
                 TechnologyDropDown.forEach(tech => {
