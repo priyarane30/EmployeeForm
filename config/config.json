@@ -14,11 +14,7 @@
   "externals": {},
   "localizedResources": {
     "EmployeeFormWebPartStrings": "lib/webparts/employeeForm/loc/{locale}.js",
-<<<<<<< HEAD
-    "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js"
-=======
     "ControlStrings": "./node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js"
 
->>>>>>> 3d5811b173f11d47edb92a5ed5245531866a27eb
   }
 }
