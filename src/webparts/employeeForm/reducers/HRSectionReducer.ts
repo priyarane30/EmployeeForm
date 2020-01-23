@@ -16,7 +16,7 @@ export const HRSectionReducer = (state: IHRState = null, action) => {
                 DateOfLeaving: action.payload.DateOfLeaving, //dateTime?
                 reasonForLeaving: action.payload.reasonForLeaving,
                 ResigntionDate: action.payload.ResigntionDate, //datetime?
-                EligibleforRehire: false
+                EligibleforRehire: action.payload.EligibleforRehire
             };
             break;
         case "ADD_VALUE_FROM_HR":

@@ -8,18 +8,7 @@ import NewEmpService from '../services/NewEmployeeService';
 export function GetInitialControlValuesAction(EmpListID) {
     return dispatch => {
 
-        let formControlState = {
-            // employmentStatusOptions: [],
-            // reasonOfLeavingOptions: [],
-            // UserAlies: '',
-            // ADLogin: '',
-            // Manager: '',
-            // employementStatus: '',
-            // DateOfLeaving: '', //dateTime?
-            // reasonForLeaving: '',
-            // ResigntionDate: '', //datetime?
-            // EligibleforRehire: false,
-        } as IHRState;
+        let formControlState = {} as IHRState;
 
         let newEmpServiceObj: NewEmpService = new NewEmpService();
         newEmpServiceObj.getHRFormControlState(EmpListID).then((resp: IHRState) => {
@@ -35,7 +24,7 @@ export function GetInitialControlValuesAction(EmpListID) {
             formControlState.DateOfLeaving = resp.DateOfLeaving;
             formControlState.reasonForLeaving = resp.reasonForLeaving;
             formControlState.ResigntionDate =resp.ResigntionDate;
-            formControlState.EligibleforRehire = true;
+            formControlState.EligibleforRehire = resp.EligibleforRehire;
             dispatch({
                 type: ActionTypes.GetHRFormControls,
                 payload: formControlState

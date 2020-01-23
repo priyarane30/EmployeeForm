@@ -85,6 +85,104 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                             <Control.checkbox model='ProfessionalDetail.IsFresher' id='ProfessionalDetail.IsFresher' />
                         </div>
                         {this.isUserFresher(this.props.ProfessionalDetail)}
+                        <div className={`ms-Grid-row  ms-fontColor-white ${styles.row}`}>
+                    <span className={styles.errors}> *Please mention mininum 1 Technology / Tools in below section</span>
+                    <table>
+                        <tr>
+                            <th colSpan={2} style={{ textAlign: "left" }}>Technology / Tools Skills</th>
+                            <td colSpan={6} style={{ textAlign: "left" }}>
+                                <button type="button" onClick={() => this.handleRowAdd("Technology")}>+</button>
+                            </td>
+                        </tr>
+                        {this.props.ProfessionalDetail.technologyDetails.map((technologies, i) => {
+                            return (
+                                <tr key={i}>
+                                    <td> {/* Technology */}
+                                        <label>Technology</label>
+                                        <Control.select model={`ProfessionalDetail.technologyDetails[${i}].Technology`} id={technologies.Technology}
+                                            validators={{ requiredtechnology: (val) => val && val != "--Select--" }} style={{ height: "30px", width: "100%" }}>
+                                            <option value="0">--Select--</option>
+                                            {this.props.ProfessionalDetail.technologyDetails[i].technologyOptions.map(technology => {
+                                                return <option key={technology} value={technology}>{technology}</option>
+                                            })};
+                                        </Control.select>
+                                        <Errors
+                                            className={styles.errors}
+                                            show="touched"
+                                            model={`ProfessionalDetail.technologyDetails[${i}].Technology`}
+                                            messages={{
+                                                requiredtechnology: 'Technology Required'
+                                            }} />
+                                    </td>
+                                    <td> {/* SinceWhen */}
+                                        <label>SinceWhen</label>
+                                        <Control.select model={`ProfessionalDetail.technologyDetails[${i}].SinceWhen`} id={technologies.SinceWhen}
+                                            validators={{ requiredSincewhen: (val) => val && val != "--Select--" }} style={{ height: "30px", width: "100%" }}>
+                                            <option value="0">--Select--</option>
+                                            <option value="Currently using">Currently using</option>
+                                            <option value="< 3 months">&lt; 3 months</option>
+                                            <option value="3-6 months">3-6 months</option>
+                                            <option value="6 months - 1 year">6 months - 1 year</option>
+                                            <option value="1 - 2 years">1 - 2 years</option>
+                                            <option value="> 2 years">&gt; 2 years</option>
+                                        </Control.select>
+                                        <Errors
+                                            className={styles.errors}
+                                            show="touched"
+                                            model={`ProfessionalDetail.technologyDetails[${i}].SinceWhen`}
+                                            messages={{
+                                                requiredSincewhen: 'Since When Required'
+                                            }} />
+                                    </td>
+                                    <td> {/* Expertise */}
+                                        <label>Expertise</label>
+                                        <Control.select model={`ProfessionalDetail.technologyDetails[${i}].Expertise`} id={technologies.Expertise}
+                                            validators={{ requiredExpertise: (val) => val && val != "--Select--" }} style={{ height: "30px", width: "100%" }}>
+                                            <option value="0">--Select--</option>
+                                            <option value="Expert">Expert</option>
+                                            <option value="Intermediate">Intermediate</option>
+                                            <option value="Beginner">Beginner</option>
+                                        </Control.select>
+                                        <Errors
+                                            className={styles.errors}
+                                            show="touched"
+                                            model={`ProfessionalDetail.technologyDetails[${i}].Expertise`}
+                                            messages={{
+                                                requiredExpertise: 'Expertise Required'
+                                            }} />
+                                    </td>
+                                    <td> {/* Rating */}
+                                        <label>Rating</label>
+                                        <Control.select model={`ProfessionalDetail.technologyDetails[${i}].Rating`} id={technologies.Rating}
+                                            validators={{ requiredRating: (val) => val && val != "0" }} style={{ height: "30px", width: "100%" }}>
+                                            <option value="0">0</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                        </Control.select>
+                                        <Errors
+                                            className={styles.errors}
+                                            show="touched"
+                                            model={`ProfessionalDetail.technologyDetails[${i}].Rating`}
+                                            messages={{
+                                                requiredRating: 'Rating Required'
+                                            }} />
+                                    </td>
+                                    <td> {/* Action */}
+                                        <button type="button" onClick={() => this.handleRowRemove("Technology", i)} style={{ marginTop: "20px" }}>-</button>
+                                    </td>
+                                </tr>
+                            );
+                        })}
+                    </table>
+                </div>
                         <DefaultButton id="DefaultSubmit" primary={true} text={"Submit"} type="submit"
                             disabled={this.state.buttonDisabled} className={styles.button} />
                     </Form>
@@ -234,109 +332,6 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                     </tr>
                                 )
                             })}
-                    </table>
-                </div>
-            )
-        }
-        //If User come from direct College
-        else if (props.IsFresher == true) {
-            return (
-                <div className={`ms-Grid-row  ms-fontColor-white ${styles.row}`}>
-                    <span className={styles.errors}> *Please mention mininum 1 Technology / Tools in below section</span>
-                    <table>
-                        <tr>
-                            <th colSpan={2} style={{ textAlign: "left" }}>Technology / Tools Skills</th>
-                            <td colSpan={6} style={{ textAlign: "left" }}>
-                                <button type="button" onClick={() => this.handleRowAdd("Technology")}>+</button>
-                            </td>
-                        </tr>
-                        {this.props.ProfessionalDetail.technologyDetails.map((technologies, i) => {
-                            return (
-                                <tr key={i}>
-                                    <td> {/* Technology */}
-                                        <label>Technology</label>
-                                        <Control.select model={`ProfessionalDetail.technologyDetails[${i}].Technology`} id={technologies.Technology}
-                                            validators={{ requiredtechnology: (val) => val && val != "--Select--" }} style={{ height: "30px", width: "100%" }}>
-                                            <option value="0">--Select--</option>
-                                            {this.props.ProfessionalDetail.technologyDetails[i].technologyOptions.map(technology => {
-                                                return <option key={technology} value={technology}>{technology}</option>
-                                            })};
-                                        </Control.select>
-                                        <Errors
-                                            className={styles.errors}
-                                            show="touched"
-                                            model={`ProfessionalDetail.technologyDetails[${i}].Technology`}
-                                            messages={{
-                                                requiredtechnology: 'Technology Required'
-                                            }} />
-                                    </td>
-                                    <td> {/* SinceWhen */}
-                                        <label>SinceWhen</label>
-                                        <Control.select model={`ProfessionalDetail.technologyDetails[${i}].SinceWhen`} id={technologies.SinceWhen}
-                                            validators={{ requiredSincewhen: (val) => val && val != "--Select--" }} style={{ height: "30px", width: "100%" }}>
-                                            <option value="0">--Select--</option>
-                                            <option value="Currently using">Currently using</option>
-                                            <option value="< 3 months">&lt; 3 months</option>
-                                            <option value="3-6 months">3-6 months</option>
-                                            <option value="6 months - 1 year">6 months - 1 year</option>
-                                            <option value="1 - 2 years">1 - 2 years</option>
-                                            <option value="> 2 years">&gt; 2 years</option>
-                                        </Control.select>
-                                        <Errors
-                                            className={styles.errors}
-                                            show="touched"
-                                            model={`ProfessionalDetail.technologyDetails[${i}].SinceWhen`}
-                                            messages={{
-                                                requiredSincewhen: 'Since When Required'
-                                            }} />
-                                    </td>
-                                    <td> {/* Expertise */}
-                                        <label>Expertise</label>
-                                        <Control.select model={`ProfessionalDetail.technologyDetails[${i}].Expertise`} id={technologies.Expertise}
-                                            validators={{ requiredExpertise: (val) => val && val != "--Select--" }} style={{ height: "30px", width: "100%" }}>
-                                            <option value="0">--Select--</option>
-                                            <option value="Expert">Expert</option>
-                                            <option value="Intermediate">Intermediate</option>
-                                            <option value="Beginner">Beginner</option>
-                                        </Control.select>
-                                        <Errors
-                                            className={styles.errors}
-                                            show="touched"
-                                            model={`ProfessionalDetail.technologyDetails[${i}].Expertise`}
-                                            messages={{
-                                                requiredExpertise: 'Expertise Required'
-                                            }} />
-                                    </td>
-                                    <td> {/* Rating */}
-                                        <label>Rating</label>
-                                        <Control.select model={`ProfessionalDetail.technologyDetails[${i}].Rating`} id={technologies.Rating}
-                                            validators={{ requiredRating: (val) => val && val != "0" }} style={{ height: "30px", width: "100%" }}>
-                                            <option value="0">0</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                            <option value="6">6</option>
-                                            <option value="7">7</option>
-                                            <option value="8">8</option>
-                                            <option value="9">9</option>
-                                            <option value="10">10</option>
-                                        </Control.select>
-                                        <Errors
-                                            className={styles.errors}
-                                            show="touched"
-                                            model={`ProfessionalDetail.technologyDetails[${i}].Rating`}
-                                            messages={{
-                                                requiredRating: 'Rating Required'
-                                            }} />
-                                    </td>
-                                    <td> {/* Action */}
-                                        <button type="button" onClick={() => this.handleRowRemove("Technology", i)} style={{ marginTop: "20px" }}>-</button>
-                                    </td>
-                                </tr>
-                            );
-                        })}
                     </table>
                 </div>
             )

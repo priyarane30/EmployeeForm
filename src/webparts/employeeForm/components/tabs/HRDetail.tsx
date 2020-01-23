@@ -9,7 +9,7 @@ import { TextField } from "office-ui-fabric-react/lib/TextField";
 import { DatePicker } from 'office-ui-fabric-react/lib/DatePicker';
 import { DefaultButton, PrimaryButton } from "office-ui-fabric-react/lib/Button";
 import styles from "../EmployeeForm.module.scss";
-//import { PeoplePicker, PrincipalType } from "@pnp/spfx-controls-react/lib/PeoplePicker";
+import { PeoplePicker, PrincipalType } from "@pnp/spfx-controls-react/lib/PeoplePicker";
 import pnp from 'sp-pnp-js';
 import NewEmployeeService from '../../services/NewEmployeeService'
 export interface IControls {
@@ -49,7 +49,6 @@ class HRDetail extends React.Component<any, IControls> {
         var myemail = [];
         myemail.push('priya.rane@synoverge.com')
         this.setState({ Manager: myemail })
-
         this.PeoplePickerItems = this.PeoplePickerItems.bind(this);
     }
     async handleSubmit(formValues) {
@@ -101,8 +100,8 @@ class HRDetail extends React.Component<any, IControls> {
                                 <div className='ms-Grid-col ms-u-sm4 block'>
                                     <label>Manager:</label>
                                 </div>
-                                <div className='ms-Grid-col ms-u-sm8 block'>
-                                    {/* <PeoplePicker
+                                <div className={`ms-Grid-col ms-u-sm8 block ${styles.marginb}`}>
+                                    <PeoplePicker
                                         context={this.props.context}
                                         personSelectionLimit={1}
                                         groupName={""} // Leave this blank in case you want to filter from all users
@@ -115,7 +114,7 @@ class HRDetail extends React.Component<any, IControls> {
                                         principalTypes={[PrincipalType.User]}
                                         resolveDelay={1000}
                                         defaultSelectedUsers={this.state.Manager ? this.state.Manager : null}
-                                    /> */}
+                                    />
                                 </div>
                                 {/* Employment Status */}
                                 <div className='ms-Grid-col ms-u-sm4 block'>
@@ -159,7 +158,11 @@ class HRDetail extends React.Component<any, IControls> {
                                     <label>Resignation Date:</label>
                                 </div>
                                 <div className='ms-Grid-col ms-u-sm8 block'>
-                                    <Control.text model='HR.ResigntionDate' id='HR.ResigntionDate' component={TextField} placeholder='dd-MM-yyyy' className={styles.marginb}/>
+                                <Control model='HR.ResigntionDate' id='HR.ResigntionDate' component={DatePicker} placeholder='dd-MM-yyyy' className={styles.marginb}
+                                    mapProps={{
+                                        value: (props) => { return props.viewValue },
+                                        onSelectDate: (props) => { return props.onChange }
+                                    }}></Control>
                                 </div>
                                 {/* Eligible for rehire*/}
                                 <div className='ms-Grid-col ms-u-sm4 block'>

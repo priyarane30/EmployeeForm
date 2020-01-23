@@ -6,7 +6,7 @@ export interface IHRState {
     employementStatus: string;
     DateOfLeaving: Date;
     reasonForLeaving: string;
-    ResigntionDate: string; //datetime?
+    ResigntionDate: Date; //datetime?
     EligibleforRehire: boolean;
 
 
