@@ -7,7 +7,7 @@ import { IHRState } from '../../state/IHRSectionControlsState';
 import { store } from "../../store/ConfigureStore";
 import { TextField } from "office-ui-fabric-react/lib/TextField";
 import { DatePicker } from 'office-ui-fabric-react/lib/DatePicker';
-import { DefaultButton, PrimaryButton } from "office-ui-fabric-react/lib/Button";
+import { DefaultButton } from "office-ui-fabric-react/lib/Button";
 import styles from "../EmployeeForm.module.scss";
 import { PeoplePicker, PrincipalType } from "@pnp/spfx-controls-react/lib/PeoplePicker";
 import pnp from 'sp-pnp-js';
@@ -16,22 +16,18 @@ export interface IControls {
     Manager: any;
     buttonDisabled: boolean;
 }
-
 export interface IPeoplePickerControl {
     id: string;
     secondaryText: string;
     text: string;
     ID: number;
 }
-
 // Represents the connected dispatch
 interface IHRConnectedDispatch {
     setTabName: (tabName: ICommonState) => void;
-
-    // Gets the options for dropdown fields
-    getDefaultControlsData: (empListId: IEmpListIdState) => void;
-
+    getDefaultControlsData: (empListId: IEmpListIdState) => void;// Gets the default form values from sp lists
 }
+
 class HRDetail extends React.Component<any, IControls> {
     constructor(props, ) {
         super(props);
@@ -41,8 +37,6 @@ class HRDetail extends React.Component<any, IControls> {
         };
     }
     public componentDidMount() {
-        console.log("HR Details");
-
         const empListId = store.getState().EmpListId;
         this.props.getDefaultControlsData(empListId);//empListId
 
@@ -87,14 +81,14 @@ class HRDetail extends React.Component<any, IControls> {
                                     <label>User Alias:</label>
                                 </div>
                                 <div className='ms-Grid-col ms-u-sm8'>
-                                    <Control.text model='HR.UserAlies' id='.UserAlies' component={TextField} className={styles.marginb}/>
+                                    <Control.text model='HR.UserAlies' id='.UserAlies' component={TextField} className={styles.marginb} />
                                 </div>
                                 {/* Name of employee*/}
                                 <div className='ms-Grid-col ms-u-sm4 block'>
                                     <label>AD Login Name of Employee:</label>
                                 </div>
                                 <div className='ms-Grid-col ms-u-sm8'>
-                                    <Control.text model='HR.ADLogin' id='HR.ADLogin' component={TextField} className={styles.marginb}/>
+                                    <Control.text model='HR.ADLogin' id='HR.ADLogin' component={TextField} className={styles.marginb} />
                                 </div>
                                 {/* Manager*/}
                                 <div className='ms-Grid-col ms-u-sm4 block'>
@@ -134,10 +128,10 @@ class HRDetail extends React.Component<any, IControls> {
                                 </div>
                                 <div className='ms-Grid-col ms-u-sm8 block'>
                                     <Control model='HR.DateOfLeaving' id='HR.DateOfLeaving' component={DatePicker} placeholder='dd-MM-yyyy' className={styles.marginb}
-                                    mapProps={{
-                                        value: (props) => { return props.viewValue },
-                                        onSelectDate: (props) => { return props.onChange }
-                                    }}></Control>
+                                        mapProps={{
+                                            value: (props) => { return props.viewValue },
+                                            onSelectDate: (props) => { return props.onChange }
+                                        }}></Control>
                                 </div>
                                 {/* Reason for leaving */}
                                 <div className='ms-Grid-col ms-u-sm4 block'>
@@ -190,20 +184,17 @@ class HRDetail extends React.Component<any, IControls> {
             then(result => { return result.data.Id; });
     }
 }
-
 const mapStateToProps = (state) => {
-    console.log(state);
     return state;
 };
-
 // Maps dispatch to props
 const mapDispatchToProps = (dispatch): IHRConnectedDispatch => {
     return {
         setTabName: SetTabName,
-        //setReqDigest : SetReqDigest,
         getDefaultControlsData: (empListId) => {
             return dispatch(GetInitialControlValuesAction(empListId.EmpListID));
         }
     };
 };
+
 export default connect(mapStateToProps, mapDispatchToProps)(HRDetail);

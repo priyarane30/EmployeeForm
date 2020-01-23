@@ -17,18 +17,12 @@ import { TextField, DefaultButton } from "office-ui-fabric-react/lib";
 interface buttonStatus {
     buttonDisabled: boolean
 }
-
 interface IProfessionalDetailConnectedDispatch {
     setTabName: (tabName: ICommonState) => void;
-
-    // Gets the options for dropdown fields
-    getDefaultControlsData: (empListId: IEmpListIdState) => void;
+    getDefaultControlsData: (empListId: IEmpListIdState) => void; // Gets the options for dropdown fields
     //616
-    //adds empty array to state
-    addProfessionalDetailRow: (section) => void;
-
-    //removes selected array from state
-    removeProfessionalDetailRow: (section, index) => void;
+    addProfessionalDetailRow: (section) => void;  //adds empty array to state
+    removeProfessionalDetailRow: (section, index) => void; //removes selected array from state
 }
 
 class ProfessionalDetail extends React.Component<any, buttonStatus> {
@@ -36,9 +30,7 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
         super(props);
         this.state = { buttonDisabled: false };
     }
-
     componentDidMount() {
-        console.log("Professional Details");
         const empListId = store.getState().EmpListId;
         this.props.getDefaultControlsData(empListId);
     }
@@ -56,7 +48,6 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
         else {
             this.props.removeProfessionalDetailRow(section, index);
         }
-
     }
 
     async handleSubmit(formValues) {
@@ -341,7 +332,6 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
 const mapStateToProps = function (state) {
     return state;
 }
-
 const mapDispatchToProps = (dispatch): IProfessionalDetailConnectedDispatch => {
     return {
         setTabName: SetTabName,

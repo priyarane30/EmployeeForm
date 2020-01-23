@@ -35,11 +35,9 @@ const maxLength = (len) => (val) => val.length <= len;
 class EducationDetail extends React.Component<any, buttonStatus> {
   constructor(props) {
     super(props);
-    const buttonState = {} as buttonStatus
     this.state = { buttonDisabled: false }
   }
   async componentDidMount() {
-    console.log("did mount")
     const empListId = store.getState().EmpListId;
     await this.props.getDefaultControlsData(empListId);
   }
@@ -52,19 +50,14 @@ class EducationDetail extends React.Component<any, buttonStatus> {
   handleRowRemove(section, index) {
     let removedItem = this.props.Education[section][index]
     this.props.removeEducationDetailRow(removedItem, section, index);
-
-
   }
 
   async handleSubmit(formValues) {
-    // Do anything you want with the form value
     const CommonState: ICommonState = { CurrentForm: "Education" };
     this.props.setTabName(CommonState);
-
     let eduData = {} as IEducationDetailState;
     eduData = formValues;
     const empListId = store.getState().EmpListId;
-    // Call the connected dispatch to create new purchase request
     this.setState({ buttonDisabled: true })
     let newEmpServiceObj: NewEmpService = new NewEmpService();
     await newEmpServiceObj.saveEduDataInList(eduData, empListId)
@@ -209,18 +202,14 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                               }}
                             ></Errors></td>
                           <td>
-
                             <button type="button" style={{ marginTop: "20px" }} onClick={() => this.handleRowRemove("educationDetails", i)}>-</button></td>
                         </tr>)
                     })}
-
-                </table >
+                </table>
                 <table>
-
                   <tr>
                     <th colSpan={6} style={{ textAlign: "left" }}>Certification details <button type="button" onClick={() => this.handleRowAdd("certificationDetails")}>+</button></th>
                   </tr>
-
                   {this.props.Education.certificationDetails.map((certification, i) => {
                     return (
                       <tr>
@@ -327,15 +316,12 @@ class EducationDetail extends React.Component<any, buttonStatus> {
     );
   }
 }
+
 const mapStateToProps = function (state) {
-  //console.log(state)
   return state;
 }
 
-
 const mapDispatchToProps = (dispatch): IEducationDetailConnectedDispatch => {
-
-
   return {
     setTabName: SetTabName,
     getDefaultControlsData: (empListId) => {
@@ -349,4 +335,5 @@ const mapDispatchToProps = (dispatch): IEducationDetailConnectedDispatch => {
     },
   };
 };
+
 export default connect(mapStateToProps, mapDispatchToProps)(EducationDetail);

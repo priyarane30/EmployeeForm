@@ -12,14 +12,12 @@ import { Provider } from 'react-redux';
 import { store } from "../store/ConfigureStore";
 
 export default class EmployeeForm extends React.Component<IEmployeeFormProps, any>{
-
   constructor(props) {
     super(props);
     this.state = {
       isEmpIdExists: false,
     };
     this.showTabs = this.showTabs.bind(this);
-
     this.state = {
       selectedKey: 0
     };
@@ -33,13 +31,12 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, an
   }
 
   public render(): React.ReactElement<IEmployeeFormProps> {
-    console.log(this.props.context)
     return (
       <Provider store={store}>
         <div className={styles.employeeForm}>
           <div className={styles.container}>
             <div>
-              <BasicDetail empEmail={this.props.userEmail} showTabs={this.showTabs} context={this.props.context}/>
+              <BasicDetail empEmail={this.props.userEmail} showTabs={this.showTabs} context={this.props.context} />
             </div>
             {this.IsEmpIdExists()}
           </div>
@@ -49,7 +46,7 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, an
   }
 
   _handleTabClick(): void {
-    this.setState({ selectedKey: (this.state.selectedKey + 1) % 5 });
+    this.setState({ selectedKey: (Number(this.state.selectedKey) + 1) % 5 });
   }
 
   private _TabClick = (item: PivotItem): void => {
@@ -57,7 +54,6 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, an
       selectedKey: item.props.itemKey
     });
   };
-
 
   private IsEmpIdExists() {
     if (this.state.isEmpIdExists)
