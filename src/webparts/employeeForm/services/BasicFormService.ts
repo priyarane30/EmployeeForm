@@ -1,13 +1,12 @@
 import { IBasicDetailState } from "../state/IBasicDetailState";
 import IBasicFormService from "./IBasicFormService";
-import { ListNames, AppConstats, ActionTypes } from "../AppConstants";
+import { ListNames, AppConstats } from "../AppConstants";
 import UtilityService from "./UtilityService";
-import { sp, ItemAddResult, Web } from "sp-pnp-js";
-import { IEmpListIdState } from "../state/ICommonState";
+import { ItemAddResult, Web } from "sp-pnp-js";
 
 export default class BasicFormService implements IBasicFormService {
     //Get Emp Basic Data when Id = 0
-   public GetEmpBasicData(): Promise<IBasicDetailState> {
+    public GetEmpBasicData(): Promise<IBasicDetailState> {
         let basicFormControlsState = {} as IBasicDetailState;
         let utilityServiceObj: UtilityService = new UtilityService();
         return utilityServiceObj.getOptionsFromMaster(ListNames.DESIGNATION, 'Designation').then(desigResp => {
@@ -25,10 +24,8 @@ export default class BasicFormService implements IBasicFormService {
         let utilityServiceObj: UtilityService = new UtilityService();
         return utilityServiceObj.getOptionsFromMaster(ListNames.DESIGNATION, 'Designation').then(desigResp => {
             basicFormControlsState.designationOptions = desigResp;
-
             return utilityServiceObj.getOptionsFromMaster(ListNames.TECHNOLOGY, 'Title').then(techResp => {
                 basicFormControlsState.technologyOptions = techResp;
-
                 return utilityServiceObj.GetEmployeeContactListById(empListId).then(mainListResp => {
                     basicFormControlsState.FirstName = mainListResp.FirstName;
                     basicFormControlsState.LastName = mainListResp.LastName;
@@ -50,7 +47,6 @@ export default class BasicFormService implements IBasicFormService {
             technology = mainListResp.Technology;
             return technology;
         });
-
     }
     public AddBasicDetail(empData: IBasicDetailState,technologydata): Promise<any> {
         let web = new Web(AppConstats.SITEURL);
@@ -63,17 +59,14 @@ export default class BasicFormService implements IBasicFormService {
             Email: empData.CompanyEmail
         }).then((result: ItemAddResult) => {
             let mainListID = result.data.Id;
-            console.log("Basic Details has been saved");
             return mainListID;
-
         }).catch(error => {
-            console.log("error while adding an employee");
+            console.log("error while adding an basic detail");
+            console.log(error);
         });
     }
 
     public UpdateBasicDetail(basicData: IBasicDetailState, technologydata, empListId): Promise<any> {
-
-        // var itemDate = new Date(date);
         let web = new Web(AppConstats.SITEURL);
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empListId.EmpListID).update({
             FirstName: basicData.FirstName,
@@ -83,12 +76,11 @@ export default class BasicFormService implements IBasicFormService {
             DateofJoining: basicData.DateofJoining,//datetime?
             Email: basicData.CompanyEmail
         }).then((result: ItemAddResult) => {
-            //result
-            console.log("Basic Details has been updated");
             let mainListID = result.data.Id;
             return mainListID;
         }).catch(error => {
-            console.log("error while adding an employee");
+            console.log("error while updating Basic details");
+            console.log(error);
         });
     }
 }
