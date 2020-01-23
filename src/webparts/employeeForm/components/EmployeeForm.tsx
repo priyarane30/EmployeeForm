@@ -51,7 +51,7 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, an
     );
   }
 
-  _handleTabClick(): void {
+  public _handleTabClick(): void {
     this.setState({ selectedKey: (Number(this.state.selectedKey) + 1) % 5 });
   }
 
@@ -59,7 +59,7 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, an
     this.setState({
       selectedKey: item.props.itemKey
     });
-  };
+  }
 
   private IsEmpIdExists() {
     if (this.state.isEmpIdExists)

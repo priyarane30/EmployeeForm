@@ -329,7 +329,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                     school: detailRow.SchoolCollege,
                     degree: detailRow.DegreeName,
                     empTableIDId: empListId.EmpListID
-                })
+                });
             }
             else if (detailRow.educationId > 0) {
                 web.lists.getByTitle(ListNames.EducationDetail).items.getById(detailRow.educationId).inBatch(eduBatch).update({
@@ -341,9 +341,9 @@ export default class NewEmployeeService implements INewEmpRequestService {
                     school: detailRow.SchoolCollege,
                     degree: detailRow.DegreeName,
                     empTableIDId: empListId.EmpListID
-                })
+                });
             }
-        })
+        });
         eduBatch.execute().then(() => { "edu updated" }).catch(() => alert("Oops! Error occured in saving Education Details"));
     }
 
@@ -380,11 +380,11 @@ export default class NewEmployeeService implements INewEmpRequestService {
     //#region Professional Detail Section
 
     public getIsFreshers(EmpListID): Promise<any> {
-        let freshervalue = {} as IProfessionalDetailState
+        let freshervalue = {} as IProfessionalDetailState;
         return this.getDataFromListUsingID(ListNames.EMPLOYEECONTACT, EmpListID).then(Resp => {
             freshervalue.IsFresher = Resp.Fresher;
             return freshervalue;
-        })
+        });
     }
 
     public getProfessionalDetailsFromList(listName, EmpListID): Promise<any> {
@@ -405,7 +405,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                                 totalExp: element.totalExp,
                                 reasonForLeaving: element.reasonForLeaving,
                                 reasonOfLeavingOptions: reasonResp
-                            })
+                            });
                         });
                         return payLoadArrayOrganizationDetails;
                     });
@@ -427,7 +427,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                                 InstituteName: element.institution,
                                 Rating: element.Rating,
                                 technologyOptions: techResp
-                            })
+                            });
                         });
                         return payLoadArrayTechnologyDetails;
                     });
@@ -534,7 +534,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                                 empTableIDId: empListID.EmpListID
                             });
                         });
-                        batch.execute().then(() => console.log("all added"))
+                        batch.execute().then(() => console.log("all added"));
                     }).catch(error => {
                         console.log("error while adding an Technical Details");
                     });
@@ -554,7 +554,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                         });
                     });
                 }
-            })
+            });
 
     }
     //#endregion Professional Detail Section

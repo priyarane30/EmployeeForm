@@ -81,4 +81,4 @@ export const ProfessionalDetailSectionReducer = (state: IProfessionalDetailState
     }
     return state;
 
-}
+};

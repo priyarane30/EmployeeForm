@@ -28,7 +28,7 @@ export function SetTabName(tabData: ICommonState) {
             type: ActionTypes.SetTabName,
             payload: tabData
         });
-    }
+    };
 }
 
 /** Method to remove row from Grids */
@@ -46,7 +46,7 @@ export function RemoveDetailRowFromGrid(section, index) {
                 type: ActionTypes.RemoveVisaDetailRow,
                 payload: index
             });
-    }
+    };
 }
 
 /** Method to add new blank row in Grids */
@@ -58,11 +58,11 @@ export function AddDetailRowToGrid(section) {
         {
             ChildName: '',
             DateOfBirth: ''
-        }
+        };
         actionObj = {
             type: ActionTypes.AddChildDetailRow,
             payload: newChildDetailGridRow
-        }
+        };
     }
     else if (section == "Visa") {
         //add row in Visa detail grid
@@ -74,11 +74,11 @@ export function AddDetailRowToGrid(section) {
             Entry: '',
             VisaValidity: null,
             IsTravelled: false
-        }
+        };
         actionObj = {
             type: ActionTypes.AddVisaDetailRow,
             payload: newVisaDetailGridRow
-        }
+        };
     }
     return actionObj;
 }

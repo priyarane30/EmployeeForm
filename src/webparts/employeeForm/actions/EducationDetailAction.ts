@@ -21,7 +21,7 @@ export  function GetInitialControlValuesAction(EmpListID) {
                 EndYear:element.yearOfCompletion,
                 Board:element.board,
                 SchoolCollege:element.school,
-                DegreeName:element.degree})     
+                DegreeName:element.degree});     
             });
             dispatch({
                 type:ActionTypes.SetInitialEduDetailFormState,
@@ -45,8 +45,7 @@ export  function GetInitialControlValuesAction(EmpListID) {
                 dispatch({
                     type:ActionTypes.SetInitialCertiDetailFormState,
                     payload:payLoadArrayCertificationDetail
-                })
-
+                });
             });
 
         });
@@ -57,7 +56,7 @@ export function SetTabName(tabData: ICommonState) {
     return ({
         type: "SET_TAB",
         payload: tabData
-    })
+    });
 }
 
 //add rows in detail grids
@@ -75,12 +74,12 @@ export function addEducationDetailRow(section){
             Board: "",
             SchoolCollege:"",
             DegreeName:"" 
-         }
+         };
 
          actionObj = {
               type:ActionTypes.AddEducationDetailRow,
               payload:initialEducationDetailGrid
-          }
+          };
           
         }
         //add row in certification detail grid
@@ -92,11 +91,11 @@ export function addEducationDetailRow(section){
                 YearOfCompletion: '',
                 InstituteName: '',
                 GradePercentage: ''
-            }
+            };
             actionObj = {
                 type:ActionTypes.AddCertiDetailRow,
                 payload:initialCertificationDetailGrid
-            }
+            };
         }
 
         return actionObj;
@@ -118,7 +117,7 @@ export function removeEducationDetailRow(removeditem,section,index){
             dispatch({
                 type:ActionTypes.RemoveCertiDetailRow,
                 payload:index
-            })
+            });
         }
-    }
+    };
 }

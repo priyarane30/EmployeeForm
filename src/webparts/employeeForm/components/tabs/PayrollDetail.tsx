@@ -24,7 +24,7 @@ class PayrollDetail extends React.Component<any, IState> {
     super(props);
     this.state = { isVisible: true };
   }
-  componentDidMount() {
+  public componentDidMount() {
     const empListId = store.getState().EmpListId;
     this.props.getPayrollFormControls(empListId);
   }
@@ -169,7 +169,7 @@ class PayrollDetail extends React.Component<any, IState> {
   }
 }
 
-const mapStateToProps = function (state) {
+const mapStateToProps = (state) =>{
   return state;
 };
 
