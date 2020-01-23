@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Form, Control, Errors } from 'react-redux-form';
-import { DefaultButton, PrimaryButton } from "office-ui-fabric-react/lib/Button";
+import { DefaultButton } from "office-ui-fabric-react/lib/Button";
 import { TextField } from "office-ui-fabric-react/lib/TextField";
 import { connect } from "react-redux";
 import { GetEmpBasicData, SetTabName, GetEmpListIdByUserEmail, SetEmpIdInStore } from "../../actions/BasicEmpDetailAction";
@@ -19,8 +19,6 @@ interface IBasicFormConnectedDispatch {
     setTabName: (tabName: ICommonState) => void;
     // Gets the options for dropdown fields
     getBasicDatail: (empListId) => void;
-    //save data
-    addBasicDetails: (empData: IBasicDetailState) => void;
 }
 
 interface IButtonState {
@@ -51,7 +49,7 @@ class BasicDetail extends React.Component<any, IButtonState>{
         }
         else {
             //New Form 
-            newEmpReqServiceObj.AddBasicDetail(formValues,technologydata).then(resp => {
+            newEmpReqServiceObj.AddBasicDetail(formValues, technologydata).then(resp => {
                 let empIdState = { EmpListID: resp } as IEmpListIdState;
                 dispatch => {
                     dispatch({
@@ -68,7 +66,6 @@ class BasicDetail extends React.Component<any, IButtonState>{
     }
 
     async componentDidMount() {
-        console.log("Basic Details");
         var eId = await GetEmpListIdByUserEmail(this.props.empEmail)
         if (eId != null && eId != undefined) {
             //set empId in store
@@ -91,7 +88,6 @@ class BasicDetail extends React.Component<any, IButtonState>{
 
     public render() {
         let desigOpt;
-
         if (this.props.Basic != null || this.props.Basic != undefined) {
             if (this.props.Basic.designationOptions != null || this.props.Basic.designationOptions != undefined) {
                 desigOpt = this.props.Basic.designationOptions.map(desig => { return <option key={desig} value={desig}>{desig}</option> });
@@ -187,6 +183,7 @@ class BasicDetail extends React.Component<any, IButtonState>{
             </div>
         );
     }
+
     private onSelectedItem = (data: { key: string; name: string }[]): void => {
         let TechnologyName = []
         for (var i = 0; i < data.length; i++) { TechnologyName.push(data[i].name) }
@@ -199,7 +196,6 @@ const mapStateToProps = function (state) {
     return state;
 }
 
-
 // Maps dispatch to props
 const mapDispatchToProps = (dispatch): IBasicFormConnectedDispatch => {
     return {
@@ -211,12 +207,8 @@ const mapDispatchToProps = (dispatch): IBasicFormConnectedDispatch => {
         },
         getBasicDatail: (empListId) => {
             return dispatch(GetEmpBasicData(empListId));
-        },
-        addBasicDetails: (empData: IBasicDetailState) => {
-            // return dispatch(AddNewEmployee(empData));
-        },
+        }
     };
 };
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(BasicDetail);

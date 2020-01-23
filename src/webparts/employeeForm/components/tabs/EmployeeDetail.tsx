@@ -7,7 +7,6 @@ import { INewFormState } from '../../state/INewFormControlsState';
 import { store } from "../../store/ConfigureStore";
 import NewEmpService from '../../services/NewEmployeeService';
 import { DatePicker, TextField } from 'office-ui-fabric-react/lib';
-
 import styles from '../EmployeeForm.module.scss';
 
 interface buttonStatus {
@@ -16,23 +15,18 @@ interface buttonStatus {
 // Represents the connected dispatch
 interface INewFormConnectedDispatch {
     setTabName: (tabName: ICommonState) => void;
-
-    // Gets the options for dropdown fields
-    getDefaultControlsData: (EmpListID) => void;
-
-    //save data
-    AddDetailRowToGrid: (section) => void;
-
-    RemoveDetailRowFromGrid: (section, index) => void;
+    getDefaultControlsData: (EmpListID) => void; // Gets the form fields & options for dropdown fields
+    AddDetailRowToGrid: (section) => void; //save data in grod row
+    RemoveDetailRowFromGrid: (section, index) => void; //remove row from grid
 }
 
+//for validations in form
 const isNumber = (val) => !isNaN(Number(val));
 const maxLength = (len) => (val) => val.length <= len;
 
 class EmployeeDetail extends React.Component<any, buttonStatus> {
     constructor(props) {
         super(props);
-        const buttonState = {} as buttonStatus;
         this.state = {
             buttonDisabled: false
         };
@@ -49,8 +43,6 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
     }
 
     private async handleSubmit(formValues) {
-
-        // Do anything you want with the form value
         const CommonState: ICommonState = { CurrentForm: "Employee" };
         this.props.setTabName(CommonState);
         const empListId = store.getState().EmpListId;
@@ -58,15 +50,12 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
         empData = formValues;
         this.setState({ buttonDisabled: true });
         let newEmpServiceObj: NewEmpService = new NewEmpService();
-        // Call the connected dispatch to create new purchase request
         await newEmpServiceObj.AddEmpFormData(empData, empListId);
         this.setState({ buttonDisabled: false });
         this.props.handleTabClick();
     }
 
     public render() {
-        // let i = 0;
-        console.log(this.props);
         if (!this.props.Employee) return (<div> Loading.... </div>);
         return (
             <div>
@@ -74,7 +63,6 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                     <div className={styles.container}>
                         <div className={`ms-Grid-row  ms-fontColor-white ${styles.row}`}>
                             <Form model="Employee" onSubmit={(val) => this.handleSubmit(val)}>
-
                                 <div className='ms-Grid-col ms-u-sm4 block'>
                                     <label>Gender:</label>
                                 </div>
@@ -312,7 +300,6 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                 <div className="ms-Grid-col ms-u-sm8 block">
                                     <Control.checkbox model=".IsSameAsCurrAddress" />
                                 </div>
-
                                 {this.isSameAsCurrentAdress(this.props.Employee)}
                                 <div className='ms-Grid-col ms-u-sm4 block'>
                                     <label>Aadhar No:</label>
@@ -368,15 +355,13 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                 </div>
             </div>
         );
-
     }
 
     async componentDidMount() {
-        console.log("Employee Details");
         const empListID = await store.getState().EmpListId;
         this.props.getDefaultControlsData(empListID);
-
     }
+
     private isSameAsCurrentAdress(props) {
         if (props.IsSameAsCurrAddress == false) {
             return (
@@ -551,6 +536,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
             );
         }
     }
+
     private isMarried(props) {
         if (props.MaritalStatus == "Married") {
             return (
@@ -672,34 +658,27 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                 </div>);
         }
     }
-
 }
 
 const mapStateToProps = function (state) {
-    //console.log(state)
     return state;
 };
 
 // Maps dispatch to props
 const mapDispatchToProps = (dispatch): INewFormConnectedDispatch => {
-
-
     return {
         setTabName: SetTabName,
         getDefaultControlsData: (empListId) => {
             return dispatch(GetInitialControlValuesAction(empListId.EmpListID));
         },
-
         AddDetailRowToGrid: (section) => {
             return dispatch(AddDetailRowToGrid(section));
         },
         RemoveDetailRowFromGrid: (section, index) => {
             return dispatch(RemoveDetailRowFromGrid(section, index));
-        },
-
+        }
     };
 };
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(EmployeeDetail);
 

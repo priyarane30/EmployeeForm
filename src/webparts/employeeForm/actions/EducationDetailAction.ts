@@ -1,10 +1,6 @@
-import { IEducationDetailState } from '../state/IEducationDetailState';
 import { ICommonState } from '../state/ICommonState';
-import NewEmployeeService from '../services/NewEmployeeService';
-import { ActionTypes, AppConstats, ListNames } from '../AppConstants';
+import { ActionTypes, ListNames } from '../AppConstants';
 import NewEmpService from '../services/NewEmployeeService';
-import { actions } from 'react-redux-form';
-import { ElementType } from 'office-ui-fabric-react';
 
 //gets initial value for all controls in the form
 export  function GetInitialControlValuesAction(EmpListID) {

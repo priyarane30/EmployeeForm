@@ -1,13 +1,15 @@
-import { Form, Control,createFieldClass,controls } from 'react-redux-form';
-import {Dropdown} from 'office-ui-fabric-react/lib/Dropdown';
-import * as React from 'react';
+import { createFieldClass, controls } from 'react-redux-form';
+import { Dropdown } from 'office-ui-fabric-react/lib/Dropdown';
 
-const FabricField = createFieldClass({
+const FabricField = createFieldClass(
+  {
     'Dropdown': controls.select
-  }, {
-    componentMap: {
-        Dropdown: Dropdown
+  },
+  {
+    componentMap:
+    {
+      Dropdown: Dropdown
     }
   });
 
-export default FabricField
+export default FabricField;

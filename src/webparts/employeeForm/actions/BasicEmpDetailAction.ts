@@ -2,7 +2,7 @@ import { IBasicDetailState } from '../state/IBasicDetailState';
 import BasicFormService from '../services/BasicFormService';
 import UtilityService from '../services/UtilityService';
 import { ActionTypes } from '../AppConstants';
-import { ICommonState, IEmpListIdState } from '../state/ICommonState';
+import { IEmpListIdState } from '../state/ICommonState';
 export function GetEmpBasicData(empListId) {
     return dispatch => {
         let basicFormState = {} as IBasicDetailState;
