@@ -43,7 +43,6 @@ class HRDetail extends React.Component<any, IControls> {
         var myemail = [];
         myemail.push('priya.rane@synoverge.com')
         this.setState({ Manager: myemail })
-
         this.PeoplePickerItems = this.PeoplePickerItems.bind(this);
     }
     async handleSubmit(formValues) {
@@ -95,7 +94,7 @@ class HRDetail extends React.Component<any, IControls> {
                                 <div className='ms-Grid-col ms-u-sm4 block'>
                                     <label>Manager:</label>
                                 </div>
-                                <div className='ms-Grid-col ms-u-sm8 block'>
+                                <div className={`ms-Grid-col ms-u-sm8 block ${styles.marginb}`}>
                                     <PeoplePicker
                                         context={this.props.context}
                                         personSelectionLimit={1}
@@ -153,7 +152,11 @@ class HRDetail extends React.Component<any, IControls> {
                                     <label>Resignation Date:</label>
                                 </div>
                                 <div className='ms-Grid-col ms-u-sm8 block'>
-                                    <Control.text model='HR.ResigntionDate' id='HR.ResigntionDate' component={TextField} placeholder='dd-MM-yyyy' className={styles.marginb} />
+                                <Control model='HR.ResigntionDate' id='HR.ResigntionDate' component={DatePicker} placeholder='dd-MM-yyyy' className={styles.marginb}
+                                    mapProps={{
+                                        value: (props) => { return props.viewValue },
+                                        onSelectDate: (props) => { return props.onChange }
+                                    }}></Control>
                                 </div>
                                 {/* Eligible for rehire*/}
                                 <div className='ms-Grid-col ms-u-sm4 block'>

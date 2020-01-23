@@ -23,8 +23,13 @@ export function GetInitialControlValuesAction(EmpListID) {
             formControlState.employementStatus = resp.employementStatus;
             formControlState.DateOfLeaving = resp.DateOfLeaving;
             formControlState.reasonForLeaving = resp.reasonForLeaving;
+<<<<<<< HEAD
             formControlState.ResigntionDate = resp.ResigntionDate;
             formControlState.EligibleforRehire = true;
+=======
+            formControlState.ResigntionDate =resp.ResigntionDate;
+            formControlState.EligibleforRehire = resp.EligibleforRehire;
+>>>>>>> 3d5811b173f11d47edb92a5ed5245531866a27eb
             dispatch({
                 type: ActionTypes.GetHRFormControls,
                 payload: formControlState

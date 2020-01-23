@@ -27,19 +27,17 @@ export function GetInitialControlValuesAction(EmpListID) {
                             });
                         });
                 }
-                else if (formcontrol.IsFresher == true) {
-                    //get already existing ProfessionalDetails for user
-                    let payLoadArrayTechnologyDetails = [];
-                    newEmpServiceObj.getTechnicalDetailsFromList(ListNames.EMPLOYEETECHNICALSKILL, EmpListID)
-                        .then((resp) => {
-                            payLoadArrayTechnologyDetails = resp
-                            formcontrol.technologyDetails = payLoadArrayTechnologyDetails;
-                            dispatch({
-                                type: ActionTypes.SetInitialTechnologyFromState,
-                                payload: formcontrol
-                            })
-                        });
-                }
+                //get already existing ProfessionalDetails for user
+                let payLoadArrayTechnologyDetails = [];
+                newEmpServiceObj.getTechnicalDetailsFromList(ListNames.EMPLOYEETECHNICALSKILL, EmpListID)
+                    .then((resp) => {
+                        payLoadArrayTechnologyDetails = resp
+                        formcontrol.technologyDetails = payLoadArrayTechnologyDetails;
+                        dispatch({
+                            type: ActionTypes.SetInitialTechnologyFromState,
+                            payload: formcontrol
+                        })
+                    });
                 dispatch({
                     type: ActionTypes.GetProfessionalDetailForm,
                     payload: formcontrol

@@ -288,7 +288,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                     hrControlsState.reasonForLeaving = '--Select--';
                 else
                     hrControlsState.reasonForLeaving = Resp.ReasonForLeaving;
-                hrControlsState.ResigntionDate = Resp.ResigntionDate;
+                hrControlsState.ResigntionDate = new Date(Resp.ResigntionDate);
                 hrControlsState.EligibleforRehire = Resp.EligibleforRehire;
                 return hrControlsState;
             });
@@ -298,10 +298,10 @@ export default class NewEmployeeService implements INewEmpRequestService {
     public HrAddNewEmployee(empReqData: IHRState, managerdata, empListID): Promise<any> {
         let web = new Web(AppConstats.SITEURL);
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empListID.EmpListID).update({
-            ManagerId: managerdata,
+            //ManagerId: managerdata,
             EmploymentStatus: empReqData.employementStatus,
             DateOfLeaving: empReqData.DateOfLeaving,
-           // ReasonForLeaving: empReqData.reasonForLeaving,
+            ReasonForLeaving: empReqData.reasonForLeaving,
             ResigntionDate: empReqData.ResigntionDate,
             EligibleforRehire: empReqData.EligibleforRehire,
         }).then((result: ItemAddResult) => {
@@ -451,11 +451,10 @@ export default class NewEmployeeService implements INewEmpRequestService {
     //Save Professional Details
     async saveProfessionalDetailInList(professionalDetailData: IProfessionalDetailState, EmpListID) {
         await this.saveIsFresher(professionalDetailData, EmpListID);
-        if (professionalDetailData.IsFresher == true) {
-            this.saveTechnologyDetail(professionalDetailData.technologyDetails, EmpListID);
-        } else {
-            this.saveOrgenizationDetail(professionalDetailData.organizationDetails, EmpListID);
-        }
+        if (professionalDetailData.IsFresher == false)
+            await this.saveOrgenizationDetail(professionalDetailData.organizationDetails, EmpListID);
+        await this.saveTechnologyDetail(professionalDetailData.technologyDetails, EmpListID);
+
     }
     public saveIsFresher(professionalDetailData: IProfessionalDetailState, empListID) {
         let web = new Web(AppConstats.SITEURL);
@@ -467,7 +466,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
             console.log("error while adding an employee");
         });
     }
-
+    //save Orgenization Detail in EmpList Id
     public saveOrgenizationDetail(organizationDetails, empListID) {
         let web = new Web(AppConstats.SITEURL);
         let batch = web.createBatch();
@@ -498,7 +497,10 @@ export default class NewEmployeeService implements INewEmpRequestService {
                             });
                         });
                         batch.execute().then(() => console.log("all added"));
+                    }).catch(error => {
+                        console.log("error while adding an organization Details");
                     });
+
                 }
                 else {
                     organizationDetails.forEach(detailRow => {
@@ -516,13 +518,13 @@ export default class NewEmployeeService implements INewEmpRequestService {
                             let mainListID = result.data.Id;
                             console.log("Employee request created : " + mainListID);
                         }).catch(error => {
-                            console.log("error while adding an employee");
+                            console.log("error while adding an organization Details");
                         });
                     });
                 }
             });
     }
-
+    //Save Technology Detail in EmpList Id
     public saveTechnologyDetail(technologyDetails, empListID) {
         let web = new Web(AppConstats.SITEURL);
         let batch = web.createBatch();
@@ -549,6 +551,8 @@ export default class NewEmployeeService implements INewEmpRequestService {
                             });
                         });
                         batch.execute().then(() => console.log("all added"))
+                    }).catch(error => {
+                        console.log("error while adding an Technical Details");
                     });
                 }
                 else {
@@ -563,7 +567,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                             let mainListID = result.data.Id;
                             console.log("Employee request created : " + mainListID);
                         }).catch(error => {
-                            console.log("error while adding an employee");
+                            console.log("error while adding an Technical Details");
                         });
                     });
                 }
