@@ -51,7 +51,7 @@ class BasicDetail extends React.Component<any, IButtonState>{
         }
         else {
             //New Form 
-            newEmpReqServiceObj.AddBasicDetail(formValues,technologydata).then(resp => {
+            newEmpReqServiceObj.AddBasicDetail(formValues, technologydata).then(resp => {
                 let empIdState = { EmpListID: resp } as IEmpListIdState;
                 dispatch => {
                     dispatch({
@@ -78,12 +78,14 @@ class BasicDetail extends React.Component<any, IButtonState>{
             this.props.showTabs(eId);
             let newEmpReqServiceObj: BasicService = new BasicService();
             var technology = await newEmpReqServiceObj.GetEmpTechnology(eId.EmpListID);
-            var TechnologyDropDown = technology.split(",");
-            let final = [];
-            TechnologyDropDown.forEach(tech => {
-                final.push({ 'key': tech, 'name': tech });
-            });
-            this.setState({ selectedTechnologies: final })
+            if (technology != null || technology != '') {
+                var TechnologyDropDown = technology.split(",");
+                let final = [];
+                TechnologyDropDown.forEach(tech => {
+                    final.push({ 'key': tech, 'name': tech });
+                });
+                this.setState({ selectedTechnologies: final })
+            }
         }
         const CommonState: ICommonState = { CurrentForm: "Employee" };
         this.props.setTabName(CommonState);
