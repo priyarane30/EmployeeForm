@@ -15,12 +15,12 @@ export function GetPayrollAction(EmpListID) {
                 payload: formControlState
             });
         });
-    }
+    };
 }
 
 export function SetTabName(tabData: ICommonState) {
     return ({
         type: "SET_TAB",
         payload: tabData
-    })
+    });
 }

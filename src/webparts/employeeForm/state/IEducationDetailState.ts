@@ -10,7 +10,7 @@ export interface IEducationDetailState {
       SchoolCollege: string;
       DegreeName: string;
     }
-  >
+  >;
   certificationDetails: Array<
   {   certificationId:number;
       Certification: string;
@@ -18,5 +18,5 @@ export interface IEducationDetailState {
       YearOfCompletion: string;
       InstituteName: string;
       GradePercentage: string;
-    }>
+    }>;
   }

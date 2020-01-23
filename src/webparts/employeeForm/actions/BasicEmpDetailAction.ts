@@ -26,7 +26,7 @@ export function GetEmpBasicData(empListId) {
                 });
             });
         }
-    }
+    };
 }
 
 export function SetTabName(tabData) {
@@ -35,7 +35,7 @@ export function SetTabName(tabData) {
             type: ActionTypes.SetTabName,
             payload: tabData
         });
-    }
+    };
 }
 
 export async function GetEmpListIdByUserEmail(currUserEmail) {
@@ -55,5 +55,5 @@ export function SetEmpIdInStore(empListId) {
             type: ActionTypes.SetEmpID,
             payload: empListId
         });
-    }
+    };
 }

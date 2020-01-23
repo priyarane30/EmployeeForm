@@ -2,7 +2,7 @@ import { AppConstats, ListNames } from "../AppConstants";
 import Axios from "axios";
 
 export default class BasicFormService {
-    GetEmpIdByUserEmail(email): Promise<any> {
+    public GetEmpIdByUserEmail(email): Promise<any> {
         var url = AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + ListNames.EMPLOYEECONTACT + "')/items?$select=ID&$filter=Email eq '" + email + "'";
         return Axios.get(url)
             .then(res => {
@@ -13,7 +13,7 @@ export default class BasicFormService {
             });
     }
 
-    getOptionsFromChoiceField(listName, columnName): Promise<any> {
+    public getOptionsFromChoiceField(listName, columnName): Promise<any> {
         // return pnp.sp.web.fields.getByTitle("Gender").select("Choices").get().then(response => {
         var url = AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + listName + "')/fields?$filter=EntityPropertyName eq '" + columnName + "'";
         return Axios.get(url)
@@ -25,7 +25,7 @@ export default class BasicFormService {
             });
     }
 
-    getOptionsFromMaster(listName, columnName): Promise<any> {
+    public getOptionsFromMaster(listName, columnName): Promise<any> {
         //Get data from Master lists
         var url = AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + listName + "')/items?$select=" + columnName;
         return Axios.get(url)
@@ -35,11 +35,11 @@ export default class BasicFormService {
                 }
             }).catch(error => {
                 console.log('error while getOptionsFromMaster');
-                console.log(error)
+                console.log(error);
             });
     }
 
-    GetEmployeeContactListById(itemId): Promise<any> {
+    public GetEmployeeContactListById(itemId): Promise<any> {
         //Get data from Master lists
         var url = AppConstats.SITEURL + "/_api/web/lists/GetByTitle('EmployeeContact')/items(" + itemId + ")";
         return Axios.get(url)
@@ -49,7 +49,7 @@ export default class BasicFormService {
                 }
             }).catch(error => {
                 console.log('error while getOptionsFromMaster');
-                console.log(error)
+                console.log(error);
             });
     }
 }

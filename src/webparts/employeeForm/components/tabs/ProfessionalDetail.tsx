@@ -36,12 +36,12 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
     }
 
     //adds row in grids
-    handleRowAdd(section) {
+    public handleRowAdd(section) {
         this.props.addProfessionalDetailRow(section);
     }
 
     //removes row from grid
-    handleRowRemove(section, index) {
+    public handleRowRemove(section, index) {
         if (section == "ProfessionalDetail") {
             this.props.removeProfessionalDetailRow(section, index);
         }
@@ -182,7 +182,7 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
         );
     }
 
-    isUserFresher(props) {
+    public isUserFresher(props) {
         //If user is come from another orgenization
         if (props.IsFresher == false) {
             return (

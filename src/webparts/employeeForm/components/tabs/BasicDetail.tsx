@@ -177,7 +177,8 @@ class BasicDetail extends React.Component<any, IButtonState>{
                                         }}
                                     />
                                 </div>
-                                <DefaultButton id="DefaultSubmit" primary={true} text={"Submit"} type="submit" disabled={!this.state.isDisable} />
+                                <DefaultButton id="DefaultSubmit" primary={true} text={"Submit"} type="submit"
+                                    disabled={!this.state.isDisable} className={styles.button} />
                             </Form>
                         </div>
                     </div>

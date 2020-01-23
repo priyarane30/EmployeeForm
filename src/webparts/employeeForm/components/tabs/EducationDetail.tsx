@@ -305,7 +305,8 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                   })}
                 </table>
                 <div >
-                  <DefaultButton id="DefaultSubmit" primary={true} disabled={this.state.buttonDisabled} text={"Submit"} type="submit" />
+                  <DefaultButton id="DefaultSubmit" primary={true} text={"Submit"} type="submit"
+                    disabled={this.state.buttonDisabled} className={styles.button} />
                 </div>
               </div>
             </div>

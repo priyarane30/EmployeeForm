@@ -28,7 +28,8 @@ class PayrollDetail extends React.Component<any, IState> {
     const empListId = store.getState().EmpListId;
     this.props.getPayrollFormControls(empListId);
   }
-  async handleSubmit(formValues) {
+
+  public async handleSubmit(formValues) {
     const CommonState: ICommonState = { CurrentForm: "Payroll" };
     this.props.setTabName(CommonState);
     let empPayrollData = {} as IPayrollState;
