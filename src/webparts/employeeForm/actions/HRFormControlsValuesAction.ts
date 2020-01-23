@@ -1,5 +1,5 @@
 import { IHRState } from '../state/IHRSectionControlsState';
-import { ICommonState , IEmpListIdState} from '../state/ICommonState';
+import { ICommonState } from '../state/ICommonState';
 import NewEmployeeService from '../services/NewEmployeeService';
 import { ActionTypes } from '../AppConstants';
 import NewEmpService from '../services/NewEmployeeService';
@@ -8,34 +8,23 @@ import NewEmpService from '../services/NewEmployeeService';
 export function GetInitialControlValuesAction(EmpListID) {
     return dispatch => {
 
-        let formControlState = {
-            // employmentStatusOptions: [],
-            // reasonOfLeavingOptions: [],
-            // UserAlies: '',
-            // ADLogin: '',
-            // Manager: '',
-            // employementStatus: '',
-            // DateOfLeaving: '', //dateTime?
-            // reasonForLeaving: '',
-            // ResigntionDate: '', //datetime?
-            // EligibleforRehire: false,
-        } as IHRState;
+        let formControlState = {} as IHRState;
 
         let newEmpServiceObj: NewEmpService = new NewEmpService();
         newEmpServiceObj.getHRFormControlState(EmpListID).then((resp: IHRState) => {
 
             //DropDown Field Value
             formControlState.reasonOfLeavingOptions = resp.reasonOfLeavingOptions;
-            formControlState.employmentStatusOptions=[];
+            formControlState.employmentStatusOptions = [];
             //textbox Values
             formControlState.UserAlies = resp.UserAlies;
             formControlState.ADLogin = resp.ADLogin;
             formControlState.Manager = resp.Manager;
-            formControlState.employementStatus =resp.employementStatus;
+            formControlState.employementStatus = resp.employementStatus;
             formControlState.DateOfLeaving = resp.DateOfLeaving;
             formControlState.reasonForLeaving = resp.reasonForLeaving;
             formControlState.ResigntionDate =resp.ResigntionDate;
-            formControlState.EligibleforRehire = true;
+            formControlState.EligibleforRehire = resp.EligibleforRehire;
             dispatch({
                 type: ActionTypes.GetHRFormControls,
                 payload: formControlState
@@ -45,15 +34,14 @@ export function GetInitialControlValuesAction(EmpListID) {
 }
 
 // Creates a new employee request.
-export function HrAddNewEmployee(empReqData: IHRState,managerdata,EmpListID) {
+export function HrAddNewEmployee(empReqData: IHRState, managerdata, EmpListID) {
     return dispatch => {
         let newEmpReqServiceObj: NewEmployeeService = new NewEmpService();
-        newEmpReqServiceObj.HrAddNewEmployee(empReqData,managerdata,EmpListID).then(resp => {
+        newEmpReqServiceObj.HrAddNewEmployee(empReqData, managerdata, EmpListID).then(resp => {
             alert("New Employee is added successfully");
         }).catch(() => {
             alert("Sorry. Error while adding employee...");
         });
-
         dispatch({
             type: ActionTypes.AddValueFromHR,
             payload: empReqData
@@ -61,11 +49,9 @@ export function HrAddNewEmployee(empReqData: IHRState,managerdata,EmpListID) {
     };
 }
 
-
-
 export function SetTabName(tabData: ICommonState) {
     return ({
-        type: "SET_TAB",
+        type: ActionTypes.SetTabName,
         payload: tabData
     });
 }

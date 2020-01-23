@@ -1,15 +1,5 @@
 import { IBasicDetailState } from "../state/IBasicDetailState";
 import { ActionTypes } from "../AppConstants";
-//Initialise state of Education 
-// export const BasicDetailState: IBasicDetailState = {
-//     FirstName: '',
-//     LastName: '',
-//     Gender: '',
-//     DateofJoining: '', //datetime?
-//     Designation: '',
-//     Technology: '',
-//     CompanyEmail: '',
-// };
 
 export const BasicDetailSectionReducer = (state: IBasicDetailState = null, action) => {
     switch (action.type) {
@@ -27,17 +17,6 @@ export const BasicDetailSectionReducer = (state: IBasicDetailState = null, actio
                 technologyOptions: action.payload.technologyOptions,
             };
             break;
-        // case ActionTypes.SetTabName:
-        //     state = {
-        //         ...state,
-        //         CurrentForm: action.payload.CurrentForm
-        //     };
-        //     break;
-        // case "ADD_BASIC_FORM":
-        //     state = {
-        //         ...state,
-        //     };
-        //     break;
     }
     return state;
 };

@@ -4,19 +4,14 @@ import { IHRState } from "../state/IHRSectionControlsState";
 import { IEducationDetailState } from "../state/IEducationDetailState";
 import axios from 'axios';
 import { AppConstats, ListNames } from '../AppConstants';
-import pnp, { ItemUpdateResult } from "sp-pnp-js";
-import { sp, ItemAddResult, Web } from "sp-pnp-js";
+import { ItemUpdateResult } from "sp-pnp-js";
+import { ItemAddResult, Web } from "sp-pnp-js";
 import { IProfessionalDetailState } from '../state/IProfessionalDetailControlState';
 import UtilityService from '../services/UtilityService';
 import { IPayrollState } from '../state/IPayrollState';
 
 export default class NewEmployeeService implements INewEmpRequestService {
-
-    // getusingCallback: (name) => {
-
-    // };
-
-    getDataFromListUsingParentID(listName, EmpListID): Promise<any> {
+    public getDataFromListUsingParentID(listName, EmpListID): Promise<any> {
         //Get data from Master lists
         var url = AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + listName + "')/items?$select=*&$filter=empTableID/ID eq '" + EmpListID + "'";
         return axios.get(url)
@@ -30,7 +25,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
             });
     }
 
-    getDataFromListUsingID(listName, EmpListID): Promise<any> {
+    public getDataFromListUsingID(listName, EmpListID): Promise<any> {
         var url = AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + listName + "')/items?$select=*&$filter=ID eq '" + EmpListID + "'";
         return axios.get(url)
             .then(res => {
@@ -43,14 +38,14 @@ export default class NewEmployeeService implements INewEmpRequestService {
             });
     }
 
-    deleteDataFromListUsingID(id, listName) {
+    public deleteDataFromListUsingID(id, listName) {
         let web = new Web(AppConstats.SITEURL);
         web.lists.getByTitle(listName).items.getById(id).delete().then(r => {
             console.log("deleted");
         });
     }
 
-    getMultipleDataFromListUsingParentID(listName, EmpListID): Promise<any> {
+    public getMultipleDataFromListUsingParentID(listName, EmpListID): Promise<any> {
         var url = AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + listName + "')/items?$select=*&$filter=empTableID/ID eq '" + EmpListID + "'";
         return axios.get(url)
             .then(res => {
@@ -64,7 +59,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
     }
 
     // Gets the choices to be displayed in the dropdown fields.
-    getNewFormControlState(EmpListID): Promise<any> {
+    public getNewFormControlState(EmpListID): Promise<any> {
         let newFormControlsState = {} as INewFormState;
         let utilityServiceObj: UtilityService = new UtilityService();
         return utilityServiceObj.getOptionsFromChoiceField(ListNames.EMPLOYEECONTACT, 'Gender').then(genderResp => {
@@ -82,7 +77,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                             newFormControlsState.AadharNo = res.AadhaarCardNo;
                             newFormControlsState.PersonalEmail = res.Email;
                             newFormControlsState.Mobile = res.Mobile;
-                            newFormControlsState.DateOfBirth = new Date(res.DateOfBirth)
+                            newFormControlsState.DateOfBirth = new Date(res.DateOfBirth);
                             newFormControlsState.Age = res.Age;
                             newFormControlsState.BloodGroup = res.BloodGroup;
                             newFormControlsState.FatherName = res.FatherName;
@@ -100,16 +95,16 @@ export default class NewEmployeeService implements INewEmpRequestService {
                             newFormControlsState.IsPassAvail = (res.Passport == "Yes") ? true : false;
                             newFormControlsState.PassportValidity = new Date(res.PassportValidity);
                             newFormControlsState.PassportNo = res.PassportNo;
-                            newFormControlsState.Gender = res.Gender
-                            return this.getMultipleDataFromListUsingParentID(ListNames.CHILDDETAILS, EmpListID).then((res) => {
+                            newFormControlsState.Gender = res.Gender;
+                            return this.getMultipleDataFromListUsingParentID(ListNames.CHILDDETAILS, EmpListID).then((childres) => {
                                 var childItemArray = [];
-                                res.forEach(element => {
+                                childres.forEach(element => {
                                     childItemArray.push({ ChildName: element.ChildName, DateOfBirth: new Date(element.ChildDOB) });
                                 });
                                 newFormControlsState.childDetailItems = childItemArray;
-                                return this.getMultipleDataFromListUsingParentID(ListNames.VISADETAILS, EmpListID).then((res) => {
+                                return this.getMultipleDataFromListUsingParentID(ListNames.VISADETAILS, EmpListID).then((visares) => {
                                     var visaItemArray = [];
-                                    res.forEach(element => {
+                                    visares.forEach(element => {
                                         visaItemArray.push({
                                             Id: element.Id,
                                             ValidVisa: element.ValidVisa,
@@ -128,15 +123,12 @@ export default class NewEmployeeService implements INewEmpRequestService {
                     });
                 });
             });
-
         });
-
-
     }
 
     // Creates a new employee request. The request is created in two list. One where the main data is stored and one
     // where the purchase items are stored with a reference of the ID of main request.
-    AddEmpFormData(empData: INewFormState, empListId): Promise<any> {
+    public AddEmpFormData(empData: INewFormState, empListId): Promise<any> {
         let web = new Web(AppConstats.SITEURL);
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empListId.EmpListID).update({
             Gender: empData.Gender,
@@ -162,7 +154,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
             PassportNo: empData.PassportNo,
             PassportValidity: empData.PassportValidity
         }).then((result: ItemUpdateResult) => {
-            let web = new Web(AppConstats.SITEURL);
+            // let web = new Web(AppConstats.SITEURL);
             if (empData.MaritalStatus == "Married") {
                 // Creates the multiple purchase items in batch.
                 let batch = web.createBatch();
@@ -178,7 +170,6 @@ export default class NewEmployeeService implements INewEmpRequestService {
                                     });
                             });
                             batch.execute().then(() => {
-                                console.log("All deleted")
                                 empData.childDetailItems.forEach(detailRow => {
                                     web.lists.getByTitle(ListNames.CHILDDETAILS).items.inBatch(batch).add({
                                         ChildName: detailRow.ChildName,
@@ -187,23 +178,23 @@ export default class NewEmployeeService implements INewEmpRequestService {
                                         Title: detailRow.ChildName
                                     });
                                 });
-                                batch.execute().then(() => console.log("all added"))
+                                batch.execute().then(() => console.log("all added"));
                             });
                         }
                         else {
                             empData.childDetailItems.forEach(detailRow => {
                                 web.lists.getByTitle(ListNames.CHILDDETAILS).items.inBatch(batch).add({
-
                                     ChildName: detailRow.ChildName,
                                     ChildDOB: detailRow.DateOfBirth,
                                     empTableIDId: empListId.EmpListID,
                                     Title: detailRow.ChildName
                                 });
                             });
-                            batch.execute().then(() => console.log("all added"))
+                            batch.execute().then(() => console.log("all added"));
                         }
                     }).catch(error => {
-                        console.log(error)
+                        console.log("error while getting CHILDDETAILS from list");
+                        console.log(error);
                     });
             }
             if (empData.IsPassAvail) {
@@ -220,7 +211,6 @@ export default class NewEmployeeService implements INewEmpRequestService {
                                     });
                             });
                             visaBatch.execute().then(() => {
-                                console.log("All visa deleted")
                                 empData.visaDetailItems.forEach(detailRow => {
                                     web.lists.getByTitle(ListNames.VISADETAILS).items.inBatch(visaBatch).add({
                                         ValidVisa: detailRow.ValidVisa,
@@ -231,7 +221,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                                         IsTravelled: detailRow.IsTravelled ? "Yes" : "No"
                                     });
                                 });
-                                visaBatch.execute().then(() => console.log("all visa added"))
+                                visaBatch.execute().then(() => console.log("all visa added"));
                             });
                         }
                         else {
@@ -245,21 +235,22 @@ export default class NewEmployeeService implements INewEmpRequestService {
                                     IsTravelled: detailRow.IsTravelled ? "Yes" : "No"
                                 });
                             });
-                            visaBatch.execute().then(() => console.log("all visa added"))
+                            visaBatch.execute().then(() => console.log("all visa added"));
                         }
                     }).catch(error => {
-                        console.log('error while getOptionsFromMaster');
-                        console.log(error)
+                        console.log('error while fetching VISADETAILS');
+                        console.log(error);
                     });
             }
             alert("Employee details saved successfully");
         }).catch(error => {
             alert("Oops! Error while saving Employee details");
-            console.log("error while adding an employee");
             console.log(error);
         });
     }
-    getAge(DOB) {
+
+    /**Calculate current age based on Date of Birth */
+    private getAge(DOB) {
         var today = new Date();
         var birthDate = new Date(DOB);
         var age = today.getFullYear() - birthDate.getFullYear();
@@ -288,7 +279,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                     hrControlsState.reasonForLeaving = '--Select--';
                 else
                     hrControlsState.reasonForLeaving = Resp.ReasonForLeaving;
-                hrControlsState.ResigntionDate = Resp.ResigntionDate;
+                hrControlsState.ResigntionDate = new Date(Resp.ResigntionDate);
                 hrControlsState.EligibleforRehire = Resp.EligibleforRehire;
                 return hrControlsState;
             });
@@ -298,15 +289,14 @@ export default class NewEmployeeService implements INewEmpRequestService {
     public HrAddNewEmployee(empReqData: IHRState, managerdata, empListID): Promise<any> {
         let web = new Web(AppConstats.SITEURL);
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empListID.EmpListID).update({
-            ManagerId: managerdata,
+            //ManagerId: managerdata,
             EmploymentStatus: empReqData.employementStatus,
             DateOfLeaving: empReqData.DateOfLeaving,
-           // ReasonForLeaving: empReqData.reasonForLeaving,
+            ReasonForLeaving: empReqData.reasonForLeaving,
             ResigntionDate: empReqData.ResigntionDate,
             EligibleforRehire: empReqData.EligibleforRehire,
         }).then((result: ItemAddResult) => {
             let mainListID = result.data.Id;
-            console.log("Employee request created : " + mainListID);
             alert("HR details saved successfully");
 
         }).catch(error => {
@@ -321,13 +311,13 @@ export default class NewEmployeeService implements INewEmpRequestService {
     //#region EducationDetail Section
 
     //Get data from Master lists using getMultipleDataFromListUsingParentId
-    async saveEduDataInList(eduData: IEducationDetailState, empListId) {
+    public async saveEduDataInList(eduData: IEducationDetailState, empListId) {
         await this.saveEducationDetails(eduData.educationDetails, empListId);
         await this.saveCertificationDetails(eduData.certificationDetails, empListId);
     }
-    saveEducationDetails(educationDetails, empListId) {
+    public saveEducationDetails(educationDetails, empListId) {
         let web = new Web(AppConstats.SITEURL);
-        let eduBatch = web.createBatch()
+        let eduBatch = web.createBatch();
         educationDetails.forEach(detailRow => {
             if (detailRow.educationId == 0) {
                 web.lists.getByTitle(ListNames.EducationDetail).items.inBatch(eduBatch).add({
@@ -339,7 +329,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                     school: detailRow.SchoolCollege,
                     degree: detailRow.DegreeName,
                     empTableIDId: empListId.EmpListID
-                })
+                });
             }
             else if (detailRow.educationId > 0) {
                 web.lists.getByTitle(ListNames.EducationDetail).items.getById(detailRow.educationId).inBatch(eduBatch).update({
@@ -351,16 +341,15 @@ export default class NewEmployeeService implements INewEmpRequestService {
                     school: detailRow.SchoolCollege,
                     degree: detailRow.DegreeName,
                     empTableIDId: empListId.EmpListID
-                })
+                });
             }
-        })
+        });
         eduBatch.execute().then(() => { "edu updated" }).catch(() => alert("Oops! Error occured in saving Education Details"));
-
-
     }
-    saveCertificationDetails(certificationDetails, empListId) {
+
+    public saveCertificationDetails(certificationDetails, empListId) {
         let web = new Web(AppConstats.SITEURL);
-        let certibatch = web.createBatch()
+        let certibatch = web.createBatch();
 
         certificationDetails.forEach(detailRow => {
             if (detailRow.certificationId == 0) {
@@ -371,7 +360,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                     institution: detailRow.InstituteName,
                     GradeOrPercent: detailRow.GradePercentage,
                     empTableIDId: empListId.EmpListID
-                })
+                });
             }
             else if (detailRow.certificationId > 0) {
                 web.lists.getByTitle(ListNames.CertificationDetail).items.getById(detailRow.certificationId).inBatch(certibatch).update({
@@ -381,23 +370,21 @@ export default class NewEmployeeService implements INewEmpRequestService {
                     institution: detailRow.InstituteName,
                     GradeOrPercent: detailRow.GradePercentage,
                     empTableIDId: empListId.EmpListID
-                })
+                });
             }
         });
         certibatch.execute().then(() => { "certi updated" }).catch(() => alert("Oops! Error occured in saving Education Details"));
-
-
     }
     //#endregion EducationDetail Section
 
     //#region Professional Detail Section
 
     public getIsFreshers(EmpListID): Promise<any> {
-        let freshervalue = {} as IProfessionalDetailState
+        let freshervalue = {} as IProfessionalDetailState;
         return this.getDataFromListUsingID(ListNames.EMPLOYEECONTACT, EmpListID).then(Resp => {
-            freshervalue.IsFresher = Resp.Fresher
+            freshervalue.IsFresher = Resp.Fresher;
             return freshervalue;
-        })
+        });
     }
 
     public getProfessionalDetailsFromList(listName, EmpListID): Promise<any> {
@@ -418,10 +405,9 @@ export default class NewEmployeeService implements INewEmpRequestService {
                                 totalExp: element.totalExp,
                                 reasonForLeaving: element.reasonForLeaving,
                                 reasonOfLeavingOptions: reasonResp
-                            })
+                            });
                         });
-                        console.log("service Professional Details" + payLoadArrayOrganizationDetails)
-                        return payLoadArrayOrganizationDetails
+                        return payLoadArrayOrganizationDetails;
                     });
             });
     }
@@ -441,21 +427,20 @@ export default class NewEmployeeService implements INewEmpRequestService {
                                 InstituteName: element.institution,
                                 Rating: element.Rating,
                                 technologyOptions: techResp
-                            })
+                            });
                         });
-                        return payLoadArrayTechnologyDetails
+                        return payLoadArrayTechnologyDetails;
                     });
             });
     }
 
     //Save Professional Details
-    async saveProfessionalDetailInList(professionalDetailData: IProfessionalDetailState, EmpListID) {
+    public async saveProfessionalDetailInList(professionalDetailData: IProfessionalDetailState, EmpListID) {
         await this.saveIsFresher(professionalDetailData, EmpListID);
-        if (professionalDetailData.IsFresher == true) {
-            this.saveTechnologyDetail(professionalDetailData.technologyDetails, EmpListID);
-        } else {
-            this.saveOrgenizationDetail(professionalDetailData.organizationDetails, EmpListID);
-        }
+        if (professionalDetailData.IsFresher == false)
+            await this.saveOrgenizationDetail(professionalDetailData.organizationDetails, EmpListID);
+        await this.saveTechnologyDetail(professionalDetailData.technologyDetails, EmpListID);
+
     }
     public saveIsFresher(professionalDetailData: IProfessionalDetailState, empListID) {
         let web = new Web(AppConstats.SITEURL);
@@ -464,10 +449,11 @@ export default class NewEmployeeService implements INewEmpRequestService {
         }).then((result: ItemAddResult) => {
             let mainListID = result.data.Id;
         }).catch(error => {
-            console.log("error while adding an employee");
+            console.log("error while saveIsFresher");
         });
     }
 
+    //save Orgenization Detail in EmpList Id
     public saveOrgenizationDetail(organizationDetails, empListID) {
         let web = new Web(AppConstats.SITEURL);
         let batch = web.createBatch();
@@ -483,7 +469,6 @@ export default class NewEmployeeService implements INewEmpRequestService {
                             });
                     });
                     batch.execute().then(() => {
-                        console.log("All deleted");
                         organizationDetails.forEach(detailRow => {
                             web.lists.getByTitle(ListNames.EducationDetail).items.inBatch(batch).add({
                                 organization: detailRow.organization,
@@ -498,6 +483,8 @@ export default class NewEmployeeService implements INewEmpRequestService {
                             });
                         });
                         batch.execute().then(() => console.log("all added"));
+                    }).catch(error => {
+                        console.log("error while adding an organization Details");
                     });
                 }
                 else {
@@ -514,15 +501,15 @@ export default class NewEmployeeService implements INewEmpRequestService {
                             empTableIDId: empListID.EmpListID
                         }).then((result: ItemAddResult) => {
                             let mainListID = result.data.Id;
-                            console.log("Employee request created : " + mainListID);
                         }).catch(error => {
-                            console.log("error while adding an employee");
+                            console.log("error while adding an organization Details");
                         });
                     });
                 }
             });
     }
 
+    //Save Technology Detail in EmpList Id
     public saveTechnologyDetail(technologyDetails, empListID) {
         let web = new Web(AppConstats.SITEURL);
         let batch = web.createBatch();
@@ -538,7 +525,6 @@ export default class NewEmployeeService implements INewEmpRequestService {
                             });
                     });
                     batch.execute().then(() => {
-                        console.log("All deleted")
                         technologyDetails.forEach(detailRow => {
                             web.lists.getByTitle(ListNames.EMPLOYEETECHNICALSKILL).items.inBatch(batch).add({
                                 Technology: detailRow.Technology,
@@ -548,7 +534,9 @@ export default class NewEmployeeService implements INewEmpRequestService {
                                 empTableIDId: empListID.EmpListID
                             });
                         });
-                        batch.execute().then(() => console.log("all added"))
+                        batch.execute().then(() => console.log("all added"));
+                    }).catch(error => {
+                        console.log("error while adding an Technical Details");
                     });
                 }
                 else {
@@ -561,23 +549,20 @@ export default class NewEmployeeService implements INewEmpRequestService {
                             empTableIDId: empListID.EmpListID
                         }).then((result: ItemAddResult) => {
                             let mainListID = result.data.Id;
-                            console.log("Employee request created : " + mainListID);
                         }).catch(error => {
-                            console.log("error while adding an employee");
+                            console.log("error while adding an Technical Details");
                         });
                     });
                 }
-            })
+            });
 
     }
     //#endregion Professional Detail Section
 
     //#region Payroll 
     //Get Payroll
-    getPayrollControlState(EmpListID): Promise<any> {
+    public getPayrollControlState(EmpListID): Promise<any> {
         let payrollControlsState = {} as IPayrollState;
-        // return this.getDataFromList(ListNames.EMPLOYEECONTACT, 'hirvita.rajyaguru@synoverge.com').then(statusResp => {
-        //payrollControlsState = statusResp;
         return this.getDataFromListUsingID(ListNames.EMPLOYEECONTACT, EmpListID).then(statusResp => {
             payrollControlsState.UserID = statusResp.UserID;
             payrollControlsState.ESIApplicable = statusResp.ESIApplicable;
@@ -590,13 +575,12 @@ export default class NewEmployeeService implements INewEmpRequestService {
             payrollControlsState.ZeroPT = statusResp.ZeroPT;
             payrollControlsState.Ward_x002f_Circle = statusResp.Ward_x002f_Circle;
             payrollControlsState.Director = statusResp.Director;
-
             return payrollControlsState;
         });
     }
 
     //Save Payroll
-    PayrollAddEmployee(empReqData: IPayrollState, empListId): Promise<any> {
+    public PayrollAddEmployee(empReqData: IPayrollState, empListId): Promise<any> {
         let web = new Web(AppConstats.SITEURL);
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empListId.EmpListID).update({
             // return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
@@ -612,7 +596,6 @@ export default class NewEmployeeService implements INewEmpRequestService {
             Director: empReqData.Director
         }).then((result: ItemAddResult) => {
             let mainListID = result.data.Id;
-            console.log("Employee request created : " + mainListID);
             alert("Payroll details saved successfully");
 
         }).catch(error => {

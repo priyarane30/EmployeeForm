@@ -2,7 +2,7 @@ import { IBasicDetailState } from '../state/IBasicDetailState';
 import BasicFormService from '../services/BasicFormService';
 import UtilityService from '../services/UtilityService';
 import { ActionTypes } from '../AppConstants';
-import { ICommonState, IEmpListIdState } from '../state/ICommonState';
+import { IEmpListIdState } from '../state/ICommonState';
 export function GetEmpBasicData(empListId) {
     return dispatch => {
         let basicFormState = {} as IBasicDetailState;
@@ -26,7 +26,7 @@ export function GetEmpBasicData(empListId) {
                 });
             });
         }
-    }
+    };
 }
 
 export function SetTabName(tabData) {
@@ -35,7 +35,7 @@ export function SetTabName(tabData) {
             type: ActionTypes.SetTabName,
             payload: tabData
         });
-    }
+    };
 }
 
 export async function GetEmpListIdByUserEmail(currUserEmail) {
@@ -55,5 +55,5 @@ export function SetEmpIdInStore(empListId) {
             type: ActionTypes.SetEmpID,
             payload: empListId
         });
-    }
+    };
 }

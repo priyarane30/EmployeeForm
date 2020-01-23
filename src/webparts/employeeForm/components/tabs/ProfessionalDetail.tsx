@@ -15,20 +15,14 @@ import styles from "../EmployeeForm.module.scss";
 import { TextField, DefaultButton } from "office-ui-fabric-react/lib";
 
 interface buttonStatus {
-    buttonDisabled: boolean
+    buttonDisabled: boolean;
 }
-
 interface IProfessionalDetailConnectedDispatch {
     setTabName: (tabName: ICommonState) => void;
-
-    // Gets the options for dropdown fields
-    getDefaultControlsData: (empListId: IEmpListIdState) => void;
+    getDefaultControlsData: (empListId: IEmpListIdState) => void; // Gets the options for dropdown fields
     //616
-    //adds empty array to state
-    addProfessionalDetailRow: (section) => void;
-
-    //removes selected array from state
-    removeProfessionalDetailRow: (section, index) => void;
+    addProfessionalDetailRow: (section) => void;  //adds empty array to state
+    removeProfessionalDetailRow: (section, index) => void; //removes selected array from state
 }
 
 class ProfessionalDetail extends React.Component<any, buttonStatus> {
@@ -36,30 +30,27 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
         super(props);
         this.state = { buttonDisabled: false };
     }
-
-    componentDidMount() {
-        console.log("Professional Details");
+    public componentDidMount() {
         const empListId = store.getState().EmpListId;
         this.props.getDefaultControlsData(empListId);
     }
 
     //adds row in grids
-    handleRowAdd(section) {
+    public handleRowAdd(section) {
         this.props.addProfessionalDetailRow(section);
     }
 
     //removes row from grid
-    handleRowRemove(section, index) {
+    public handleRowRemove(section, index) {
         if (section == "ProfessionalDetail") {
             this.props.removeProfessionalDetailRow(section, index);
         }
         else {
             this.props.removeProfessionalDetailRow(section, index);
         }
-
     }
 
-    async handleSubmit(formValues) {
+    public async handleSubmit(formValues) {
         const CommonState: ICommonState = { CurrentForm: "Professional Details" };
         this.props.setTabName(CommonState);
 
@@ -67,10 +58,10 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
         pdData = formValues;
         const empListId = store.getState().EmpListId;
 
-        this.setState({ buttonDisabled: true })
+        this.setState({ buttonDisabled: true });
         let newEmpServiceObj: NewEmpService = new NewEmpService();
-        await newEmpServiceObj.saveProfessionalDetailInList(pdData, empListId)
-        this.setState({ buttonDisabled: false })
+        await newEmpServiceObj.saveProfessionalDetailInList(pdData, empListId);
+        this.setState({ buttonDisabled: false });
         this.props.handleTabClick();
     }
 
@@ -85,6 +76,104 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                             <Control.checkbox model='ProfessionalDetail.IsFresher' id='ProfessionalDetail.IsFresher' />
                         </div>
                         {this.isUserFresher(this.props.ProfessionalDetail)}
+                        <div className={`ms-Grid-row  ms-fontColor-white ${styles.row}`}>
+                            <span className={styles.errors}> *Please mention mininum 1 Technology / Tools in below section</span>
+                            <table>
+                                <tr>
+                                    <th colSpan={2} style={{ textAlign: "left" }}>Technology / Tools Skills</th>
+                                    <td colSpan={6} style={{ textAlign: "left" }}>
+                                        <button type="button" onClick={() => this.handleRowAdd("Technology")}>+</button>
+                                    </td>
+                                </tr>
+                                {this.props.ProfessionalDetail.technologyDetails.map((technologies, i) => {
+                                    return (
+                                        <tr key={i}>
+                                            <td> {/* Technology */}
+                                                <label>Technology</label>
+                                                <Control.select model={`ProfessionalDetail.technologyDetails[${i}].Technology`} id={technologies.Technology}
+                                                    validators={{ requiredtechnology: (val) => val && val != "--Select--" }} style={{ height: "30px", width: "100%" }}>
+                                                    <option value="0">--Select--</option>
+                                                    {this.props.ProfessionalDetail.technologyDetails[i].technologyOptions.map(technology => {
+                                                        return <option key={technology} value={technology}>{technology}</option>;
+                                                    })};
+                                        </Control.select>
+                                                <Errors
+                                                    className={styles.errors}
+                                                    show="touched"
+                                                    model={`ProfessionalDetail.technologyDetails[${i}].Technology`}
+                                                    messages={{
+                                                        requiredtechnology: 'Technology Required'
+                                                    }} />
+                                            </td>
+                                            <td> {/* SinceWhen */}
+                                                <label>SinceWhen</label>
+                                                <Control.select model={`ProfessionalDetail.technologyDetails[${i}].SinceWhen`} id={technologies.SinceWhen}
+                                                    validators={{ requiredSincewhen: (val) => val && val != "--Select--" }} style={{ height: "30px", width: "100%" }}>
+                                                    <option value="0">--Select--</option>
+                                                    <option value="Currently using">Currently using</option>
+                                                    <option value="< 3 months">&lt; 3 months</option>
+                                                    <option value="3-6 months">3-6 months</option>
+                                                    <option value="6 months - 1 year">6 months - 1 year</option>
+                                                    <option value="1 - 2 years">1 - 2 years</option>
+                                                    <option value="> 2 years">&gt; 2 years</option>
+                                                </Control.select>
+                                                <Errors
+                                                    className={styles.errors}
+                                                    show="touched"
+                                                    model={`ProfessionalDetail.technologyDetails[${i}].SinceWhen`}
+                                                    messages={{
+                                                        requiredSincewhen: 'Since When Required'
+                                                    }} />
+                                            </td>
+                                            <td> {/* Expertise */}
+                                                <label>Expertise</label>
+                                                <Control.select model={`ProfessionalDetail.technologyDetails[${i}].Expertise`} id={technologies.Expertise}
+                                                    validators={{ requiredExpertise: (val) => val && val != "--Select--" }} style={{ height: "30px", width: "100%" }}>
+                                                    <option value="0">--Select--</option>
+                                                    <option value="Expert">Expert</option>
+                                                    <option value="Intermediate">Intermediate</option>
+                                                    <option value="Beginner">Beginner</option>
+                                                </Control.select>
+                                                <Errors
+                                                    className={styles.errors}
+                                                    show="touched"
+                                                    model={`ProfessionalDetail.technologyDetails[${i}].Expertise`}
+                                                    messages={{
+                                                        requiredExpertise: 'Expertise Required'
+                                                    }} />
+                                            </td>
+                                            <td> {/* Rating */}
+                                                <label>Rating</label>
+                                                <Control.select model={`ProfessionalDetail.technologyDetails[${i}].Rating`} id={technologies.Rating}
+                                                    validators={{ requiredRating: (val) => val && val != "0" }} style={{ height: "30px", width: "100%" }}>
+                                                    <option value="0">0</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="6">6</option>
+                                                    <option value="7">7</option>
+                                                    <option value="8">8</option>
+                                                    <option value="9">9</option>
+                                                    <option value="10">10</option>
+                                                </Control.select>
+                                                <Errors
+                                                    className={styles.errors}
+                                                    show="touched"
+                                                    model={`ProfessionalDetail.technologyDetails[${i}].Rating`}
+                                                    messages={{
+                                                        requiredRating: 'Rating Required'
+                                                    }} />
+                                            </td>
+                                            <td> {/* Action */}
+                                                <button type="button" onClick={() => this.handleRowRemove("Technology", i)} style={{ marginTop: "20px" }}>-</button>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                            </table>
+                        </div>
                         <DefaultButton id="DefaultSubmit" primary={true} text={"Submit"} type="submit"
                             disabled={this.state.buttonDisabled} className={styles.button} />
                     </Form>
@@ -93,7 +182,7 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
         );
     }
 
-    isUserFresher(props) {
+    public isUserFresher(props) {
         //If user is come from another orgenization
         if (props.IsFresher == false) {
             return (
@@ -156,8 +245,10 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                         <td> {/* End  Month */}
                                             <label>End  Month</label>
                                             <Control.text model={`ProfessionalDetail.organizationDetails[${i}].endDate`} id={organizations.endDate} placeholder="MMM-YYYY"
-                                                validators={{ requiredendDate: (val) => val && val.length,
-                                                    isEndMonth: (val) => (/^[a-zA-Z\s]{3}-[0-9\s]{4}$/i.test(val)) }} component={TextField} />
+                                                validators={{
+                                                    requiredendDate: (val) => val && val.length,
+                                                    isEndMonth: (val) => (/^[a-zA-Z\s]{3}-[0-9\s]{4}$/i.test(val))
+                                                }} component={TextField} />
                                             <Errors
                                                 className={styles.errors}
                                                 show="touched"
@@ -216,7 +307,7 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                 <option value="0">--Select--</option>
 
                                                 {this.props.ProfessionalDetail.organizationDetails[i].reasonOfLeavingOptions.map(reasons => {
-                                                    return <option key={reasons} value={reasons}>{reasons}</option>
+                                                    return <option key={reasons} value={reasons}>{reasons}</option>;
                                                 })};
                                             </Control.select>
                                             <Errors
@@ -232,121 +323,17 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                             <button type="button" onClick={() => this.handleRowRemove("ProfessionalDetail", i)} style={{ marginTop: "40px" }}>-</button>
                                         </td>
                                     </tr>
-                                )
+                                );
                             })}
                     </table>
                 </div>
-            )
-        }
-        //If User come from direct College
-        else if (props.IsFresher == true) {
-            return (
-                <div className={`ms-Grid-row  ms-fontColor-white ${styles.row}`}>
-                    <span className={styles.errors}> *Please mention mininum 1 Technology / Tools in below section</span>
-                    <table>
-                        <tr>
-                            <th colSpan={2} style={{ textAlign: "left" }}>Technology / Tools Skills</th>
-                            <td colSpan={6} style={{ textAlign: "left" }}>
-                                <button type="button" onClick={() => this.handleRowAdd("Technology")}>+</button>
-                            </td>
-                        </tr>
-                        {this.props.ProfessionalDetail.technologyDetails.map((technologies, i) => {
-                            return (
-                                <tr key={i}>
-                                    <td> {/* Technology */}
-                                        <label>Technology</label>
-                                        <Control.select model={`ProfessionalDetail.technologyDetails[${i}].Technology`} id={technologies.Technology}
-                                            validators={{ requiredtechnology: (val) => val && val != "--Select--" }} style={{ height: "30px", width: "100%" }}>
-                                            <option value="0">--Select--</option>
-                                            {this.props.ProfessionalDetail.technologyDetails[i].technologyOptions.map(technology => {
-                                                return <option key={technology} value={technology}>{technology}</option>
-                                            })};
-                                        </Control.select>
-                                        <Errors
-                                            className={styles.errors}
-                                            show="touched"
-                                            model={`ProfessionalDetail.technologyDetails[${i}].Technology`}
-                                            messages={{
-                                                requiredtechnology: 'Technology Required'
-                                            }} />
-                                    </td>
-                                    <td> {/* SinceWhen */}
-                                        <label>SinceWhen</label>
-                                        <Control.select model={`ProfessionalDetail.technologyDetails[${i}].SinceWhen`} id={technologies.SinceWhen}
-                                            validators={{ requiredSincewhen: (val) => val && val != "--Select--" }} style={{ height: "30px", width: "100%" }}>
-                                            <option value="0">--Select--</option>
-                                            <option value="Currently using">Currently using</option>
-                                            <option value="< 3 months">&lt; 3 months</option>
-                                            <option value="3-6 months">3-6 months</option>
-                                            <option value="6 months - 1 year">6 months - 1 year</option>
-                                            <option value="1 - 2 years">1 - 2 years</option>
-                                            <option value="> 2 years">&gt; 2 years</option>
-                                        </Control.select>
-                                        <Errors
-                                            className={styles.errors}
-                                            show="touched"
-                                            model={`ProfessionalDetail.technologyDetails[${i}].SinceWhen`}
-                                            messages={{
-                                                requiredSincewhen: 'Since When Required'
-                                            }} />
-                                    </td>
-                                    <td> {/* Expertise */}
-                                        <label>Expertise</label>
-                                        <Control.select model={`ProfessionalDetail.technologyDetails[${i}].Expertise`} id={technologies.Expertise}
-                                            validators={{ requiredExpertise: (val) => val && val != "--Select--" }} style={{ height: "30px", width: "100%" }}>
-                                            <option value="0">--Select--</option>
-                                            <option value="Expert">Expert</option>
-                                            <option value="Intermediate">Intermediate</option>
-                                            <option value="Beginner">Beginner</option>
-                                        </Control.select>
-                                        <Errors
-                                            className={styles.errors}
-                                            show="touched"
-                                            model={`ProfessionalDetail.technologyDetails[${i}].Expertise`}
-                                            messages={{
-                                                requiredExpertise: 'Expertise Required'
-                                            }} />
-                                    </td>
-                                    <td> {/* Rating */}
-                                        <label>Rating</label>
-                                        <Control.select model={`ProfessionalDetail.technologyDetails[${i}].Rating`} id={technologies.Rating}
-                                            validators={{ requiredRating: (val) => val && val != "0" }} style={{ height: "30px", width: "100%" }}>
-                                            <option value="0">0</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                            <option value="6">6</option>
-                                            <option value="7">7</option>
-                                            <option value="8">8</option>
-                                            <option value="9">9</option>
-                                            <option value="10">10</option>
-                                        </Control.select>
-                                        <Errors
-                                            className={styles.errors}
-                                            show="touched"
-                                            model={`ProfessionalDetail.technologyDetails[${i}].Rating`}
-                                            messages={{
-                                                requiredRating: 'Rating Required'
-                                            }} />
-                                    </td>
-                                    <td> {/* Action */}
-                                        <button type="button" onClick={() => this.handleRowRemove("Technology", i)} style={{ marginTop: "20px" }}>-</button>
-                                    </td>
-                                </tr>
-                            );
-                        })}
-                    </table>
-                </div>
-            )
+            );
         }
     }
 }
-const mapStateToProps = function (state) {
+const mapStateToProps = (state) => {
     return state;
-}
-
+};
 const mapDispatchToProps = (dispatch): IProfessionalDetailConnectedDispatch => {
     return {
         setTabName: SetTabName,
@@ -357,7 +344,7 @@ const mapDispatchToProps = (dispatch): IProfessionalDetailConnectedDispatch => {
             return dispatch(addProfessionalDetailRow(section));
         },
         removeProfessionalDetailRow: (section, index) => {
-            return dispatch(removeProfessionalDetailRow(section, index))
+            return dispatch(removeProfessionalDetailRow(section, index));
         }
     };
 };
