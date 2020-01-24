@@ -42,13 +42,13 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
 
     //removes row from grid
     public handleRowRemove(section, index) {
-       // this.props.ProfessionalDetail[section][index]
+        // this.props.ProfessionalDetail[section][index]
         let removedItem = this.props.ProfessionalDetail[section][index];
         this.props.removeProfessionalDetailRow(removedItem, section, index);
-
     }
 
     public async handleSubmit(formValues) {
+        this.props.handleSpinner(false);
         const CommonState: ICommonState = { CurrentForm: "Professional Details" };
         this.props.setTabName(CommonState);
 
@@ -60,6 +60,7 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
         let newEmpServiceObj: NewEmpService = new NewEmpService();
         await newEmpServiceObj.saveProfessionalDetailInList(pdData, empListId);
         this.setState({ buttonDisabled: false });
+        this.props.handleSpinner(true);
         this.props.handleTabClick();
     }
 
@@ -93,8 +94,8 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                     <option value="0">--Select--</option>
                                                     {this.props.ProfessionalDetail.technologyDetails[i].technologyOptions.map(technology => {
                                                         return <option key={technology} value={technology}>{technology}</option>;
-                                                    })};
-                                        </Control.select>
+                                                    })}
+                                                </Control.select>
                                                 <Errors
                                                     className={styles.errors}
                                                     show="touched"
@@ -162,7 +163,8 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                     model={`ProfessionalDetail.technologyDetails[${i}].Rating`}
                                                     messages={{
                                                         requiredRating: 'Rating Required'
-                                                    }} />
+                                                    }}
+                                                />
                                             </td>
                                             <td> {/* Action */}
                                                 <button type="button" onClick={() => this.handleRowRemove("technologyDetails", i)} style={{ marginTop: "20px" }}>-</button>

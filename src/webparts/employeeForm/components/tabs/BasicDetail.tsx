@@ -43,6 +43,7 @@ class BasicDetail extends React.Component<any, IButtonState>{
             newEmpReqServiceObj.UpdateBasicDetail(formValues, technologydata, idState).then(resp => {
                 this.setState({ isDisable: false });
                 alert("Basic details updated successfully");
+                this.props.handleSpinner(true);
             }).catch(() => {
                 alert("Sorry. Error while adding employee...");
             });
@@ -59,20 +60,31 @@ class BasicDetail extends React.Component<any, IButtonState>{
                 };
                 this.setState({ isDisable: false });
                 alert("Basic details saved successfully");
+                this.props.handleSpinner(true);
             }).catch(() => {
                 alert("Sorry. Error while adding employee...");
             });
         }
-        this.props.handleSpinner(true);
+
     }
 
     public async componentDidMount() {
+        let newEmpReqServiceObj: BasicService = new BasicService();
         var eId = await GetEmpListIdByUserEmail(this.props.empEmail);
+        let isExistsInHR = false;
+        if (this.props.empEmail != null && this.props.empEmail != undefined && this.props.empEmail != '') {
+            var userGroups = await newEmpReqServiceObj.GetCurrentUserGroups(this.props.empEmail);
+            if (userGroups != null && userGroups != undefined) {
+                userGroups.forEach(grp => {
+                    if (grp == 'HR Team')
+                        isExistsInHR = true;
+                });
+            }
+        }
         if (eId != null && eId != undefined) {
             this.props.setEmpId(eId);//set empId in store
             this.props.getBasicDatail(eId); //get Basic Details 
-            this.props.showTabs(eId);
-            let newEmpReqServiceObj: BasicService = new BasicService();
+            this.props.showTabs(eId, isExistsInHR);
             var technology = await newEmpReqServiceObj.GetEmpTechnology(eId.EmpListID);
             if (technology != null && technology != undefined) {
                 var TechnologyDropDown = technology.split(",");

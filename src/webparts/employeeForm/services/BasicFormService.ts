@@ -3,7 +3,7 @@ import IBasicFormService from "./IBasicFormService";
 import { ListNames, AppConstats } from "../AppConstants";
 import UtilityService from "./UtilityService";
 import { ItemAddResult, Web } from "sp-pnp-js";
-
+import { store } from "../store/ConfigureStore";
 export default class BasicFormService implements IBasicFormService {
     //Get Emp Basic Data when Id = 0
     public GetEmpBasicData(): Promise<IBasicDetailState> {
@@ -80,6 +80,20 @@ export default class BasicFormService implements IBasicFormService {
             return mainListID;
         }).catch(error => {
             console.log("error while updating Basic details");
+            console.log(error);
+        });
+    }
+
+    public GetCurrentUserGroups(email): Promise<any> {
+        let web = new Web(AppConstats.SITEURL);
+        let groupList = [];
+        return web.siteUsers.getByEmail(email).groups.get().then(grps => {
+            grps.forEach(grp => {
+                groupList.push(grp.Title);
+            });
+            return groupList;
+        }).catch(error => {
+            console.log('error while get user groups');
             console.log(error);
         });
     }
