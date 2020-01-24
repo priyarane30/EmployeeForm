@@ -16,7 +16,7 @@ export function GetInitialControlValuesAction(EmpListID) {
                 if (formcontrol.IsFresher == false) {
                     let payLoadArrayOrganizationDetails = [];
                     //gets already set ProfessionalDetails for user
-                    newEmpServiceObj.getProfessionalDetailsFromList(ListNames.PROFESSIONALHISTORY, 616)
+                    newEmpServiceObj.getProfessionalDetailsFromList(ListNames.PROFESSIONALHISTORY, EmpListID)
                         .then((organizationdetailresp) => {
                             payLoadArrayOrganizationDetails = organizationdetailresp;
                             formcontrol.organizationDetails = payLoadArrayOrganizationDetails;
@@ -52,7 +52,7 @@ export function SetTabName(tabData: ICommonState) {
 }
 //add rows in detail grids
 export function addProfessionalDetailRow(section) {
-    if (section == "ProfessionalDetail") {
+    if (section == "organizationDetails") {
         //add row in education detail grid
         return dispatch => {
             let utilityServiceObj: UtilityService = new UtilityService();
@@ -60,6 +60,7 @@ export function addProfessionalDetailRow(section) {
                 .then((ReasonResp) => {
                     let initialOrganizationDetailsGrid =
                     {
+                        organizationId: 0,
                         organization: '',
                         designation: '',
                         startDate: '',//dateTime?
@@ -86,6 +87,7 @@ export function addProfessionalDetailRow(section) {
             utilityServiceObj.getOptionsFromMaster(ListNames.TECHNOLOGY, 'Title')
                 .then((techResp) => {
                     let initialTechnologyDetailGrid = {
+                        technologyId: 0,
                         Technology: '',
                         SinceWhen: '',
                         Expertise: '',
@@ -103,15 +105,19 @@ export function addProfessionalDetailRow(section) {
 }
 
 /** Method to remove row from grids */
-export function removeProfessionalDetailRow(section, index) {
+export function removeProfessionalDetailRow(removeditem, section, index) {
     return dispatch => {
-        if (section == "ProfessionalDetail")
+        let newEmpServiceObj: NewEmpService = new NewEmpService();
+        if (section == "organizationDetails") {
+            newEmpServiceObj.deleteDataFromListUsingID(removeditem.organizationId, ListNames.PROFESSIONALHISTORY);
             dispatch({
                 type: ActionTypes.RemoveProfessionalDetailRow,
                 payload: index
             });
+        }
         //remove row from Technology detail rows
         else {
+            newEmpServiceObj.deleteDataFromListUsingID(removeditem.technologyId, ListNames.EMPLOYEETECHNICALSKILL);
             dispatch({
                 type: ActionTypes.RemoveTechnologyRow,
                 payload: index

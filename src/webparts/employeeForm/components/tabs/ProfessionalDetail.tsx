@@ -22,7 +22,7 @@ interface IProfessionalDetailConnectedDispatch {
     getDefaultControlsData: (empListId: IEmpListIdState) => void; // Gets the options for dropdown fields
     //616
     addProfessionalDetailRow: (section) => void;  //adds empty array to state
-    removeProfessionalDetailRow: (section, index) => void; //removes selected array from state
+    removeProfessionalDetailRow: (removedItem, section, index) => void; //removes selected array from state
 }
 
 class ProfessionalDetail extends React.Component<any, buttonStatus> {
@@ -42,12 +42,10 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
 
     //removes row from grid
     public handleRowRemove(section, index) {
-        if (section == "ProfessionalDetail") {
-            this.props.removeProfessionalDetailRow(section, index);
-        }
-        else {
-            this.props.removeProfessionalDetailRow(section, index);
-        }
+       // this.props.ProfessionalDetail[section][index]
+        let removedItem = this.props.ProfessionalDetail[section][index]
+        this.props.removeProfessionalDetailRow(removedItem, section, index);
+
     }
 
     public async handleSubmit(formValues) {
@@ -167,7 +165,7 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                     }} />
                                             </td>
                                             <td> {/* Action */}
-                                                <button type="button" onClick={() => this.handleRowRemove("Technology", i)} style={{ marginTop: "20px" }}>-</button>
+                                                <button type="button" onClick={() => this.handleRowRemove("technologyDetails", i)} style={{ marginTop: "20px" }}>-</button>
                                             </td>
                                         </tr>
                                     );
@@ -320,7 +318,7 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                             />
                                         </td>
                                         <td> {/* Action */}
-                                            <button type="button" onClick={() => this.handleRowRemove("ProfessionalDetail", i)} style={{ marginTop: "40px" }}>-</button>
+                                            <button type="button" onClick={() => this.handleRowRemove("organizationDetails", i)} style={{ marginTop: "40px" }}>-</button>
                                         </td>
                                     </tr>
                                 );
@@ -343,8 +341,8 @@ const mapDispatchToProps = (dispatch): IProfessionalDetailConnectedDispatch => {
         addProfessionalDetailRow: (section) => {
             return dispatch(addProfessionalDetailRow(section));
         },
-        removeProfessionalDetailRow: (section, index) => {
-            return dispatch(removeProfessionalDetailRow(section, index));
+        removeProfessionalDetailRow: (removedItem, section, index) => {
+            return dispatch(removeProfessionalDetailRow(removedItem, section, index));
         }
     };
 };

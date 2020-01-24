@@ -3,6 +3,7 @@ export interface IProfessionalDetailState {
     IsFresher: boolean;
     //form controls
     organizationDetails: Array<{
+        organizationId:number;
         organization: string;
         designation: string;
         startDate: string;//dateTime?
@@ -15,6 +16,7 @@ export interface IProfessionalDetailState {
         reasonOfLeavingOptions: string[];
     }>;
     technologyDetails: Array<{
+        technologyId:number;
         Technology: string;
         SinceWhen: string;
         Expertise: string;

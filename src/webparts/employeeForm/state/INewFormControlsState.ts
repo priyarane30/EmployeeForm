@@ -32,13 +32,13 @@ export interface INewFormState {
 
     //tran list Items
     childDetailItems: Array<{
-        Id: number;
+        childDetailId: number;
         ChildName: string;
         DateOfBirth: Date;
     }>;
 
     visaDetailItems: Array<{
-        Id:number;
+        visaDetailId:number;
         ValidVisa: boolean;
         VisaOfCountry: string;
         VisaNo: string;
