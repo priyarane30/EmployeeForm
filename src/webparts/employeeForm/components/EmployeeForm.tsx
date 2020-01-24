@@ -18,7 +18,8 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, an
     this.state = {
       isEmpIdExists: false,
       selectedKey: 0,
-      isSpinnerHidden: true
+      isSpinnerHidden: true,
+      isUserHR: false
     };
     this.showTabs = this.showTabs.bind(this);
     this._handleTabClick = this._handleTabClick.bind(this);
@@ -30,9 +31,11 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, an
     this.setState({ isSpinnerHidden: flagShow });
   }
 
-  public async showTabs(empId) {
+  public async showTabs(empId, isExistsInHR) {
     if (empId != null && empId != undefined && empId.EmpListID > 0)
       await this.setState({ isEmpIdExists: true });
+    if (isExistsInHR)
+      await this.setState({ isUserHR: true });
   }
 
   public render(): React.ReactElement<IEmployeeFormProps> {
@@ -61,6 +64,26 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, an
     });
   }
 
+  private ShowHRTab() {
+    if (this.state.isUserHR) {
+      return (
+        <PivotItem headerText="HR Detail" itemKey="3">
+          <HRDetail context={this.props.context} handleTabClick={this._handleTabClick} handleSpinner={this._handleSpinner} />
+        </PivotItem>
+      );
+    }
+  }
+
+  private ShowPayrollTab() {
+    if (this.state.isUserHR) {
+      return (
+        <PivotItem headerText="Payroll Detail" itemKey="4">
+          <PayrollDetail handleTabClick={this._handleTabClick} handleSpinner={this._handleSpinner} />
+        </PivotItem>
+      );
+    }
+  }
+
   private IsEmpIdExists() {
     if (this.state.isEmpIdExists)
       return (
@@ -74,13 +97,10 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, an
           <PivotItem headerText="Professional Detail" itemKey="2">
             <ProfessionalDetail handleTabClick={this._handleTabClick} handleSpinner={this._handleSpinner} />
           </PivotItem>
-          <PivotItem headerText="HR Detail" itemKey="3">
-            <HRDetail context={this.props.context} handleTabClick={this._handleTabClick} handleSpinner={this._handleSpinner} />
-          </PivotItem>
-          <PivotItem headerText="Payroll Detail" itemKey="4">
-            <PayrollDetail handleTabClick={this._handleTabClick} handleSpinner={this._handleSpinner} />
-          </PivotItem>
+          {this.ShowHRTab()}
+          {this.ShowPayrollTab()}
         </Pivot>
       );
   }
 }
+

@@ -27,7 +27,6 @@ export default class EmployeeFormWebPart extends BaseClientSideWebPart<IEmployee
         userEmail:this.context.pageContext.user.loginName,
         context: this.context,
         userPermissions : this.context.pageContext.web.permissions
-
       }
     );
     ReactDom.render(element, this.domElement);
