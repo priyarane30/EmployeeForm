@@ -43,7 +43,7 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
     //removes row from grid
     public handleRowRemove(section, index) {
        // this.props.ProfessionalDetail[section][index]
-        let removedItem = this.props.ProfessionalDetail[section][index]
+        let removedItem = this.props.ProfessionalDetail[section][index];
         this.props.removeProfessionalDetailRow(removedItem, section, index);
 
     }

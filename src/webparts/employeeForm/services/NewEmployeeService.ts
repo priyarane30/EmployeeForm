@@ -240,7 +240,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                 hrControlsState.ADLogin = Resp.ADLoginId;
                 hrControlsState.Manager = Resp.ManagerId;
                 hrControlsState.employementStatus = Resp.EmploymentStatus;
-                hrControlsState.DateOfLeaving = new Date(Resp.DateOfLeaving);
+                hrControlsState.DateofLeft = new Date(Resp.DateofLeft);
                 if (Resp.ReasonForLeaving == null)
                     hrControlsState.reasonForLeaving = '--Select--';
                 else
@@ -255,14 +255,13 @@ export default class NewEmployeeService implements INewEmpRequestService {
     public HrAddNewEmployee(empReqData: IHRState, managerdata, empListID): Promise<any> {
         let web = new Web(AppConstats.SITEURL);
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empListID.EmpListID).update({
-            //ManagerId: managerdata,
+            ManagerId: managerdata,
             EmploymentStatus: empReqData.employementStatus,
-            DateOfLeaving: empReqData.DateOfLeaving,
+            DateofLeft: empReqData.DateofLeft,
             ReasonForLeaving: empReqData.reasonForLeaving,
             ResigntionDate: empReqData.ResigntionDate,
             EligibleforRehire: empReqData.EligibleforRehire,
         }).then((result: ItemAddResult) => {
-            let mainListID = result.data.Id;
             alert("HR details saved successfully");
 
         }).catch(error => {
@@ -345,6 +344,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
 
     //#region Professional Detail Section
 
+    //get Professional Detail
     public getIsFreshers(EmpListID): Promise<any> {
         let freshervalue = {} as IProfessionalDetailState;
         return this.getDataFromListUsingID(ListNames.EMPLOYEECONTACT, EmpListID).then(Resp => {
@@ -401,7 +401,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                     });
             });
     }
-
+    // End get Professional Detail
     //Save Professional Details
     public async saveProfessionalDetailInList(professionalDetailData: IProfessionalDetailState, EmpListID) {
         await this.saveIsFresher(professionalDetailData, EmpListID);
@@ -413,7 +413,8 @@ export default class NewEmployeeService implements INewEmpRequestService {
     public saveIsFresher(professionalDetailData: IProfessionalDetailState, empListID) {
         let web = new Web(AppConstats.SITEURL);
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empListID.EmpListID).update({
-            Fresher: professionalDetailData.IsFresher
+            Fresher: professionalDetailData.IsFresher,
+            EmploymentStatus: "Assigned to HR"
         }).then((result: ItemAddResult) => {
             let mainListID = result.data.Id;
         }).catch(error => {

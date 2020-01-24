@@ -31,7 +31,7 @@ export default class BasicFormService implements IBasicFormService {
                     basicFormControlsState.LastName = mainListResp.LastName;
                     basicFormControlsState.CompanyEmail = mainListResp.Email;
                     basicFormControlsState.DateofJoining = new Date(mainListResp.DateofJoining);
-                    basicFormControlsState.Designation = mainListResp.CurrentDesignation;
+                    basicFormControlsState.Designation = mainListResp.Designation;//CurrentDesignation
                     basicFormControlsState.Technology = mainListResp.Technology;
                     return basicFormControlsState;
                 });
@@ -48,12 +48,12 @@ export default class BasicFormService implements IBasicFormService {
             return technology;
         });
     }
-    public AddBasicDetail(empData: IBasicDetailState,technologydata): Promise<any> {
+    public AddBasicDetail(empData: IBasicDetailState, technologydata): Promise<any> {
         let web = new Web(AppConstats.SITEURL);
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
             FirstName: empData.FirstName,
             LastName: empData.LastName,
-            CurrentDesignation: empData.Designation,
+            Designation: empData.Designation,
             Technology: technologydata,//empData.Technology,
             DateofJoining: empData.DateofJoining,//datetime?
             Email: empData.CompanyEmail
@@ -71,7 +71,7 @@ export default class BasicFormService implements IBasicFormService {
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empListId.EmpListID).update({
             FirstName: basicData.FirstName,
             LastName: basicData.LastName,
-            CurrentDesignation: basicData.Designation,
+            Designation: basicData.Designation,
             Technology: technologydata,
             DateofJoining: basicData.DateofJoining,//datetime?
             Email: basicData.CompanyEmail

@@ -13,7 +13,7 @@ export const HRSectionReducer = (state: IHRState = null, action) => {
                 ADLogin: action.payload.ADLogin,
                 Manager: action.payload.Manager,
                 employementStatus: action.payload.employementStatus,
-                DateOfLeaving: action.payload.DateOfLeaving, //dateTime?
+                DateofLeft: action.payload.DateofLeft, //dateTime?
                 reasonForLeaving: action.payload.reasonForLeaving,
                 ResigntionDate: action.payload.ResigntionDate, //datetime?
                 EligibleforRehire: action.payload.EligibleforRehire
@@ -26,7 +26,7 @@ export const HRSectionReducer = (state: IHRState = null, action) => {
                 ADLogin: action.payload.ADLogin,
                 Manager: action.payload.Manager,
                 employementStatus: action.payload.employementStatus,
-                DateOfLeaving: action.payload.DateOfLeaving,
+                DateofLeft: action.payload.DateofLeft,
                 reasonForLeaving: action.payload.reasonForLeaving,
                 ResigntionDate: action.payload.ResigntionDate,
                 EligibleforRehire: action.payload.EligibleforRehire,

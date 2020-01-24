@@ -62,7 +62,7 @@ class EducationDetail extends React.Component<any, buttonStatus> {
     this.setState({ buttonDisabled: true });
     let newEmpServiceObj: NewEmpService = new NewEmpService();
     await newEmpServiceObj.saveEduDataInList(eduData, empListId)
-    alert("Education Details saved Succesfully")
+    alert("Education Details saved Succesfully");
     this.setState({ buttonDisabled: false });
     this.props.handleSpinner(true);
     this.props.handleTabClick();

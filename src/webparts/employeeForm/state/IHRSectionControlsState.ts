@@ -4,7 +4,7 @@ export interface IHRState {
     ADLogin: string;
     Manager: string;
     employementStatus: string;
-    DateOfLeaving: Date;
+    DateofLeft: Date;
     reasonForLeaving: string;
     ResigntionDate: Date; //datetime?
     EligibleforRehire: boolean;

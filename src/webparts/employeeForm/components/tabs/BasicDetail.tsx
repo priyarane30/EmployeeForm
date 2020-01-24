@@ -37,7 +37,7 @@ class BasicDetail extends React.Component<any, IButtonState>{
         let newEmpReqServiceObj: BasicService = new BasicService();
         const idState = store.getState().EmpListId;
         this.setState({ isDisable: true });
-        let technologydata = this.state.selectedTechnologies;
+        let technologydata = this.convertTechnologyinString(this.state.selectedTechnologies);
         if (idState != null && idState != undefined) {
             //Edit Form when ID is not null
             newEmpReqServiceObj.UpdateBasicDetail(formValues, technologydata, idState).then(resp => {
@@ -187,10 +187,13 @@ class BasicDetail extends React.Component<any, IButtonState>{
     }
 
     private onSelectedItem = (data: { key: string; name: string }[]): void => {
+        this.setState({ selectedTechnologies: data });
+    }
+    private convertTechnologyinString = (data: { key: string; name: string }[]) => {
         let TechnologyName = [];
         for (var i = 0; i < data.length; i++) { TechnologyName.push(data[i].name); }
         var TechnologyString = TechnologyName.toString();
-        this.setState({ selectedTechnologies: TechnologyString });
+        return TechnologyString;
     }
 }
 

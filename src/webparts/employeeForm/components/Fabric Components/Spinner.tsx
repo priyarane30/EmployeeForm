@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
 import { IStackProps, Stack } from 'office-ui-fabric-react/lib/Stack';
-import styles from '../EmployeeForm.module.scss'
+import styles from '../EmployeeForm.module.scss';
 export const SpinnerComponent: React.StatelessComponent = () => {
     const rowProps: IStackProps = { horizontal: true, verticalAlign: 'center' };
 
@@ -21,4 +21,4 @@ export const SpinnerComponent: React.StatelessComponent = () => {
             </Stack>
         </Stack>
     );
-}
+};

@@ -21,7 +21,7 @@ export function GetInitialControlValuesAction(EmpListID) {
             formControlState.ADLogin = resp.ADLogin;
             formControlState.Manager = resp.Manager;
             formControlState.employementStatus = resp.employementStatus;
-            formControlState.DateOfLeaving = resp.DateOfLeaving;
+            formControlState.DateofLeft = resp.DateofLeft;
             formControlState.reasonForLeaving = resp.reasonForLeaving;
             formControlState.ResigntionDate =resp.ResigntionDate;
             formControlState.EligibleforRehire = resp.EligibleforRehire;
