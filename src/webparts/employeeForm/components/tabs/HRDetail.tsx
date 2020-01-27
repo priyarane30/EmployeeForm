@@ -36,11 +36,12 @@ class HRDetail extends React.Component<any, IControls> {
             buttonDisabled: false
         };
     }
-    public componentDidMount() {
+    async componentDidMount() {
         const empListId = store.getState().EmpListId;
         this.props.getDefaultControlsData(empListId);//empListId
 
-        let myemail = 'priya.rane@synoverge.com';
+        let newEmpServiceObj: NewEmployeeService = new NewEmployeeService();
+        let myemail = await newEmpServiceObj.getManagerEmail(empListId);
         this.setState({ Manager: myemail });
         this.PeoplePickerItems = this.PeoplePickerItems.bind(this);
     }
@@ -83,14 +84,14 @@ class HRDetail extends React.Component<any, IControls> {
                                         <label>User Alias:</label>
                                     </div>
                                     <div className='ms-Grid-col ms-u-sm8'>
-                                        <Control.text model='HR.UserAlies' id='.UserAlies' component={TextField} className={styles.marginb} />
+                                        <Control.text model='HR.UserAlies' id='.UserAlies' component={TextField} className={styles.marginb} disabled/>
                                     </div>
                                     {/* Name of employee*/}
                                     <div className='ms-Grid-col ms-u-sm4 block'>
                                         <label>AD Login Name of Employee:</label>
                                     </div>
                                     <div className='ms-Grid-col ms-u-sm8'>
-                                        <Control.text model='HR.ADLogin' id='HR.ADLogin' component={TextField} className={styles.marginb} />
+                                        <Control.text model='HR.ADLogin' id='HR.ADLogin' component={TextField} className={styles.marginb} disabled/>
                                     </div>
                                     {/* Manager*/}
                                     <div className='ms-Grid-col ms-u-sm4 block'>
@@ -177,7 +178,10 @@ class HRDetail extends React.Component<any, IControls> {
             </div>);
     }
     private PeoplePickerItems(items: any[]) {
-        this.setState({ Manager: items[0].secondaryText });
+        let array =[];
+        array.push({'Email':items[0].secondaryText});
+        console.log(array[0].Email);
+        this.setState({ Manager: array[0].Email });
 
     }
     public getUserId(email: string): Promise<any> {

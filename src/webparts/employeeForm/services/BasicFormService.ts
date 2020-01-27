@@ -48,7 +48,7 @@ export default class BasicFormService implements IBasicFormService {
             return technology;
         });
     }
-    public AddBasicDetail(empData: IBasicDetailState, technologydata): Promise<any> {
+    public AddBasicDetail(empData: IBasicDetailState, technologydata, AdLoginName): Promise<any> {
         let web = new Web(AppConstats.SITEURL);
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.add({
             FirstName: empData.FirstName,
@@ -56,7 +56,8 @@ export default class BasicFormService implements IBasicFormService {
             Designation: empData.Designation,
             Technology: technologydata,//empData.Technology,
             DateofJoining: empData.DateofJoining,//datetime?
-            Email: empData.CompanyEmail
+            Email: empData.CompanyEmail,
+            ADLoginId: AdLoginName
         }).then((result: ItemAddResult) => {
             let mainListID = result.data.Id;
             return mainListID;
@@ -66,7 +67,7 @@ export default class BasicFormService implements IBasicFormService {
         });
     }
 
-    public UpdateBasicDetail(basicData: IBasicDetailState, technologydata, empListId): Promise<any> {
+    public UpdateBasicDetail(basicData: IBasicDetailState, technologydata, empListId,AdLoginName): Promise<any> {
         let web = new Web(AppConstats.SITEURL);
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empListId.EmpListID).update({
             FirstName: basicData.FirstName,
@@ -74,7 +75,8 @@ export default class BasicFormService implements IBasicFormService {
             Designation: basicData.Designation,
             Technology: technologydata,
             DateofJoining: basicData.DateofJoining,//datetime?
-            Email: basicData.CompanyEmail
+            Email: basicData.CompanyEmail,
+            ADLoginId: AdLoginName
         }).then((result: ItemAddResult) => {
             let mainListID = result.data.Id;
             return mainListID;

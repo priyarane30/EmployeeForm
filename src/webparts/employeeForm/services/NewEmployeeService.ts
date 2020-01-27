@@ -235,21 +235,49 @@ export default class NewEmployeeService implements INewEmpRequestService {
         let utilityServiceObj: UtilityService = new UtilityService();
         return utilityServiceObj.getOptionsFromMaster(ListNames.REASONFORLEAVING, 'Title').then(statusResp => {
             hrControlsState.reasonOfLeavingOptions = statusResp;
-            return this.getDataFromListUsingID(ListNames.EMPLOYEECONTACT, EmpListID).then(Resp => {
-                hrControlsState.UserAlies = Resp.UserAlies;
-                hrControlsState.ADLogin = Resp.ADLoginId;
-                hrControlsState.Manager = Resp.ManagerId;
-                hrControlsState.employementStatus = Resp.EmploymentStatus;
-                hrControlsState.DateofLeft = new Date(Resp.DateofLeft);
-                if (Resp.ReasonForLeaving == null)
-                    hrControlsState.reasonForLeaving = '--Select--';
-                else
-                    hrControlsState.reasonForLeaving = Resp.ReasonForLeaving;
-                hrControlsState.ResigntionDate = new Date(Resp.ResigntionDate);
-                hrControlsState.EligibleforRehire = Resp.EligibleforRehire;
-                return hrControlsState;
+            return this.getADLoginName(EmpListID).then(AdloginName => {
+                hrControlsState.ADLogin = AdloginName;
+                return this.getDataFromListUsingID(ListNames.EMPLOYEECONTACT, EmpListID).then(Resp => {
+                    hrControlsState.UserAlies = Resp.UserAlies;
+                    hrControlsState.Manager = Resp.ManagerId;
+                    hrControlsState.employementStatus = Resp.EmploymentStatus;
+                    hrControlsState.DateofLeft = new Date(Resp.DateofLeft);
+                    if (Resp.ReasonForLeaving == null)
+                        hrControlsState.reasonForLeaving = '--Select--';
+                    else
+                        hrControlsState.reasonForLeaving = Resp.ReasonForLeaving;
+                    hrControlsState.ResigntionDate = new Date(Resp.ResigntionDate);
+                    hrControlsState.EligibleforRehire = Resp.EligibleforRehire;
+                    return hrControlsState;
+                });
             });
         });
+    }
+
+    public getADLoginName(empListID): Promise<any> {
+        var url = AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + ListNames.EMPLOYEECONTACT + "')/items?$select=ADLogin/Title&$expand=ADLogin&$filter=ID eq '" + empListID + "'";
+        return axios.get(url)
+            .then(res => {
+                if (res.data.value != undefined && res.data.value != null) {
+                    return res.data.value[0].ADLogin.Title;
+                }
+            }).catch(error => {
+                console.log('error while get AD Login Name');
+                console.log(error);
+            });
+    }
+    //get Manager Email 
+    public getManagerEmail(empListID): Promise<any> {
+        var url = AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + ListNames.EMPLOYEECONTACT + "')/items?$select=Manager/EMail&$expand=Manager&$filter=ID eq '" + empListID.EmpListID + "'";
+        return axios.get(url)
+            .then(res => {
+                if (res.data.value != undefined && res.data.value != null) {
+                    return res.data.value[0].Manager.EMail;
+                }
+            }).catch(error => {
+                console.log('error while get Manager Email');
+                console.log(error);
+            });
     }
     //Save HR FORM Data
     public HrAddNewEmployee(empReqData: IHRState, managerdata, empListID): Promise<any> {

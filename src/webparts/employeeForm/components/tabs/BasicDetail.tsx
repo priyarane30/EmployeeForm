@@ -11,7 +11,7 @@ import { store } from '../../store/ConfigureStore';
 import { DatePicker } from 'office-ui-fabric-react/lib/DatePicker';
 import styles from "../EmployeeForm.module.scss";
 import { ListItemPicker } from '@pnp/spfx-controls-react/lib/listItemPicker';
-
+import pnp from 'sp-pnp-js';
 interface IBasicFormConnectedDispatch {
     //Get Employee Id using Current User Email
     setEmpId: (empId) => void;
@@ -32,15 +32,16 @@ class BasicDetail extends React.Component<any, IButtonState>{
     }
 
     //On Button Save : Basic Details saved In List
-    handleSubmit(formValues) {
+    async handleSubmit(formValues) {
         this.props.handleSpinner(false);
         let newEmpReqServiceObj: BasicService = new BasicService();
         const idState = store.getState().EmpListId;
         this.setState({ isDisable: true });
+        let AdLoginName = await this.getUserId(this.props.empEmail);
         let technologydata = this.convertTechnologyinString(this.state.selectedTechnologies);
         if (idState != null && idState != undefined) {
             //Edit Form when ID is not null
-            newEmpReqServiceObj.UpdateBasicDetail(formValues, technologydata, idState).then(resp => {
+            newEmpReqServiceObj.UpdateBasicDetail(formValues, technologydata, idState, AdLoginName).then(resp => {
                 this.setState({ isDisable: false });
                 alert("Basic details updated successfully");
                 this.props.handleSpinner(true);
@@ -50,7 +51,7 @@ class BasicDetail extends React.Component<any, IButtonState>{
         }
         else {
             //New Form 
-            newEmpReqServiceObj.AddBasicDetail(formValues, technologydata).then(resp => {
+            newEmpReqServiceObj.AddBasicDetail(formValues, technologydata, AdLoginName).then(resp => {
                 let empIdState = { EmpListID: resp } as IEmpListIdState;
                 dispatch => {
                     dispatch({
@@ -206,6 +207,13 @@ class BasicDetail extends React.Component<any, IButtonState>{
         for (var i = 0; i < data.length; i++) { TechnologyName.push(data[i].name); }
         var TechnologyString = TechnologyName.toString();
         return TechnologyString;
+    }
+
+    public getUserId(email: string): Promise<any> {
+        return pnp.sp.site.rootWeb.ensureUser(email).
+            then(result => {
+                return result.data.Id;
+            });
     }
 }
 
