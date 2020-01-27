@@ -119,7 +119,10 @@ class BasicDetail extends React.Component<any, IButtonState>{
                                 <div className="ms-Grid-col ms-u-sm8 block">
                                     <Control.text model=".FirstName" id='.FirstName' component={TextField} className={styles.marginb}
                                         validators={{ requiredFirstName: (val) => val && val.length }} />
-                                    <Errors model=".FirstName" messages={{ requiredFirstName: 'Please provide an email address.' }} />
+                                    <Errors
+                                        className={styles.errors}
+                                        show="touched"
+                                        model=".FirstName" messages={{ requiredFirstName: 'Please provide an email address.' }} />
                                 </div>
                                 <div className='ms-Grid-col ms-u-sm4 block'>
                                     <label>Last Name *:</label>
@@ -127,7 +130,10 @@ class BasicDetail extends React.Component<any, IButtonState>{
                                 <div className="ms-Grid-col ms-u-sm8 block">
                                     <Control.text model=".LastName" id='.LastName' component={TextField} className={styles.marginb}
                                         validators={{ requiredLastName: (val) => val && val.length }} />
-                                    <Errors model=".LastName" messages={{ requiredLastName: 'Please provide an email address.' }} />
+                                    <Errors
+                                        className={styles.errors}
+                                        show="touched"
+                                        model=".LastName" messages={{ requiredLastName: 'Please provide an email address.' }} />
                                 </div>
                                 <div className='ms-Grid-col ms-u-sm4 block'>
                                     <label>Date Of Joining *:</label>
@@ -151,6 +157,8 @@ class BasicDetail extends React.Component<any, IButtonState>{
                                         {desigOpt}
                                     </Control.select>
                                     <Errors
+                                        className={styles.errors}
+                                        show="touched"
                                         model=".Designation"
                                         messages={{
                                             requiredDesignationStatus: 'Please Select Designation.'
@@ -169,7 +177,10 @@ class BasicDetail extends React.Component<any, IButtonState>{
                                         suggestionsHeaderText="Please select asset"
                                         defaultSelectedItems={this.state.selectedTechnologies}
                                     />
-                                    <Errors model=".Technology" messages={{ requiredTechnology: 'Please Select Technology.' }} />
+                                    <Errors
+                                        className={styles.errors}
+                                        show="touched"
+                                        model=".Technology" messages={{ requiredTechnology: 'Please Select Technology.' }} />
                                 </div>
                                 <div className='ms-Grid-col ms-u-sm4 block'>
                                     <label>Company Email *:</label>
@@ -181,6 +192,8 @@ class BasicDetail extends React.Component<any, IButtonState>{
                                             isEmail: (val) => (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(val)) // ES6 property shorthand
                                         }} />
                                     <Errors
+                                        className={styles.errors}
+                                        show="touched"
                                         model=".PersonalEmail"
                                         messages={{
                                             requiredEmail: 'Please provide an email address.',
