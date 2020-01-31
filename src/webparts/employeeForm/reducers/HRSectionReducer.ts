@@ -9,10 +9,14 @@ export const HRSectionReducer = (state: IHRState = null, action) => {
                 ...state,
                 employmentStatusOptions: action.payload.employmentStatusOptions,
                 reasonOfLeavingOptions: action.payload.reasonOfLeavingOptions,
+                LastDesignationOptions:action.payload.LastDesignationOptions,
+
                 UserAlies: action.payload.UserAlies,
                 ADLogin: action.payload.ADLogin,
                 Manager: action.payload.Manager,
                 employementStatus: action.payload.employementStatus,
+                LastDesignation: action.payload.LastDesignation,
+                LastPromotedDate: action.payload.LastPromotedDate,
                 DateofLeft: action.payload.DateofLeft, //dateTime?
                 reasonForLeaving: action.payload.reasonForLeaving,
                 ResigntionDate: action.payload.ResigntionDate, //datetime?
@@ -26,6 +30,8 @@ export const HRSectionReducer = (state: IHRState = null, action) => {
                 ADLogin: action.payload.ADLogin,
                 Manager: action.payload.Manager,
                 employementStatus: action.payload.employementStatus,
+                LastDesignation: action.payload.LastDesignation,
+                LastPromotedDate: action.payload.LastPromotedDate,
                 DateofLeft: action.payload.DateofLeft,
                 reasonForLeaving: action.payload.reasonForLeaving,
                 ResigntionDate: action.payload.ResigntionDate,
@@ -33,7 +39,8 @@ export const HRSectionReducer = (state: IHRState = null, action) => {
 
                 // Represent the choices to be displayed in dropdown when the form loads.
                 employmentStatusOptions: action.payload.employmentStatusOptions,
-                reasonOfLeavingOptions: action.payload.reasonOfLeavingOptions
+                reasonOfLeavingOptions: action.payload.reasonOfLeavingOptions,
+                LastDesignationOptions:action.payload.LastDesignationOptions
 
             };
             break;

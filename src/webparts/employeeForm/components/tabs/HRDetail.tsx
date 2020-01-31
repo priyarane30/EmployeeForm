@@ -118,12 +118,37 @@ class HRDetail extends React.Component<any, IControls> {
                                         <label>Employment Status:</label>
                                     </div>
                                     <div className='ms-Grid-col ms-u-sm8 block'>
-                                        <Control.select model="HR.employementStatus" id="HR.employementStatus" className={styles.dropdowncustom}>
+                                        <Control.select model="HR.employementStatus" id="HR.employementStatus" className={styles.dropdowncustomhr} >
                                             <option value="Assigned to HR">Assigned to HR</option>
                                             <option value="Active">Active</option>
                                             <option value="Inactive">Inactive</option>
                                             <option value="Saved">Saved</option>
                                         </Control.select>
+                                    </div>
+                                     {/* Last Designation */}
+                                     <div className='ms-Grid-col ms-u-sm4 block'>
+                                        <label>Last Designation:</label>
+                                    </div>
+                                    <div className='ms-Grid-col ms-u-sm8 block'>
+                                        <Control.select model="HR.LastDesignation" id="HR.LastDesignation" className={styles.dropdowncustomhr}>
+                                            <option>--Select--</option>
+
+                                            {this.props.HR.LastDesignationOptions.map(options => {
+                                                return (<option key={options}
+                                                    value={options}>{options}</option>);
+                                            })};
+                                    </Control.select>
+                                    </div>
+                                    {/* Last Prompted Date*/}
+                                    <div className='ms-Grid-col ms-u-sm4 block'>
+                                        <label>Last Prompted Date:</label>
+                                    </div>
+                                    <div className='ms-Grid-col ms-u-sm8 block'>
+                                        <Control model='HR.LastPromotedDate' id='HR.LastPromotedDate' component={DatePicker} placeholder='dd-MM-yyyy' className={styles.marginb}
+                                            mapProps={{
+                                                value: (props) => { return props.viewValue; },
+                                                onSelectDate: (props) => { return props.onChange; }
+                                            }}></Control>
                                     </div>
                                     {/* Date of leaving*/}
                                     <div className='ms-Grid-col ms-u-sm4 block'>
@@ -141,7 +166,7 @@ class HRDetail extends React.Component<any, IControls> {
                                         <label>Reason for leaving:</label>
                                     </div>
                                     <div className='ms-Grid-col ms-u-sm8 block'>
-                                        <Control.select model="HR.reasonForLeaving" id="HR.reasonForLeaving" className={styles.dropdowncustom}>
+                                        <Control.select model="HR.reasonForLeaving" id="HR.reasonForLeaving" className={styles.dropdowncustomhr}>
                                             <option>--Select--</option>
 
                                             {this.props.HR.reasonOfLeavingOptions.map(reasons => {

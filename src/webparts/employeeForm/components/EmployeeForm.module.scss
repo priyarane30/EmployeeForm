@@ -1,8 +1,7 @@
-@import '~office-ui-fabric-react/dist/sass/References.scss';
+@import "~office-ui-fabric-react/dist/sass/References.scss";
 
 .employeeForm {
-
-  .spinner{
+  .spinner {
     z-index: 999;
     position: fixed;
     margin-left: 20%;
@@ -11,14 +10,16 @@
   .errors {
     margin: 0.5rem 0;
     color: red;
-    
+
     > span {
       display: block;
       font-size: 0.8rem;
     }
   }
-  
-  *, *:before, *:after {
+
+  *,
+  *:before,
+  *:after {
     box-sizing: border-box;
     position: relative;
   }
@@ -57,15 +58,19 @@
     @include ms-font-l;
     @include ms-fontColor-white;
   }
- .marginb{
-  margin-bottom: 7px!important;
-}
-.dropdowncustom{
-  margin-bottom: 7px!important;
-  height: 32px!important;
-    width: 435px!important;
-}
-
+  .marginb {
+    margin-bottom: 7px !important;
+  }
+  .dropdowncustom {
+    margin-bottom: 7px !important;
+    height: 32px !important;
+    width: 435px !important;
+  }
+  .dropdowncustomhr {
+    margin-bottom: 7px !important;
+    height: 32px !important;
+    width: 424px !important;
+  }
   .button {
     // Our button
     text-decoration: none;
@@ -80,7 +85,8 @@
     // Basic Button
     outline: transparent;
     position: relative;
-    font-family: "Segoe UI WestEuropean","Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",sans-serif;
+    font-family: "Segoe UI WestEuropean", "Segoe UI", -apple-system,
+      BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
     -webkit-font-smoothing: antialiased;
     font-size: $ms-font-size-m;
     font-weight: $ms-font-weight-regular;
@@ -98,15 +104,11 @@
       margin: 0 4px;
       vertical-align: top;
       display: inline-block;
-      color:black!important;
+      color: black !important;
       background-color: black;
     }
-    .ms-Button-label label-167{
-      color: black!important;
+    .ms-Button-label label-167 {
+      color: black !important;
     }
   }
-
-  
-
-
 }

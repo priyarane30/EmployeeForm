@@ -235,20 +235,26 @@ export default class NewEmployeeService implements INewEmpRequestService {
         let utilityServiceObj: UtilityService = new UtilityService();
         return utilityServiceObj.getOptionsFromMaster(ListNames.REASONFORLEAVING, 'Title').then(statusResp => {
             hrControlsState.reasonOfLeavingOptions = statusResp;
+
             return this.getADLoginName(EmpListID).then(AdloginName => {
                 hrControlsState.ADLogin = AdloginName;
-                return this.getDataFromListUsingID(ListNames.EMPLOYEECONTACT, EmpListID).then(Resp => {
-                    hrControlsState.UserAlies = Resp.UserAlies;
-                    hrControlsState.Manager = Resp.ManagerId;
-                    hrControlsState.employementStatus = Resp.EmploymentStatus;
-                    hrControlsState.DateofLeft = new Date(Resp.DateofLeft);
-                    if (Resp.ReasonForLeaving == null)
-                        hrControlsState.reasonForLeaving = '--Select--';
-                    else
-                        hrControlsState.reasonForLeaving = Resp.ReasonForLeaving;
-                    hrControlsState.ResigntionDate = new Date(Resp.ResigntionDate);
-                    hrControlsState.EligibleforRehire = Resp.EligibleforRehire;
-                    return hrControlsState;
+                return utilityServiceObj.getOptionsFromMaster(ListNames.DESIGNATION, 'Designation').then(desigResp => {
+                    hrControlsState.LastDesignationOptions = desigResp;
+                    return this.getDataFromListUsingID(ListNames.EMPLOYEECONTACT, EmpListID).then(Resp => {
+                        hrControlsState.UserAlies = Resp.UserAlies;
+                        hrControlsState.Manager = Resp.ManagerId;
+                        hrControlsState.employementStatus = Resp.EmploymentStatus;
+                        hrControlsState.LastDesignation = Resp.LastDesignation;
+                        hrControlsState.LastPromotedDate = new Date(Resp.LastPromotedDate);
+                        hrControlsState.DateofLeft = new Date(Resp.DateofLeft);
+                        if (Resp.ReasonForLeaving == null)
+                            hrControlsState.reasonForLeaving = '--Select--';
+                        else
+                            hrControlsState.reasonForLeaving = Resp.ReasonForLeaving;
+                        hrControlsState.ResigntionDate = new Date(Resp.ResigntionDate);
+                        hrControlsState.EligibleforRehire = Resp.EligibleforRehire;
+                        return hrControlsState;
+                    });
                 });
             });
         });
@@ -285,6 +291,8 @@ export default class NewEmployeeService implements INewEmpRequestService {
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empListID.EmpListID).update({
             ManagerId: managerdata,
             EmploymentStatus: empReqData.employementStatus,
+            LastDesignation: empReqData.LastDesignation,
+            LastPromotedDate: empReqData.LastPromotedDate,
             DateofLeft: empReqData.DateofLeft,
             ReasonForLeaving: empReqData.reasonForLeaving,
             ResigntionDate: empReqData.ResigntionDate,
