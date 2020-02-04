@@ -6,7 +6,7 @@ import { ICommonState } from '../../state/ICommonState';
 import { INewFormState } from '../../state/INewFormControlsState';
 import { store } from "../../store/ConfigureStore";
 import NewEmpService from '../../services/NewEmployeeService';
-import { DatePicker, TextField , DefaultButton} from 'office-ui-fabric-react/lib';
+import { DatePicker, TextField, DefaultButton } from 'office-ui-fabric-react/lib';
 import styles from '../EmployeeForm.module.scss';
 
 interface buttonStatus {
@@ -17,7 +17,7 @@ interface INewFormConnectedDispatch {
     setTabName: (tabName: ICommonState) => void;
     getDefaultControlsData: (EmpListID) => void; // Gets the form fields & options for dropdown fields
     AddDetailRowToGrid: (section) => void; //save data in grod row
-    RemoveDetailRowFromGrid: (removedItem,section, index) => void; //remove row from grid
+    RemoveDetailRowFromGrid: (removedItem, section, index) => void; //remove row from grid
 }
 
 //for validations in form
@@ -45,11 +45,13 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
 
     private async handleSubmit(formValues) {
         this.props.handleSpinner(false);
+        console.log("this.props.Employee" + this.props.Employee);
         const CommonState: ICommonState = { CurrentForm: "Employee" };
         this.props.setTabName(CommonState);
         const empListId = store.getState().EmpListId;
         let empData = {} as INewFormState;
         empData = formValues;
+        console.log("empData" + empData)
         this.setState({ buttonDisabled: true });
         let newEmpServiceObj: NewEmpService = new NewEmpService();
         await newEmpServiceObj.AddEmpFormData(empData, empListId);
@@ -64,7 +66,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
             <div>
                 <div className={styles.employeeForm}>
                     <div className={styles.container}>
-                        <div className={`ms-Grid-row  ms-fontColor-white ${styles.row}`}>
+                        <div className={`ms-Grid-row  ${styles.row}`}> {/* ms-fontColor-white  */}
                             <Form model="Employee" onSubmit={(val) => this.handleSubmit(val)}>
                                 <div className='ms-Grid-col ms-u-sm4 block'>
                                     <label>Gender:</label>
@@ -169,6 +171,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                     </Control.select>
                                     <Errors
                                         model=".MaritalStatus"
+                                        show="touched"
                                         messages={{
                                             requiredMaritalStatus: 'Please Select Marital Status.'
                                         }}
@@ -189,6 +192,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                     />
                                     <Errors
                                         model=".PersonalEmail"
+                                        show="touched"
                                         messages={{
                                             requiredEmail: 'Please provide an email address.',
                                             isEmail: (val) => `${val} is not a valid email.`,
@@ -360,7 +364,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
             </div>
         );
     }
-    
+
     public async componentDidMount() {
         const empListID = await store.getState().EmpListId;
         this.props.getDefaultControlsData(empListID);
@@ -593,7 +597,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                 onSelectDate: (props) => { return props.onChange; }
                             }}
                             validators={{
-                                requiredSpouceDOB: (val) => val ,
+                                requiredSpouceDOB: (val) => val,
                             }}
                         ></Control>
                         <Errors
@@ -640,7 +644,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                                 onSelectDate: (props) => { return props.onChange; }
                                             }}
                                             validators={{
-                                                requiredDateOfBirth: (val) => val ,
+                                                requiredDateOfBirth: (val) => val,
                                             }}
                                         ></Control>
                                         <Errors
@@ -678,8 +682,8 @@ const mapDispatchToProps = (dispatch): INewFormConnectedDispatch => {
         AddDetailRowToGrid: (section) => {
             return dispatch(AddDetailRowToGrid(section));
         },
-        RemoveDetailRowFromGrid: (removedItem,section, index) => {
-            return dispatch(RemoveDetailRowFromGrid(removedItem,section, index));
+        RemoveDetailRowFromGrid: (removedItem, section, index) => {
+            return dispatch(RemoveDetailRowFromGrid(removedItem, section, index));
         }
     };
 };

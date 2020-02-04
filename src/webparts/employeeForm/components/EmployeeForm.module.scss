@@ -24,15 +24,19 @@
     position: relative;
   }
   .container {
-    max-width: 700px;
+    max-width: 100%;
     margin: 0px auto;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
+    background-color:#f3f2f1;
+ //   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
   }
 
   .row {
     @include ms-Grid-row;
-    @include ms-fontColor-white;
-    background-color: $ms-color-themeDark;
+    // @include ms-fontColor-white;
+    // background-color: $ms-color-themeDark;
+    background-color:#f3f2f1;
+    color: #000;
+    font-weight: 600;
     padding: 20px;
   }
 
@@ -64,12 +68,12 @@
   .dropdowncustom {
     margin-bottom: 7px !important;
     height: 32px !important;
-    width: 435px !important;
+    width: 462px !important;
   }
   .dropdowncustomhr {
     margin-bottom: 7px !important;
     height: 32px !important;
-    width: 424px !important;
+    width: 450px !important;
   }
   .button {
     // Our button

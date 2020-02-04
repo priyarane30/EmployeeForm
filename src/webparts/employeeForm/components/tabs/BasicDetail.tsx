@@ -1,14 +1,15 @@
 import * as React from 'react';
 import { Form, Control, Errors } from 'react-redux-form';
-import { DefaultButton } from "office-ui-fabric-react/lib/Button";
-import { TextField } from "office-ui-fabric-react/lib/TextField";
 import { connect } from "react-redux";
+import { UrlQueryParameterCollection } from '@microsoft/sp-core-library';
 import { GetEmpBasicData, SetTabName, GetEmpListIdByUserEmail, SetEmpIdInStore } from "../../actions/BasicEmpDetailAction";
 import { ICommonState, IEmpListIdState } from '../../state/ICommonState';
 import BasicService from '../../services/BasicFormService';
 import { ActionTypes } from '../../AppConstants';
 import { store } from '../../store/ConfigureStore';
 import { DatePicker } from 'office-ui-fabric-react/lib/DatePicker';
+import { DefaultButton } from "office-ui-fabric-react/lib/Button";
+import { TextField } from "office-ui-fabric-react/lib/TextField";
 import styles from "../EmployeeForm.module.scss";
 import { ListItemPicker } from '@pnp/spfx-controls-react/lib/listItemPicker';
 import pnp from 'sp-pnp-js';
@@ -22,13 +23,16 @@ interface IBasicFormConnectedDispatch {
 
 interface IButtonState {
     isDisable: boolean;
-    selectedTechnologies: any;
+    selectedTechnologies: any[];
 }
 
 class BasicDetail extends React.Component<any, IButtonState>{
     constructor(props) {
         super(props);
-        this.state = { isDisable: true, selectedTechnologies: '' };
+        this.state = {
+            isDisable: true,
+            selectedTechnologies: []
+        };
     }
 
     //On Button Save : Basic Details saved In List
@@ -45,6 +49,7 @@ class BasicDetail extends React.Component<any, IButtonState>{
                 this.setState({ isDisable: false });
                 alert("Basic details updated successfully");
                 this.props.handleSpinner(true);
+                this.props.handleTabClick();
             }).catch(() => {
                 alert("Sorry. Error while adding employee...");
             });
@@ -62,6 +67,7 @@ class BasicDetail extends React.Component<any, IButtonState>{
                 this.setState({ isDisable: false });
                 alert("Basic details saved successfully");
                 this.props.handleSpinner(true);
+                this.props.handleTabClick();
             }).catch(() => {
                 alert("Sorry. Error while adding employee...");
             });
@@ -70,6 +76,11 @@ class BasicDetail extends React.Component<any, IButtonState>{
     }
 
     public async componentDidMount() {
+        const CommonState: ICommonState = { CurrentForm: "Employee" };
+        this.props.setTabName(CommonState);
+        var queryParameters = new UrlQueryParameterCollection(window.location.href);
+        // const queryID: number = parseInt(queryParameters.getValue("ID"));
+        // if (queryID != NaN) { console.log(queryID); }
         let newEmpReqServiceObj: BasicService = new BasicService();
         var eId = await GetEmpListIdByUserEmail(this.props.empEmail);
         let isExistsInHR = false;
@@ -84,7 +95,7 @@ class BasicDetail extends React.Component<any, IButtonState>{
         }
         if (eId != null && eId != undefined) {
             this.props.setEmpId(eId);//set empId in store
-            this.props.getBasicDatail(eId); //get Basic Details 
+
             this.props.showTabs(eId, isExistsInHR);
             var technology = await newEmpReqServiceObj.GetEmpTechnology(eId.EmpListID);
             if (technology != null && technology != undefined) {
@@ -95,24 +106,29 @@ class BasicDetail extends React.Component<any, IButtonState>{
                 });
                 this.setState({ selectedTechnologies: final });
             }
+            await this.props.getBasicDatail(eId);//get Basic Details
         }
-        const CommonState: ICommonState = { CurrentForm: "Employee" };
-        this.props.setTabName(CommonState);
+        this.onSelectedItem = this.onSelectedItem.bind(this);
     }
 
     public render() {
+        pnp.setup({
+            spfxContext: this.props.context
+        });
         let desigOpt;
         if (this.props.Basic != null || this.props.Basic != undefined) {
             if (this.props.Basic.designationOptions != null || this.props.Basic.designationOptions != undefined) {
-                desigOpt = this.props.Basic.designationOptions.map(desig => { return <option key={desig} value={desig}>{desig}</option>; });
+                desigOpt = this.props.Basic.designationOptions.map(desig => {
+                    return <option key={desig} value={desig}>{desig}</option>;
+                });
             }
         }
-        if (!this.props.Employee) return (<div> Loading.... </div>);
+        if (!this.props.Basic) return (<div> Loading.... </div>);
         return (
             <div>
                 <div className={styles.employeeForm}>
                     <div className={styles.container}>
-                        <div className={`ms-Grid-row  ms-fontColor-white ${styles.row}`}>
+                        <div className={`ms-Grid-row ${styles.row}`}>{/* ms-fontColor-white  */}
                             <Form model="Basic" onSubmit={(val) => this.handleSubmit(val)}  >
                                 <div className='ms-Grid-col ms-u-sm4 block'>
                                     <label>First Name *:</label>
@@ -172,11 +188,11 @@ class BasicDetail extends React.Component<any, IButtonState>{
                                 <div className="ms-Grid-col ms-u-sm8 block">
                                     <ListItemPicker listId='6fd1826b-625e-4288-8e10-df480fb0d17d'
                                         columnInternalName='Title'
-                                        itemLimit={2}
+                                        itemLimit={5}
                                         onSelectedItem={this.onSelectedItem}
                                         context={this.props.context}
-                                        suggestionsHeaderText="Please select asset"
-                                        defaultSelectedItems={this.state.selectedTechnologies}
+                                        suggestionsHeaderText="Please select Technology"
+                                        defaultSelectedItems={this.props.Basic.Technology}//{this.state.selectedTechnologies}
                                     />
                                     <Errors
                                         className={styles.errors}
@@ -214,6 +230,7 @@ class BasicDetail extends React.Component<any, IButtonState>{
 
     private onSelectedItem = (data: { key: string; name: string }[]): void => {
         this.setState({ selectedTechnologies: data });
+
     }
     private convertTechnologyinString = (data: { key: string; name: string }[]) => {
         let TechnologyName = [];
@@ -221,7 +238,6 @@ class BasicDetail extends React.Component<any, IButtonState>{
         var TechnologyString = TechnologyName.toString();
         return TechnologyString;
     }
-
     public getUserId(email: string): Promise<any> {
         return pnp.sp.site.rootWeb.ensureUser(email).
             then(result => {

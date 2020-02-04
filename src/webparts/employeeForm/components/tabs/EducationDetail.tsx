@@ -52,7 +52,7 @@ class EducationDetail extends React.Component<any, buttonStatus> {
     this.props.removeEducationDetailRow(removedItem, section, index);
   }
 
-  async handleSubmit(formValues) {
+  public async handleSubmit(formValues) {
     this.props.handleSpinner(false);
     const CommonState: ICommonState = { CurrentForm: "Education" };
     this.props.setTabName(CommonState);
@@ -74,7 +74,7 @@ class EducationDetail extends React.Component<any, buttonStatus> {
         <Form model="Education" onSubmit={val => this.handleSubmit(val)}>
           <div className={styles.employeeForm}>
             <div className={styles.container}>
-              <div className={`ms-Grid-row  ms-fontColor-white ${styles.row}`}>
+             <div className={`ms-Grid-row ${styles.row}`}>   {/* ms-fontColor-white  */}
                 <table style={{ width: "100%" }}>
                   <tr>
                     <th colSpan={8} style={{ textAlign: "left" }}>Education details <button type="button" onClick={() => this.handleRowAdd("educationDetails")}>+</button></th>

@@ -1,6 +1,15 @@
 import { IBasicDetailState } from "../state/IBasicDetailState";
 import { ActionTypes } from "../AppConstants";
-
+export const basicState: IBasicDetailState = {
+    FirstName: '',
+    LastName: '',
+    DateofJoining: new Date(), //datetime?
+    Designation: '',
+    Technology: [],
+    CompanyEmail: '',
+    designationOptions: [],
+    technologyOptions: [],
+}
 export const BasicDetailSectionReducer = (state: IBasicDetailState = null, action) => {
     switch (action.type) {
         // Gets the values for dropdown fields from SharePoint master/choice columns.

@@ -32,7 +32,14 @@ export default class BasicFormService implements IBasicFormService {
                     basicFormControlsState.CompanyEmail = mainListResp.Email;
                     basicFormControlsState.DateofJoining = new Date(mainListResp.DateofJoining);
                     basicFormControlsState.Designation = mainListResp.Designation;//CurrentDesignation
-                    basicFormControlsState.Technology = mainListResp.Technology;
+                    if (mainListResp.Technology != null && mainListResp.Technology != undefined) {
+                        var TechnologyDropDown = mainListResp.Technology.split(",");
+                        let final = [];
+                        TechnologyDropDown.forEach(tech => {
+                            final.push({ 'key': tech, 'name': tech });
+                        });
+                        basicFormControlsState.Technology = final;
+                    }
                     return basicFormControlsState;
                 });
             });
@@ -67,7 +74,7 @@ export default class BasicFormService implements IBasicFormService {
         });
     }
 
-    public UpdateBasicDetail(basicData: IBasicDetailState, technologydata, empListId,AdLoginName): Promise<any> {
+    public UpdateBasicDetail(basicData: IBasicDetailState, technologydata, empListId, AdLoginName): Promise<any> {
         let web = new Web(AppConstats.SITEURL);
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empListId.EmpListID).update({
             FirstName: basicData.FirstName,

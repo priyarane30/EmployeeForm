@@ -36,7 +36,7 @@ class HRDetail extends React.Component<any, IControls> {
             buttonDisabled: false
         };
     }
-    async componentDidMount() {
+    public async componentDidMount() {
         const empListId = store.getState().EmpListId;
         this.props.getDefaultControlsData(empListId);//empListId
 
@@ -76,22 +76,21 @@ class HRDetail extends React.Component<any, IControls> {
                 <div className={styles.employeeForm}>
                     <div className={styles.container}>
                         <div className="ms-Grid">
-                            <div className={`ms-Grid-row  ms-fontColor-white ${styles.row}`}>
+                            <div className={`ms-Grid-row ${styles.row}`}>{/* ms-fontColor-white  */}
                                 <Form model="HR" onSubmit={(val) => this.handleSubmit(val)}>
-
                                     {/* User Alias*/}
                                     <div className='ms-Grid-col ms-u-sm4'>
                                         <label>User Alias:</label>
                                     </div>
                                     <div className='ms-Grid-col ms-u-sm8'>
-                                        <Control.text model='HR.UserAlies' id='.UserAlies' component={TextField} className={styles.marginb} disabled/>
+                                        <Control.text model='HR.UserAlies' id='.UserAlies' component={TextField} className={styles.marginb} disabled />
                                     </div>
                                     {/* Name of employee*/}
                                     <div className='ms-Grid-col ms-u-sm4 block'>
                                         <label>AD Login Name of Employee:</label>
                                     </div>
                                     <div className='ms-Grid-col ms-u-sm8'>
-                                        <Control.text model='HR.ADLogin' id='HR.ADLogin' component={TextField} className={styles.marginb} disabled/>
+                                        <Control.text model='HR.ADLogin' id='HR.ADLogin' component={TextField} className={styles.marginb} disabled />
                                     </div>
                                     {/* Manager*/}
                                     <div className='ms-Grid-col ms-u-sm4 block'>
@@ -125,8 +124,8 @@ class HRDetail extends React.Component<any, IControls> {
                                             <option value="Saved">Saved</option>
                                         </Control.select>
                                     </div>
-                                     {/* Last Designation */}
-                                     <div className='ms-Grid-col ms-u-sm4 block'>
+                                    {/* Last Designation */}
+                                    <div className='ms-Grid-col ms-u-sm4 block'>
                                         <label>Last Designation:</label>
                                     </div>
                                     <div className='ms-Grid-col ms-u-sm8 block'>
@@ -203,9 +202,8 @@ class HRDetail extends React.Component<any, IControls> {
             </div>);
     }
     private PeoplePickerItems(items: any[]) {
-        let array =[];
-        array.push({'Email':items[0].secondaryText});
-        console.log(array[0].Email);
+        let array = [];
+        array.push({ 'Email': items[0].secondaryText });
         this.setState({ Manager: array[0].Email });
 
     }

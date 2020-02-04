@@ -75,7 +75,7 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                             <Control.checkbox model='ProfessionalDetail.IsFresher' id='ProfessionalDetail.IsFresher' />
                         </div>
                         {this.isUserFresher(this.props.ProfessionalDetail)}
-                        <div className={`ms-Grid-row  ms-fontColor-white ${styles.row}`}>
+                        <div className={`ms-Grid-row ${styles.row}`}>{/* ms-fontColor-white  */}
                             <span className={styles.errors}> *Please mention mininum 1 Technology / Tools in below section</span>
                             <table>
                                 <tr>
@@ -186,7 +186,7 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
         //If user is come from another orgenization
         if (props.IsFresher == false) {
             return (
-                <div className={`ms-Grid-row  ms-fontColor-white ${styles.row}`}>
+                <div className={`ms-Grid-row ${styles.row}`}>{/* ms-fontColor-white  */}
                     <span className={styles.errors}> *Please mention professional details from latest organization</span>
                     <table style={{ width: "100%", tableLayout: "fixed" }}>
                         <tr>

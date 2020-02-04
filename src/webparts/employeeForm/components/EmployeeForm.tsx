@@ -27,7 +27,7 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, an
     this._handleSpinner = this._handleSpinner.bind(this);
   }
 
-  _handleSpinner(flagShow): void {
+  public _handleSpinner(flagShow): void {
     this.setState({ isSpinnerHidden: flagShow });
   }
 
@@ -45,9 +45,24 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, an
           <div className={styles.container} >
             {!this.state.isSpinnerHidden ? <SpinnerComponent /> : ""}
             <div>
-              <BasicDetail handleSpinner={this._handleSpinner} empEmail={this.props.userEmail} showTabs={this.showTabs} context={this.props.context} />
+              <Pivot aria-label="Employee Form" linkFormat={PivotLinkFormat.tabs} selectedKey={`${this.state.selectedKey}`} onLinkClick={this._TabClick} >
+                <PivotItem headerText="Basic Details" itemKey="0"  >
+                  <BasicDetail handleSpinner={this._handleSpinner} handleTabClick={this._handleTabClick} empEmail={this.props.userEmail} showTabs={this.showTabs} context={this.props.context} forceRenderTabPanel={true}/>
+                </PivotItem>
+                <PivotItem headerText="Employee Details" itemKey="1"  >
+                  <EmployeeDetail handleTabClick={this._handleTabClick} handleSpinner={this._handleSpinner} />
+                </PivotItem>
+                <PivotItem headerText="Education Details" itemKey="2">
+                  <EducationDetail handleTabClick={this._handleTabClick} handleSpinner={this._handleSpinner} />
+                </PivotItem>
+                <PivotItem headerText="Professional Detail" itemKey="3">
+                  <ProfessionalDetail handleTabClick={this._handleTabClick} handleSpinner={this._handleSpinner} />
+                </PivotItem>
+                {this.ShowHRTab()}
+                {this.ShowPayrollTab()}
+              </Pivot>
             </div>
-            {this.IsEmpIdExists()}
+            {/* {this.IsEmpIdExists()} */}
           </div>
         </div>
       </Provider>
@@ -55,7 +70,7 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, an
   }
 
   public _handleTabClick(): void {
-    this.setState({ selectedKey: (Number(this.state.selectedKey) + 1) % 5 });
+    this.setState({ selectedKey: (Number(this.state.selectedKey) + 1) % 6 });
   }
 
   private _TabClick = (item: PivotItem): void => {
@@ -67,7 +82,7 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, an
   private ShowHRTab() {
     if (this.state.isUserHR) {
       return (
-        <PivotItem headerText="HR Detail" itemKey="3">
+        <PivotItem headerText="HR Detail" itemKey="4">
           <HRDetail context={this.props.context} handleTabClick={this._handleTabClick} handleSpinner={this._handleSpinner} />
         </PivotItem>
       );
@@ -77,7 +92,7 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, an
   private ShowPayrollTab() {
     if (this.state.isUserHR) {
       return (
-        <PivotItem headerText="Payroll Detail" itemKey="4">
+        <PivotItem headerText="Payroll Detail" itemKey="5">
           <PayrollDetail handleTabClick={this._handleTabClick} handleSpinner={this._handleSpinner} />
         </PivotItem>
       );

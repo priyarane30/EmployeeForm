@@ -51,7 +51,7 @@ class PayrollDetail extends React.Component<any, IState> {
         <Form model="Payroll" onSubmit={val => this.handleSubmit(val)}>
           <div className={styles.employeeForm}>
             <div className={styles.container}>
-              <div className={`ms-Grid-row  ms-fontColor-white ${styles.row}`}>
+              <div className={`ms-Grid-row ${styles.row}`}>{/* ms-fontColor-white  */}
                 <div className="ms-Grid-col ms-u-sm4 block">
                   <label>ESI Applicable:</label>
                 </div>

@@ -4,7 +4,7 @@ export interface IBasicDetailState {
     LastName: string;
     DateofJoining: Date; //datetime?
     Designation: string;
-    Technology: string;
+    Technology: any[];
     CompanyEmail: string;
     designationOptions: string[];
     technologyOptions: string[];
