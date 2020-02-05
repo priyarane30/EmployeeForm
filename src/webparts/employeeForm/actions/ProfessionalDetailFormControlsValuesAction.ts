@@ -52,7 +52,7 @@ export function SetTabName(tabData: ICommonState) {
 }
 //add rows in detail grids
 export function addProfessionalDetailRow(section) {
-    if (section == "organizationDetails") {
+    if (section == "ProfessionalDetail") {
         //add row in education detail grid
         return dispatch => {
             let utilityServiceObj: UtilityService = new UtilityService();

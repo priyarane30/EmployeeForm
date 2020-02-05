@@ -48,12 +48,15 @@ export default class BasicFormService implements IBasicFormService {
 
     //Get Emp Technology
     public GetEmpTechnology(empListId): Promise<any> {
+
         let technology: any;
-        let utilityServiceObj: UtilityService = new UtilityService();
-        return utilityServiceObj.GetEmployeeContactListById(empListId).then(mainListResp => {
-            technology = mainListResp.Technology;
-            return technology;
-        });
+        if (empListId > 0) {
+            let utilityServiceObj: UtilityService = new UtilityService();
+            return utilityServiceObj.GetEmployeeContactListById(empListId).then(mainListResp => {
+                technology = mainListResp.Technology;
+                return technology;
+            });
+        }
     }
     public AddBasicDetail(empData: IBasicDetailState, technologydata, AdLoginName): Promise<any> {
         let web = new Web(AppConstats.SITEURL);

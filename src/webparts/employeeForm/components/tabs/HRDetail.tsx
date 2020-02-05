@@ -83,7 +83,7 @@ class HRDetail extends React.Component<any, IControls> {
                                         <label>User Alias:</label>
                                     </div>
                                     <div className='ms-Grid-col ms-u-sm8'>
-                                        <Control.text model='HR.UserAlies' id='.UserAlies' component={TextField} className={styles.marginb} disabled />
+                                        <Control.text model='HR.UserAlies' id='.UserAlies' component={TextField} className={styles.marginb} />
                                     </div>
                                     {/* Name of employee*/}
                                     <div className='ms-Grid-col ms-u-sm4 block'>

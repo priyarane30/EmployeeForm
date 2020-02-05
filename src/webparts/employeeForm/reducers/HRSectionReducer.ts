@@ -19,7 +19,7 @@ export const hrState: IHRState = {
     LastDesignationOptions: []
 };
 
-export const HRSectionReducer = (state: IHRState = hrState, action) => {
+export const HRSectionReducer = (state: IHRState = null, action) => {
     switch (action.type) {
 
         // Gets the values for all fields from SharePoint master/choice columns.

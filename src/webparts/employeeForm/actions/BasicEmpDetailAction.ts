@@ -8,8 +8,8 @@ export function GetEmpBasicData(empListId) {
         let basicFormState = {} as IBasicDetailState;
         let newBasicFormServiceObj: BasicFormService = new BasicFormService();
 
-        if (empListId.EmpListID > 0) {
-             newBasicFormServiceObj.GetEmpBasicDataById(empListId.EmpListID).then((resp: IBasicDetailState) => {
+        if (empListId > 0) {
+             newBasicFormServiceObj.GetEmpBasicDataById(empListId).then((resp: IBasicDetailState) => {
                 basicFormState = resp;
                 dispatch({
                     type: ActionTypes.GetBasicFormControls,

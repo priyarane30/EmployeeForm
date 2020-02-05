@@ -20,16 +20,17 @@ interface INewFormConnectedDispatch {
     RemoveDetailRowFromGrid: (removedItem, section, index) => void; //remove row from grid
 }
 
-//for validations in form
-const isNumber = (val) => !isNaN(Number(val));
-const maxLength = (len) => (val) => val.length <= len;
-
 class EmployeeDetail extends React.Component<any, buttonStatus> {
     constructor(props) {
         super(props);
         this.state = {
             buttonDisabled: false
         };
+    }
+
+    public async componentDidMount() {
+        const empListID = await store.getState().EmpListId;
+        this.props.getDefaultControlsData(empListID);
     }
 
     //adds row in grids
@@ -122,7 +123,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         id='.FatherName'
                                         validators={{
                                             requiredFatherName: (val) => val && val.length,
-                                            maxLength: maxLength(255)
+                                            maxLength: (val) => val.length <= 255
                                         }}
                                     />
                                     <Errors
@@ -144,7 +145,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         model='.MotherName' id='.MotherName'
                                         validators={{
                                             requiredMotherName: (val) => val && val.length,
-                                            maxLength: maxLength(255)
+                                            maxLength: (val) => val.length <= 255
                                         }}
                                     />
                                     <Errors
@@ -208,7 +209,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         model='.Mobile' id='.Mobile'
                                         validators={{
                                             requiredMobile: (val) => val && val.length && val.length == 10,
-                                            isNumber
+                                            isNumber: (val) => !isNaN(Number(val))
                                         }}
                                     />
                                     <Errors
@@ -229,8 +230,8 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         component={TextField} className={styles.marginb}
                                         model='.EmergencyNo' id='.EmergencyNo'
                                         validators={{
-                                            requiredEmergencyNo: (val) => val && val.length,
-                                            isNumber
+                                            requiredEmergencyNo: (val) => val && val.length == 10,
+                                            isNumber: (val) => !isNaN(Number(val))
                                         }}
                                     />
                                     <Errors
@@ -316,7 +317,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         component={TextField} className={styles.marginb}
                                         validators={{
                                             requiredAadharNo: (val) => val && val.length && val.length == 12,
-                                            isNumber
+                                            isNumber: (val) => !isNaN(Number(val))
                                         }}
                                     />
                                     <Errors
@@ -363,11 +364,6 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                 </div>
             </div>
         );
-    }
-
-    public async componentDidMount() {
-        const empListID = await store.getState().EmpListId;
-        this.props.getDefaultControlsData(empListID);
     }
 
     private isSameAsCurrentAdress(props) {

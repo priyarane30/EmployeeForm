@@ -34,18 +34,22 @@ class BasicDetail extends React.Component<any, IButtonState>{
             selectedTechnologies: []
         };
     }
-
     //On Button Save : Basic Details saved In List
     async handleSubmit(formValues) {
+        let idState = store.getState().EmpListId;
+        this.SaveBasicDetails(idState, formValues);
+    }
+
+    async SaveBasicDetails(empListId, formValues) {
         this.props.handleSpinner(false);
         let newEmpReqServiceObj: BasicService = new BasicService();
-        const idState = store.getState().EmpListId;
         this.setState({ isDisable: true });
         let AdLoginName = await this.getUserId(this.props.empEmail);
         let technologydata = this.convertTechnologyinString(this.state.selectedTechnologies);
-        if (idState != null && idState != undefined) {
+        if (empListId.EmpListID != 0) {
             //Edit Form when ID is not null
-            newEmpReqServiceObj.UpdateBasicDetail(formValues, technologydata, idState, AdLoginName).then(resp => {
+            //null && idState != undefined
+            newEmpReqServiceObj.UpdateBasicDetail(formValues, technologydata, empListId, AdLoginName).then(resp => {
                 this.setState({ isDisable: false });
                 alert("Basic details updated successfully");
                 this.props.handleSpinner(true);
@@ -58,12 +62,7 @@ class BasicDetail extends React.Component<any, IButtonState>{
             //New Form 
             newEmpReqServiceObj.AddBasicDetail(formValues, technologydata, AdLoginName).then(resp => {
                 let empIdState = { EmpListID: resp } as IEmpListIdState;
-                dispatch => {
-                    dispatch({
-                        type: ActionTypes.GetEmpID,
-                        payload: empIdState
-                    });
-                };
+                this.props.setEmpId(empIdState);
                 this.setState({ isDisable: false });
                 alert("Basic details saved successfully");
                 this.props.handleSpinner(true);
@@ -72,17 +71,13 @@ class BasicDetail extends React.Component<any, IButtonState>{
                 alert("Sorry. Error while adding employee...");
             });
         }
-
     }
 
     public async componentDidMount() {
         const CommonState: ICommonState = { CurrentForm: "Employee" };
         this.props.setTabName(CommonState);
-        var queryParameters = new UrlQueryParameterCollection(window.location.href);
-        // const queryID: number = parseInt(queryParameters.getValue("ID"));
-        // if (queryID != NaN) { console.log(queryID); }
         let newEmpReqServiceObj: BasicService = new BasicService();
-        var eId = await GetEmpListIdByUserEmail(this.props.empEmail);
+        //Is user in HR Group
         let isExistsInHR = false;
         if (this.props.empEmail != null && this.props.empEmail != undefined && this.props.empEmail != '') {
             var userGroups = await newEmpReqServiceObj.GetCurrentUserGroups(this.props.empEmail);
@@ -93,24 +88,36 @@ class BasicDetail extends React.Component<any, IButtonState>{
                 });
             }
         }
-        if (eId != null && eId != undefined) {
-            this.props.setEmpId(eId);//set empId in store
-
+        var eId = await GetEmpListIdByUserEmail(this.props.empEmail);
+        var queryEmpID = { EmpListID: 0 } as IEmpListIdState;
+        var queryParameters = new UrlQueryParameterCollection(window.location.href);
+        const queryID: number = parseInt(queryParameters.getValue("ID"));
+        if (queryID > 0 && eId.EmpListID != 0) {
+            queryEmpID.EmpListID = queryID;
+            this.props.setEmpId(queryEmpID);//set empId in store
             this.props.showTabs(eId, isExistsInHR);
-            var technology = await newEmpReqServiceObj.GetEmpTechnology(eId.EmpListID);
-            if (technology != null && technology != undefined) {
-                var TechnologyDropDown = technology.split(",");
-                let final = [];
-                TechnologyDropDown.forEach(tech => {
-                    final.push({ 'key': tech, 'name': tech });
-                });
-                this.setState({ selectedTechnologies: final });
-            }
-            await this.props.getBasicDatail(eId);//get Basic Details
+            this.getuserData(queryEmpID)
+        }
+        else if (eId != null && eId != undefined) {
+            this.props.setEmpId(eId);//set empId in store
+            this.props.showTabs(eId, isExistsInHR);
+            this.getuserData(eId)
         }
         this.onSelectedItem = this.onSelectedItem.bind(this);
     }
-
+    public async getuserData(EmpID) {
+        let newEmpReqServiceObj: BasicService = new BasicService();
+        var technology = await newEmpReqServiceObj.GetEmpTechnology(EmpID.EmpListID);
+        if (technology != null && technology != undefined) {
+            var TechnologyDropDown = technology.split(",");
+            let final = [];
+            TechnologyDropDown.forEach(tech => {
+                final.push({ 'key': tech, 'name': tech });
+            });
+            this.setState({ selectedTechnologies: final });
+        }
+        await this.props.getBasicDatail(EmpID.EmpListID);//get Basic Details
+    }
     public render() {
         pnp.setup({
             spfxContext: this.props.context
@@ -139,7 +146,7 @@ class BasicDetail extends React.Component<any, IButtonState>{
                                     <Errors
                                         className={styles.errors}
                                         show="touched"
-                                        model=".FirstName" messages={{ requiredFirstName: 'Please provide an email address.' }} />
+                                        model=".FirstName" messages={{ requiredFirstName: 'Please provide an First Name.' }} />
                                 </div>
                                 <div className='ms-Grid-col ms-u-sm4 block'>
                                     <label>Last Name *:</label>
@@ -150,7 +157,7 @@ class BasicDetail extends React.Component<any, IButtonState>{
                                     <Errors
                                         className={styles.errors}
                                         show="touched"
-                                        model=".LastName" messages={{ requiredLastName: 'Please provide an email address.' }} />
+                                        model=".LastName" messages={{ requiredLastName: 'Please provide an Last Name.' }} />
                                 </div>
                                 <div className='ms-Grid-col ms-u-sm4 block'>
                                     <label>Date Of Joining *:</label>
@@ -192,7 +199,7 @@ class BasicDetail extends React.Component<any, IButtonState>{
                                         onSelectedItem={this.onSelectedItem}
                                         context={this.props.context}
                                         suggestionsHeaderText="Please select Technology"
-                                        defaultSelectedItems={this.props.Basic.Technology}//{this.state.selectedTechnologies}
+                                        defaultSelectedItems={this.props.Basic.Technology ? this.props.Basic.Technology : this.state.selectedTechnologies}//{this.state.selectedTechnologies}
                                     />
                                     <Errors
                                         className={styles.errors}
