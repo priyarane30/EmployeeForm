@@ -75,28 +75,31 @@ class HRDetail extends React.Component<any, IControls> {
             <div>
                 <div className={styles.employeeForm}>
                     <div className={styles.container}>
-                        <div className="ms-Grid">
-                            <div className={`ms-Grid-row ${styles.row}`}>{/* ms-fontColor-white  */}
-                                <Form model="HR" onSubmit={(val) => this.handleSubmit(val)}>
+                        <div className={`ms-Grid-row ${styles.row}`}>
+                            {/* ms-fontColor-white  */}
+                            <Form model="HR" onSubmit={(val) => this.handleSubmit(val)}>
+                                <div className={`ms-Grid-row ${styles.rowhr}`}>
                                     {/* User Alias*/}
-                                    <div className='ms-Grid-col ms-u-sm4'>
+                                    <div className='ms-Grid-col ms-u-sm2'>
                                         <label>User Alias:</label>
                                     </div>
-                                    <div className='ms-Grid-col ms-u-sm8'>
+                                    <div className='ms-Grid-col ms-u-sm4'>
                                         <Control.text model='HR.UserAlies' id='.UserAlies' component={TextField} className={styles.marginb} />
                                     </div>
                                     {/* Name of employee*/}
-                                    <div className='ms-Grid-col ms-u-sm4 block'>
+                                    <div className='ms-Grid-col ms-u-sm2 block'>
                                         <label>AD Login Name of Employee:</label>
                                     </div>
-                                    <div className='ms-Grid-col ms-u-sm8'>
+                                    <div className='ms-Grid-col ms-u-sm4'>
                                         <Control.text model='HR.ADLogin' id='HR.ADLogin' component={TextField} className={styles.marginb} disabled />
                                     </div>
+                                </div>
+                                <div className={`ms-Grid-row ${styles.rowhr}`}>
                                     {/* Manager*/}
-                                    <div className='ms-Grid-col ms-u-sm4 block'>
+                                    <div className='ms-Grid-col ms-u-sm2 block'>
                                         <label>Manager:</label>
                                     </div>
-                                    <div className={`ms-Grid-col ms-u-sm8 block ${styles.marginb}`}>
+                                    <div className={`ms-Grid-col ms-u-sm4 block ${styles.marginb}`}>
                                         <PeoplePicker
                                             context={this.props.context}
                                             personSelectionLimit={1}
@@ -113,10 +116,10 @@ class HRDetail extends React.Component<any, IControls> {
                                         />
                                     </div>
                                     {/* Employment Status */}
-                                    <div className='ms-Grid-col ms-u-sm4 block'>
+                                    <div className='ms-Grid-col ms-u-sm2 block'>
                                         <label>Employment Status:</label>
                                     </div>
-                                    <div className='ms-Grid-col ms-u-sm8 block'>
+                                    <div className='ms-Grid-col ms-u-sm4 block'>
                                         <Control.select model="HR.employementStatus" id="HR.employementStatus" className={styles.dropdowncustomhr} >
                                             <option value="Assigned to HR">Assigned to HR</option>
                                             <option value="Active">Active</option>
@@ -124,11 +127,13 @@ class HRDetail extends React.Component<any, IControls> {
                                             <option value="Saved">Saved</option>
                                         </Control.select>
                                     </div>
+                                </div>
+                                <div className={`ms-Grid-row ${styles.rowhr}`}>
                                     {/* Last Designation */}
-                                    <div className='ms-Grid-col ms-u-sm4 block'>
+                                    <div className='ms-Grid-col ms-u-sm2 block'>
                                         <label>Last Designation:</label>
                                     </div>
-                                    <div className='ms-Grid-col ms-u-sm8 block'>
+                                    <div className='ms-Grid-col ms-u-sm4 block'>
                                         <Control.select model="HR.LastDesignation" id="HR.LastDesignation" className={styles.dropdowncustomhr}>
                                             <option>--Select--</option>
 
@@ -139,21 +144,23 @@ class HRDetail extends React.Component<any, IControls> {
                                     </Control.select>
                                     </div>
                                     {/* Last Prompted Date*/}
-                                    <div className='ms-Grid-col ms-u-sm4 block'>
+                                    <div className='ms-Grid-col ms-u-sm2 block'>
                                         <label>Last Prompted Date:</label>
                                     </div>
-                                    <div className='ms-Grid-col ms-u-sm8 block'>
+                                    <div className='ms-Grid-col ms-u-sm4 block'>
                                         <Control model='HR.LastPromotedDate' id='HR.LastPromotedDate' component={DatePicker} placeholder='dd-MM-yyyy' className={styles.marginb}
                                             mapProps={{
                                                 value: (props) => { return props.viewValue; },
                                                 onSelectDate: (props) => { return props.onChange; }
                                             }}></Control>
                                     </div>
+                                </div>
+                                <div className={`ms-Grid-row ${styles.rowhr}`}>
                                     {/* Date of leaving*/}
-                                    <div className='ms-Grid-col ms-u-sm4 block'>
+                                    <div className='ms-Grid-col ms-u-sm2 block'>
                                         <label>Date of leaving:</label>
                                     </div>
-                                    <div className='ms-Grid-col ms-u-sm8 block'>
+                                    <div className='ms-Grid-col ms-u-sm4 block'>
                                         <Control model='HR.DateofLeft' id='HR.DateofLeft' component={DatePicker} placeholder='dd-MM-yyyy' className={styles.marginb}
                                             mapProps={{
                                                 value: (props) => { return props.viewValue; },
@@ -161,10 +168,10 @@ class HRDetail extends React.Component<any, IControls> {
                                             }}></Control>
                                     </div>
                                     {/* Reason for leaving */}
-                                    <div className='ms-Grid-col ms-u-sm4 block'>
+                                    <div className='ms-Grid-col ms-u-sm2 block'>
                                         <label>Reason for leaving:</label>
                                     </div>
-                                    <div className='ms-Grid-col ms-u-sm8 block'>
+                                    <div className='ms-Grid-col ms-u-sm4 block'>
                                         <Control.select model="HR.reasonForLeaving" id="HR.reasonForLeaving" className={styles.dropdowncustomhr}>
                                             <option>--Select--</option>
 
@@ -174,11 +181,13 @@ class HRDetail extends React.Component<any, IControls> {
                                             })};
                                     </Control.select>
                                     </div>
+                                </div>
+                                <div className={`ms-Grid-row ${styles.rowhr}`}>
                                     {/* Date of Resignation*/}
-                                    <div className='ms-Grid-col ms-u-sm4 block'>
+                                    <div className='ms-Grid-col ms-u-sm2 block'>
                                         <label>Resignation Date:</label>
                                     </div>
-                                    <div className='ms-Grid-col ms-u-sm8 block'>
+                                    <div className='ms-Grid-col ms-u-sm4 block'>
                                         <Control model='HR.ResigntionDate' id='HR.ResigntionDate' component={DatePicker} placeholder='dd-MM-yyyy' className={styles.marginb}
                                             mapProps={{
                                                 value: (props) => { return props.viewValue; },
@@ -186,16 +195,20 @@ class HRDetail extends React.Component<any, IControls> {
                                             }}></Control>
                                     </div>
                                     {/* Eligible for rehire*/}
-                                    <div className='ms-Grid-col ms-u-sm4 block'>
+                                    <div className='ms-Grid-col ms-u-sm2 block'>
                                         <label>Eligible for Rehire:</label>
                                     </div>
-                                    <div className='ms-Grid-col ms-u-sm8 block'>
+                                    <div className='ms-Grid-col ms-u-sm4 block'>
                                         <Control.checkbox model='HR.EligibleforRehire' id='HR.EligibleforRehire' />
                                     </div>
-                                    <DefaultButton id="DefaultSubmit" primary={true} text={"Submit"} type="submit"
-                                        disabled={this.state.buttonDisabled} className={styles.button} />
-                                </Form>
-                            </div>
+                                </div>
+                                <div className={`ms-Grid-row ${styles.rowhr}`}>
+                                    <div className="ms-Grid-col ms-u-sm12 block">
+                                        <DefaultButton id="DefaultSubmit" primary={true} text={"Submit"} type="submit"
+                                            disabled={this.state.buttonDisabled} className={styles.submitbutton} />
+                                    </div>
+                                </div>
+                            </Form>
                         </div>
                     </div>
                 </div >

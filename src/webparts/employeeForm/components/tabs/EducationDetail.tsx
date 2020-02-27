@@ -75,9 +75,10 @@ class EducationDetail extends React.Component<any, buttonStatus> {
           <div className={styles.employeeForm}>
             <div className={styles.container}>
              <div className={`ms-Grid-row ${styles.row}`}>   {/* ms-fontColor-white  */}
+             <div className={styles.childdetailsec}> 
                 <table style={{ width: "100%" }}>
                   <tr>
-                    <th colSpan={8} style={{ textAlign: "left" }}>Education details <button type="button" onClick={() => this.handleRowAdd("educationDetails")}>+</button></th>
+                    <th colSpan={8} style={{ textAlign: "left" }}> <span>Education details <button className={styles.addbtn} type="button" onClick={() => this.handleRowAdd("educationDetails")}>+</button></span></th>
                   </tr>
                   {
                     this.props.Education.educationDetails.map((education, i) => {
@@ -204,13 +205,15 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                               }}
                             ></Errors></td>
                           <td>
-                            <button type="button" style={{ marginTop: "20px" }} onClick={() => this.handleRowRemove("educationDetails", i)}>-</button></td>
+                            <button className={styles.removebtn} type="button" style={{ marginTop: "20px" }} onClick={() => this.handleRowRemove("educationDetails", i)}>-</button></td>
                         </tr>);
                     })}
                 </table>
-                <table>
+              </div>
+              <div className="childdetail-sec"> 
+                <table style={{ width: "100%" }}>
                   <tr>
-                    <th colSpan={6} style={{ textAlign: "left" }}>Certification details <button type="button" onClick={() => this.handleRowAdd("certificationDetails")}>+</button></th>
+                    <th colSpan={6} style={{ textAlign: "left" }}><span>Certification details <button type="button" onClick={() => this.handleRowAdd("certificationDetails")} className={styles.addbtn}>+</button></span></th>
                   </tr>
                   {this.props.Education.certificationDetails.map((certification, i) => {
                     return (
@@ -302,14 +305,15 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                           ></Errors>
                         </td>
                         <td>
-                          <button type="button" style={{ marginTop: "20px" }} onClick={() => this.handleRowRemove("certificationDetails", i)}>-</button></td>
+                          <button type="button" style={{ marginTop: "20px" }} onClick={() => this.handleRowRemove("certificationDetails", i)} className={styles.removebtn}>-</button></td>
                       </tr>
                     );
                   })}
                 </table>
+               </div>
                 <div >
                   <DefaultButton id="DefaultSubmit" primary={true} text={"Submit"} type="submit"
-                    disabled={this.state.buttonDisabled} className={styles.button} />
+                    disabled={this.state.buttonDisabled} className={styles.submitbutton } />
                 </div>
               </div>
             </div>

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styles from './EmployeeForm.module.scss';
 import { IEmployeeFormProps } from './IEmployeeFormProps';
-import { Pivot, PivotItem, PivotLinkFormat } from 'office-ui-fabric-react/lib/Pivot';
+import { Pivot, PivotItem, PivotLinkFormat ,PivotLinkSize} from 'office-ui-fabric-react/lib/Pivot';
 import BasicDetail from '../components/tabs/BasicDetail';
 import EmployeeDetail from '../components/tabs/EmployeeDetail';
 import EducationDetail from './tabs/EducationDetail';
@@ -44,9 +44,9 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, an
         <div className={styles.employeeForm}>
           <div className={styles.container} >
             {!this.state.isSpinnerHidden ? <SpinnerComponent /> : ""}
-            <div>
-              <Pivot aria-label="Employee Form" linkFormat={PivotLinkFormat.tabs} selectedKey={`${this.state.selectedKey}`} onLinkClick={this._TabClick} >
-                <PivotItem headerText="Basic Details" itemKey="0"  >
+            <div >
+              <Pivot aria-label="Employee Form" linkFormat={PivotLinkFormat.tabs} linkSize={PivotLinkSize.large}  selectedKey={`${this.state.selectedKey}`} onLinkClick={this._TabClick} style={{width:'16px !important;'}}>
+                <PivotItem headerText="Basic Details" itemKey="0" >
                   <BasicDetail handleSpinner={this._handleSpinner} handleTabClick={this._handleTabClick} empEmail={this.props.userEmail} showTabs={this.showTabs} context={this.props.context} forceRenderTabPanel={true}/>
                 </PivotItem>
                 <PivotItem headerText="Employee Details" itemKey="1"  >

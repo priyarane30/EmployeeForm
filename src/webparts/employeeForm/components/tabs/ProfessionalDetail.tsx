@@ -71,18 +71,17 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                 <div className={styles.container}>
                     <Form model="ProfessionalDetail" onSubmit={val => this.handleSubmit(val)}>
                         <div className='col'> {/* Eligible for rehire*/}
-                            <label>Fresher:</label>
+                            <label style={{ paddingLeft: "15px" }}>Fresher:</label>
                             <Control.checkbox model='ProfessionalDetail.IsFresher' id='ProfessionalDetail.IsFresher' />
                         </div>
                         {this.isUserFresher(this.props.ProfessionalDetail)}
                         <div className={`ms-Grid-row ${styles.row}`}>{/* ms-fontColor-white  */}
                             <span className={styles.errors}> *Please mention mininum 1 Technology / Tools in below section</span>
-                            <table>
+                            <div className={styles.childdetailsec}> 
+                            <table style={{ width: "100%" }}>
                                 <tr>
-                                    <th colSpan={2} style={{ textAlign: "left" }}>Technology / Tools Skills</th>
-                                    <td colSpan={6} style={{ textAlign: "left" }}>
-                                        <button type="button" onClick={() => this.handleRowAdd("Technology")}>+</button>
-                                    </td>
+                                    <th colSpan={8} style={{ textAlign: "left" }}><span> Technology / Tools Skills <button className={styles.addbtn} type="button" onClick={() => this.handleRowAdd("Technology")}>+</button></span></th>
+                             
                                 </tr>
                                 {this.props.ProfessionalDetail.technologyDetails.map((technologies, i) => {
                                     return (
@@ -167,15 +166,16 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                 />
                                             </td>
                                             <td> {/* Action */}
-                                                <button type="button" onClick={() => this.handleRowRemove("technologyDetails", i)} style={{ marginTop: "20px" }}>-</button>
+                                                <button className={styles.removebtn} type="button" onClick={() => this.handleRowRemove("technologyDetails", i)} style={{ marginTop: "20px" }}>-</button>
                                             </td>
                                         </tr>
                                     );
                                 })}
                             </table>
+                            </div>
                         </div>
                         <DefaultButton id="DefaultSubmit" primary={true} text={"Submit"} type="submit"
-                            disabled={this.state.buttonDisabled} className={styles.button} />
+                            disabled={this.state.buttonDisabled} className={styles.submitbutton } />
                     </Form>
                 </div>
             </div >
@@ -188,19 +188,19 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
             return (
                 <div className={`ms-Grid-row ${styles.row}`}>{/* ms-fontColor-white  */}
                     <span className={styles.errors}> *Please mention professional details from latest organization</span>
-                    <table style={{ width: "100%", tableLayout: "fixed" }}>
+                    <div className={styles.childdetailsec}> 
+                    <div style={{ overflowX: "scroll", width: "100%" }}>
+                    <table style={{ width: "160%" }}>
                         <tr>
-                            <th colSpan={2} style={{ textAlign: "left" }}>Organization details</th>
-                            <td colSpan={6} style={{ textAlign: "left" }}>
-                                <button type="button" onClick={() => this.handleRowAdd("ProfessionalDetail")}>+</button>
-                            </td>
+                            <th colSpan={8} style={{ textAlign: "left" }}><span>Organization details  <button className={styles.addbtn} type="button" onClick={() => this.handleRowAdd("ProfessionalDetail")}>+</button></span></th>
+                          
                         </tr>
                         {
                             this.props.ProfessionalDetail.organizationDetails.map((organizations, i) => {
                                 return (
                                     <tr>
-                                        <td> {/* Organization */}
-                                            <label>Organizatio n</label>
+                                        <td style={{ width: "200px"}}> {/* Organization */}
+                                            <label className={styles.orgdetailslabel}>Organization</label>
                                             <Control.text model={`ProfessionalDetail.organizationDetails[${i}].organization`} id={organizations.organization}
                                                 validators={{ requiredorganization: (val) => val && val.length && !(Number(val)) }} component={TextField} />
                                             <Errors
@@ -212,8 +212,8 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                 }}
                                             />
                                         </td>
-                                        <td> {/* Designation/Role */}
-                                            <label>Designation /Role</label>
+                                        <td style={{ width: "200px"}}> {/* Designation/Role */}
+                                            <label className={styles.orgdetailslabel}>Designation /Role</label>
                                             <Control.text model={`ProfessionalDetail.organizationDetails[${i}].designation`} id={organizations.designation}
                                                 validators={{ requireddesignation: (val) => val && val.length && !(Number(val)) }} component={TextField} />
                                             <Errors
@@ -225,8 +225,8 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                 }}
                                             />
                                         </td>
-                                        <td> {/* Start Month */}
-                                            <label>Start Month</label>
+                                        <td style={{ width: "200px"}}> {/* Start Month */}
+                                            <label className={styles.orgdetailslabel}>Start Month</label>
                                             <Control.text model={`ProfessionalDetail.organizationDetails[${i}].startDate`} id={organizations.startDate} placeholder="MMM-YYYY"
                                                 validators={{
                                                     requiredstartDate: (val) => val && val.length,
@@ -242,8 +242,8 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                 }}
                                             />
                                         </td>
-                                        <td> {/* End  Month */}
-                                            <label>End  Month</label>
+                                        <td style={{ width: "200px"}}> {/* End  Month */}
+                                            <label className={styles.orgdetailslabel}>End  Month</label>
                                             <Control.text model={`ProfessionalDetail.organizationDetails[${i}].endDate`} id={organizations.endDate} placeholder="MMM-YYYY"
                                                 validators={{
                                                     requiredendDate: (val) => val && val.length,
@@ -259,8 +259,8 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                 }}
                                             />
                                         </td>
-                                        <td> {/* Reporting To */}
-                                            <label>Reporting To</label>
+                                        <td style={{ width: "200px"}}> {/* Reporting To */}
+                                            <label className={styles.orgdetailslabel}>Reporting To</label>
                                             <Control.text model={`ProfessionalDetail.organizationDetails[${i}].reportingTo`} id={organizations.reportingTo}
                                                 validators={{ requiredreportingTo: (val) => val && val.length && !(Number(val)) }} component={TextField} />
                                             <Errors
@@ -272,8 +272,8 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                 }}
                                             />
                                         </td>
-                                        <td> {/* Reporting Designation */}
-                                            <label>Reporting Designation</label>
+                                        <td style={{ width: "200px"}}> {/* Reporting Designation */}
+                                            <label className={styles.orgdetailslabel}>Reporting Designation</label>
                                             <Control.text model={`ProfessionalDetail.organizationDetails[${i}].reportingDesignation`} id={organizations.reportingDesignation}
                                                 validators={{ requiredreportingDesignation: (val) => val && val.length && !(Number(val)) }} component={TextField} />
                                             <Errors
@@ -285,8 +285,8 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                 }}
                                             />
                                         </td>
-                                        <td> {/* Total Exp.(Month) */}
-                                            <label>Total Exp.(Month)</label>
+                                        <td style={{ width: "200px"}}> {/* Total Exp.(Month) */}
+                                            <label className={styles.orgdetailslabel}>Total Exp.(Month)</label>
                                             <Control.text model={`ProfessionalDetail.organizationDetails[${i}].totalExp`} id={organizations.totalExp}
                                                 validators={{
                                                     requiredtotalExp: (val) => Number(val) && val.length
@@ -300,8 +300,8 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                 }}
                                             />
                                         </td>
-                                        <td> {/* Reason For Leaving */}
-                                            <label>Reason For Leaving</label>
+                                        <td style={{ width: "200px"}}> {/* Reason For Leaving */}
+                                            <label className={styles.orgdetailslabel}>Reason For Leaving</label>
                                             <Control.select model={`ProfessionalDetail.organizationDetails[${i}].reasonForLeaving`} id={organizations.reasonForLeaving}
                                                 validators={{ requiredreasonForLeaving: (val) => val && val != "--Select--" }} style={{ height: "30px", width: "100%" }}>
                                                 <option value="0">--Select--</option>
@@ -319,13 +319,15 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                 }}
                                             />
                                         </td>
-                                        <td> {/* Action */}
-                                            <button type="button" onClick={() => this.handleRowRemove("organizationDetails", i)} style={{ marginTop: "40px" }}>-</button>
+                                        <td style={{ width: "25px"}}> {/* Action */}
+                                            <button className={styles.removebtn} type="button" onClick={() => this.handleRowRemove("organizationDetails", i)} style={{ marginTop: "40px" }}>-</button>
                                         </td>
                                     </tr>
                                 );
                             })}
                     </table>
+                </div>
+                </div>
                 </div>
             );
         }

@@ -13,7 +13,7 @@
 
     > span {
       display: block;
-      font-size: 0.8rem;
+      font-size: 0.8rem !important;
     }
   }
 
@@ -26,20 +26,30 @@
   .container {
     max-width: 100%;
     margin: 0px auto;
-    background-color:#f3f2f1;
- //   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
-  }
+    //background-color: #f3f2f1;
+    //   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
+    }
 
   .row {
     @include ms-Grid-row;
     // @include ms-fontColor-white;
     // background-color: $ms-color-themeDark;
-    background-color:#f3f2f1;
+   // background-color: #f3f2f1;
     color: #000;
     font-weight: 600;
     padding: 20px;
   }
-
+  .rowhr {
+    @include ms-Grid-row;
+    // @include ms-fontColor-white;
+    // background-color: $ms-color-themeDark;
+   // background-color: #f3f2f1;
+    color: #000;
+    font-weight: 600;
+    padding: 20px;
+    padding-bottom: 0px!important;
+    padding-top: 0px;
+  }
   .column {
     @include ms-Grid-col;
     @include ms-lg10;
@@ -68,12 +78,13 @@
   .dropdowncustom {
     margin-bottom: 7px !important;
     height: 32px !important;
-    width: 462px !important;
+    width: 100% !important;
   }
   .dropdowncustomhr {
     margin-bottom: 7px !important;
     height: 32px !important;
-    width: 450px !important;
+  //  width: 450px !important;
+  width: 100% !important;
   }
   .button {
     // Our button
@@ -115,4 +126,94 @@
       color: black !important;
     }
   }
+  .ms-Pivot {
+    margin-left: -8px !important;
+  }
+  // .Pivotbutton button.ms-Button {
+  //   width: 16% !important;
+  // }
+
+  .submitbutton {
+    background: rgb(63, 81, 182) !important;
+    color: #fff !important;
+    min-width: 80px;
+    text-decoration: none;
+    height: 32px;
+    border: none;
+    float: right;
+    margin-right: 9px;
+  }
+  .marginb input.ms-TextField-field {
+    width: 280px;
+  }
+  .Pivotbutton button.ms-Button{
+    background: #f00!important;
+  }
+  .addressblk span{
+    font-size: 18px;
+    margin-bottom: 20px;
+    display: block;
+    padding-left: 8px;
+  }
+  .addressblk span button{
+    margin-left: 10px;
+  }
+  .addressblk{
+    padding-bottom: 0 !important;
+  }
+
+  .passportblk{
+    margin-top: 15px;
+  }
+  .passportblk table th span{
+    font-size: 18px;
+    margin-bottom: 20px;
+    display: block;
+    
+  }
+  .passportblk table th span button{
+    margin-left: 10px;
+  }
+  .addbtn{
+    background: #18B449;
+    border: none;
+    color: #fff;
+  }
+  .removebtn{
+    background: #EC1C4B;
+    border: none;
+    color: #fff;
+  }
+  .childdetailsec{
+    margin-bottom: 15px;
+  }
+  .childdetailsec span{
+    margin-bottom: 15px;
+    font-size: 16px;
+  }
+  .childdetailsec table tr td{
+    padding-bottom: 10px;
+  }
+  input:not([type]), 
+  input[type=email], 
+  input[type=file], 
+  input[type=password], 
+  input[type=text], 
+  select, 
+  textarea{
+    width: 100%;
+    margin-bottom: 1px;
+    margin-left: 1px;
+  }
+  .padding0{
+    padding: 0px !important;
+  }
+  .orgdetailslabel{
+    margin-bottom: 5px;
+    width: 100%;
+    min-height: 35px;
+    display: block;
+    margin-top: 15px;
+  }
+
 }

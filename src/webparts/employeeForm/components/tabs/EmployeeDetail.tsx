@@ -46,13 +46,11 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
 
     private async handleSubmit(formValues) {
         this.props.handleSpinner(false);
-        console.log("this.props.Employee" + this.props.Employee);
         const CommonState: ICommonState = { CurrentForm: "Employee" };
         this.props.setTabName(CommonState);
         const empListId = store.getState().EmpListId;
         let empData = {} as INewFormState;
         empData = formValues;
-        console.log("empData" + empData)
         this.setState({ buttonDisabled: true });
         let newEmpServiceObj: NewEmpService = new NewEmpService();
         await newEmpServiceObj.AddEmpFormData(empData, empListId);
@@ -67,12 +65,13 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
             <div>
                 <div className={styles.employeeForm}>
                     <div className={styles.container}>
-                        <div className={`ms-Grid-row  ${styles.row}`}> {/* ms-fontColor-white  */}
-                            <Form model="Employee" onSubmit={(val) => this.handleSubmit(val)}>
-                                <div className='ms-Grid-col ms-u-sm4 block'>
+                        {/* ms-fontColor-white  */}
+                        <Form model="Employee" onSubmit={(val) => this.handleSubmit(val)}>
+                            <div className={`ms-Grid-row  ${styles.row} ${styles.addressblk}`}>
+                                <div className='ms-Grid-col ms-u-sm2 block'>
                                     <label>Gender:</label>
                                 </div>
-                                <div className="ms-Grid-col ms-u-sm8 block">
+                                <div className="ms-Grid-col ms-u-sm4 block">
                                     <Control.select model="Employee.Gender"
                                         id=".Gender" className={styles.dropdowncustom}
                                         validators={{
@@ -91,10 +90,10 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         }}
                                     ></Errors>
                                 </div>
-                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                <div className='ms-Grid-col ms-u-sm2 block'>
                                     <label>Date Of Birth:</label>
                                 </div>
-                                <div className="ms-Grid-col ms-u-sm8 block">
+                                <div className="ms-Grid-col ms-u-sm4 block">
                                     <Control model='.DateOfBirth' component={DatePicker} className={styles.marginb}
                                         mapProps={{
                                             value: (props) => { return props.viewValue; },
@@ -113,10 +112,10 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         }}
                                     ></Errors>
                                 </div>
-                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                <div className='ms-Grid-col ms-u-sm2 block'>
                                     <label>Father Name:</label>
                                 </div>
-                                <div className="ms-Grid-col ms-u-sm8 block">
+                                <div className="ms-Grid-col ms-u-sm4 block">
                                     <Control.text
                                         component={TextField} className={styles.marginb}
                                         model='.FatherName'
@@ -136,10 +135,10 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         }}
                                     ></Errors>
                                 </div>
-                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                <div className='ms-Grid-col ms-u-sm2 block'>
                                     <label>Mother Name:</label>
                                 </div>
-                                <div className="ms-Grid-col ms-u-sm8 block">
+                                <div className="ms-Grid-col ms-u-sm4 block">
                                     <Control.text
                                         component={TextField} className={styles.marginb}
                                         model='.MotherName' id='.MotherName'
@@ -158,10 +157,10 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         }}
                                     ></Errors>
                                 </div>
-                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                <div className='ms-Grid-col ms-u-sm2 block'>
                                     <label>Marital Status:</label>
                                 </div>
-                                <div className="ms-Grid-col ms-u-sm8 block">
+                                <div className="ms-Grid-col ms-u-sm4 block">
                                     <Control.select model=".MaritalStatus" id=".MaritalStatus"
                                         className={styles.dropdowncustom}
                                         validators={{
@@ -178,11 +177,10 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         }}
                                     />
                                 </div>
-                                {this.isMarried(this.props.Employee)}
-                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                <div className='ms-Grid-col ms-u-sm2 block'>
                                     <label>Personal Email:</label>
                                 </div>
-                                <div className="ms-Grid-col ms-u-sm8 block">
+                                <div className="ms-Grid-col ms-u-sm4 block">
                                     <Control.text
                                         component={TextField} className={styles.marginb}
                                         model='.PersonalEmail' id='.PersonalEmail'
@@ -200,10 +198,12 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         }}
                                     />
                                 </div>
-                                <div className='ms-Grid-col ms-u-sm4 block'>
+
+                                {this.isMarried(this.props.Employee)}
+                                <div className='ms-Grid-col ms-u-sm2 block'>
                                     <label>Mobile No:</label>
                                 </div>
-                                <div className="ms-Grid-col ms-u-sm8 block">
+                                <div className="ms-Grid-col ms-u-sm4 block">
                                     <Control.text
                                         component={TextField} className={styles.marginb}
                                         model='.Mobile' id='.Mobile'
@@ -222,10 +222,10 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         }}
                                     ></Errors>
                                 </div>
-                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                <div className='ms-Grid-col ms-u-sm2 block'>
                                     <label>Emergency Contact No:</label>
                                 </div>
-                                <div className="ms-Grid-col ms-u-sm8 block">
+                                <div className="ms-Grid-col ms-u-sm4 block">
                                     <Control.text
                                         component={TextField} className={styles.marginb}
                                         model='.EmergencyNo' id='.EmergencyNo'
@@ -244,10 +244,10 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         }}
                                     ></Errors>
                                 </div>
-                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                <div className='ms-Grid-col ms-u-sm2 block'>
                                     <label>Relation with Emergency No:</label>
                                 </div>
-                                <div className="ms-Grid-col ms-u-sm8 block">
+                                <div className="ms-Grid-col ms-u-sm4 block">
                                     <Control.text
                                         component={TextField} className={styles.marginb}
                                         model='.RelationWithEmergencyNo' id='.RelationWithEmergencyNo'
@@ -264,10 +264,10 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         }}
                                     ></Errors>
                                 </div>
-                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                <div className='ms-Grid-col ms-u-sm2 block'>
                                     <label>Blood Group:</label>
                                 </div>
-                                <div className="ms-Grid-col ms-u-sm8 block">
+                                <div className="ms-Grid-col ms-u-sm4 block">
                                     <Control.text model='.BloodGroup' id='.BloodGroup'
                                         component={TextField} className={styles.marginb}
                                         validators={{
@@ -283,10 +283,12 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         }}
                                     ></Errors>
                                 </div>
-                                <div className='ms-Grid-col ms-u-sm4 block'>
+                            </div>
+                            <div className={`ms-Grid-row  ${styles.row}`}>
+                                <div className='ms-Grid-col ms-u-sm2 block'>
                                     <label>Current Resident Address:</label>
                                 </div>
-                                <div className="ms-Grid-col ms-u-sm8 block">
+                                <div className="ms-Grid-col ms-u-sm4 block">
                                     <Control.textarea model='.CurrentAddress' id='.CurrentAddress'
                                         className={styles.marginb}
                                         validators={{
@@ -302,17 +304,18 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         }}
                                     ></Errors>
                                 </div>
-                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                <div className='ms-Grid-col ms-u-sm2 block'>
                                     <label>Is Same as Current Address?</label>
                                 </div>
-                                <div className="ms-Grid-col ms-u-sm8 block">
+                                <div className="ms-Grid-col ms-u-sm4 block">
                                     <Control.checkbox model=".IsSameAsCurrAddress" />
+
                                 </div>
-                                {this.isSameAsCurrentAdress(this.props.Employee)}
-                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                <div className={`ms-Grid-col ms-u-sm12 block ${styles.padding0}`}>   {this.isSameAsCurrentAdress(this.props.Employee)}</div>
+                                <div className='ms-Grid-col ms-u-sm2 block'>
                                     <label>Aadhar No:</label>
                                 </div>
-                                <div className="ms-Grid-col ms-u-sm8 block">
+                                <div className="ms-Grid-col ms-u-sm4 block">
                                     <Control.text model='.AadharNo' id='.AadharNo'
                                         component={TextField} className={styles.marginb}
                                         validators={{
@@ -330,10 +333,10 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         }}
                                     ></Errors>
                                 </div>
-                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                <div className='ms-Grid-col ms-u-sm2 block'>
                                     <label>Pan No:</label>
                                 </div>
-                                <div className="ms-Grid-col ms-u-sm8 block">
+                                <div className="ms-Grid-col ms-u-sm4 block">
                                     <Control.text model='.PanNo' id='.PanNo'
                                         component={TextField} className={styles.marginb}
                                         validators={{
@@ -349,17 +352,18 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         }}
                                     ></Errors>
                                 </div>
-                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                <div className='ms-Grid-col ms-u-sm2 block'>
                                     <label>Is Passport available:</label>
                                 </div>
-                                <div className="ms-Grid-col ms-u-sm8 block">
+                                <div className="ms-Grid-col ms-u-sm4 block">
                                     <Control.checkbox model='.IsPassAvail' />
                                 </div>
                                 {this.isPassportAvailable(this.props.Employee)}
-                                <DefaultButton id="DefaultSubmit" primary={true} text={"Submit"} type="submit"
-                                    disabled={this.state.buttonDisabled} className={styles.button} />
-                            </Form>
-                        </div>
+                                <div className="ms-Grid-col ms-u-sm12 block"><DefaultButton id="DefaultSubmit" primary={true} text={"Submit"} type="submit"
+                                    disabled={this.state.buttonDisabled} className={styles.submitbutton } /></div>
+                            </div>
+                        </Form>
+
                     </div>
                 </div>
             </div>
@@ -369,11 +373,11 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
     private isSameAsCurrentAdress(props) {
         if (props.IsSameAsCurrAddress == false) {
             return (
-                <div className='ms-Grid-col ms-u-sm12 block'>
-                    <div className='ms-Grid-col ms-u-sm4 block'>
+                <div className={`ms-Grid-col ms-u-sm12 block ${styles.padding0}`}>
+                    <div className='ms-Grid-col ms-u-sm2 block'>
                         <label>Permanent Address</label>
                     </div>
-                    <div className="ms-Grid-col ms-u-sm8 block">
+                    <div className="ms-Grid-col ms-u-sm4 block">
                         <Control.textarea model='.PermanentAddress' id='.PermanentAddress'
                             className={styles.marginb}
                             validators={{
@@ -396,11 +400,11 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
     private isPassportAvailable(props) {
         if (props.IsPassAvail != false) {
             return (
-                <div className="ms-Grid-col ms-u-sm12 block">
-                    <div className='ms-Grid-col ms-u-sm4 block'>
+                <div className={`ms-Grid-col ms-u-sm12 block ${styles.padding0} ${styles.passportblk}`}>
+                    <div className='ms-Grid-col ms-u-sm2 block'>
                         <label>Passport No:</label>
                     </div>
-                    <div className="ms-Grid-col ms-u-sm8 block">
+                    <div className="ms-Grid-col ms-u-sm4 block">
                         <Control.text model='.PassportNo' id='.PassportNo'
                             component={TextField} className={styles.marginb}
                             validators={{
@@ -416,10 +420,10 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                             }}
                         ></Errors>
                     </div>
-                    <div className='ms-Grid-col ms-u-sm4 block'>
+                    <div className='ms-Grid-col ms-u-sm2 block'>
                         <label>Passport Validity</label>
                     </div>
-                    <div className="ms-Grid-col ms-u-sm8 block">
+                    <div className="ms-Grid-col ms-u-sm4 block">
                         <Control model='.PassportValidity' component={DatePicker} className={styles.marginb}
                             mapProps={{
                                 value: (props) => { return props.viewValue; },
@@ -440,9 +444,9 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                     </div>
                     <table className="ms-Grid-col ms-u-sm12 block">
                         <tr>
-                            <th colSpan={8} style={{ textAlign: "left" }}>Visa Details
-                                <button type="button" onClick={() => this.handleRowAdd("visaDetailItems")}>+</button>
-                            </th>
+                            <th colSpan={8} style={{ textAlign: "left" }}><span>Visa Details
+                                <button type="button" onClick={() => this.handleRowAdd("visaDetailItems")} className={styles.addbtn}>+</button>
+                           </span> </th>
                         </tr>
                         {props.visaDetailItems.map((visa, i) => {
                             return (
@@ -530,7 +534,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         <Control.checkbox model={`Employee.visaDetailItems[${i}].IsTravelled`} id={`Employee.visaDetailItems[${i}].IsTravelled`} />
                                     </td>
                                     <td>
-                                        <button type="button" style={{ marginTop: "20px" }} onClick={() => this.handleRowRemove("visaDetailItems", i)}>-</button>
+                                        <button type="button" style={{ marginTop: "4px" }} onClick={() => this.handleRowRemove("visaDetailItems", i)} className={styles.removebtn}>-</button>
                                     </td>
                                 </tr>
                             );
@@ -544,11 +548,11 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
     private isMarried(props) {
         if (props.MaritalStatus == "Married") {
             return (
-                <div className="ms-Grid-col ms-u-sm12 block">
-                    <div className='ms-Grid-col ms-u-sm4 block'>
+                <div className={`ms-Grid-col ms-u-sm12 block ${styles.padding0}`}>
+                    <div className='ms-Grid-col ms-u-sm2 block'>
                         <label>Spouse Name:</label>
                     </div>
-                    <div className="ms-Grid-col ms-u-sm8 block">
+                    <div className="ms-Grid-col ms-u-sm4 block">
                         <Control.text model='.SpouceName' id='.SpouceName'
                             validators={{
                                 requiredSpouceName: (val) => val && val.length,
@@ -564,10 +568,10 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                             }}
                         ></Errors>
                     </div>
-                    <div className='ms-Grid-col ms-u-sm4 block'>
+                    <div className='ms-Grid-col ms-u-sm2 block'>
                         <label>Spouse Occupation:</label>
                     </div>
-                    <div className="ms-Grid-col ms-u-sm8 block">
+                    <div className="ms-Grid-col ms-u-sm4 block">
                         <Control.text model='.SpouseOccupation' id='.SpouseOccupation'
                             validators={{
                                 requiredSpouseOccupation: (val) => val && val.length,
@@ -583,10 +587,10 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                             }}
                         ></Errors>
                     </div>
-                    <div className='ms-Grid-col ms-u-sm4 block'>
+                    <div className='ms-Grid-col ms-u-sm2 block'>
                         <label>Spouse DOB:</label>
                     </div>
-                    <div className="ms-Grid-col ms-u-sm8 block">
+                    <div className="ms-Grid-col ms-u-sm4 block">
                         <Control model='.SpouceDOB' id='.SpouceDOB' component={DatePicker} className={styles.marginb}
                             mapProps={{
                                 value: (props) => { return props.viewValue; },
@@ -605,17 +609,18 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                             }}
                         ></Errors>
                     </div>
-                    <table className="ms-Grid-col ms-u-sm12 block" style={{ width: "100%" }}>
-                        <tr>
-                            <th colSpan={9} style={{ textAlign: "left" }}><label>Children Details</label>
-                                <button type="button" onClick={() => this.handleRowAdd("childDetailItems")}>+</button>
-                            </th>
-                        </tr>
+                    <div className={styles.childdetailsec}>
+                        <div className={`ms-Grid-col ms-u-sm12 block ${styles.padding0}`}>
+                           <span>Children Details
+                            <button type="button" onClick={() => this.handleRowAdd("childDetailItems")} className={styles.addbtn}>+</button>
+                        </span> </div>
                         {props.childDetailItems.map((child, i) => {
                             return (
-                                <tr>
-                                    <td>
+                                <div>
+                                    <div className='ms-Grid-col ms-u-sm2 block'>
                                         <label>Child Name</label>
+                                    </div>
+                                    <div className="ms-Grid-col ms-u-sm4 block">
                                         <Control.text model={`Employee.childDetailItems[${i}].ChildName`} id={child.ChildName}
                                             validators={{
                                                 requiredChildName: (val) => val && val.length,
@@ -630,9 +635,11 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                                 requiredChildName: 'required'
                                             }}
                                         ></Errors>
-                                    </td>
-                                    <td>
+                                    </div>
+                                    <div className='ms-Grid-col ms-u-sm2 block'>
                                         <label>Date Of Birth</label>
+                                    </div>
+                                    <div className="ms-Grid-col ms-u-sm3 block">
                                         <Control model={`Employee.childDetailItems[${i}].DateOfBirth`} id={child.DateOfBirth} component={DatePicker}
                                             className={styles.marginb}
                                             mapProps={{
@@ -651,14 +658,13 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                                 requiredDateOfBirth: 'required'
                                             }}
                                         ></Errors>
-                                    </td>
-                                    <td>
-                                        <button type="button" style={{ marginTop: "20px" }} onClick={() => this.handleRowRemove("childDetailItems", i)}>-</button>
-                                    </td>
-                                </tr>
+                                       
+                                    </div>
+                                    <div className="ms-Grid-col ms-u-sm1 block">  <button type="button" style={{ marginTop: "4px" }} onClick={() => this.handleRowRemove("childDetailItems", i)} className={styles.removebtn}>-</button></div>
+                                </div>
                             );
                         })}
-                    </table>
+                    </div>
                 </div>);
         }
     }

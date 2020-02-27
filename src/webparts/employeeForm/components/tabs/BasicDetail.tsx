@@ -35,12 +35,12 @@ class BasicDetail extends React.Component<any, IButtonState>{
         };
     }
     //On Button Save : Basic Details saved In List
-    async handleSubmit(formValues) {
+    public async handleSubmit(formValues) {
         let idState = store.getState().EmpListId;
         this.SaveBasicDetails(idState, formValues);
     }
 
-    async SaveBasicDetails(empListId, formValues) {
+    public async SaveBasicDetails(empListId, formValues) {
         this.props.handleSpinner(false);
         let newEmpReqServiceObj: BasicService = new BasicService();
         this.setState({ isDisable: true });
@@ -91,17 +91,17 @@ class BasicDetail extends React.Component<any, IButtonState>{
         var eId = await GetEmpListIdByUserEmail(this.props.empEmail);
         var queryEmpID = { EmpListID: 0 } as IEmpListIdState;
         var queryParameters = new UrlQueryParameterCollection(window.location.href);
-        const queryID: number = parseInt(queryParameters.getValue("ID"));
+        const queryID: number = parseInt(queryParameters.getValue("EmpID"));
         if (queryID > 0 && eId.EmpListID != 0) {
             queryEmpID.EmpListID = queryID;
             this.props.setEmpId(queryEmpID);//set empId in store
             this.props.showTabs(eId, isExistsInHR);
-            this.getuserData(queryEmpID)
+            this.getuserData(queryEmpID);
         }
         else if (eId != null && eId != undefined) {
             this.props.setEmpId(eId);//set empId in store
             this.props.showTabs(eId, isExistsInHR);
-            this.getuserData(eId)
+            this.getuserData(eId);
         }
         this.onSelectedItem = this.onSelectedItem.bind(this);
     }
@@ -137,10 +137,10 @@ class BasicDetail extends React.Component<any, IButtonState>{
                     <div className={styles.container}>
                         <div className={`ms-Grid-row ${styles.row}`}>{/* ms-fontColor-white  */}
                             <Form model="Basic" onSubmit={(val) => this.handleSubmit(val)}  >
-                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                <div className='ms-Grid-col ms-u-sm2 block'>
                                     <label>First Name *:</label>
                                 </div>
-                                <div className="ms-Grid-col ms-u-sm8 block">
+                                <div className="ms-Grid-col ms-u-sm4 block">
                                     <Control.text model=".FirstName" id='.FirstName' component={TextField} className={styles.marginb}
                                         validators={{ requiredFirstName: (val) => val && val.length }} />
                                     <Errors
@@ -148,10 +148,10 @@ class BasicDetail extends React.Component<any, IButtonState>{
                                         show="touched"
                                         model=".FirstName" messages={{ requiredFirstName: 'Please provide an First Name.' }} />
                                 </div>
-                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                <div className='ms-Grid-col ms-u-sm2 block'>
                                     <label>Last Name *:</label>
                                 </div>
-                                <div className="ms-Grid-col ms-u-sm8 block">
+                                <div className="ms-Grid-col ms-u-sm4 block">
                                     <Control.text model=".LastName" id='.LastName' component={TextField} className={styles.marginb}
                                         validators={{ requiredLastName: (val) => val && val.length }} />
                                     <Errors
@@ -159,10 +159,10 @@ class BasicDetail extends React.Component<any, IButtonState>{
                                         show="touched"
                                         model=".LastName" messages={{ requiredLastName: 'Please provide an Last Name.' }} />
                                 </div>
-                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                <div className='ms-Grid-col ms-u-sm2 block'>
                                     <label>Date Of Joining *:</label>
                                 </div>
-                                <div className="ms-Grid-col ms-u-sm8 block">
+                                <div className="ms-Grid-col ms-u-sm4 block">
                                     <Control model='.DateofJoining' id='.DateofJoining' component={DatePicker} className={styles.marginb}
                                         mapProps={{
                                             value: (props) => { return props.viewValue; },
@@ -170,10 +170,10 @@ class BasicDetail extends React.Component<any, IButtonState>{
                                         }}
                                     ></Control>
                                 </div>
-                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                <div className='ms-Grid-col ms-u-sm2 block'>
                                     <label>Designation *:</label>
                                 </div>
-                                <div className="ms-Grid-col ms-u-sm8 block">
+                                <div className="ms-Grid-col ms-u-sm4 block">
                                     <Control.select model=".Designation" id=".Designation" className={styles.dropdowncustom} validators={{
                                         requiredDesignationStatus: (val) => val && val != "--Select--"
                                     }} >
@@ -189,10 +189,10 @@ class BasicDetail extends React.Component<any, IButtonState>{
                                         }}
                                     />
                                 </div>
-                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                <div className='ms-Grid-col ms-u-sm2 block'>
                                     <label>Technology *:</label>
                                 </div>
-                                <div className="ms-Grid-col ms-u-sm8 block">
+                                <div className="ms-Grid-col ms-u-sm4 block">
                                     <ListItemPicker listId='6fd1826b-625e-4288-8e10-df480fb0d17d'
                                         columnInternalName='Title'
                                         itemLimit={5}
@@ -206,10 +206,10 @@ class BasicDetail extends React.Component<any, IButtonState>{
                                         show="touched"
                                         model=".Technology" messages={{ requiredTechnology: 'Please Select Technology.' }} />
                                 </div>
-                                <div className='ms-Grid-col ms-u-sm4 block'>
+                                <div className='ms-Grid-col ms-u-sm2 block'>
                                     <label>Company Email *:</label>
                                 </div>
-                                <div className="ms-Grid-col ms-u-sm8 block">
+                                <div className="ms-Grid-col ms-u-sm4 block">
                                     <Control.text model=".CompanyEmail" id='.CompanyEmail' className={styles.marginb} component={TextField}
                                         validators={{
                                             requiredEmail: (val) => val && val.length,
@@ -226,7 +226,7 @@ class BasicDetail extends React.Component<any, IButtonState>{
                                     />
                                 </div>
                                 <DefaultButton id="DefaultSubmit" primary={true} text={"Submit"} type="submit"
-                                    disabled={!this.state.isDisable} className={styles.button} />
+                                    disabled={!this.state.isDisable} className={styles.submitbutton } />
                             </Form>
                         </div>
                     </div>
