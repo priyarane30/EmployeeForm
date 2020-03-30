@@ -9,6 +9,7 @@ export const basicState: IBasicDetailState = {
     CompanyEmail: '',
     designationOptions: [],
     technologyOptions: [],
+    EmployeeCode : null,
 }
 export const BasicDetailSectionReducer = (state: IBasicDetailState = null, action) => {
     switch (action.type) {
@@ -16,6 +17,7 @@ export const BasicDetailSectionReducer = (state: IBasicDetailState = null, actio
         case ActionTypes.GetBasicFormControls:
             state = {
                 ...state,
+                EmployeeCode : action.payload.EmployeeCode,
                 FirstName: action.payload.FirstName,
                 LastName: action.payload.LastName,
                 DateofJoining: action.payload.DateofJoining, //datetime?

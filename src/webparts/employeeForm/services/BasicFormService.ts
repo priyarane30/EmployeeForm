@@ -27,6 +27,7 @@ export default class BasicFormService implements IBasicFormService {
             return utilityServiceObj.getOptionsFromMaster(ListNames.TECHNOLOGY, 'Title').then(techResp => {
                 basicFormControlsState.technologyOptions = techResp;
                 return utilityServiceObj.GetEmployeeContactListById(empListId).then(mainListResp => {
+                    basicFormControlsState.EmployeeCode= mainListResp.EmployeeCode;
                     basicFormControlsState.FirstName = mainListResp.FirstName;
                     basicFormControlsState.LastName = mainListResp.LastName;
                     basicFormControlsState.CompanyEmail = mainListResp.Email;

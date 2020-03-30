@@ -40,12 +40,12 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, an
 
   public render(): React.ReactElement<IEmployeeFormProps> {
     return (
-      <Provider store={store}>
+      <Provider store={store} >
         <div className={styles.employeeForm}>
           <div className={styles.container} >
             {!this.state.isSpinnerHidden ? <SpinnerComponent /> : ""}
             <div >
-              <Pivot aria-label="Employee Form" linkFormat={PivotLinkFormat.tabs} linkSize={PivotLinkSize.large}  selectedKey={`${this.state.selectedKey}`} onLinkClick={this._TabClick} style={{width:'16px !important;'}}>
+              <Pivot aria-label="Employee Form" linkFormat={PivotLinkFormat.tabs} linkSize={PivotLinkSize.large}  selectedKey={`${this.state.selectedKey}`} onLinkClick={this._TabClick} style={{width:'16px !important;' }}  >
                 <PivotItem headerText="Basic Details" itemKey="0" >
                   <BasicDetail handleSpinner={this._handleSpinner} handleTabClick={this._handleTabClick} empEmail={this.props.userEmail} showTabs={this.showTabs} context={this.props.context} forceRenderTabPanel={true}/>
                 </PivotItem>

@@ -24,6 +24,8 @@ interface IBasicFormConnectedDispatch {
 interface IButtonState {
     isDisable: boolean;
     selectedTechnologies: any[];
+    queryIDState: number;
+    display:string;
 }
 
 class BasicDetail extends React.Component<any, IButtonState>{
@@ -31,13 +33,18 @@ class BasicDetail extends React.Component<any, IButtonState>{
         super(props);
         this.state = {
             isDisable: true,
-            selectedTechnologies: []
+            selectedTechnologies: [],
+            queryIDState: 0,
+            display:"none"
         };
     }
     //On Button Save : Basic Details saved In List
     public async handleSubmit(formValues) {
+        debugger;
+        if(this.state.selectedTechnologies.length==0){this.setState({display:"block"})}
+        else{
         let idState = store.getState().EmpListId;
-        this.SaveBasicDetails(idState, formValues);
+        this.SaveBasicDetails(idState, formValues);}
     }
 
     public async SaveBasicDetails(empListId, formValues) {
@@ -93,6 +100,7 @@ class BasicDetail extends React.Component<any, IButtonState>{
         var queryParameters = new UrlQueryParameterCollection(window.location.href);
         const queryID: number = parseInt(queryParameters.getValue("EmpID"));
         if (queryID > 0 && eId.EmpListID != 0) {
+            this.setState({ queryIDState: queryID });
             queryEmpID.EmpListID = queryID;
             this.props.setEmpId(queryEmpID);//set empId in store
             this.props.showTabs(eId, isExistsInHR);
@@ -119,6 +127,8 @@ class BasicDetail extends React.Component<any, IButtonState>{
         await this.props.getBasicDatail(EmpID.EmpListID);//get Basic Details
     }
     public render() {
+        console.log(this.state.queryIDState);
+
         pnp.setup({
             spfxContext: this.props.context
         });
@@ -131,112 +141,254 @@ class BasicDetail extends React.Component<any, IButtonState>{
             }
         }
         if (!this.props.Basic) return (<div> Loading.... </div>);
-        return (
-            <div>
-                <div className={styles.employeeForm}>
-                    <div className={styles.container}>
-                        <div className={`ms-Grid-row ${styles.row}`}>{/* ms-fontColor-white  */}
-                            <Form model="Basic" onSubmit={(val) => this.handleSubmit(val)}  >
-                                <div className='ms-Grid-col ms-u-sm2 block'>
-                                    <label>First Name *:</label>
-                                </div>
-                                <div className="ms-Grid-col ms-u-sm4 block">
-                                    <Control.text model=".FirstName" id='.FirstName' component={TextField} className={styles.marginb}
-                                        validators={{ requiredFirstName: (val) => val && val.length }} />
-                                    <Errors
-                                        className={styles.errors}
-                                        show="touched"
-                                        model=".FirstName" messages={{ requiredFirstName: 'Please provide an First Name.' }} />
-                                </div>
-                                <div className='ms-Grid-col ms-u-sm2 block'>
-                                    <label>Last Name *:</label>
-                                </div>
-                                <div className="ms-Grid-col ms-u-sm4 block">
-                                    <Control.text model=".LastName" id='.LastName' component={TextField} className={styles.marginb}
-                                        validators={{ requiredLastName: (val) => val && val.length }} />
-                                    <Errors
-                                        className={styles.errors}
-                                        show="touched"
-                                        model=".LastName" messages={{ requiredLastName: 'Please provide an Last Name.' }} />
-                                </div>
-                                <div className='ms-Grid-col ms-u-sm2 block'>
-                                    <label>Date Of Joining *:</label>
-                                </div>
-                                <div className="ms-Grid-col ms-u-sm4 block">
-                                    <Control model='.DateofJoining' id='.DateofJoining' component={DatePicker} className={styles.marginb}
-                                        mapProps={{
-                                            value: (props) => { return props.viewValue; },
-                                            onSelectDate: (props) => { return props.onChange; }
-                                        }}
-                                    ></Control>
-                                </div>
-                                <div className='ms-Grid-col ms-u-sm2 block'>
-                                    <label>Designation *:</label>
-                                </div>
-                                <div className="ms-Grid-col ms-u-sm4 block">
-                                    <Control.select model=".Designation" id=".Designation" className={styles.dropdowncustom} validators={{
-                                        requiredDesignationStatus: (val) => val && val != "--Select--"
-                                    }} >
-                                        <option>--Select--</option>
-                                        {desigOpt}
-                                    </Control.select>
-                                    <Errors
-                                        className={styles.errors}
-                                        show="touched"
-                                        model=".Designation"
-                                        messages={{
-                                            requiredDesignationStatus: 'Please Select Designation.'
-                                        }}
-                                    />
-                                </div>
-                                <div className='ms-Grid-col ms-u-sm2 block'>
-                                    <label>Technology *:</label>
-                                </div>
-                                <div className="ms-Grid-col ms-u-sm4 block">
-                                    <ListItemPicker listId='6fd1826b-625e-4288-8e10-df480fb0d17d'
-                                        columnInternalName='Title'
-                                        itemLimit={5}
-                                        onSelectedItem={this.onSelectedItem}
-                                        context={this.props.context}
-                                        suggestionsHeaderText="Please select Technology"
-                                        defaultSelectedItems={this.props.Basic.Technology ? this.props.Basic.Technology : this.state.selectedTechnologies}//{this.state.selectedTechnologies}
-                                    />
-                                    <Errors
-                                        className={styles.errors}
-                                        show="touched"
-                                        model=".Technology" messages={{ requiredTechnology: 'Please Select Technology.' }} />
-                                </div>
-                                <div className='ms-Grid-col ms-u-sm2 block'>
-                                    <label>Company Email *:</label>
-                                </div>
-                                <div className="ms-Grid-col ms-u-sm4 block">
-                                    <Control.text model=".CompanyEmail" id='.CompanyEmail' className={styles.marginb} component={TextField}
-                                        validators={{
-                                            requiredEmail: (val) => val && val.length,
-                                            isEmail: (val) => (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(val)) // ES6 property shorthand
-                                        }} />
-                                    <Errors
-                                        className={styles.errors}
-                                        show="touched"
-                                        model=".PersonalEmail"
-                                        messages={{
-                                            requiredEmail: 'Please provide an email address.',
-                                            isEmail: (val) => `${val} is not a valid email.`,
-                                        }}
-                                    />
-                                </div>
-                                <DefaultButton id="DefaultSubmit" primary={true} text={"Submit"} type="submit"
-                                    disabled={!this.state.isDisable} className={styles.submitbutton } />
-                            </Form>
+        if (this.state.queryIDState == 0) {
+            return (
+                <div>
+                    <div className={styles.employeeForm}>
+                        <div className={styles.container}>
+                            <div className={`ms-Grid-row ${styles.row}`}>{/* ms-fontColor-white  */}
+                                <Form model="Basic" onSubmit={(val) => this.handleSubmit(val)}  >
+                                    <div className='ms-Grid-col ms-u-sm2 block'>
+                                        <label>First Name *:</label>
+                                    </div>
+                                    <div className="ms-Grid-col ms-u-sm4 block">
+                                        <Control.text model=".FirstName" id='.FirstName' component={TextField} className={styles.marginb}
+                                            validators={{ requiredFirstName: (val) => val && val.length }} />
+                                        <Errors
+                                            className={styles.errors}
+                                            show="touched"
+                                            model=".FirstName" messages={{ requiredFirstName: 'FirstName is requried..' }} />
+                                    </div>
+                                    <div className='ms-Grid-col ms-u-sm2 block'>
+                                        <label>Last Name *:</label>
+                                    </div>
+                                    <div className="ms-Grid-col ms-u-sm4 block">
+                                        <Control.text model=".LastName" id='.LastName' component={TextField} className={styles.marginb}
+                                            validators={{ requiredLastName: (val) => val && val.length }} />
+                                        <Errors
+                                            className={styles.errors}
+                                            show="touched"
+                                            model=".LastName" messages={{ requiredLastName: 'LastName is requried.' }} />
+                                    </div>
+                                   
+                                    <div className='ms-Grid-col ms-u-sm2 block'>
+                                        <label>Date Of Joining *:</label>
+                                    </div>
+                                    <div className="ms-Grid-col ms-u-sm4 block">
+                                        <Control model='.DateofJoining' id='.DateofJoining' component={DatePicker} className={styles.marginb}
+                                            mapProps={{
+                                                value: (props) => { return props.viewValue; },
+                                                onSelectDate: (props) => { return props.onChange; }
+                                            }}
+                                            validators={{
+                                                requiredDateOfBirth: (val) => (val && (new Date() > new Date(val))),
+                                            }}
+                                        ></Control>
+                                        <Errors
+                                            className={styles.errors}
+                                            show="touched"
+                                            model=".DateofJoining"
+                                            messages={{
+                                                requiredDateOfBirth: 'Date can not be future date.'
+                                            }}
+                                        ></Errors>
+                                    </div> <div className='ms-Grid-col ms-u-sm2 block'>
+                                        <label>Designation *:</label>
+                                    </div>
+                                    <div className="ms-Grid-col ms-u-sm4 block">
+                                        <Control.select model=".Designation" id=".Designation" className={styles.dropdowncustom} validators={{
+                                            requiredDesignationStatus: (val) => val && val != "--Select--"
+                                        }} >
+                                            <option>--Select--</option>
+                                            {desigOpt}
+                                        </Control.select>
+                                        <Errors
+                                            className={styles.errors}
+                                            show="touched"
+                                            model=".Designation"
+                                            messages={{
+                                                requiredDesignationStatus: 'Designation is requried.'
+                                            }}
+                                        />
+                                    </div>
+                                    <div className='ms-Grid-col ms-u-sm2 block'>
+                                        <label>Technology *:</label>
+                                    </div>
+                                    <div className="ms-Grid-col ms-u-sm4 block">
+                                        <ListItemPicker listId='6fd1826b-625e-4288-8e10-df480fb0d17d'
+                                            columnInternalName='Title'
+                                            itemLimit={5}
+                                            onSelectedItem={this.onSelectedItem}
+                                            context={this.props.context}
+                                            suggestionsHeaderText="Please select Technology"
+                                            defaultSelectedItems={this.props.Basic.Technology ? this.props.Basic.Technology : this.state.selectedTechnologies}//{this.state.selectedTechnologies}
+                                            
+                                        />
+                                        <span style={{display: `${this.state.display}`}}
+                                            className={styles.errors}>Technology is required</span>
+                                    </div>
+                                    <div className='ms-Grid-col ms-u-sm2 block'>
+                                        <label>Company Email *:</label>
+                                    </div>
+                                    <div className="ms-Grid-col ms-u-sm4 block">
+                                        <Control.text model=".CompanyEmail" id='.CompanyEmail' className={styles.marginb} component={TextField}
+                                            validators={{
+                                                requiredEmail: (val) => val && val.length,
+                                                isEmail: (val) =>val && (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(val) || val.length == 0) // ES6 property shorthand
+                                            }} />
+                                        <Errors
+                                            className={styles.errors}
+                                            show="touched"
+                                            model=".CompanyEmail"
+                                            messages={{
+                                                requiredEmail: 'Company Email is requried.',
+                                                isEmail: (val) => `${val} is not a valid email.`,
+                                            }}
+                                        />
+                                    </div>
+
+                                    <DefaultButton id="DefaultSubmit" primary={true} text={"Submit"} type="submit"
+                                        disabled={!this.state.isDisable} className={styles.submitbutton} />
+                                </Form>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        );
-    }
+            );
+        }
 
+        else {
+            return (
+
+                <div>
+                    <div className={styles.employeeForm}>
+                        <div className={styles.container}>
+                            <div className={`ms-Grid-row ${styles.row}`}>{/* ms-fontColor-white  */}
+                                <Form model="Basic" onSubmit={(val) => this.handleSubmit(val)}  >
+                                    <div className='ms-Grid-col ms-u-sm12 block'>
+                                        <div className='ms-Grid-col ms-u-sm2 block'>
+                                            <label>Employee Code:</label>
+                                        </div>
+                                        <div className="ms-Grid-col ms-u-sm4 block">
+                                            <Control.text model=".EmployeeCode" id='.EmployeeCode' component={TextField} disabled={true} className={styles.marginb}
+                                                validators={{ requiredEmployeeCode: (val) => val && val.length }} />
+                                        </div>
+                                    </div>
+                                    <div className='ms-Grid-col ms-u-sm2 block'>
+                                        <label>First Name *:</label>
+                                    </div>
+                                    <div className="ms-Grid-col ms-u-sm4 block">
+                                        <Control.text model=".FirstName" id='.FirstName' component={TextField} className={styles.marginb}
+                                            validators={{ requiredFirstName: (val) => val && val.length }} />
+                                        <Errors
+                                            className={styles.errors}
+                                            show="touched"
+                                            model=".FirstName" messages={{ requiredFirstName: 'FirstName is requried.' }} />
+                                    </div>
+                                    <div className='ms-Grid-col ms-u-sm2 block'>
+                                        <label>Last Name *:</label>
+                                    </div>
+                                    <div className="ms-Grid-col ms-u-sm4 block">
+                                        <Control.text model=".LastName" id='.LastName' component={TextField} className={styles.marginb}
+                                            validators={{ requiredLastName: (val) => val && val.length }} />
+                                        <Errors
+                                            className={styles.errors}
+                                            show="touched"
+                                            model=".LastName" messages={{ requiredLastName: 'LastName is requried.' }} />
+                                    </div>
+                                    <div className='ms-Grid-col ms-u-sm2 block'>
+                                        <label>Date Of Joining *:</label>
+                                    </div>
+                                    <div className="ms-Grid-col ms-u-sm4 block">
+                                        <Control model='.DateofJoining' id='.DateofJoining' component={DatePicker} className={styles.marginb}
+                                            mapProps={{
+                                                value: (props) => { return props.viewValue; },
+                                                onSelectDate: (props) => { return props.onChange; }
+                                            }}
+                                            validators={{
+                                                requiredDateOfBirth: (val) => (val && (new Date() > new Date(val))),
+                                            }}
+                                        ></Control>
+                                        <Errors
+                                            className={styles.errors}
+                                            show="touched"
+                                            model=".DateofJoining"
+                                            messages={{
+                                                requiredDateOfBirth: 'Date can not be future date.'
+                                            }}
+                                        ></Errors>
+                                    </div>
+                                    <div className='ms-Grid-col ms-u-sm2 block'>
+                                        <label>Designation *:</label>
+                                    </div>
+                                    <div className="ms-Grid-col ms-u-sm4 block">
+                                        <Control.select model=".Designation" id=".Designation" className={styles.dropdowncustom} validators={{
+                                            requiredDesignationStatus: (val) => val && val != "--Select--"
+                                        }} >
+                                            <option>--Select--</option>
+                                            {desigOpt}
+                                        </Control.select>
+                                        <Errors
+                                            className={styles.errors}
+                                            show="touched"
+                                            model=".Designation"
+                                            messages={{
+                                                requiredDesignationStatus: 'Designation is required.'
+                                            }}
+                                        />
+                                    </div>
+                                    <div className='ms-Grid-col ms-u-sm2 block'>
+                                        <label>Technology *:</label>
+                                    </div>
+                                    <div className="ms-Grid-col ms-u-sm4 block">
+                                        <ListItemPicker listId='6fd1826b-625e-4288-8e10-df480fb0d17d'
+                                            columnInternalName='Title'
+                                            keyColumnInternalName='Id'
+                                            itemLimit={5}
+                                            onSelectedItem={this.onSelectedItem}
+
+                                            context={this.props.context}
+                                            suggestionsHeaderText="Please select Technology"
+                                            defaultSelectedItems={this.props.Basic.Technology ? this.props.Basic.Technology : this.state.selectedTechnologies}//{this.state.selectedTechnologies}
+                                        />
+                                      <span style={{display: `${this.state.display}`}}
+                                            className={styles.errors}>Technology is required</span>
+                                    </div>
+                                    <div className='ms-Grid-col ms-u-sm2 block'>
+                                        <label>Company Email *:</label>
+                                    </div>
+                                    <div className="ms-Grid-col ms-u-sm4 block">
+                                        <Control.text
+                                            model=".CompanyEmail"
+                                            id='.CompanyEmail' className={styles.marginb} component={TextField} required
+                                            validators={{
+                                                requiredEmail: (val) => val && val.length,
+                                                isEmail: (val) => (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(val) || val.length == 0) // ES6 property shorthand
+
+                                            }} />
+
+                                        <Errors
+                                            className={styles.errors}
+                                            show="touched"
+                                            model=".CompanyEmail"
+                                            messages={{
+                                                requiredEmail: 'Company Email is requried.',
+                                                isEmail: (val) => `${val} is not a valid email.`,
+                                            }}
+                                        />
+                                    </div>
+
+                                    <DefaultButton id="DefaultSubmit" primary={true} text={"Submit"} type="submit"
+                                        disabled={!this.state.isDisable} className={styles.submitbutton} />
+                                </Form>
+                            </div>
+                        </div>
+                    </div>
+                </div>);
+        }
+    }
     private onSelectedItem = (data: { key: string; name: string }[]): void => {
-        this.setState({ selectedTechnologies: data });
+        this.setState({ selectedTechnologies: data,display:"none" });
 
     }
     private convertTechnologyinString = (data: { key: string; name: string }[]) => {

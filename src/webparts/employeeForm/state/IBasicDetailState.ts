@@ -8,4 +8,5 @@ export interface IBasicDetailState {
     CompanyEmail: string;
     designationOptions: string[];
     technologyOptions: string[];
+    EmployeeCode: number;
 }

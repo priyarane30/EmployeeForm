@@ -40,8 +40,12 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
 
     //removes row from grid
     private handleRowRemove(section, index) {
-        let removedItem = this.props.Employee[section][index];
-        this.props.RemoveDetailRowFromGrid(removedItem, section, index);
+        var confirmDelete = confirm("Please Confirm delete")
+        if (confirmDelete) {
+            let removedItem = this.props.Employee[section][index];
+            this.props.RemoveDetailRowFromGrid(removedItem, section, index);
+        }
+        else{}
     }
 
     private async handleSubmit(formValues) {
@@ -69,7 +73,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                         <Form model="Employee" onSubmit={(val) => this.handleSubmit(val)}>
                             <div className={`ms-Grid-row  ${styles.row} ${styles.addressblk}`}>
                                 <div className='ms-Grid-col ms-u-sm2 block'>
-                                    <label>Gender:</label>
+                                    <label>Gender *:</label>
                                 </div>
                                 <div className="ms-Grid-col ms-u-sm4 block">
                                     <Control.select model="Employee.Gender"
@@ -86,12 +90,12 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         show="touched"
                                         model=".Gender"
                                         messages={{
-                                            requiredGender: 'Please Select Gender.'
+                                            requiredGender: 'Gender is Required.'
                                         }}
                                     ></Errors>
                                 </div>
                                 <div className='ms-Grid-col ms-u-sm2 block'>
-                                    <label>Date Of Birth:</label>
+                                    <label>Date Of Birth *:</label>
                                 </div>
                                 <div className="ms-Grid-col ms-u-sm4 block">
                                     <Control model='.DateOfBirth' component={DatePicker} className={styles.marginb}
@@ -99,8 +103,9 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                             value: (props) => { return props.viewValue; },
                                             onSelectDate: (props) => { return props.onChange; }
                                         }}
+                                        //put date validation  date can't be future date
                                         validators={{
-                                            requiredDateOfBirth: (val) => val,
+                                            requiredDateOfBirth: (val) => (val && (new Date() > new Date(val)))
                                         }}
                                     ></Control>
                                     <Errors
@@ -108,12 +113,12 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         show="touched"
                                         model=".DateOfBirth"
                                         messages={{
-                                            requiredDateOfBirth: 'Please Select DOB.'
+                                            requiredDateOfBirth: "Date can't be future date"
                                         }}
                                     ></Errors>
                                 </div>
                                 <div className='ms-Grid-col ms-u-sm2 block'>
-                                    <label>Father Name:</label>
+                                    <label>Father Name *:</label>
                                 </div>
                                 <div className="ms-Grid-col ms-u-sm4 block">
                                     <Control.text
@@ -130,13 +135,13 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         show="touched"
                                         model=".FatherName"
                                         messages={{
-                                            requiredFatherName: 'Please enter father name.',
+                                            requiredFatherName: 'Father Name is Required.',
                                             maxLength: 'Must be 255 characters or less',
                                         }}
                                     ></Errors>
                                 </div>
                                 <div className='ms-Grid-col ms-u-sm2 block'>
-                                    <label>Mother Name:</label>
+                                    <label>Mother Name *:</label>
                                 </div>
                                 <div className="ms-Grid-col ms-u-sm4 block">
                                     <Control.text
@@ -152,13 +157,13 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         show="touched"
                                         model=".MotherName"
                                         messages={{
-                                            requiredMotherName: 'Please enter mother name.',
+                                            requiredMotherName: 'Mother Name  is Required.',
                                             maxLength: 'Must be 255 characters or less'
                                         }}
                                     ></Errors>
                                 </div>
                                 <div className='ms-Grid-col ms-u-sm2 block'>
-                                    <label>Marital Status:</label>
+                                    <label>Marital Status *:</label>
                                 </div>
                                 <div className="ms-Grid-col ms-u-sm4 block">
                                     <Control.select model=".MaritalStatus" id=".MaritalStatus"
@@ -170,15 +175,16 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         {this.props.Employee.maritalStatusOptions.map(mStatus => { return <option key={mStatus} value={mStatus}>{mStatus}</option>; })};
                                     </Control.select>
                                     <Errors
+                                        className={styles.errors}
                                         model=".MaritalStatus"
                                         show="touched"
                                         messages={{
-                                            requiredMaritalStatus: 'Please Select Marital Status.'
+                                            requiredMaritalStatus: 'Marital Status is Required.'
                                         }}
                                     />
                                 </div>
                                 <div className='ms-Grid-col ms-u-sm2 block'>
-                                    <label>Personal Email:</label>
+                                    <label>Personal Email *:</label>
                                 </div>
                                 <div className="ms-Grid-col ms-u-sm4 block">
                                     <Control.text
@@ -186,14 +192,15 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         model='.PersonalEmail' id='.PersonalEmail'
                                         validators={{
                                             requiredEmail: (val) => val && val.length,
-                                            isEmail: (val) => (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(val)) // ES6 property shorthand
+                                            isEmail: (val) => (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(val) || val.length == 0) // ES6 property shorthand
                                         }}
                                     />
                                     <Errors
+                                        className={styles.errors}
                                         model=".PersonalEmail"
                                         show="touched"
                                         messages={{
-                                            requiredEmail: 'Please provide an email address.',
+                                            requiredEmail: 'Email address is Required.',
                                             isEmail: (val) => `${val} is not a valid email.`,
                                         }}
                                     />
@@ -201,7 +208,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
 
                                 {this.isMarried(this.props.Employee)}
                                 <div className='ms-Grid-col ms-u-sm2 block'>
-                                    <label>Mobile No:</label>
+                                    <label>Mobile No *:</label>
                                 </div>
                                 <div className="ms-Grid-col ms-u-sm4 block">
                                     <Control.text
@@ -217,13 +224,13 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         show="touched"
                                         model=".Mobile"
                                         messages={{
-                                            requiredMobile: 'Please enter mobile no.(10 digits)',
-                                            isNumber: 'only numbers allowed'
+                                            requiredMobile: ' Mobile no is Required.(10 digits)',
+                                            isNumber: 'Only numbers allowed'
                                         }}
                                     ></Errors>
                                 </div>
                                 <div className='ms-Grid-col ms-u-sm2 block'>
-                                    <label>Emergency Contact No:</label>
+                                    <label>Emergency Contact No *:</label>
                                 </div>
                                 <div className="ms-Grid-col ms-u-sm4 block">
                                     <Control.text
@@ -231,7 +238,8 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         model='.EmergencyNo' id='.EmergencyNo'
                                         validators={{
                                             requiredEmergencyNo: (val) => val && val.length == 10,
-                                            isNumber: (val) => !isNaN(Number(val))
+                                            isNumber: (val) => (!isNaN(Number(val)) || val.length == 0)
+
                                         }}
                                     />
                                     <Errors
@@ -239,13 +247,13 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         show="touched"
                                         model=".EmergencyNo"
                                         messages={{
-                                            requiredEmergencyNo: 'Please enter emergency no.',
-                                            isNumber: 'only numbers allowed'
+                                            requiredEmergencyNo: 'Emergency no is Required.(10 digits)',
+                                            isNumber: 'Only numbers allowed'
                                         }}
                                     ></Errors>
                                 </div>
                                 <div className='ms-Grid-col ms-u-sm2 block'>
-                                    <label>Relation with Emergency No:</label>
+                                    <label>Relation with Emergency Contact *:</label>
                                 </div>
                                 <div className="ms-Grid-col ms-u-sm4 block">
                                     <Control.text
@@ -260,15 +268,15 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         show="touched"
                                         model=".RelationWithEmergencyNo"
                                         messages={{
-                                            requiredRelEmergencyNo: 'Please enter relation with emergency no.'
+                                            requiredRelEmergencyNo: 'Relation with emergency contact is Required.'
                                         }}
                                     ></Errors>
                                 </div>
                                 <div className='ms-Grid-col ms-u-sm2 block'>
-                                    <label>Blood Group:</label>
+                                    <label>Blood Group *:</label>
                                 </div>
                                 <div className="ms-Grid-col ms-u-sm4 block">
-                                    <Control.text model='.BloodGroup' id='.BloodGroup'
+                                    {/* <Control.text model='.BloodGroup' id='.BloodGroup'
                                         component={TextField} className={styles.marginb}
                                         validators={{
                                             requiredBloodGroup: (val) => val && val.length,
@@ -279,14 +287,34 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         show="touched"
                                         model=".BloodGroup"
                                         messages={{
-                                            requiredBloodGroup: 'Please enter blood group.'
+                                            requiredBloodGroup: 'Blood group is Required..'
+                                        }}
+                                    ></Errors> */}
+                                    {/* Add Drop Down for BloodGroup */}
+                                    <Control.select style={{ height: "30px" }} model='.BloodGroup' id='.BloodGroup'
+                                        validators={{ requiredQualification: (val) => val && val != "--Select--" }}>
+                                        <option>--Select--</option>
+                                        <option value="B+">B+</option>
+                                        <option value="B+">B-</option>
+                                        <option value="O+">O+</option>
+                                        <option value="O+">O-</option>
+                                        <option value="AB+">AB+</option>
+                                        <option value="AB-">AB-</option>
+                                        <option value="A+">A+</option>
+                                        <option value="A-">A-</option></Control.select>
+                                    <Errors
+                                        className={styles.errors}
+                                        show="touched"
+                                        model='.BloodGroup'
+                                        messages={{
+                                            requiredQualification: 'BloodGroup is Required.'
                                         }}
                                     ></Errors>
                                 </div>
                             </div>
                             <div className={`ms-Grid-row  ${styles.row}`}>
                                 <div className='ms-Grid-col ms-u-sm2 block'>
-                                    <label>Current Resident Address:</label>
+                                    <label>Current Resident Address *:</label>
                                 </div>
                                 <div className="ms-Grid-col ms-u-sm4 block">
                                     <Control.textarea model='.CurrentAddress' id='.CurrentAddress'
@@ -300,12 +328,12 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         show="touched"
                                         model=".CurrentAddress"
                                         messages={{
-                                            requiredCurrentAddress: 'Please enter current address.'
+                                            requiredCurrentAddress: 'Current address is Required.'
                                         }}
                                     ></Errors>
                                 </div>
                                 <div className='ms-Grid-col ms-u-sm2 block'>
-                                    <label>Is Same as Current Address?</label>
+                                    <label>Is Permanent Address Same as Current Address?</label>
                                 </div>
                                 <div className="ms-Grid-col ms-u-sm4 block">
                                     <Control.checkbox model=".IsSameAsCurrAddress" />
@@ -313,14 +341,14 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                 </div>
                                 <div className={`ms-Grid-col ms-u-sm12 block ${styles.padding0}`}>   {this.isSameAsCurrentAdress(this.props.Employee)}</div>
                                 <div className='ms-Grid-col ms-u-sm2 block'>
-                                    <label>Aadhar No:</label>
+                                    <label>Aadhar No :</label>
                                 </div>
                                 <div className="ms-Grid-col ms-u-sm4 block">
                                     <Control.text model='.AadharNo' id='.AadharNo'
                                         component={TextField} className={styles.marginb}
                                         validators={{
-                                            requiredAadharNo: (val) => val && val.length && val.length == 12,
-                                            isNumber: (val) => !isNaN(Number(val))
+                                            requiredAadharNo: (val) => val.length == 12 || val.length==0,
+                                            isNumber: (val) => (!isNaN(Number(val)) || val.length == 0)
                                         }}
                                     />
                                     <Errors
@@ -328,19 +356,20 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         show="touched"
                                         model=".AadharNo"
                                         messages={{
-                                            requiredAadharNo: 'Please enter aadhar no.(12 digits)',
-                                            isNumber: 'only numbers allowed'
+                                            requiredAadharNo: 'Aadhar Card No. requires 12 digits',
+                                            isNumber: 'Only numbers allowed'
                                         }}
                                     ></Errors>
                                 </div>
                                 <div className='ms-Grid-col ms-u-sm2 block'>
-                                    <label>Pan No:</label>
+                                    <label>PAN No:</label>
                                 </div>
                                 <div className="ms-Grid-col ms-u-sm4 block">
                                     <Control.text model='.PanNo' id='.PanNo'
                                         component={TextField} className={styles.marginb}
                                         validators={{
-                                            requiredPanNo: (val) => val && val.length,
+                                            requiredPanNo: (val) =>   val.length==0 || val.length < 11,
+                                            panFormat:(val)=>(/[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}/.test(val)   || val.length == 0)
                                         }}
                                     />
                                     <Errors
@@ -348,7 +377,8 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         show="touched"
                                         model=".PanNo"
                                         messages={{
-                                            requiredPanNo: 'Please enter PAN no.'
+                                            requiredPanNo: 'Invalid Pan No(eg: abcde1234a)',
+                                            panFormat:'Invalid Pan No(eg: abcde1234a)'
                                         }}
                                     ></Errors>
                                 </div>
@@ -360,7 +390,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                 </div>
                                 {this.isPassportAvailable(this.props.Employee)}
                                 <div className="ms-Grid-col ms-u-sm12 block"><DefaultButton id="DefaultSubmit" primary={true} text={"Submit"} type="submit"
-                                    disabled={this.state.buttonDisabled} className={styles.submitbutton } /></div>
+                                    disabled={this.state.buttonDisabled} className={styles.submitbutton} /></div>
                             </div>
                         </Form>
 
@@ -375,7 +405,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
             return (
                 <div className={`ms-Grid-col ms-u-sm12 block ${styles.padding0}`}>
                     <div className='ms-Grid-col ms-u-sm2 block'>
-                        <label>Permanent Address</label>
+                        <label>Permanent Address *</label>
                     </div>
                     <div className="ms-Grid-col ms-u-sm4 block">
                         <Control.textarea model='.PermanentAddress' id='.PermanentAddress'
@@ -389,7 +419,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                             show="touched"
                             model=".PermanentAddress"
                             messages={{
-                                requiredPermanentAddress: 'Please enter permanent address.'
+                                requiredPermanentAddress: 'Permanent Address is Required.'
                             }}
                         ></Errors>
                     </div>
@@ -402,13 +432,16 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
             return (
                 <div className={`ms-Grid-col ms-u-sm12 block ${styles.padding0} ${styles.passportblk}`}>
                     <div className='ms-Grid-col ms-u-sm2 block'>
-                        <label>Passport No:</label>
+                        <label>Passport No *:</label>
                     </div>
                     <div className="ms-Grid-col ms-u-sm4 block">
                         <Control.text model='.PassportNo' id='.PassportNo'
                             component={TextField} className={styles.marginb}
+                            //put date validation 
                             validators={{
                                 requiredPassNo: (val) => val && val.length,
+                                ispassportValid: (val) => ((/[A-Z]{1}[0-9]{7}/.test(val) && val.length == 8) || val.length == 0)
+
                             }}
                         />
                         <Errors
@@ -416,12 +449,14 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                             show="touched"
                             model=".PassportNo"
                             messages={{
-                                requiredPassNo: 'Please enter passport no.'
+                                requiredPassNo: 'Passport no is Required.(eg.X1234567)',
+                                ispassportValid: 'Invalid passport No.(eg.X1234567)',
+
                             }}
                         ></Errors>
                     </div>
                     <div className='ms-Grid-col ms-u-sm2 block'>
-                        <label>Passport Validity</label>
+                        <label>Passport Validity *:</label>
                     </div>
                     <div className="ms-Grid-col ms-u-sm4 block">
                         <Control model='.PassportValidity' component={DatePicker} className={styles.marginb}
@@ -438,7 +473,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                             show="touched"
                             model=".PassportValidity"
                             messages={{
-                                requiredPassportValidity: 'Please select passport validity.'
+                                requiredPassportValidity: 'Passport validity is Required.'
                             }}
                         ></Errors>
                     </div>
@@ -446,9 +481,10 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                         <tr>
                             <th colSpan={8} style={{ textAlign: "left" }}><span>Visa Details
                                 <button type="button" onClick={() => this.handleRowAdd("visaDetailItems")} className={styles.addbtn}>+</button>
-                           </span> </th>
+                            </span> </th>
                         </tr>
                         {props.visaDetailItems.map((visa, i) => {
+
                             return (
                                 <tr>
                                     <td>
@@ -456,11 +492,12 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         <Control.checkbox model={`Employee.visaDetailItems[${i}].ValidVisa`} id={visa.ValidVisa} ></Control.checkbox>
                                     </td>
                                     <td>
-                                        <label>Visa Of Country</label>
+                                        <label>Visa Of Country </label>
                                         <Control.text model={`Employee.visaDetailItems[${i}].VisaOfCountry`} id={visa.VisaOfCountry}
                                             component={TextField} className={styles.marginb}
                                             validators={{
-                                                requiredVisaOfCountry: (val) => val && val.length,
+                                                requiredVisaOfCountry: (val) => val && val.length
+
                                             }}
                                         ></Control.text>
                                         <Errors
@@ -468,15 +505,16 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                             show="touched"
                                             model={`Employee.visaDetailItems[${i}].VisaOfCountry`}
                                             messages={{
-                                                requiredVisaOfCountry: 'required'
+                                                requiredVisaOfCountry: 'Please remove row if Visa details not available'
                                             }}
                                         ></Errors>
                                     </td>
                                     <td>
-                                        <label>Visa No</label>
+                                        <label>Visa No </label>
                                         <Control.text model={`Employee.visaDetailItems[${i}].VisaNo`} id={visa.VisaNo}
+                                            //put date validation 
                                             validators={{
-                                                requiredVisaNo: (val) => val && val.length,
+                                                isVisaValid: (val) => ((/[A-Z]{2}[0-9]{6}/.test(val) && val.length == 8) || val.length == 0)
                                             }}
                                             component={TextField} className={styles.marginb}
                                         ></Control.text>
@@ -485,49 +523,29 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                             show="touched"
                                             model={`Employee.visaDetailItems[${i}].VisaNo`}
                                             messages={{
-                                                requiredVisaNo: 'required'
+                                                isVisaValid: 'Invalid Visa No.(eg.XX123456)'
                                             }}
                                         ></Errors>
                                     </td>
                                     <td>
-                                        <label>Entry</label>
+                                        <label>Entry </label>
                                         <Control.select model={`Employee.visaDetailItems[${i}].Entry`} id={visa.Entry}
                                             className={styles.dropdowncustom}
-                                            validators={{
-                                                requiredEntry: (val) => val && val.length && val != '--Select--',
-                                            }} >
+                                             >
                                             <option>--Select--</option>
                                             <option key='Single Entry' value='Single Entry'>Single Entry</option>
                                             <option key='Multiple Entry' value='Multiple Entry'>Multiple Entry</option>
                                         </Control.select>
-                                        <Errors
-                                            className={styles.errors}
-                                            show="touched"
-                                            model={`Employee.visaDetailItems[${i}].Entry`}
-                                            messages={{
-                                                requiredEntry: 'required'
-                                            }}
-                                        ></Errors>
                                     </td>
                                     <td>
-                                        <label>Visa Validity</label>
+                                        <label>Visa Validity </label>
                                         <Control model={`Employee.visaDetailItems[${i}].VisaValidity`} id={visa.VisaValidity} component={DatePicker} className={styles.marginb}
                                             mapProps={{
                                                 value: (props) => { return props.viewValue; },
                                                 onSelectDate: (props) => { return props.onChange; }
                                             }}
-                                            validators={{
-                                                requiredVisaValidity: (val) => val && val != null,
-                                            }}>
+                                          >
                                         </Control>
-                                        <Errors
-                                            className={styles.errors}
-                                            show="touched"
-                                            model={`Employee.visaDetailItems[${i}].VisaValidity`}
-                                            messages={{
-                                                requiredVisaValidity: 'required'
-                                            }}
-                                        ></Errors>
                                     </td>
                                     <td>
                                         <label>Is Travelled</label>
@@ -550,7 +568,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
             return (
                 <div className={`ms-Grid-col ms-u-sm12 block ${styles.padding0}`}>
                     <div className='ms-Grid-col ms-u-sm2 block'>
-                        <label>Spouse Name:</label>
+                        <label>Spouse Name *:</label>
                     </div>
                     <div className="ms-Grid-col ms-u-sm4 block">
                         <Control.text model='.SpouceName' id='.SpouceName'
@@ -564,12 +582,12 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                             show="touched"
                             model='.SpouceName'
                             messages={{
-                                requiredSpouceName: 'Please enter spouce name'
+                                requiredSpouceName: 'Spouse name is Required.'
                             }}
                         ></Errors>
                     </div>
                     <div className='ms-Grid-col ms-u-sm2 block'>
-                        <label>Spouse Occupation:</label>
+                        <label>Spouse Occupation *:</label>
                     </div>
                     <div className="ms-Grid-col ms-u-sm4 block">
                         <Control.text model='.SpouseOccupation' id='.SpouseOccupation'
@@ -583,12 +601,12 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                             show="touched"
                             model='.SpouseOccupation'
                             messages={{
-                                requiredSpouseOccupation: 'Please enter spuce occupation'
+                                requiredSpouseOccupation: 'Spouse occupation is Required.'
                             }}
                         ></Errors>
                     </div>
                     <div className='ms-Grid-col ms-u-sm2 block'>
-                        <label>Spouse DOB:</label>
+                        <label>Spouse DOB *:</label>
                     </div>
                     <div className="ms-Grid-col ms-u-sm4 block">
                         <Control model='.SpouceDOB' id='.SpouceDOB' component={DatePicker} className={styles.marginb}
@@ -596,8 +614,9 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                 value: (props) => { return props.viewValue; },
                                 onSelectDate: (props) => { return props.onChange; }
                             }}
+                            //put date validation Date can't be future date
                             validators={{
-                                requiredSpouceDOB: (val) => val,
+                                requiredSpouceDOB: (val) => (val && (new Date() > new Date(val))),
                             }}
                         ></Control>
                         <Errors
@@ -605,20 +624,20 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                             show="touched"
                             model='.SpouceDOB'
                             messages={{
-                                requiredSpouceDOB: 'Please select spouce DOB'
+                                requiredSpouceDOB: "Date can't be future date"
                             }}
                         ></Errors>
                     </div>
                     <div className={styles.childdetailsec}>
                         <div className={`ms-Grid-col ms-u-sm12 block ${styles.padding0}`}>
-                           <span>Children Details
+                            <span>Children Details
                             <button type="button" onClick={() => this.handleRowAdd("childDetailItems")} className={styles.addbtn}>+</button>
-                        </span> </div>
+                            </span> </div>
                         {props.childDetailItems.map((child, i) => {
                             return (
                                 <div>
                                     <div className='ms-Grid-col ms-u-sm2 block'>
-                                        <label>Child Name</label>
+                                        <label>Child Name *:</label>
                                     </div>
                                     <div className="ms-Grid-col ms-u-sm4 block">
                                         <Control.text model={`Employee.childDetailItems[${i}].ChildName`} id={child.ChildName}
@@ -632,12 +651,12 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                             show="touched"
                                             model={`Employee.childDetailItems[${i}].ChildName`}
                                             messages={{
-                                                requiredChildName: 'required'
+                                                requiredChildName: 'Child name is Required..'
                                             }}
                                         ></Errors>
                                     </div>
                                     <div className='ms-Grid-col ms-u-sm2 block'>
-                                        <label>Date Of Birth</label>
+                                        <label>Child DOB *:</label>
                                     </div>
                                     <div className="ms-Grid-col ms-u-sm3 block">
                                         <Control model={`Employee.childDetailItems[${i}].DateOfBirth`} id={child.DateOfBirth} component={DatePicker}
@@ -646,8 +665,9 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                                 value: (props) => { return props.viewValue; },
                                                 onSelectDate: (props) => { return props.onChange; }
                                             }}
+                                            //put date validation Date can't be future date
                                             validators={{
-                                                requiredDateOfBirth: (val) => val,
+                                                requiredDateOfBirth: (val) => (val && (new Date() > new Date(val))),
                                             }}
                                         ></Control>
                                         <Errors
@@ -655,10 +675,10 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                             show="touched"
                                             model={`Employee.childDetailItems[${i}].DateOfBirth`}
                                             messages={{
-                                                requiredDateOfBirth: 'required'
+                                                requiredDateOfBirth: "Date can't be future date"
                                             }}
                                         ></Errors>
-                                       
+
                                     </div>
                                     <div className="ms-Grid-col ms-u-sm1 block">  <button type="button" style={{ marginTop: "4px" }} onClick={() => this.handleRowRemove("childDetailItems", i)} className={styles.removebtn}>-</button></div>
                                 </div>

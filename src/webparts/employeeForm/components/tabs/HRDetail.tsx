@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Form, Control } from 'react-redux-form';
+import { Form, Control,Errors } from 'react-redux-form';
 import { ICommonState, IEmpListIdState } from '../../state/ICommonState';
 import { connect } from "react-redux";
 import { SetTabName, GetInitialControlValuesAction } from "../../actions/HRFormControlsValuesAction";
@@ -37,6 +37,8 @@ class HRDetail extends React.Component<any, IControls> {
         };
     }
     public async componentDidMount() {
+        // <DatePicker maxDate={new Date()}>
+        // </DatePicker>
         const empListId = store.getState().EmpListId;
         this.props.getDefaultControlsData(empListId);//empListId
 
@@ -105,7 +107,6 @@ class HRDetail extends React.Component<any, IControls> {
                                             personSelectionLimit={1}
                                             groupName={""} // Leave this blank in case you want to filter from all users
                                             showtooltip={false}
-                                            isRequired={true}
                                             disabled={false}
                                             ensureUser={true}
                                             selectedItems={this.PeoplePickerItems}
@@ -141,18 +142,34 @@ class HRDetail extends React.Component<any, IControls> {
                                                 return (<option key={options}
                                                     value={options}>{options}</option>);
                                             })};
+
                                     </Control.select>
                                     </div>
                                     {/* Last Prompted Date*/}
                                     <div className='ms-Grid-col ms-u-sm2 block'>
-                                        <label>Last Prompted Date:</label>
+                                        <label>Last Promoted Date:</label>
                                     </div>
                                     <div className='ms-Grid-col ms-u-sm4 block'>
-                                        <Control model='HR.LastPromotedDate' id='HR.LastPromotedDate' component={DatePicker} placeholder='dd-MM-yyyy' className={styles.marginb}
+                                        <Control model='HR.LastPromotedDate' id='HR.LastPromotedDate' component={DatePicker} placeholder='dd-MM-yyyy'   className={styles.marginb}
                                             mapProps={{
                                                 value: (props) => { return props.viewValue; },
                                                 onSelectDate: (props) => { return props.onChange; }
-                                            }}></Control>
+                                              
+                                            }}
+                                            //put date validation Date can't be future date
+                                            validators={{
+                                                requiredPromotedDate: (val) => (val  && (new Date()>new Date(val))),
+                                            }}
+                                            >
+                                            </Control>
+                                            <Errors
+                                            className={styles.errors}
+                                            show="touched"
+                                            model="HR.LastPromotedDate"
+                                            messages={{
+                                                requiredPromotedDate: "Date can't be future date"
+                                            }}
+                                        ></Errors>
                                     </div>
                                 </div>
                                 <div className={`ms-Grid-row ${styles.rowhr}`}>
@@ -161,11 +178,25 @@ class HRDetail extends React.Component<any, IControls> {
                                         <label>Date of leaving:</label>
                                     </div>
                                     <div className='ms-Grid-col ms-u-sm4 block'>
-                                        <Control model='HR.DateofLeft' id='HR.DateofLeft' component={DatePicker} placeholder='dd-MM-yyyy' className={styles.marginb}
+                                        <Control model='HR.DateofLeft' id='HR.DateofLeft' component={DatePicker } placeholder='dd-MM-yyyy'  className={styles.marginb}
+                                        
                                             mapProps={{
                                                 value: (props) => { return props.viewValue; },
                                                 onSelectDate: (props) => { return props.onChange; }
-                                            }}></Control>
+                                            }}
+                                            validators={{
+                                                requiredDateOfLeaving: (val) => (val  && (new Date()>new Date(val))),
+                                            }}
+                                            >
+                                            </Control>
+                                            <Errors
+                                            className={styles.errors}
+                                            show="touched"
+                                            model="HR.DateofLeft"
+                                            messages={{
+                                                requiredDateOfLeaving: "Date can't be future date"
+                                            }}
+                                            ></Errors>
                                     </div>
                                     {/* Reason for leaving */}
                                     <div className='ms-Grid-col ms-u-sm2 block'>
@@ -179,6 +210,7 @@ class HRDetail extends React.Component<any, IControls> {
                                                 return (<option key={reasons}
                                                     value={reasons}>{reasons}</option>);
                                             })};
+                                           
                                     </Control.select>
                                     </div>
                                 </div>
@@ -192,7 +224,19 @@ class HRDetail extends React.Component<any, IControls> {
                                             mapProps={{
                                                 value: (props) => { return props.viewValue; },
                                                 onSelectDate: (props) => { return props.onChange; }
-                                            }}></Control>
+                                            }}
+                                            validators={{
+                                                requiredResignation: (val) => (val  && (new Date()>new Date(val))),
+                                            }}                                           
+                                            ></Control>
+                                             <Errors
+                                            className={styles.errors}
+                                            show="touched"
+                                            model="HR.ResigntionDate"
+                                            messages={{
+                                                requiredResignation: "Date can't be future date"
+                                            }}>
+                                            ></Errors>
                                     </div>
                                     {/* Eligible for rehire*/}
                                     <div className='ms-Grid-col ms-u-sm2 block'>

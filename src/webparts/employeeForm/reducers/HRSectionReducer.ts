@@ -6,10 +6,10 @@ export const hrState: IHRState = {
     Manager: '',
     employementStatus: '',
     LastDesignation:'',
-    LastPromotedDate:new Date(),
-    DateofLeft: new Date(),
+    LastPromotedDate:null,
+    DateofLeft: null,
     reasonForLeaving: '',
-    ResigntionDate: new Date(), //datetime?
+    ResigntionDate: null, //datetime?
     EligibleforRehire: false,
 
 
