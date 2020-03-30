@@ -13,11 +13,11 @@ export const SpinnerComponent: React.StatelessComponent = () => {
             childrenGap: 20
         }
     };
-    
+   
     return (
         <Stack tokens={tokens.sectionStack} className={styles.spinner}>
             <Stack {...rowProps} tokens={tokens.spinnerStack}>
-                <Spinner size={SpinnerSize.large} label="Wait, wait..." ariaLive="assertive" labelPosition="right" />
+                <Spinner size={SpinnerSize.large} label="Wait, wait..." ariaLive="assertive" labelPosition="bottom" />
             </Stack>
         </Stack>
     );

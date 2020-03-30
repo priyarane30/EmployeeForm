@@ -40,7 +40,6 @@ export default class NewEmployeeService implements INewEmpRequestService {
     public deleteDataFromListUsingID(id, listName) {
         let web = new Web(AppConstats.SITEURL);
         web.lists.getByTitle(listName).items.getById(id).delete().then(r => {
-            console.log("deleted");
         });
     }
 
@@ -58,72 +57,80 @@ export default class NewEmployeeService implements INewEmpRequestService {
     }
 
     // Gets the choices to be displayed in the dropdown fields.
+    
     public getNewFormControlState(EmpListID): Promise<any> {
+      
         let newFormControlsState = {} as INewFormState;
         let utilityServiceObj: UtilityService = new UtilityService();
         return utilityServiceObj.getOptionsFromChoiceField(ListNames.EMPLOYEECONTACT, 'Gender').then(genderResp => {
-            newFormControlsState.genderOptions = genderResp;
+            newFormControlsState.genderOptions = genderResp.sort();
 
             return utilityServiceObj.getOptionsFromChoiceField(ListNames.EMPLOYEECONTACT, 'MaritalStatus').then(maritalRes => {
-                newFormControlsState.maritalStatusOptions = maritalRes;
+                newFormControlsState.maritalStatusOptions = maritalRes.sort();
 
                 return utilityServiceObj.getOptionsFromMaster(ListNames.DESIGNATION, 'Designation').then(desigResp => {
-                    newFormControlsState.designationOptions = desigResp;
+                    newFormControlsState.designationOptions = desigResp.sort();
 
                     return utilityServiceObj.getOptionsFromMaster(ListNames.TECHNOLOGY, 'Title').then(techResp => {
-                        newFormControlsState.technologyOptions = techResp;
-                        return this.getDataFromListUsingID(ListNames.EMPLOYEECONTACT, EmpListID).then(res => {
-                            newFormControlsState.AadharNo = res.AadhaarCardNo;
-                            newFormControlsState.PersonalEmail = res.Email;
-                            newFormControlsState.Mobile = res.Mobile;
-                            newFormControlsState.DateOfBirth = new Date(res.DateOfBirth);
-                            newFormControlsState.Age = res.Age;
-                            newFormControlsState.BloodGroup = res.BloodGroup;
-                            newFormControlsState.FatherName = res.FatherName;
-                            newFormControlsState.MotherName = res.MotherName;
-                            newFormControlsState.MaritalStatus = res.MaritalStatus;
-                            newFormControlsState.SpouceDOB = new Date(res.SpouseDOB);
-                            newFormControlsState.SpouceName = res.SpouseName;
-                            newFormControlsState.SpouseOccupation = res.SpouseOccupation;
-                            newFormControlsState.EmergencyNo = res.EmergencyContactNo;
-                            newFormControlsState.RelationWithEmergencyNo = res.RelationWithEmergencyNo;
-                            newFormControlsState.CurrentAddress = res.CurrentAddress;
-                            newFormControlsState.IsSameAsCurrAddress = (res.IsSameAsCurrAddress == null || res.IsSameAsCurrAddress == false) ? false : true;
-                            newFormControlsState.PermanentAddress = res.PermanentAddress;
-                            newFormControlsState.PanNo = res.PanNo;
-                            newFormControlsState.IsPassAvail = (res.Passport == "Yes") ? true : false;
-                            newFormControlsState.PassportValidity = new Date(res.PassportValidity);
-                            
-                            newFormControlsState.PassportNo = (res.PassportNo)?res.PassportNo:'';
-                            newFormControlsState.Gender = res.Gender;
-                            return this.getMultipleDataFromListUsingParentID(ListNames.CHILDDETAILS, EmpListID).then((childres) => {
-                                var childItemArray = [];
-                                childres.forEach(element => {
-                                    childItemArray.push({
-                                        childDetailId: element.Id,
-                                        ChildName: element.ChildName,
-                                        DateOfBirth: new Date(element.ChildDOB)
-                                    });
-                                });
-                                newFormControlsState.childDetailItems = childItemArray;
-                                return this.getMultipleDataFromListUsingParentID(ListNames.VISADETAILS, EmpListID).then((visares) => {
-                                    var visaItemArray = [];
-                                    visares.forEach(element => {
-                                        visaItemArray.push({
-                                            visaDetailId: element.Id,
-                                            ValidVisa: element.ValidVisa,
-                                            VisaOfCountry: element.VisaOfCountry,
-                                            VisaNo: element.VisaNo,
-                                            Entry: element.Entry,
-                                            IsTravelled: element.IsTravelled,
-                                            VisaValidity: new Date(element.VisaValidity)
+                        newFormControlsState.technologyOptions = techResp.sort();
+                        if(EmpListID==0){
+                            newFormControlsState.IsPassAvail=false;
+                            return newFormControlsState;
+                        }else{
+                            return this.getDataFromListUsingID(ListNames.EMPLOYEECONTACT, EmpListID).then(res => {
+                                newFormControlsState.AadharNo = (res.AadhaarCardNo!=null)?res.AadhaarCardNo:"";
+                                newFormControlsState.PersonalEmail = res.Email;
+                                newFormControlsState.Mobile = res.Mobile;
+                                newFormControlsState.DateOfBirth = new Date(res.DateOfBirth);
+                                newFormControlsState.Age = res.Age;
+                                newFormControlsState.BloodGroup = res.BloodGroup;
+                                newFormControlsState.FatherName = res.FatherName;
+                                newFormControlsState.MotherName = res.MotherName;
+                                newFormControlsState.MaritalStatus = res.MaritalStatus;
+                                newFormControlsState.SpouceDOB = new Date(res.SpouseDOB);
+                                newFormControlsState.SpouceName = res.SpouseName;
+                                newFormControlsState.SpouseOccupation = res.SpouseOccupation;
+                                newFormControlsState.EmergencyNo = res.EmergencyContactNo;
+                                newFormControlsState.RelationWithEmergencyNo = res.RelationWithEmergencyNo;
+                                newFormControlsState.CurrentAddress = res.CurrentAddress;
+                                newFormControlsState.IsSameAsCurrAddress = (res.IsSameAsCurrAddress == null || res.IsSameAsCurrAddress == false) ? false : true;
+                                newFormControlsState.PermanentAddress = res.PermanentAddress;
+                                newFormControlsState.PanNo =(res.PanNo!=null)?res.PanNo:"";;
+                                newFormControlsState.IsPassAvail = (res.Passport == "Yes") ? true : false;
+                                newFormControlsState.PassportValidity = new Date(res.PassportValidity);
+                                
+                                newFormControlsState.PassportNo = (res.PassportNo)?res.PassportNo:'';
+                                newFormControlsState.Gender = res.Gender;
+                                return this.getMultipleDataFromListUsingParentID(ListNames.CHILDDETAILS, EmpListID).then((childres) => {
+                                    var childItemArray = [];
+                                    childres.forEach(element => {
+                                        childItemArray.push({
+                                            childDetailId: element.Id,
+                                            ChildName: element.ChildName,
+                                            DateOfBirth: new Date(element.ChildDOB)
                                         });
                                     });
-                                    newFormControlsState.visaDetailItems = visaItemArray;
-                                    return newFormControlsState;
+                                    newFormControlsState.childDetailItems = childItemArray;
+                                    return this.getMultipleDataFromListUsingParentID(ListNames.VISADETAILS, EmpListID).then((visares) => {
+                                        var visaItemArray = [];
+                                        visares.forEach(element => {
+                                            visaItemArray.push({
+                                                visaDetailId: element.Id,
+                                                ValidVisa: element.ValidVisa,
+                                                VisaOfCountry: element.VisaOfCountry,
+                                                VisaNo: element.VisaNo,
+                                                Entry: element.Entry,
+                                                IsTravelled: element.IsTravelled,
+                                                VisaValidity: new Date(element.VisaValidity)
+                                            });
+                                        });
+                                        newFormControlsState.visaDetailItems = visaItemArray;
+                                        return newFormControlsState;
+                                    });
                                 });
                             });
-                        });
+                        }
+                        
                     });
                 });
             });
@@ -236,27 +243,31 @@ export default class NewEmployeeService implements INewEmpRequestService {
         let utilityServiceObj: UtilityService = new UtilityService();
         return utilityServiceObj.getOptionsFromMaster(ListNames.REASONFORLEAVING, 'Title').then(statusResp => {
             hrControlsState.reasonOfLeavingOptions = statusResp;
-
-            return this.getADLoginName(EmpListID).then(AdloginName => {
-                hrControlsState.ADLogin = AdloginName;
-                return utilityServiceObj.getOptionsFromMaster(ListNames.DESIGNATION, 'Designation').then(desigResp => {
-                    hrControlsState.LastDesignationOptions = desigResp;
-                    return this.getDataFromListUsingID(ListNames.EMPLOYEECONTACT, EmpListID).then(Resp => {
-                        hrControlsState.UserAlies = Resp.UserAlies;
-                        hrControlsState.Manager = Resp.ManagerId;
-                        hrControlsState.employementStatus = Resp.EmploymentStatus;
-                        hrControlsState.LastDesignation = Resp.LastDesignation;
-                        hrControlsState.LastPromotedDate = new Date(Resp.LastPromotedDate);
-                        hrControlsState.DateofLeft = new Date(Resp.DateofLeft);
-                        if (Resp.ReasonForLeaving == null)
-                            hrControlsState.reasonForLeaving = '--Select--';
-                        else
-                            hrControlsState.reasonForLeaving = Resp.ReasonForLeaving;
-                        hrControlsState.ResigntionDate = new Date(Resp.ResigntionDate);
-                        hrControlsState.EligibleforRehire = Resp.EligibleforRehire;
-                        return hrControlsState;
+            return utilityServiceObj.getOptionsFromMaster(ListNames.DESIGNATION, 'Designation').then(desigResp => {
+                hrControlsState.LastDesignationOptions = desigResp;
+                if(EmpListID==0){
+                    return hrControlsState
+                }else{
+                    return this.getADLoginName(EmpListID).then(AdloginName => {
+                        hrControlsState.ADLogin = AdloginName;
+                
+                        return this.getDataFromListUsingID(ListNames.EMPLOYEECONTACT, EmpListID).then(Resp => {
+                            hrControlsState.UserAlies = Resp.UserAlies;
+                            hrControlsState.Manager = Resp.ManagerId;
+                            hrControlsState.employementStatus = Resp.EmploymentStatus;
+                            hrControlsState.LastDesignation = Resp.LastDesignation;
+                            hrControlsState.LastPromotedDate = new Date(Resp.LastPromotedDate);
+                            hrControlsState.DateofLeft = new Date(Resp.DateofLeft);
+                            if (Resp.ReasonForLeaving == null)
+                                hrControlsState.reasonForLeaving = '--Select--';
+                            else
+                                hrControlsState.reasonForLeaving = Resp.ReasonForLeaving;
+                            hrControlsState.ResigntionDate = new Date(Resp.ResigntionDate);
+                            hrControlsState.EligibleforRehire = Resp.EligibleforRehire;
+                            return hrControlsState;
+                        });
                     });
-                });
+                }
             });
         });
     }
@@ -303,7 +314,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
             alert("HR details saved successfully");
 
         }).catch(error => {
-            console.log("error while adding an employee");
+            
             alert("Opps! Something went wrong while saving HR Details");
         });
 
@@ -398,6 +409,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                 let utilityServiceObj: UtilityService = new UtilityService();
                 return utilityServiceObj.getOptionsFromMaster(ListNames.REASONFORLEAVING, 'Title')
                     .then((reasonResp) => {
+                        reasonResp.sort();
                         resp.forEach(element => {
                             payLoadArrayOrganizationDetails.push({
                                 organizationId: element.ID,
@@ -424,6 +436,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                 let utilityServiceObj: UtilityService = new UtilityService();
                 return utilityServiceObj.getOptionsFromMaster(ListNames.TECHNOLOGY, 'Title')
                     .then((techResp) => {
+                        techResp.sort();
                         resp.forEach(element => {
                             payLoadArrayTechnologyDetails.push({
                                 technologyId: element.ID,
@@ -519,7 +532,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                 });
             }
         });
-        batch.execute().then(() => alert("Professional Detail Save Successfully"))
+        batch.execute().then(() => alert("Professional details saved successfully and mail sent to HR"))
             .catch(() => alert("Oops! Error occured in saving Technical Details"));
     }
     //#endregion Professional Detail Section
@@ -564,7 +577,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
             alert("Payroll details saved successfully");
 
         }).catch(error => {
-            console.log("error while adding an employee");
+           
             alert("Opps! Something went wrong while saving Payroll details");
         });
     }

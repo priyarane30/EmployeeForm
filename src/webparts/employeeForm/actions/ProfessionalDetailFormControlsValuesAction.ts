@@ -58,6 +58,7 @@ export function addProfessionalDetailRow(section) {
             let utilityServiceObj: UtilityService = new UtilityService();
             utilityServiceObj.getOptionsFromMaster(ListNames.REASONFORLEAVING, 'Title')
                 .then((ReasonResp) => {
+                    ReasonResp.sort();
                     let initialOrganizationDetailsGrid =
                     {
                         organizationId: 0,
@@ -86,6 +87,7 @@ export function addProfessionalDetailRow(section) {
             let utilityServiceObj: UtilityService = new UtilityService();
             utilityServiceObj.getOptionsFromMaster(ListNames.TECHNOLOGY, 'Title')
                 .then((techResp) => {
+                    techResp.sort();
                     let initialTechnologyDetailGrid = {
                         technologyId: 0,
                         Technology: '',

@@ -9,6 +9,7 @@ export function GetEmpBasicData(empListId) {
         let newBasicFormServiceObj: BasicFormService = new BasicFormService();
 
         if (empListId > 0) {
+            
              newBasicFormServiceObj.GetEmpBasicDataById(empListId).then((resp: IBasicDetailState) => {
                 basicFormState = resp;
                 dispatch({
@@ -18,6 +19,7 @@ export function GetEmpBasicData(empListId) {
             });
         }
         else {
+            
             newBasicFormServiceObj.GetEmpBasicData().then((resp: IBasicDetailState) => {
                 basicFormState = resp;
                 dispatch({
@@ -45,11 +47,13 @@ export async function GetEmpListIdByUserEmail(currUserEmail) {
         if (resp != null && resp != undefined && resp != 0) {
             empIdState.EmpListID = resp;
         }
+       
     });
     return empIdState;
 }
 
 export function SetEmpIdInStore(empListId) {
+   
     return dispatch => {
         dispatch({
             type: ActionTypes.SetEmpID,

@@ -53,10 +53,10 @@ class PayrollDetail extends React.Component<any, IState> {
             <div className={styles.container}>
               <div className={`ms-Grid-row ${styles.row}`}>{/* ms-fontColor-white  */}
                 {/* ESI Applicable*/}
-                <div className="ms-Grid-col ms-u-sm2 block">
+                <div className="ms-Grid-col  ms-u-sm12 ms-u-md2 block">
                   <label>ESI Applicable:</label>
                 </div>
-                <div className="ms-Grid-col ms-u-sm4 block">
+                <div className="ms-Grid-col ms-u-sm12 ms-u-md4 block">
                   <Control.text className={styles.marginb}
                     model=".ESIApplicable"
                     id=".ESIApplicable"
@@ -64,10 +64,10 @@ class PayrollDetail extends React.Component<any, IState> {
                   />
                 </div>
                 {/* ESI No*/}
-                <div className="ms-Grid-col ms-u-sm2 block">
+                <div className="ms-Grid-col  ms-u-sm12 ms-u-md2 block">
                   <label>ESI No:</label>
                 </div>
-                <div className="ms-Grid-col ms-u-sm4 block">
+                <div className="ms-Grid-col ms-u-sm12 ms-u-md4 block">
                   <Control.text className={styles.marginb}
                     model=".ESINo"
                     id=".ESINo"
@@ -75,10 +75,10 @@ class PayrollDetail extends React.Component<any, IState> {
                   />
                 </div>
                 {/* ESIDispensary*/}
-                <div className="ms-Grid-col ms-u-sm2 block">
+                <div className="ms-Grid-col  ms-u-sm12 ms-u-md2 block">
                   <label>ESIDispensary:</label>
                 </div>
-                <div className="ms-Grid-col ms-u-sm4 block">
+                <div className="ms-Grid-col ms-u-sm12 ms-u-md4 block">
                   <Control.text className={styles.marginb}
                     model=".ESIDispensary"
                     id=".ESIDispensary"
@@ -86,10 +86,10 @@ class PayrollDetail extends React.Component<any, IState> {
                   />
                 </div>
                 {/* PF Applicable*/}
-                <div className="ms-Grid-col ms-u-sm2 block">
+                <div className="ms-Grid-col  ms-u-sm12 ms-u-md2 block">
                   <label>PF Applicable:</label>
                 </div>
-                <div className="ms-Grid-col ms-u-sm4 block">
+                <div className="ms-Grid-col ms-u-sm12 ms-u-md4 block">
                   <Control.text className={styles.marginb}
                     model=".PFApplicable"
                     id=".PFApplicable"
@@ -97,17 +97,17 @@ class PayrollDetail extends React.Component<any, IState> {
                   />
                 </div>
                 {/* PF No*/}
-                <div className="ms-Grid-col ms-u-sm2 block">
+                <div className="ms-Grid-col  ms-u-sm12 ms-u-md2 block">
                   <label>PF No:</label>
                 </div>
-                <div className="ms-Grid-col ms-u-sm4 block">
+                <div className="ms-Grid-col ms-u-sm12 ms-u-md4 block">
                   <Control.text className={styles.marginb} model=".PFNo" id=".PFNo" component={TextField} />
                 </div>
                 {/* PF No for Dept file*/}
-                <div className="ms-Grid-col ms-u-sm2 block">
+                <div className="ms-Grid-col  ms-u-sm12 ms-u-md2 block">
                   <label>PF No for Dept file:</label>
                 </div>
-                <div className="ms-Grid-col ms-u-sm4 block">
+                <div className="ms-Grid-col ms-u-sm12 ms-u-md4 block">
                   <Control.text className={styles.marginb}
                     model=".PFNoforDeptFile"
                     id=".PFNoforDeptFile"
@@ -115,10 +115,10 @@ class PayrollDetail extends React.Component<any, IState> {
                   />
                 </div>
                 {/* Restrict PF*/}
-                <div className="ms-Grid-col ms-u-sm2 block">
+                <div className="ms-Grid-col  ms-u-sm12 ms-u-md2 block">
                   <label>Restrict PF:</label>
                 </div>
-                <div className="ms-Grid-col ms-u-sm4 block">
+                <div className="ms-Grid-col ms-u-sm12 ms-u-md4 block">
                   <Control.text className={styles.marginb}
                     model=".RestrictPF"
                     id=".RestrictPF"
@@ -126,10 +126,10 @@ class PayrollDetail extends React.Component<any, IState> {
                   />
                 </div>
                 {/* Zero Pension*/}
-                <div className="ms-Grid-col ms-u-sm2 block">
+                <div className="ms-Grid-col  ms-u-sm12 ms-u-md2 block">
                   <label>Zero Pension:</label>
                 </div>
-                <div className="ms-Grid-col ms-u-sm4 block">
+                <div className="ms-Grid-col ms-u-sm12 ms-u-md4 block">
                   <Control.text className={styles.marginb}
                     model=".ZeroPension"
                     id=".ZeroPension"
@@ -137,10 +137,10 @@ class PayrollDetail extends React.Component<any, IState> {
                   />
                 </div>
                 {/* Zero PT*/}
-                <div className="ms-Grid-col ms-u-sm2 block">
+                <div className="ms-Grid-col  ms-u-sm12 ms-u-md2 block">
                   <label>Zero PT:</label>
                 </div>
-                <div className="ms-Grid-col ms-u-sm4 block">
+                <div className="ms-Grid-col ms-u-sm12 ms-u-md4 block">
                   <Control.text className={styles.marginb}
                     model=".ZeroPT"
                     id=".ZeroPT"
@@ -148,10 +148,10 @@ class PayrollDetail extends React.Component<any, IState> {
                   />
                 </div>
                 {/* Ward/Circle*/}
-                <div className="ms-Grid-col ms-u-sm2 block">
+                <div className="ms-Grid-col  ms-u-sm12 ms-u-md2 block">
                   <label>Ward/Circle:</label>
                 </div>
-                <div className="ms-Grid-col ms-u-sm4 block">
+                <div className="ms-Grid-col ms-u-sm12 ms-u-md4 block">
                   <Control.text className={styles.marginb}
                     model=".Ward_x002f_Circle"
                     id=".Ward_x002f_Circle"
@@ -159,10 +159,10 @@ class PayrollDetail extends React.Component<any, IState> {
                   />
                 </div>
                 {/* Director*/}
-                <div className="ms-Grid-col ms-u-sm2 block">
+                <div className="ms-Grid-col  ms-u-sm12 ms-u-md2 block">
                   <label>Director:</label>
                 </div>
-                <div className="ms-Grid-col ms-u-sm4 block">
+                <div className="ms-Grid-col ms-u-sm12 ms-u-md4 block">
                   <Control.text className={styles.marginb}
                     model=".Director"
                     id=".Director"

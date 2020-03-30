@@ -16,6 +16,8 @@ import { TextField, DefaultButton } from "office-ui-fabric-react/lib";
 
 interface buttonStatus {
   buttonDisabled: boolean;
+  isDisableUser:boolean;
+ 
 }
 interface IEducationDetailConnectedDispatch {
   setTabName: (tabName: ICommonState) => void;
@@ -35,11 +37,19 @@ const maxLength = (len) => (val) => val.length <= len;
 class EducationDetail extends React.Component<any, buttonStatus> {
   constructor(props) {
     super(props);
-    this.state = { buttonDisabled: false };
+    this.state = { 
+      buttonDisabled: false,
+         isDisableUser:false,
+    };
   }
   public async componentDidMount() {
     const empListId = store.getState().EmpListId;
     await this.props.getDefaultControlsData(empListId);
+    this.setState({isDisableUser:this.props.isAssignedToHR})
+    
+    if(this.props.isUserHR==false && this.props.isAssignedToHR==true){
+      this.setState({buttonDisabled:true});
+    }
   }
   //adds row in grids
   public handleRowAdd(section) {
@@ -48,7 +58,7 @@ class EducationDetail extends React.Component<any, buttonStatus> {
 
   //removes row from grid
   public handleRowRemove(section, index) {
-    var confirmDelete = confirm("Please Confirm delete")
+    var confirmDelete = confirm("Are you sure you want to delete this item?")
     if (confirmDelete) {
       let removedItem = this.props.Education[section][index];
       this.props.removeEducationDetailRow(removedItem, section, index);
@@ -70,17 +80,16 @@ class EducationDetail extends React.Component<any, buttonStatus> {
       const CommonState: ICommonState = { CurrentForm: "Education" };
       this.props.setTabName(CommonState);
       const empListId = store.getState().EmpListId;
-      this.setState({ buttonDisabled: true });
+      this.setState({ buttonDisabled: false });
       let newEmpServiceObj: NewEmpService = new NewEmpService();
       await newEmpServiceObj.saveEduDataInList(eduData, empListId);
-      alert("Education Details saved Succesfully");
-      this.setState({ buttonDisabled: false });
+      alert("Education Details saved succesfully");
+      this.setState({ buttonDisabled: true });
       this.props.handleSpinner(true);
       this.props.handleTabClick();
     }
   }
   public isGreter(val, index) {
-    debugger;
     var StartYear = parseInt(val);
     var EndYear = parseInt(this.props.Education.educationDetails[index].EndYear);
     if (!isNaN(StartYear) && !isNaN(EndYear)) {
@@ -95,7 +104,7 @@ class EducationDetail extends React.Component<any, buttonStatus> {
   public isLess(val, index) {
     var EndYear = parseInt(val);
     var StartYear = parseInt(this.props.Education.educationDetails[index].StartYear);
-    debugger;
+
     if (!isNaN(StartYear) && !isNaN(EndYear)) {
       if (StartYear == 0) { return true; }
       else {
@@ -107,7 +116,6 @@ class EducationDetail extends React.Component<any, buttonStatus> {
   }
 
   public isGreters(val, index) {
-    debugger;
     var StartYear = parseInt(val);
     var EndYear = parseInt(this.props.Education.certificationDetails[index].YearOfCompletion);
     if (!isNaN(StartYear) && !isNaN(EndYear)) {
@@ -121,7 +129,6 @@ class EducationDetail extends React.Component<any, buttonStatus> {
   public isLessYear(val, index) {
     var EndYear = parseInt(val);
     var StartYear = parseInt(this.props.Education.certificationDetails[index].StartYear);
-    debugger;
     if (!isNaN(StartYear) && !isNaN(EndYear)) {
       if (StartYear == 0) { return true; }
       else {
@@ -141,16 +148,18 @@ class EducationDetail extends React.Component<any, buttonStatus> {
               <div className={`ms-Grid-row ${styles.row}`}>   {/* ms-fontColor-white  */}
                 <div className={styles.childdetailsec}>
                   <span className={styles.errors}> *Please mention education details from latest qualification upto 10th Education details</span>
-                  <table style={{ width: "100%" }}>
+                  <div className="table-responsive">
+                  <table className="grid-visa" style={{ width: "100%" }}>
                     <tr>
-                      <th colSpan={8} style={{ textAlign: "left" }}> <span>Education details <button className={styles.addbtn} type="button" onClick={() => this.handleRowAdd("educationDetails")}>+</button></span></th>
+                      <th colSpan={8} style={{ textAlign: "left" }}> <span>Education details <button className={styles.addbtn} disabled={this.state.isDisableUser} type="button" onClick={() => this.handleRowAdd("educationDetails")}>+</button></span></th>
                     </tr>
                     {
                       this.props.Education.educationDetails.map((education, i) => {
                         return (
                           <tr>
                             <td><label>Diploma/Degree *</label>
-                              <Control.select style={{ height: "30px" }} model={`Education.educationDetails[${i}].DiplomaDegree`} id={`Education.educationDetails[${i}].DiplomaDegree`}
+                              <Control.select style={{ height: "30px" }} model={`Education.educationDetails[${i}].DiplomaDegree`} id={`Education.educationDetails[${i}].DiplomaDegree`} 
+                              disabled={this.state.isDisableUser}
                                 validators={{ requiredQualification: (val) => val && val != "--Select--" }}>
                                 <option>--Select--</option>
                                 <option value="Graduation">Graduation</option>
@@ -167,7 +176,7 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                               ></Errors></td>
                             <td><label>Grade *</label>
                               <Control.text model={`Education.educationDetails[${i}].Grade`} id={`Education.educationDetails[${i}].Grade`}
-                                component={TextField}
+                                component={TextField} disabled={this.state.isDisableUser}
                                 validators={{
                                   requiredGrade: (val) => val && val.length,
                                   maxLength: maxLength(255)
@@ -186,7 +195,7 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                               <Control.text model={`Education.educationDetails[${i}].StartYear`}
                                 id={`Education.educationDetails[${i}].StartYear`}
                                 placeholder="YYYY"
-                                component={TextField}
+                                component={TextField} disabled={this.state.isDisableUser}
                                 validators={{
                                   requiredStartYearEdu: (val) => val,
                                   isLength:(val)=>(val.length==4 || val.length==0),
@@ -196,20 +205,20 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                                 }}
                               ></Control.text>
                               <Errors
-                                className={styles.errors}
+                                className={styles.errors} 
                                 show="touched"
                                 model={`Education.educationDetails[${i}].StartYear`}
                                 messages={{
                                   requiredStartYearEdu: 'Start Year is Required.',
                                   isNumber: "Enter a valid Year",
-                                  notFutureYear: "Year can't be future year",
-                                  isGreter: "Start Year can't be greater than end year ",
+                                  notFutureYear: "Year can not be future year",
+                                  isGreter: "Start Year can not be greater than end year ",
                                   isLength:"Enter a valid Year"
                                 }}
                               ></Errors></td>
                             <td><label>End Year *</label>
                               <Control.text model={`Education.educationDetails[${i}].EndYear`} id={`Education.educationDetails[${i}].EndYear`} placeholder="YYYY"
-                                component={TextField}
+                                component={TextField} disabled={this.state.isDisableUser}
                                 validators={{
                                   requiredEndYear: (val) => val,
                                   isNumber,
@@ -225,14 +234,14 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                                 messages={{
                                   requiredEndYear: 'End Year is Required.',
                                   isNumber: "Enter a valid Year",
-                                  requiredDateEnd: "Year can't be future year",
-                                  isLess: "End Year can't be less than start year ",
+                                  requiredDateEnd: "Year can not be future year",
+                                  isLess: "End Year can not be less than start year ",
                                   isLength:"Enter a valid Year"
                                 }}
                               ></Errors></td>
                             <td><label>Board *</label>
                               <Control.text model={`Education.educationDetails[${i}].Board`} id={`Education.educationDetails[${i}].Board`}
-                                component={TextField}
+                                component={TextField} disabled={this.state.isDisableUser}
                                 validators={{
                                   requiredEducationBoard: (val) => val && val.length,
                                   maxLength: maxLength(255)
@@ -249,7 +258,7 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                               ></Errors></td>
                             <td><label>School/College *</label>
                               <Control.text model={`Education.educationDetails[${i}].SchoolCollege`} id={`Education.educationDetails[${i}].SchoolCollege`}
-                                component={TextField}
+                                component={TextField} disabled={this.state.isDisableUser}
                                 validators={{
                                   requiredSchoolCollege: (val) => val && val.length,
                                   maxLength: maxLength(255)
@@ -266,7 +275,7 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                               ></Errors></td>
                             <td><label>Degree Name *</label>
                               <Control.text model={`Education.educationDetails[${i}].DegreeName`} id={`Education.educationDetails[${i}].DegreeName`}
-                                component={TextField}
+                                component={TextField} disabled={this.state.isDisableUser}
                                 validators={{
                                   requiredDegreeName: (val) => val && val.length,
                                   maxLength: maxLength(255)
@@ -282,15 +291,17 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                                 }}
                               ></Errors></td>
                             <td>
-                              <button className={styles.removebtn} type="button" style={{ marginTop: "20px" }} onClick={() => this.handleRowRemove("educationDetails", i)}>-</button></td>
+                              <button className={styles.removebtn} disabled={this.state.isDisableUser} type="button" style={{ marginTop: "20px" }} onClick={() => this.handleRowRemove("educationDetails", i)}>-</button></td>
                           </tr>);
                       })}
                   </table>
                 </div>
+                </div>
                 <div className="childdetail-sec">
+                <div className="table-responsive">
                   <table style={{ width: "100%" }}>
                     <tr>
-                      <th colSpan={6} style={{ textAlign: "left" }}><span>Certification details <button type="button" onClick={() => this.handleRowAdd("certificationDetails")} className={styles.addbtn}>+</button></span></th>
+                      <th colSpan={6} style={{ textAlign: "left" }}><span>Certification details <button type="button" disabled={this.state.isDisableUser} onClick={() => this.handleRowAdd("certificationDetails")} className={styles.addbtn}>+</button></span></th>
                     </tr>
                     {this.props.Education.certificationDetails.map((certification, i) => {
                       return (
@@ -329,9 +340,9 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                               messages={{
                                 requiredStartYear: 'Start Year is Required.',
                                 isNumber: "Enter a valid Year",
-                                notFutureYear: "Year can't be future year",
+                                notFutureYear: "Year can not be future year",
                                   isLength:"Enter a valid Year",
-                                  isGretes:"Start Year can't be greater than end year"
+                                  isGretes:"Start Year can not be greater than end year"
                               }}
                             ></Errors>
                           </td>
@@ -353,9 +364,9 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                               messages={{
                                 requiredYearofCompletion: 'Year Of Completion is Required.',
                                 isNumber: "Enter a valid Year",
-                                notFutureYear: "Year can't be future year",
+                                notFutureYear: "Year can not be future year",
                                 isLength:"Enter a valid Year",
-                                isLessYear: "Year Of Completion can't be less than start year ",
+                                isLessYear: "Year Of Completion can not be less than start year ",
                               }}
                             ></Errors>
                           </td>
@@ -394,11 +405,12 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                             ></Errors>
                           </td>
                           <td>
-                            <button type="button" style={{ marginTop: "20px" }} onClick={() => this.handleRowRemove("certificationDetails", i)} className={styles.removebtn}>-</button></td>
+                            <button type="button" style={{ marginTop: "20px" }} disabled={this.state.isDisableUser} onClick={() => this.handleRowRemove("certificationDetails", i)}   className={styles.removebtn}>-</button></td>
                         </tr>
                       );
                     })}
                   </table>
+                </div>
                 </div>
                 <div >
                   <DefaultButton id="DefaultSubmit" primary={true} text={"Submit"} type="submit"

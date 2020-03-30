@@ -16,6 +16,8 @@ import { TextField, DefaultButton } from "office-ui-fabric-react/lib";
 
 interface buttonStatus {
     buttonDisabled: boolean;
+    isDisableUser:boolean;
+
 }
 interface IProfessionalDetailConnectedDispatch {
     setTabName: (tabName: ICommonState) => void;
@@ -28,11 +30,17 @@ interface IProfessionalDetailConnectedDispatch {
 class ProfessionalDetail extends React.Component<any, buttonStatus> {
     constructor(props) {
         super(props);
-        this.state = { buttonDisabled: false };
+        this.state = { buttonDisabled: false,
+            isDisableUser:false,
+        };
     }
     public componentDidMount() {
         const empListId = store.getState().EmpListId;
         this.props.getDefaultControlsData(empListId);
+            this.setState({isDisableUser:this.props.isAssignedToHR})
+            if(this.props.isUserHR==false && this.props.isAssignedToHR==true){
+                this.setState({buttonDisabled:true});
+            }
     }
 
     //adds row in grids
@@ -43,18 +51,49 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
     //removes row from grid
     public handleRowRemove(section, index) {
         // this.props.ProfessionalDetail[section][index]
-        var confirmDelete = confirm("Please Confirm delete")
+        var confirmDelete = confirm("Are you sure you want to delete this item?")
         if (confirmDelete) {
             let removedItem = this.props.ProfessionalDetail[section][index];
             this.props.removeProfessionalDetailRow(removedItem, section, index);
         }
         else { }
     }
+    public isGreters(val, index) {
+        var StartYear = val.split('-');
+         var year = parseInt(StartYear[1]);
+        var EndYear =this.props.ProfessionalDetail.organizationDetails[index].endDate.split('-');
+        var splitEndYear= parseInt(EndYear[1]);
+        if (!isNaN(year) && !isNaN(splitEndYear)) {
+          if (splitEndYear == 0) { return true; }
+          else {
+            var validation = (year < splitEndYear) ? true : false;
+            return validation;
+          }
+        } else { return true; }
+      }
+      public isLessYear(val, index) {
+        var EndYear = val.split('-');
+         var year = parseInt(EndYear[1]);
+        var StartYear = this.props.ProfessionalDetail.organizationDetails[index].startDate.split('-');
+        var splitStartYear= parseInt(StartYear[1]);
+        if (!isNaN(year) && !isNaN(splitStartYear)) {
+          if (splitStartYear == 0) { return true; }
+          else {
+            var validation = (year > splitStartYear) ? true : false;
+            return validation;
+          }
+        }
+        else { return true; }
+      }
 
     public async handleSubmit(formValues) {
         let pdData = {} as IProfessionalDetailState;
         pdData = formValues;
-        if (pdData.organizationDetails.length == 0 && pdData.technologyDetails.length == 0) { 
+        if (pdData.organizationDetails.length == 0 ) { 
+            alert("Please enter required data");
+            this.handleRowAdd("ProfessionalDetail")
+        }
+        else if(pdData.technologyDetails.length == 0){
             alert("Please enter required data");
             this.handleRowAdd("Technology");
         }
@@ -80,15 +119,16 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                     <Form model="ProfessionalDetail" onSubmit={val => this.handleSubmit(val)}>
                         <div className='col'> {/* Eligible for rehire*/}
                             <label style={{ paddingLeft: "15px" }}>Fresher:</label>
-                            <Control.checkbox model='ProfessionalDetail.IsFresher' id='ProfessionalDetail.IsFresher' />
+                            <Control.checkbox model='ProfessionalDetail.IsFresher' disabled={this.state.isDisableUser} id='ProfessionalDetail.IsFresher' />
                         </div>
                         {this.isUserFresher(this.props.ProfessionalDetail)}
                         <div className={`ms-Grid-row ${styles.row}`}>{/* ms-fontColor-white  */}
                             <span className={styles.errors}> *Please mention mininum 1 Technology / Tools in below section</span>
                             <div className={styles.childdetailsec}>
-                                <table style={{ width: "100%" }}>
+                            <div className="table-responsive">
+                                <table className="grid-visa" style={{ width: "100%" }}>
                                     <tr>
-                                        <th colSpan={8} style={{ textAlign: "left" }}><span> Technology / Tools Skills <button className={styles.addbtn} type="button" onClick={() => this.handleRowAdd("Technology")}>+</button></span></th>
+                                        <th colSpan={8} style={{ textAlign: "left" }}><span> Technology / Tools Skills <button className={styles.addbtn} disabled={this.state.isDisableUser} type="button"  onClick={() => this.handleRowAdd("Technology")}>+</button></span></th>
 
                                     </tr>
                                     {this.props.ProfessionalDetail.technologyDetails.map((technologies, i) => {
@@ -96,7 +136,7 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                             <tr key={i}>
                                                 <td> {/* Technology */}
                                                     <label>Technology *</label>
-                                                    <Control.select model={`ProfessionalDetail.technologyDetails[${i}].Technology`} id={technologies.Technology}
+                                                    <Control.select model={`ProfessionalDetail. [${i}].Technology`} id={technologies.Technology}  disabled={this.state.isDisableUser}
                                                         validators={{ requiredtechnology: (val) => val && val != "--Select--" }} style={{ height: "30px", width: "100%" }}>
                                                         <option value="0">--Select--</option>
                                                         {this.props.ProfessionalDetail.technologyDetails[i].technologyOptions.map(technology => {
@@ -113,7 +153,7 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                 </td>
                                                 <td> {/* SinceWhen */}
                                                     <label>Since When *</label>
-                                                    <Control.select model={`ProfessionalDetail.technologyDetails[${i}].SinceWhen`} id={technologies.SinceWhen}
+                                                    <Control.select model={`ProfessionalDetail.technologyDetails[${i}].SinceWhen`} id={technologies.SinceWhen}  disabled={this.state.isDisableUser}
                                                         validators={{ requiredSincewhen: (val) => val && val != "--Select--" }} style={{ height: "30px", width: "100%" }}>
                                                         <option value="0">--Select--</option>
                                                         <option value="Currently using">Currently using</option>
@@ -134,11 +174,12 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                 <td> {/* Expertise */}
                                                     <label>Expertise *</label>
                                                     <Control.select model={`ProfessionalDetail.technologyDetails[${i}].Expertise`} id={technologies.Expertise}
-                                                        validators={{ requiredExpertise: (val) => val && val != "--Select--" }} style={{ height: "30px", width: "100%" }}>
+                                                      disabled={this.state.isDisableUser}   validators={{ requiredExpertise: (val) => val && val != "--Select--" }} style={{ height: "30px", width: "100%" }}>
                                                         <option value="0">--Select--</option>
+                                                        <option value="Beginner">Beginner</option>
                                                         <option value="Expert">Expert</option>
                                                         <option value="Intermediate">Intermediate</option>
-                                                        <option value="Beginner">Beginner</option>
+                                                      
                                                     </Control.select>
                                                     <Errors
                                                         className={styles.errors}
@@ -151,7 +192,7 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                 <td> {/* Rating */}
                                                     <label>Rating *</label>
                                                     <Control.select model={`ProfessionalDetail.technologyDetails[${i}].Rating`} id={technologies.Rating}
-                                                        validators={{ requiredRating: (val) => val && val != "0" }} style={{ height: "30px", width: "100%" }}>
+                                                       disabled={this.state.isDisableUser}  validators={{ requiredRating: (val) => val && val != "0" }} style={{ height: "30px", width: "100%" }}>
                                                         <option value="0">0</option>
                                                         <option value="1">1</option>
                                                         <option value="2">2</option>
@@ -174,13 +215,13 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                     />
                                                 </td>
                                                 <td> {/* Action */}
-                                                    <button className={styles.removebtn} type="button" onClick={() => this.handleRowRemove("technologyDetails", i)} style={{ marginTop: "20px" }}>-</button>
+                                                    <button className={styles.removebtn} type="button" disabled={this.state.isDisableUser} onClick={() => this.handleRowRemove("technologyDetails", i)} style={{ marginTop: "20px" }}>-</button>
                                                 </td>
                                             </tr>
                                         );
                                     })}
                                 </table>
-                            </div>
+                            </div></div>
                         </div>
                         <DefaultButton id="DefaultSubmit" primary={true} text={"Submit"} type="submit"
                             disabled={this.state.buttonDisabled} className={styles.submitbutton} />
@@ -197,10 +238,10 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                 <div className={`ms-Grid-row ${styles.row}`}>{/* ms-fontColor-white  */}
                     <span className={styles.errors}> *Please mention professional details from latest organization</span>
                     <div className={styles.childdetailsec}>
-                        <div style={{ overflowX: "scroll", width: "100%" }}>
-                            <table style={{ width: "160%" }}>
+                    <div className="table-responsive">
+                            <table className="grid-visa" style={{ width: "160%" }}>
                                 <tr>
-                                    <th colSpan={8} style={{ textAlign: "left" }}><span>Organization details  <button className={styles.addbtn} type="button" onClick={() => this.handleRowAdd("ProfessionalDetail")}>+</button></span></th>
+                                    <th colSpan={8} style={{ textAlign: "left" }}><span>Organization details  <button className={styles.addbtn} type="button" disabled={this.state.isDisableUser} onClick={() => this.handleRowAdd("ProfessionalDetail")}>+</button></span></th>
 
                                 </tr>
                                 {
@@ -210,7 +251,7 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                 <td style={{ width: "200px" }}> {/* Organization */}
                                                     <label className={styles.orgdetailslabel}>Organization*</label>
                                                     <Control.text model={`ProfessionalDetail.organizationDetails[${i}].organization`} id={organizations.organization}
-                                                        validators={{ requiredorganization: (val) => val && val.length && !(Number(val)) }} component={TextField} />
+                                                       disabled={this.state.isDisableUser} validators={{ requiredorganization: (val) => val && val.length && !(Number(val)) }} component={TextField} />
                                                     <Errors
                                                         className={styles.errors}
                                                         show="touched"
@@ -223,7 +264,7 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                 <td style={{ width: "200px" }}> {/* Designation/Role */}
                                                     <label className={styles.orgdetailslabel}>Designation /Role*</label>
                                                     <Control.text model={`ProfessionalDetail.organizationDetails[${i}].designation`} id={organizations.designation}
-                                                        validators={{ requireddesignation: (val) => val && val.length && !(Number(val)) }} component={TextField} />
+                                                       disabled={this.state.isDisableUser} validators={{ requireddesignation: (val) => val && val.length && !(Number(val)) }} component={TextField} />
                                                     <Errors
                                                         className={styles.errors}
                                                         show="touched"
@@ -236,9 +277,10 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                 <td style={{ width: "200px" }}> {/* Start Month */}
                                                     <label className={styles.orgdetailslabel}>Start Month*</label>
                                                     <Control.text model={`ProfessionalDetail.organizationDetails[${i}].startDate`} id={organizations.startDate} placeholder="MMM-YYYY"
-                                                        validators={{
+                                                     disabled={this.state.isDisableUser}   validators={{
                                                             requiredstartDate: (val) => val && val.length,
-                                                            isStartMonth: (val) => (/^[a-zA-Z\s]{3}-[0-9\s]{4}$/i.test(val) || val.length==0)
+                                                            isStartMonth: (val) => (/^[a-zA-Z\s]{3}-[0-9\s]{4}$/i.test(val) || val.length==0),
+                                                            isGreters: (val) => ((this.isGreters(val, i)) || val.length == 0)
                                                         }} component={TextField} />
                                                     <Errors
                                                         className={styles.errors}
@@ -247,15 +289,18 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                         messages={{
                                                             requiredstartDate: 'Start Month is Required.',
                                                             isStartMonth: 'Must be MMM-yyyy',
+                                                            isGreters: "Start Year can not be greater than end year ",
+                                                            
                                                         }}
                                                     />
                                                 </td>
                                                 <td style={{ width: "200px" }}> {/* End  Month */}
                                                     <label className={styles.orgdetailslabel}>End Month*</label>
                                                     <Control.text model={`ProfessionalDetail.organizationDetails[${i}].endDate`} id={organizations.endDate} placeholder="MMM-YYYY"
-                                                        validators={{
+                                                     disabled={this.state.isDisableUser}    validators={{
                                                             requiredendDate: (val) => val && val.length,
-                                                            isEndMonth: (val) => (/^[a-zA-Z\s]{3}-[0-9\s]{4}$/i.test(val)|| val.length==0)
+                                                            isEndMonth: (val) => (/^[a-zA-Z\s]{3}-[0-9\s]{4}$/i.test(val)|| val.length==0),
+                                                            isLess: (val) => ((this.isLessYear(val, i)) || val.length == 0)
                                                         }} component={TextField} />
                                                     <Errors
                                                         className={styles.errors}
@@ -264,13 +309,14 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                         messages={{
                                                             requiredendDate: 'End Month is Required.',
                                                             isEndMonth: 'Must be MMM-yyyy',
+                                                            isLess: "End Year can not be less than start year ",
                                                         }}
                                                     />
                                                 </td>
                                                 <td style={{ width: "200px" }}> {/* Reporting To */}
                                                     <label className={styles.orgdetailslabel}>Reporting To*</label>
                                                     <Control.text model={`ProfessionalDetail.organizationDetails[${i}].reportingTo`} id={organizations.reportingTo}
-                                                        validators={{ requiredreportingTo: (val) => val && val.length && !(Number(val)) }} component={TextField} />
+                                                      disabled={this.state.isDisableUser}  validators={{ requiredreportingTo: (val) => val && val.length && !(Number(val)) }} component={TextField} />
                                                     <Errors
                                                         className={styles.errors}
                                                         show="touched"
@@ -283,7 +329,7 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                 <td style={{ width: "200px" }}> {/* Reporting Designation */}
                                                     <label className={styles.orgdetailslabel}>Reporting Designation*</label>
                                                     <Control.text model={`ProfessionalDetail.organizationDetails[${i}].reportingDesignation`} id={organizations.reportingDesignation}
-                                                        validators={{ requiredreportingDesignation: (val) => val && val.length && !(Number(val)) }} component={TextField} />
+                                                      disabled={this.state.isDisableUser}  validators={{ requiredreportingDesignation: (val) => val && val.length && !(Number(val)) }} component={TextField} />
                                                     <Errors
                                                         className={styles.errors}
                                                         show="touched"
@@ -296,7 +342,7 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                 <td style={{ width: "200px" }}> {/* Total Exp.(Month) */}
                                                     <label className={styles.orgdetailslabel}>Total Exp.(Month)*</label>
                                                     <Control.text model={`ProfessionalDetail.organizationDetails[${i}].totalExp`} id={organizations.totalExp}
-                                                        validators={{
+                                                      disabled={this.state.isDisableUser}  validators={{
                                                             requiredtotalExp: (val) => Number(val) && val.length
                                                         }} component={TextField} />
                                                     <Errors
@@ -311,7 +357,7 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                 <td style={{ width: "200px" }}> {/* Reason For Leaving */}
                                                     <label className={styles.orgdetailslabel}>Reason For Leaving*</label>
                                                     <Control.select model={`ProfessionalDetail.organizationDetails[${i}].reasonForLeaving`} id={organizations.reasonForLeaving}
-                                                        validators={{ requiredreasonForLeaving: (val) => val && val != "--Select--" }} style={{ height: "30px", width: "100%" }}>
+                                                    disabled={this.state.isDisableUser}    validators={{ requiredreasonForLeaving: (val) => val && val != "--Select--" }} style={{ height: "30px", width: "100%" }}>
                                                         <option value="0">--Select--</option>
 
                                                         {this.props.ProfessionalDetail.organizationDetails[i].reasonOfLeavingOptions.map(reasons => {
@@ -328,7 +374,7 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                     />
                                                 </td>
                                                 <td style={{ width: "25px" }}> {/* Action */}
-                                                    <button className={styles.removebtn} type="button" onClick={() => this.handleRowRemove("organizationDetails", i)} style={{ marginTop: "40px" }}>-</button>
+                                                    <button className={styles.removebtn} type="button" disabled={this.state.isDisableUser} onClick={() => this.handleRowRemove("organizationDetails", i)}   style={{ marginTop: "40px" }}>-</button>
                                                 </td>
                                             </tr>
                                         );

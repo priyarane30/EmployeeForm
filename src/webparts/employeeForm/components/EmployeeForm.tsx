@@ -19,16 +19,22 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, an
       isEmpIdExists: false,
       selectedKey: 0,
       isSpinnerHidden: true,
-      isUserHR: false
+      isUserHR: false,
+      isDisableToUser:false
     };
     this.showTabs = this.showTabs.bind(this);
     this._handleTabClick = this._handleTabClick.bind(this);
     this._TabClick = this._TabClick.bind(this);
     this._handleSpinner = this._handleSpinner.bind(this);
+    this.AssignedToHR = this.AssignedToHR.bind(this);
   }
 
   public _handleSpinner(flagShow): void {
     this.setState({ isSpinnerHidden: flagShow });
+  }
+  public AssignedToHR(employmentStatus){
+    if(employmentStatus=="Assigned to HR" && this.state.isUserHR==false){
+    this.setState({isDisableToUser:true})}
   }
 
   public async showTabs(empId, isExistsInHR) {
@@ -40,6 +46,7 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, an
 
   public render(): React.ReactElement<IEmployeeFormProps> {
     return (
+      
       <Provider store={store} >
         <div className={styles.employeeForm}>
           <div className={styles.container} >
@@ -47,16 +54,16 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, an
             <div >
               <Pivot aria-label="Employee Form" linkFormat={PivotLinkFormat.tabs} linkSize={PivotLinkSize.large}  selectedKey={`${this.state.selectedKey}`} onLinkClick={this._TabClick} style={{width:'16px !important;' }}  >
                 <PivotItem headerText="Basic Details" itemKey="0" >
-                  <BasicDetail handleSpinner={this._handleSpinner} handleTabClick={this._handleTabClick} empEmail={this.props.userEmail} showTabs={this.showTabs} context={this.props.context} forceRenderTabPanel={true}/>
+                  <BasicDetail  isAssignedToHR={this.state.isDisableToUser} handleTabClick={this._handleTabClick} handleSpinner={this._handleSpinner} empEmail={this.props.userEmail} showTabs={this.showTabs} context={this.props.context} forceRenderTabPanel={true} assignedToHR={this.AssignedToHR}/>
                 </PivotItem>
                 <PivotItem headerText="Employee Details" itemKey="1"  >
-                  <EmployeeDetail handleTabClick={this._handleTabClick} handleSpinner={this._handleSpinner} />
+                  <EmployeeDetail handleTabClick={this._handleTabClick} isAssignedToHR={this.state.isDisableToUser} handleSpinner={this._handleSpinner} isUserHR={this.state.isUserHR} />
                 </PivotItem>
                 <PivotItem headerText="Education Details" itemKey="2">
-                  <EducationDetail handleTabClick={this._handleTabClick} handleSpinner={this._handleSpinner} />
+                  <EducationDetail handleTabClick={this._handleTabClick} isAssignedToHR={this.state.isDisableToUser} handleSpinner={this._handleSpinner} isUserHR={this.state.isUserHR} />
                 </PivotItem>
                 <PivotItem headerText="Professional Detail" itemKey="3">
-                  <ProfessionalDetail handleTabClick={this._handleTabClick} handleSpinner={this._handleSpinner} />
+                  <ProfessionalDetail handleTabClick={this._handleTabClick} isAssignedToHR={this.state.isDisableToUser} handleSpinner={this._handleSpinner} isUserHR={this.state.isUserHR} />
                 </PivotItem>
                 {this.ShowHRTab()}
                 {this.ShowPayrollTab()}
@@ -88,7 +95,6 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, an
       );
     }
   }
-
   private ShowPayrollTab() {
     if (this.state.isUserHR) {
       return (

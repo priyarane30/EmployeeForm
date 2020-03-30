@@ -4,15 +4,16 @@ import { ListNames, AppConstats } from "../AppConstants";
 import UtilityService from "./UtilityService";
 import { ItemAddResult, Web } from "sp-pnp-js";
 import { store } from "../store/ConfigureStore";
+import Axios from "axios";
 export default class BasicFormService implements IBasicFormService {
     //Get Emp Basic Data when Id = 0
     public GetEmpBasicData(): Promise<IBasicDetailState> {
         let basicFormControlsState = {} as IBasicDetailState;
         let utilityServiceObj: UtilityService = new UtilityService();
         return utilityServiceObj.getOptionsFromMaster(ListNames.DESIGNATION, 'Designation').then(desigResp => {
-            basicFormControlsState.designationOptions = desigResp;
+            basicFormControlsState.designationOptions = desigResp.sort();
             return utilityServiceObj.getOptionsFromMaster(ListNames.TECHNOLOGY, 'Title').then(techResp => {
-                basicFormControlsState.technologyOptions = techResp;
+                basicFormControlsState.technologyOptions = techResp.sort();
                 return basicFormControlsState;
             });
         });
@@ -20,12 +21,13 @@ export default class BasicFormService implements IBasicFormService {
 
     //Get Emp Basic Data when Id = 0
     public GetEmpBasicDataById(empListId): Promise<IBasicDetailState> {
+       
         let basicFormControlsState = {} as IBasicDetailState;
         let utilityServiceObj: UtilityService = new UtilityService();
         return utilityServiceObj.getOptionsFromMaster(ListNames.DESIGNATION, 'Designation').then(desigResp => {
-            basicFormControlsState.designationOptions = desigResp;
+            basicFormControlsState.designationOptions = desigResp.sort();
             return utilityServiceObj.getOptionsFromMaster(ListNames.TECHNOLOGY, 'Title').then(techResp => {
-                basicFormControlsState.technologyOptions = techResp;
+                basicFormControlsState.technologyOptions = techResp.sort();
                 return utilityServiceObj.GetEmployeeContactListById(empListId).then(mainListResp => {
                     basicFormControlsState.EmployeeCode= mainListResp.EmployeeCode;
                     basicFormControlsState.FirstName = mainListResp.FirstName;
@@ -80,6 +82,7 @@ export default class BasicFormService implements IBasicFormService {
 
     public UpdateBasicDetail(basicData: IBasicDetailState, technologydata, empListId, AdLoginName): Promise<any> {
         let web = new Web(AppConstats.SITEURL);
+      
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empListId.EmpListID).update({
             FirstName: basicData.FirstName,
             LastName: basicData.LastName,
@@ -109,6 +112,16 @@ export default class BasicFormService implements IBasicFormService {
             console.log('error while get user groups');
             console.log(error);
         });
+    }
+    public GetEmploymentStatusByUserEmail(email):Promise<any>{
+        var url = AppConstats.SITEURL + "/_api/web/lists/GetByTitle('" + ListNames.EMPLOYEECONTACT + "')/items?$select=EmploymentStatus&$filter=Email eq '" + email + "' ";
+        return Axios.get(url)
+            .then(res => {
+                return res.data.value[0].EmploymentStatus;
+            }).catch(error => {
+                console.log("Error while GetEmpIdByUserEmail");
+                console.log(error);
+            });
     }
 }
 

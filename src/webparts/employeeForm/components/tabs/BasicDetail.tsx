@@ -26,21 +26,25 @@ interface IButtonState {
     selectedTechnologies: any[];
     queryIDState: number;
     display:string;
+    isDisableUser:boolean;
 }
 
 class BasicDetail extends React.Component<any, IButtonState>{
+
     constructor(props) {
+        
         super(props);
         this.state = {
             isDisable: true,
             selectedTechnologies: [],
             queryIDState: 0,
-            display:"none"
+            display:"none",
+            isDisableUser:false,
+            
         };
     }
     //On Button Save : Basic Details saved In List
     public async handleSubmit(formValues) {
-        debugger;
         if(this.state.selectedTechnologies.length==0){this.setState({display:"block"})}
         else{
         let idState = store.getState().EmpListId;
@@ -58,7 +62,7 @@ class BasicDetail extends React.Component<any, IButtonState>{
             //null && idState != undefined
             newEmpReqServiceObj.UpdateBasicDetail(formValues, technologydata, empListId, AdLoginName).then(resp => {
                 this.setState({ isDisable: false });
-                alert("Basic details updated successfully");
+                alert("Basic details saved successfully");
                 this.props.handleSpinner(true);
                 this.props.handleTabClick();
             }).catch(() => {
@@ -85,6 +89,7 @@ class BasicDetail extends React.Component<any, IButtonState>{
         this.props.setTabName(CommonState);
         let newEmpReqServiceObj: BasicService = new BasicService();
         //Is user in HR Group
+       
         let isExistsInHR = false;
         if (this.props.empEmail != null && this.props.empEmail != undefined && this.props.empEmail != '') {
             var userGroups = await newEmpReqServiceObj.GetCurrentUserGroups(this.props.empEmail);
@@ -94,7 +99,13 @@ class BasicDetail extends React.Component<any, IButtonState>{
                         isExistsInHR = true;
                 });
             }
+          
+            var employementStatus=await newEmpReqServiceObj.GetEmploymentStatusByUserEmail(this.props.empEmail);
+            this.props.assignedToHR(employementStatus);
+            if(employementStatus=="Assigned to HR" && isExistsInHR==false){this.setState({isDisable:false})}
         }
+      this.setState({isDisableUser:this.props.isAssignedToHR})
+     
         var eId = await GetEmpListIdByUserEmail(this.props.empEmail);
         var queryEmpID = { EmpListID: 0 } as IEmpListIdState;
         var queryParameters = new UrlQueryParameterCollection(window.location.href);
@@ -114,6 +125,7 @@ class BasicDetail extends React.Component<any, IButtonState>{
         this.onSelectedItem = this.onSelectedItem.bind(this);
     }
     public async getuserData(EmpID) {
+       
         let newEmpReqServiceObj: BasicService = new BasicService();
         var technology = await newEmpReqServiceObj.GetEmpTechnology(EmpID.EmpListID);
         if (technology != null && technology != undefined) {
@@ -126,9 +138,7 @@ class BasicDetail extends React.Component<any, IButtonState>{
         }
         await this.props.getBasicDatail(EmpID.EmpListID);//get Basic Details
     }
-    public render() {
-        console.log(this.state.queryIDState);
-
+        public render() {
         pnp.setup({
             spfxContext: this.props.context
         });
@@ -148,34 +158,34 @@ class BasicDetail extends React.Component<any, IButtonState>{
                         <div className={styles.container}>
                             <div className={`ms-Grid-row ${styles.row}`}>{/* ms-fontColor-white  */}
                                 <Form model="Basic" onSubmit={(val) => this.handleSubmit(val)}  >
-                                    <div className='ms-Grid-col ms-u-sm2 block'>
+                                    <div className='ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg2 block'>
                                         <label>First Name *:</label>
                                     </div>
-                                    <div className="ms-Grid-col ms-u-sm4 block">
-                                        <Control.text model=".FirstName" id='.FirstName' component={TextField} className={styles.marginb}
+                                    <div className="ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg4 block">
+                                        <Control.text model=".FirstName" id='.FirstName' component={TextField} className={styles.marginb} disabled={this.state.isDisableUser}
                                             validators={{ requiredFirstName: (val) => val && val.length }} />
                                         <Errors
                                             className={styles.errors}
                                             show="touched"
-                                            model=".FirstName" messages={{ requiredFirstName: 'FirstName is requried..' }} />
+                                            model=".FirstName" messages={{ requiredFirstName: 'First Name is requried..' }} />
                                     </div>
-                                    <div className='ms-Grid-col ms-u-sm2 block'>
+                                    <div className='ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg2 block'>
                                         <label>Last Name *:</label>
                                     </div>
-                                    <div className="ms-Grid-col ms-u-sm4 block">
-                                        <Control.text model=".LastName" id='.LastName' component={TextField} className={styles.marginb}
+                                    <div className="ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg4 block">
+                                        <Control.text model=".LastName" id='.LastName' component={TextField} className={styles.marginb} disabled={this.state.isDisableUser}
                                             validators={{ requiredLastName: (val) => val && val.length }} />
                                         <Errors
                                             className={styles.errors}
                                             show="touched"
-                                            model=".LastName" messages={{ requiredLastName: 'LastName is requried.' }} />
+                                            model=".LastName" messages={{ requiredLastName: 'Last Name is requried.' }} />
                                     </div>
-                                   
-                                    <div className='ms-Grid-col ms-u-sm2 block'>
+                                    <div className="clearfix"></div>
+                                    <div className='ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg2 block'>
                                         <label>Date Of Joining *:</label>
                                     </div>
-                                    <div className="ms-Grid-col ms-u-sm4 block">
-                                        <Control model='.DateofJoining' id='.DateofJoining' component={DatePicker} className={styles.marginb}
+                                    <div className="ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg4 block">
+                                        <Control model='.DateofJoining' id='.DateofJoining' component={DatePicker}  className={styles.marginb} disabled={this.state.isDisableUser}
                                             mapProps={{
                                                 value: (props) => { return props.viewValue; },
                                                 onSelectDate: (props) => { return props.onChange; }
@@ -189,14 +199,14 @@ class BasicDetail extends React.Component<any, IButtonState>{
                                             show="touched"
                                             model=".DateofJoining"
                                             messages={{
-                                                requiredDateOfBirth: 'Date can not be future date.'
+                                                requiredDateOfBirth: 'Date can not be future dated'
                                             }}
                                         ></Errors>
-                                    </div> <div className='ms-Grid-col ms-u-sm2 block'>
+                                    </div> <div className='ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg2 block'>
                                         <label>Designation *:</label>
                                     </div>
-                                    <div className="ms-Grid-col ms-u-sm4 block">
-                                        <Control.select model=".Designation" id=".Designation" className={styles.dropdowncustom} validators={{
+                                    <div className="ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg4 block">
+                                        <Control.select model=".Designation" id=".Designation" className={styles.dropdowncustom} disabled={this.state.isDisableUser} validators={{
                                             requiredDesignationStatus: (val) => val && val != "--Select--"
                                         }} >
                                             <option>--Select--</option>
@@ -211,27 +221,29 @@ class BasicDetail extends React.Component<any, IButtonState>{
                                             }}
                                         />
                                     </div>
-                                    <div className='ms-Grid-col ms-u-sm2 block'>
+                                    <div className="clearfix"></div>
+                                    <div className='ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg2 block'>
                                         <label>Technology *:</label>
                                     </div>
-                                    <div className="ms-Grid-col ms-u-sm4 block">
+                                    <div className="ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg4 block">
                                         <ListItemPicker listId='6fd1826b-625e-4288-8e10-df480fb0d17d'
                                             columnInternalName='Title'
                                             itemLimit={5}
                                             onSelectedItem={this.onSelectedItem}
                                             context={this.props.context}
+                                            disabled={this.state.isDisableUser}
                                             suggestionsHeaderText="Please select Technology"
                                             defaultSelectedItems={this.props.Basic.Technology ? this.props.Basic.Technology : this.state.selectedTechnologies}//{this.state.selectedTechnologies}
                                             
                                         />
-                                        <span style={{display: `${this.state.display}`}}
+                                        <span style={{display: `${this.state.display}`}}  
                                             className={styles.errors}>Technology is required</span>
                                     </div>
-                                    <div className='ms-Grid-col ms-u-sm2 block'>
+                                    <div className='ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg2 block'>
                                         <label>Company Email *:</label>
                                     </div>
-                                    <div className="ms-Grid-col ms-u-sm4 block">
-                                        <Control.text model=".CompanyEmail" id='.CompanyEmail' className={styles.marginb} component={TextField}
+                                    <div className="ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg4 block">
+                                        <Control.text model=".CompanyEmail" id='.CompanyEmail' className={styles.marginb} disabled={this.state.isDisableUser} component={TextField}
                                             validators={{
                                                 requiredEmail: (val) => val && val.length,
                                                 isEmail: (val) =>val && (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(val) || val.length == 0) // ES6 property shorthand
@@ -248,7 +260,7 @@ class BasicDetail extends React.Component<any, IButtonState>{
                                     </div>
 
                                     <DefaultButton id="DefaultSubmit" primary={true} text={"Submit"} type="submit"
-                                        disabled={!this.state.isDisable} className={styles.submitbutton} />
+                                        disabled={!this.state.isDisable}  className={styles.submitbutton} />
                                 </Form>
                             </div>
                         </div>
@@ -265,42 +277,42 @@ class BasicDetail extends React.Component<any, IButtonState>{
                         <div className={styles.container}>
                             <div className={`ms-Grid-row ${styles.row}`}>{/* ms-fontColor-white  */}
                                 <Form model="Basic" onSubmit={(val) => this.handleSubmit(val)}  >
-                                    <div className='ms-Grid-col ms-u-sm12 block'>
-                                        <div className='ms-Grid-col ms-u-sm2 block'>
+                                     <div className='ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg2 block'>
                                             <label>Employee Code:</label>
                                         </div>
-                                        <div className="ms-Grid-col ms-u-sm4 block">
+                                        <div className="ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg4  block">
                                             <Control.text model=".EmployeeCode" id='.EmployeeCode' component={TextField} disabled={true} className={styles.marginb}
                                                 validators={{ requiredEmployeeCode: (val) => val && val.length }} />
                                         </div>
-                                    </div>
-                                    <div className='ms-Grid-col ms-u-sm2 block'>
+                           
+                                    <div className='ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg2 block'>
                                         <label>First Name *:</label>
                                     </div>
-                                    <div className="ms-Grid-col ms-u-sm4 block">
-                                        <Control.text model=".FirstName" id='.FirstName' component={TextField} className={styles.marginb}
+                                    <div className="ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg4 block">
+                                        <Control.text model=".FirstName" id='.FirstName' component={TextField} className={styles.marginb} disabled={this.state.isDisableUser}
                                             validators={{ requiredFirstName: (val) => val && val.length }} />
                                         <Errors
                                             className={styles.errors}
                                             show="touched"
-                                            model=".FirstName" messages={{ requiredFirstName: 'FirstName is requried.' }} />
+                                            model=".FirstName" messages={{ requiredFirstName: 'First Name is requried.' }} />
                                     </div>
-                                    <div className='ms-Grid-col ms-u-sm2 block'>
+                                    <div className="clearfix"></div>
+                                    <div className='ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg2 block'>
                                         <label>Last Name *:</label>
                                     </div>
-                                    <div className="ms-Grid-col ms-u-sm4 block">
-                                        <Control.text model=".LastName" id='.LastName' component={TextField} className={styles.marginb}
+                                    <div className="ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg4 block">
+                                        <Control.text model=".LastName" id='.LastName' component={TextField} className={styles.marginb} disabled={this.state.isDisableUser}
                                             validators={{ requiredLastName: (val) => val && val.length }} />
                                         <Errors
                                             className={styles.errors}
                                             show="touched"
-                                            model=".LastName" messages={{ requiredLastName: 'LastName is requried.' }} />
+                                            model=".LastName" messages={{ requiredLastName: 'Last Name is requried.' }} />
                                     </div>
-                                    <div className='ms-Grid-col ms-u-sm2 block'>
+                                    <div className='ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg2 block'>
                                         <label>Date Of Joining *:</label>
                                     </div>
-                                    <div className="ms-Grid-col ms-u-sm4 block">
-                                        <Control model='.DateofJoining' id='.DateofJoining' component={DatePicker} className={styles.marginb}
+                                    <div className="ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg4 block">
+                                        <Control model='.DateofJoining' id='.DateofJoining' component={DatePicker} className={styles.marginb} disabled={this.state.isDisableUser}
                                             mapProps={{
                                                 value: (props) => { return props.viewValue; },
                                                 onSelectDate: (props) => { return props.onChange; }
@@ -314,15 +326,16 @@ class BasicDetail extends React.Component<any, IButtonState>{
                                             show="touched"
                                             model=".DateofJoining"
                                             messages={{
-                                                requiredDateOfBirth: 'Date can not be future date.'
+                                                requiredDateOfBirth: 'Date can not be future dated'
                                             }}
                                         ></Errors>
                                     </div>
-                                    <div className='ms-Grid-col ms-u-sm2 block'>
+                                    <div className="clearfix"></div>
+                                    <div className='ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg2 block'>
                                         <label>Designation *:</label>
                                     </div>
-                                    <div className="ms-Grid-col ms-u-sm4 block">
-                                        <Control.select model=".Designation" id=".Designation" className={styles.dropdowncustom} validators={{
+                                    <div className="ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg4 block">
+                                        <Control.select model=".Designation" id=".Designation" className={styles.dropdowncustom} disabled={this.state.isDisableUser} validators={{
                                             requiredDesignationStatus: (val) => val && val != "--Select--"
                                         }} >
                                             <option>--Select--</option>
@@ -337,10 +350,10 @@ class BasicDetail extends React.Component<any, IButtonState>{
                                             }}
                                         />
                                     </div>
-                                    <div className='ms-Grid-col ms-u-sm2 block'>
+                                     <div className='ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg2 block'>
                                         <label>Technology *:</label>
                                     </div>
-                                    <div className="ms-Grid-col ms-u-sm4 block">
+                                    <div className="ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg4 block">
                                         <ListItemPicker listId='6fd1826b-625e-4288-8e10-df480fb0d17d'
                                             columnInternalName='Title'
                                             keyColumnInternalName='Id'
@@ -348,19 +361,21 @@ class BasicDetail extends React.Component<any, IButtonState>{
                                             onSelectedItem={this.onSelectedItem}
 
                                             context={this.props.context}
+                                            disabled={this.state.isDisableUser}
                                             suggestionsHeaderText="Please select Technology"
                                             defaultSelectedItems={this.props.Basic.Technology ? this.props.Basic.Technology : this.state.selectedTechnologies}//{this.state.selectedTechnologies}
                                         />
                                       <span style={{display: `${this.state.display}`}}
                                             className={styles.errors}>Technology is required</span>
                                     </div>
-                                    <div className='ms-Grid-col ms-u-sm2 block'>
+                                    <div className="clearfix"></div>
+                                    <div className='ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg2 block'>
                                         <label>Company Email *:</label>
                                     </div>
-                                    <div className="ms-Grid-col ms-u-sm4 block">
+                                    <div className="ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg4 block">
                                         <Control.text
                                             model=".CompanyEmail"
-                                            id='.CompanyEmail' className={styles.marginb} component={TextField} required
+                                            id='.CompanyEmail' className={styles.marginb} disabled={this.state.isDisableUser} component={TextField} 
                                             validators={{
                                                 requiredEmail: (val) => val && val.length,
                                                 isEmail: (val) => (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(val) || val.length == 0) // ES6 property shorthand
