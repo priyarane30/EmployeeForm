@@ -297,7 +297,7 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                   </table>
                 </div>
                 </div>
-                <div className="childdetail-sec">
+                <div className={styles.childdetailsec}>
                 <div className="table-responsive">
                   <table style={{ width: "100%" }}>
                     <tr>

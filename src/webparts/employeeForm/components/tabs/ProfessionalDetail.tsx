@@ -239,7 +239,7 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                     <span className={styles.errors}> *Please mention professional details from latest organization</span>
                     <div className={styles.childdetailsec}>
                     <div className="table-responsive">
-                            <table className="grid-visa" style={{ width: "160%" }}>
+                            <table className="grid-visa">
                                 <tr>
                                     <th colSpan={8} style={{ textAlign: "left" }}><span>Organization details  <button className={styles.addbtn} type="button" disabled={this.state.isDisableUser} onClick={() => this.handleRowAdd("ProfessionalDetail")}>+</button></span></th>
 
@@ -374,7 +374,7 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                                     />
                                                 </td>
                                                 <td style={{ width: "25px" }}> {/* Action */}
-                                                    <button className={styles.removebtn} type="button" disabled={this.state.isDisableUser} onClick={() => this.handleRowRemove("organizationDetails", i)}   style={{ marginTop: "40px" }}>-</button>
+                                                    <button className={styles.removebtn} type="button" disabled={this.state.isDisableUser} onClick={() => this.handleRowRemove("organizationDetails", i)}   style={{ marginTop: "52px" }}>-</button>
                                                 </td>
                                             </tr>
                                         );

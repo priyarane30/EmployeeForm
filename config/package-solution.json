@@ -3,7 +3,7 @@
   "solution": {
     "name": "emp-form-client-side-solution",
     "id": "80e69371-6d20-497b-b005-5743846c2037",
-    "version": "1.0.0.3",
+    "version": "1.0.0.11",
     "includeClientSideAssets": true,
     "isDomainIsolated": false
   },

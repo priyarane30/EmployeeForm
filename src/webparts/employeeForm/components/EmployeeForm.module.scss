@@ -148,7 +148,9 @@
     height: 32px;
     border: none;
     float: right;
-    margin-right: 9px;
+    margin-right:0;
+    margin-top: 48px;
+    //margin-right: 9px;
   }
   .marginb input.ms-TextField-field {
     width: 280px;
@@ -218,9 +220,16 @@
   .orgdetailslabel{
     margin-bottom: 5px;
     width: 100%;
-    min-height: 35px;
-    display: block;
+    //min-height: 43px;
+    display: table-cell;
     margin-top: 15px;
+    vertical-align: middle;
+    height: 43px;
   }
+  table tr td label{
+    white-space: nowrap;
+    vertical-align: top;
+    display: block;
+    }
 
 }

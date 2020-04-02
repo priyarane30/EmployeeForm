@@ -1,5 +1,5 @@
 export const AppConstats = {
-    SITEURL: 'https://synoverge.sharepoint.com/sites/leadership-connection/',
+    SITEURL: 'https://synoverge.sharepoint.com/', //sites/leadership-connection/
 
 };
 

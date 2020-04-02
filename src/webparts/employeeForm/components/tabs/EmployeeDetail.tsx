@@ -407,7 +407,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                     <Control.checkbox model='.IsPassAvail' disabled={this.state.isDisableUser} />
                                 </div>
                                 {this.isPassportAvailable(this.props.Employee)}
-                                <div className="ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg2 block"><DefaultButton id="DefaultSubmit" primary={true} text={"Submit"} type="submit"
+                                <div className="ms-Grid-col ms-u-sm12 ms-u-md12 ms-u-lg12 block"><DefaultButton id="DefaultSubmit" primary={true} text={"Submit"} type="submit"
                                    disabled={this.state.buttonDisabled} className={styles.submitbutton} /></div>
                             </div>
                         </Form>
@@ -509,8 +509,8 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                             return (
                                 <tr>
                                     <td>
-                                        <label>Valid Visa</label>
-                                        <Control.checkbox model={`Employee.visaDetailItems[${i}].ValidVisa`} disabled={this.state.isDisableUser} id={visa.ValidVisa} ></Control.checkbox>
+                                        <label style={{ display: "block" }}>Valid Visa</label>
+                                        <Control.checkbox model={`Employee.visaDetailItems[${i}].ValidVisa`} style={{ height: "30px" }} disabled={this.state.isDisableUser} id={visa.ValidVisa} ></Control.checkbox>
                                     </td>
                                     <td>
                                         <label>Visa Of Country </label>
@@ -573,8 +573,8 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         </Control>
                                     </td>
                                     <td>
-                                        <label>Is Travelled</label>
-                                        <Control.checkbox model={`Employee.visaDetailItems[${i}].IsTravelled`} disabled={this.state.isDisableUser} id={`Employee.visaDetailItems[${i}].IsTravelled`} />
+                                        <label style={{ display: "block" }}>Is Travelled</label>
+                                        <Control.checkbox model={`Employee.visaDetailItems[${i}].IsTravelled`} style={{height: "30px"}}  disabled={this.state.isDisableUser} id={`Employee.visaDetailItems[${i}].IsTravelled`} />
                                     </td>
                                     <td>
                                         <button type="button" style={{ marginTop: "4px" }} disabled={this.state.isDisableUser} onClick={() => this.handleRowRemove("visaDetailItems", i)} className={styles.removebtn}>-</button>
