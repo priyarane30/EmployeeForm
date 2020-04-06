@@ -17,7 +17,7 @@ export const SpinnerComponent: React.StatelessComponent = () => {
     return (
         <Stack tokens={tokens.sectionStack} className={styles.spinner}>
             <Stack {...rowProps} tokens={tokens.spinnerStack}>
-                <Spinner size={SpinnerSize.large} label="Wait, wait..." ariaLive="assertive" labelPosition="bottom" />
+                <Spinner size={SpinnerSize.large} label="Wait..." ariaLive="assertive" labelPosition="bottom" />
             </Stack>
         </Stack>
     );

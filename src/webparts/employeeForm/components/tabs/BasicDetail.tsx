@@ -71,19 +71,33 @@ class BasicDetail extends React.Component<any, IButtonState>{
         }
         else {
             //New Form 
-            newEmpReqServiceObj.AddBasicDetail(formValues, technologydata, AdLoginName).then(resp => {
+          await  newEmpReqServiceObj.AddBasicDetail(formValues, technologydata, AdLoginName).then(resp => {
                 let empIdState = { EmpListID: resp } as IEmpListIdState;
                 this.props.setEmpId(empIdState);
                 this.setState({ isDisable: false });
-                alert("Basic details saved successfully");
-                this.props.handleSpinner(true);
-                this.props.handleTabClick();
+                this.getpreviousrecord(empIdState.EmpListID);
+              //  alert("Basic details saved successfully");
+              //  this.props.handleSpinner(true);
+              //  this.props.handleTabClick();
             }).catch(() => {
                 alert("Sorry. Error while adding employee...");
             });
         }
     }
-
+    public async getpreviousrecord(empListId){
+        let newEmpReqServiceObj: BasicService = new BasicService();
+        await newEmpReqServiceObj.GetEmpBasicDataById(empListId-1).then(resp => {
+            newEmpReqServiceObj.UpdateEmployeeCode((Number(resp.EmployeeCode)+1).toString(),empListId).then(resp => {
+                alert("Basic details saved successfully");
+                this.props.handleSpinner(true);
+                this.props.handleTabClick();
+             }).catch(() => {
+                alert("Sorry. Error while geting previous employee...");
+            });
+        }).catch(() => {
+            alert("Sorry. Error while geting previous employee...");
+        });
+    }
     public async componentDidMount() {
         const CommonState: ICommonState = { CurrentForm: "Employee" };
         this.props.setTabName(CommonState);

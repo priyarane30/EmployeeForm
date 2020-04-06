@@ -99,7 +99,19 @@ export default class BasicFormService implements IBasicFormService {
             console.log(error);
         });
     }
-
+    public UpdateEmployeeCode(employeeCode, empListId): Promise<any> {
+        let web = new Web(AppConstats.SITEURL);
+      
+        return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empListId).update({
+            EmployeeCode: employeeCode
+        }).then((result: ItemAddResult) => {
+            let mainListID = result.data.Id;
+            return mainListID;
+        }).catch(error => {
+            console.log("error while updating Basic details");
+            console.log(error);
+        });
+    }
     public GetCurrentUserGroups(email): Promise<any> {
         let web = new Web(AppConstats.SITEURL);
         let groupList = [];
