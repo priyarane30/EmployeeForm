@@ -108,7 +108,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                     ></Errors>
                                 </div>
                                 <div className='ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg2 block'>
-                                    <label>Date Of Birth *:</label>
+                                    <label>Date Of Birth *:</label> 
                                 </div>
                                 <div className="ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg4 block">
                                     <Control model='.DateOfBirth' component={DatePicker} className={styles.marginb} disabled={this.state.isDisableUser}
@@ -350,10 +350,70 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                     ></Errors>
                                 </div>
                                 <div className='ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg2 block'>
+                                    <label>Current City*:</label>
+                                </div>
+                                <div className="ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg4 block">
+                                    <Control.text component={TextField} model='.CurrentCity' id='.CurrentCity'
+                                        className={styles.marginb} disabled={this.state.isDisableUser}
+                                        validators={{
+                                            requiredCurrentCity: (val) => val && val.length,
+                                        }}
+                                    />
+                                    <Errors
+                                        className={styles.errors}
+                                        show="touched"
+                                        model=".CurrentCity"
+                                        messages={{
+                                            requiredCurrentCity: 'Current city is Required.'
+                                        }}
+                                    ></Errors>
+                                </div>
+                                <div className="clearfix"></div>
+                                <div className='ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg2 block'>
+                                    <label>Current State*:</label>
+                                </div>
+                                <div className="ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg4 block">
+                                    <Control.text component={TextField} model='.CurrentState' id='.CurrentState'
+                                        className={styles.marginb} disabled={this.state.isDisableUser}
+                                        validators={{
+                                            requiredCurrentState: (val) => val && val.length,
+                                        }}
+                                    />
+                                    <Errors
+                                        className={styles.errors}
+                                        show="touched"
+                                        model=".CurrentState"
+                                        messages={{
+                                            requiredCurrentState: 'Current state is Required.'
+                                        }}
+                                    ></Errors>
+                                </div>
+                                <div className='ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg2 block'>
+                                    <label>Accomodation Type*:</label>
+                                </div>
+                                <div className="ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg4 block">
+                                <Control.select style={{ height: "30px" }} model='.AccomodationType' id='.AccomodationType' disabled={this.state.isDisableUser}
+                                        validators={{ requiredAccomodationType: (val) => val && val != "--Select--" }}>
+                                        <option>--Select--</option>
+                                        <option value="Paying Guest">Paying Guest</option>
+                                        <option value="Tenant">Tenant</option>
+                                        <option value="Owned">Owned</option>
+                                        </Control.select>
+                                    <Errors
+                                        className={styles.errors}
+                                        show="touched"
+                                        model='.AccomodationType'
+                                        messages={{
+                                            requiredAccomodationType: 'Accomodation Type is Required.'
+                                        }}
+                                    ></Errors>
+                                </div>
+                                <div className="clearfix"></div>
+                                <div className='ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg2 block'>
                                     <label>Is Permanent Address Same as Current Address?</label>
                                 </div>
                                 <div className="ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg4 block">
-                                    <Control.checkbox model=".IsSameAsCurrAddress" disabled={this.state.isDisableUser}/>
+                                    <Control.checkbox model=".IsSameAsCurrAddress" disabled={this.state.isDisableUser} />
                                 </div>
                                 <div className="clearfix"></div>
                                 <div className={`ms-Grid-col ms-u-sm12 block ${styles.padding0}`}>   {this.isSameAsCurrentAdress(this.props.Employee)}</div>
@@ -364,8 +424,8 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                     <Control.text model='.AadharNo' id='.AadharNo'
                                         component={TextField} className={styles.marginb} disabled={this.state.isDisableUser}
                                         validators={{
-                                            requiredAadharNo: (val) =>val && val.length && val.length == 12,
-                                            isNumber: (val) => (!isNaN(Number(val)) )
+                                            requiredAadharNo: (val) => val && val.length && val.length == 12,
+                                            isNumber: (val) => (!isNaN(Number(val)))
                                         }}
                                     />
                                     <Errors
@@ -386,7 +446,7 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                                         component={TextField} className={styles.marginb} disabled={this.state.isDisableUser}
                                         validators={{
                                             requiredPanNo: (val) =>  val && val.length ,
-                                            panFormat:(val)=>(/[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}/.test(val)   )
+                                            panFormat:(val)=>(/[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}/.test(val)&& val.length<11 )
                                         }}
                                     />
                                     <Errors
@@ -434,11 +494,49 @@ class EmployeeDetail extends React.Component<any, buttonStatus> {
                         />
                         <Errors
                             className={styles.errors}
-                            
                             show="touched"
                             model=".PermanentAddress"
                             messages={{
                                 requiredPermanentAddress: 'Permanent Address is Required.'
+                            }}
+                        ></Errors>
+                    </div>
+                    <div className='ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg2 block'>
+                        <label>Permanent City *</label>
+                    </div>
+                    <div className="ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg4 block">
+                        <Control.text  component={TextField} model='.PermanentCity' id='.PermanentCity'
+                            className={styles.marginb} disabled={this.state.isDisableUser}
+                            validators={{
+                                requiredPermanentCity: (val) => val && val.length,
+                            }}
+                        />
+                        <Errors
+                            className={styles.errors}
+                            show="touched"
+                            model=".PermanentCity"
+                            messages={{
+                                requiredPermanentCity: 'Permanent City is Required.'
+                            }}
+                        ></Errors>
+                    </div>
+                    <div className="clearfix"></div>
+                    <div className='ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg2 block'>
+                        <label>Permanent State *</label>
+                    </div>
+                    <div className="ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg4 block">
+                        <Control.text component={TextField} model='.PermanentState' id='.PermanentState'
+                            className={styles.marginb} disabled={this.state.isDisableUser}
+                            validators={{
+                                requiredPermanentState: (val) => val && val.length,
+                            }}
+                        />
+                        <Errors
+                            className={styles.errors}
+                            show="touched"
+                            model=".PermanentState"
+                            messages={{
+                                requiredPermanentState: 'Permanent State is Required.'
                             }}
                         ></Errors>
                     </div>

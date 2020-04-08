@@ -75,19 +75,17 @@ class BasicDetail extends React.Component<any, IButtonState>{
                 let empIdState = { EmpListID: resp } as IEmpListIdState;
                 this.props.setEmpId(empIdState);
                 this.setState({ isDisable: false });
-                this.getpreviousrecord(empIdState.EmpListID);
-              //  alert("Basic details saved successfully");
-              //  this.props.handleSpinner(true);
-              //  this.props.handleTabClick();
+                this.getEmployeecode(empIdState.EmpListID);
             }).catch(() => {
                 alert("Sorry. Error while adding employee...");
             });
         }
     }
-    public async getpreviousrecord(empListId){
+    public async getEmployeecode(empListId){
         let newEmpReqServiceObj: BasicService = new BasicService();
-        await newEmpReqServiceObj.GetEmpBasicDataById(empListId-1).then(resp => {
-            newEmpReqServiceObj.UpdateEmployeeCode((Number(resp.EmployeeCode)+1).toString(),empListId).then(resp => {
+        await newEmpReqServiceObj.GetLargestEmployeeCode().then(Employeecoderesp => {
+            var employeeCode =Number(Employeecoderesp)+1
+            newEmpReqServiceObj.UpdateEmployeeCode((employeeCode.toString().length<4?"0"+employeeCode:employeeCode).toString(),empListId).then(resp => {
                 alert("Basic details saved successfully");
                 this.props.handleSpinner(true);
                 this.props.handleTabClick();

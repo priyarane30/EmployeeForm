@@ -135,6 +135,19 @@ export default class BasicFormService implements IBasicFormService {
                 console.log(error);
             });
     }
+    public GetLargestEmployeeCode(): Promise<any> {
+        var url = AppConstats.SITEURL + "/_api/web/lists/GetByTitle('EmployeeContact')/items?$Select=EmployeeCode&$orderby=EmployeeCode desc&$filter=EmployeeCode ne 459 and EmployeeCode ne 2001 and EmployeeCode ne 2002 and EmployeeCode ne 2003 and EmployeeCode ne 2005&$Top=1";
+        return Axios.get(url)
+            .then(res => {
+                if (res.data != null && res.data != undefined && res.data.ID != 0) {
+                    return res.data.value[0].EmployeeCode;
+                }
+            }).catch(error => {
+                console.log('error while getEmployee Code');
+                console.log(error);
+            });
+    }
+   
 }
 
 

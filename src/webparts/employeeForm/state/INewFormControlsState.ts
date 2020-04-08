@@ -15,8 +15,13 @@ export interface INewFormState {
     EmergencyNo: string;
     RelationWithEmergencyNo: string;
     CurrentAddress: string;
+    CurrentCity:string;
+    CurrentState:string;
+    AccomodationType:string;
     IsSameAsCurrAddress: boolean;
     PermanentAddress: string;
+    PermanentState:string;
+    PermanentCity:string;
     PanNo: string;
     AadharNo: string;
     IsPassAvail: boolean;

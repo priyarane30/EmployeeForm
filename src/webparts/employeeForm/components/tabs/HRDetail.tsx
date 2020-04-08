@@ -16,6 +16,7 @@ export interface IControls {
     Manager: any;
     buttonDisabled: boolean;
     display:string;
+    userImageAdded:boolean;
 }
 export interface IPeoplePickerControl {
     id: string;
@@ -36,8 +37,11 @@ class HRDetail extends React.Component<any, IControls> {
         this.state = {
             Manager: [],
             buttonDisabled: false,
-            display:"none"
+            display:"none",
+            userImageAdded:false
         };
+        this.handleEmployeeImageChange =this.handleEmployeeImageChange.bind(this);
+        this.employeeImageSave = this.employeeImageSave.bind(this);
     }
     public async componentDidMount() {
         // <DatePicker maxDate={new Date()}>
@@ -67,6 +71,9 @@ class HRDetail extends React.Component<any, IControls> {
         this.setState({ buttonDisabled: true });
         let newEmpReqServiceObj: NewEmployeeService = new NewEmployeeService();
         await newEmpReqServiceObj.HrAddNewEmployee(empHrData, managerdata, empListId);
+        if(this.state.userImageAdded){
+            await this.employeeImageSave(empListId)
+        }
         this.setState({ buttonDisabled: false });
         this.props.handleSpinner(true);
         //EndSave The Data
@@ -224,7 +231,7 @@ class HRDetail extends React.Component<any, IControls> {
                                 <div className={`ms-Grid-row ${styles.rowhr}`}>
                                     {/* Date of Resignation*/}
                                     <div className='ms-Grid-col ms-u-sm12 ms-u-md2 block'>
-                                        <label>Resignation Date:</label>
+                                        <label>Resignation :</label>
                                     </div>
                                     <div className='ms-Grid-col ms-u-sm12 ms-u-md4 block'>
                                         <Control model='HR.ResigntionDate' id='HR.ResigntionDate' component={DatePicker} placeholder='dd-MM-yyyy' className={styles.marginb}
@@ -236,7 +243,7 @@ class HRDetail extends React.Component<any, IControls> {
                                                 requiredResignation: (val) => (val  && (new Date()>new Date(val))),
                                             }}                                           
                                             ></Control>
-                                             <Errors
+                                             <Errors 
                                             className={styles.errors}
                                             show="touched"
                                             model="HR.ResigntionDate"
@@ -254,6 +261,12 @@ class HRDetail extends React.Component<any, IControls> {
                                     </div>
                                 </div>
                                 <div className={`ms-Grid-row ${styles.rowhr}`}>
+                                <div className='ms-Grid-col ms-u-sm12 ms-u-md2 block'>
+                                        <label>Employee Image:</label>
+                                    </div>
+                                    <div className='ms-Grid-col ms-u-sm12 ms-u-md4 block'>
+                                    <input type="file" name="myFile" id="UploadedFile" accept="application/msword,application/pdf, image/*" onChange={(e) => this.handleEmployeeImageChange(e.target.files)}></input>
+                                    </div>
                                     <div className="ms-Grid-col ms-u-sm12 block">
                                         <DefaultButton id="DefaultSubmit" primary={true} text={"Submit"} type="submit"
                                             disabled={this.state.buttonDisabled} className={styles.submitbutton} />
@@ -271,6 +284,29 @@ class HRDetail extends React.Component<any, IControls> {
         this.setState({ Manager: array[0].Email });
 
     }
+    private employeeImageSave(employeeID) {
+        //get file from HTML
+        let myfile = (document.querySelector("#UploadedFile") as HTMLInputElement).files[0];
+        if (myfile.size <= 10485760) {
+            //add file to the document library
+            pnp.sp.web.lists.getByTitle('EmployeeContact').items.getById(employeeID.EmpListID).attachmentFiles.add(myfile.name, myfile);
+            // pnp.sp.web.getFolderByServerRelativeUrl("/Employee%20Images").files.add(myfile.name, myfile, true).then(f => {
+            //     debugger;
+            //     console.log("File Uploaded");
+            //     f.file.getItem().then(item => {
+            //         //update file properties
+            //         item.update({
+            //             EmployeeListID : employeeID.EmpListID
+            //         }).then()
+            //     });
+           // });
+        }
+
+    }
+private handleEmployeeImageChange(selectorFiles: FileList){
+        this.setState({userImageAdded : true})
+    }
+
     public getUserId(email: string): Promise<any> {
         return pnp.sp.site.rootWeb.ensureUser(email).
             then(result => {
@@ -278,6 +314,7 @@ class HRDetail extends React.Component<any, IControls> {
             });
     }
 }
+
 const mapStateToProps = (state) => {
     return state;
 };

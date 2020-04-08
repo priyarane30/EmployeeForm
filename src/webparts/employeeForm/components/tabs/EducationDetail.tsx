@@ -71,7 +71,7 @@ class EducationDetail extends React.Component<any, buttonStatus> {
 
     let eduData = {} as IEducationDetailState;
     eduData = formValues;
-    if (eduData.certificationDetails.length == 0 && eduData.educationDetails.length == 0) {
+    if (eduData.educationDetails.length == 0) {
       alert("Please add Education Details");
       this.handleRowAdd("educationDetails");
     }
@@ -162,6 +162,7 @@ class EducationDetail extends React.Component<any, buttonStatus> {
                               disabled={this.state.isDisableUser}
                                 validators={{ requiredQualification: (val) => val && val != "--Select--" }}>
                                 <option>--Select--</option>
+                                <option value="Post-Graduation3">Post Graduation</option>
                                 <option value="Graduation">Graduation</option>
                                 <option value="Diploma">Diploma</option>
                                 <option value="12th Education">12th Education</option>

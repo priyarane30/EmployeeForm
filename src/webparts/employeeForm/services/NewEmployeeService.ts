@@ -93,6 +93,9 @@ export default class NewEmployeeService implements INewEmpRequestService {
                                 newFormControlsState.EmergencyNo = res.EmergencyContactNo;
                                 newFormControlsState.RelationWithEmergencyNo = res.RelationWithEmergencyNo;
                                 newFormControlsState.CurrentAddress = res.CurrentAddress;
+                                newFormControlsState.CurrentCity = res.CurrentCity;
+                                newFormControlsState.CurrentState=res.CurrentState;
+                                newFormControlsState.AccomodationType=res.AccomodationType;
                                 newFormControlsState.IsSameAsCurrAddress = (res.IsSameAsCurrAddress == null || res.IsSameAsCurrAddress == false) ? false : true;
                                 newFormControlsState.PermanentAddress = res.PermanentAddress;
                                 newFormControlsState.PanNo =(res.PanNo!=null)?res.PanNo:"";;
@@ -157,8 +160,13 @@ export default class NewEmployeeService implements INewEmpRequestService {
             EmergencyContactNo: empData.EmergencyNo,
             RelationWithEmergencyNo: empData.RelationWithEmergencyNo,
             CurrentAddress: empData.CurrentAddress,
+            CurrentCity:empData.CurrentCity,
+            CurrentState:empData.CurrentState,
+            AccomodationType:empData.AccomodationType,
             IsSameAsCurrAddress: empData.IsSameAsCurrAddress,
             PermanentAddress: (empData.IsSameAsCurrAddress == true) ? empData.CurrentAddress : empData.PermanentAddress,
+            PermanentState:(empData.IsSameAsCurrAddress == true) ? empData.CurrentState : empData.PermanentState,
+            PermanentCity:(empData.IsSameAsCurrAddress == true) ? empData.CurrentCity : empData.PermanentCity,
             PanNo: empData.PanNo,
             AadhaarCardNo: empData.AadharNo,
             Passport: (empData.IsPassAvail == true) ? "Yes" : "No",
@@ -523,7 +531,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                 });
             }
             else if (detailRow.technologyId > 0) {
-                web.lists.getByTitle(ListNames.EMPLOYEETECHNICALSKILL).items.getById(detailRow.organizationId).inBatch(batch).update({
+                web.lists.getByTitle(ListNames.EMPLOYEETECHNICALSKILL).items.getById(detailRow.technologyId).inBatch(batch).update({
                     Technology: detailRow.Technology,
                     SinceWhen: detailRow.SinceWhen,
                     Expertise: detailRow.Expertise,

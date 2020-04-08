@@ -1,5 +1,6 @@
 import { INewFormState } from '../state/INewFormControlsState';
 import { ActionTypes, AppConstats, ListNames } from '../AppConstants';
+import { ActionButton } from 'office-ui-fabric-react';
 //Initialise state of Employee Detail
 export const newEmpFormControlsInitialState: INewFormState = {
     PersonalEmail: '',
@@ -16,8 +17,13 @@ export const newEmpFormControlsInitialState: INewFormState = {
     EmergencyNo: '',
     RelationWithEmergencyNo: '',
     CurrentAddress: '',
+    CurrentCity:'',
+    CurrentState:'',
+    AccomodationType:'',
     IsSameAsCurrAddress: false,
     PermanentAddress: '',
+    PermanentCity:'',
+    PermanentState:'',
     PanNo: '',
     AadharNo: '',
     IsPassAvail: false,
@@ -59,8 +65,13 @@ export const NewEmpRequestReducer = (state: INewFormState = null, action) => {
                 EmergencyNo: action.payload.EmergencyNo,
                 RelationWithEmergencyNo: action.payload.RelationWithEmergencyNo,
                 CurrentAddress: action.payload.CurrentAddress,
+                CurrentState:action.payload.CurrentState,
+                CurrentCity:action.payload.CurrentCity,
+                AccomodationType:action.payload.AccomodationType,
                 IsSameAsCurrAddress: action.payload.IsSameAsCurrAddress,
                 PermanentAddress: action.payload.PermanentAddress,
+                PermanentState:action.payload.PermanentState,
+                PermanentCity:action.payload.PermanentCity,
                 PanNo: action.payload.PanNo,
                 AadharNo: action.payload.AadharNo,
                 IsPassAvail: action.payload.IsPassAvail,
@@ -116,8 +127,13 @@ export const NewEmpRequestReducer = (state: INewFormState = null, action) => {
                 EmergencyNo: action.payload.EmergencyNo,
                 RelationWithEmergencyNo: action.payload.RelationWithEmergencyNo,
                 CurrentAddress: action.payload.CurrentAddress,
+                CurrentCity:action.payload.CurrentCity,
+                CurrentState:action.payload.CurrentState,
+                AccomodationType:action.payload.AccomodationType,
                 IsSameAsCurrAddress: action.payload.IsSameAsCurrAddress,
                 PermanentAddress: action.payload.PermanentAddress,
+                PermanentCity:action.payload.PermanentCity,
+                PermanentState:action.payload.PermanentState,
                 PanNo: action.payload.PanNo,
                 AadharNo: action.payload.AadharNo,
                 IsPassAvail: action.payload.IsPassAvail,
