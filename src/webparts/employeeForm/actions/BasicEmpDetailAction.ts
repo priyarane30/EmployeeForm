@@ -9,7 +9,7 @@ export function GetEmpBasicData(empListId) {
         let newBasicFormServiceObj: BasicFormService = new BasicFormService();
 
         if (empListId > 0) {
-            
+            debugger;
              newBasicFormServiceObj.GetEmpBasicDataById(empListId).then((resp: IBasicDetailState) => {
                 basicFormState = resp;
                 dispatch({
@@ -19,7 +19,7 @@ export function GetEmpBasicData(empListId) {
             });
         }
         else {
-            
+            debugger;
             newBasicFormServiceObj.GetEmpBasicData().then((resp: IBasicDetailState) => {
                 basicFormState = resp;
                 dispatch({
@@ -45,9 +45,10 @@ export async function GetEmpListIdByUserEmail(currUserEmail) {
     let empIdState = { EmpListID: 0 } as IEmpListIdState;
     await newEmpServiceObj.GetEmpIdByUserEmail(currUserEmail).then((resp) => {
         if (resp != null && resp != undefined && resp != 0) {
+            debugger;
             empIdState.EmpListID = resp;
         }
-       
+       debugger;
     });
     return empIdState;
 }

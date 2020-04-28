@@ -76,7 +76,7 @@ class PayrollDetail extends React.Component<any, IState> {
                 </div>
                 {/* ESIDispensary*/}
                 <div className="ms-Grid-col  ms-u-sm12 ms-u-md2 block">
-                  <label>ESIDispensary:</label>
+                  <label>ESI Dispensary:</label>
                 </div>
                 <div className="ms-Grid-col ms-u-sm12 ms-u-md4 block">
                   <Control.text className={styles.marginb}

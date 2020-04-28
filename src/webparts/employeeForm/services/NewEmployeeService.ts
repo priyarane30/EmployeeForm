@@ -79,7 +79,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                         }else{
                             return this.getDataFromListUsingID(ListNames.EMPLOYEECONTACT, EmpListID).then(res => {
                                 newFormControlsState.AadharNo = (res.AadhaarCardNo!=null)?res.AadhaarCardNo:"";
-                                newFormControlsState.PersonalEmail = res.Email;
+                                newFormControlsState.PersonalEmail = res.PersonalEmail;
                                 newFormControlsState.Mobile = res.Mobile;
                                 newFormControlsState.DateOfBirth = new Date(res.DateOfBirth);
                                 newFormControlsState.Age = res.Age;
@@ -87,18 +87,31 @@ export default class NewEmployeeService implements INewEmpRequestService {
                                 newFormControlsState.FatherName = res.FatherName;
                                 newFormControlsState.MotherName = res.MotherName;
                                 newFormControlsState.MaritalStatus = res.MaritalStatus;
+                                newFormControlsState.MarraigeAnniversary= new Date(res.MarraigeAnniversary);
                                 newFormControlsState.SpouceDOB = new Date(res.SpouseDOB);
                                 newFormControlsState.SpouceName = res.SpouseName;
                                 newFormControlsState.SpouseOccupation = res.SpouseOccupation;
                                 newFormControlsState.EmergencyNo = res.EmergencyContactNo;
                                 newFormControlsState.RelationWithEmergencyNo = res.RelationWithEmergencyNo;
-                                newFormControlsState.CurrentAddress = res.CurrentAddress;
+                                newFormControlsState.CurrentResidentialNumber=res.CurrentResidentialNumber;
+                                newFormControlsState.CurrentResidentialName=res.CurrentResidentialName;
+                                newFormControlsState.CurrentRoadStreet=res.CurrentRoadStreet;
+                                newFormControlsState.CurrentLocalityArea=res.CurrentLocalityArea;
+                                newFormControlsState.CurrentLandmark=res.CurrentLandmark;
+                                newFormControlsState.CurrentPincode=res.CurrentPincode;
                                 newFormControlsState.CurrentCity = res.CurrentCity;
                                 newFormControlsState.CurrentState=res.CurrentState;
                                 newFormControlsState.AccomodationType=res.AccomodationType;
                                 newFormControlsState.IsSameAsCurrAddress = (res.IsSameAsCurrAddress == null || res.IsSameAsCurrAddress == false) ? false : true;
-                                newFormControlsState.PermanentAddress = res.PermanentAddress;
-                                newFormControlsState.PanNo =(res.PanNo!=null)?res.PanNo:"";;
+                                newFormControlsState.PermanentResidentialNumber=res.PermanentResidentialNumber;
+                                newFormControlsState.PermanentResidentialName=res.PermanentResidentialName;
+                                newFormControlsState.PermanentRoadStreet=res.PermanentRoadStreet;
+                                newFormControlsState.PermanentLocalityArea=res.PermanentLocalityArea;
+                                newFormControlsState.PermanentLandmark=res.PermanentLandmark;
+                                newFormControlsState.PermanentPincode=res.PermanentPincode;
+                                newFormControlsState.PermanentCity=res.PermanentCity;
+                                newFormControlsState.PermanentState=res.PermanentState;
+                                newFormControlsState.PanNo =(res.PanNo!=null)?res.PanNo:"";
                                 newFormControlsState.IsPassAvail = (res.Passport == "Yes") ? true : false;
                                 newFormControlsState.PassportValidity = new Date(res.PassportValidity);
                                 
@@ -152,25 +165,37 @@ export default class NewEmployeeService implements INewEmpRequestService {
             FatherName: empData.FatherName,
             MotherName: empData.MotherName,
             Mobile: empData.Mobile,
-            Email: empData.PersonalEmail,
+            PersonalEmail: empData.PersonalEmail,
             MaritalStatus: empData.MaritalStatus,
+            MarraigeAnniversary:empData.MarraigeAnniversary,
             SpouseName: empData.SpouceName,
             SpouseDOB: empData.SpouceDOB,
             SpouseOccupation: empData.SpouseOccupation,
             EmergencyContactNo: empData.EmergencyNo,
             RelationWithEmergencyNo: empData.RelationWithEmergencyNo,
-            CurrentAddress: empData.CurrentAddress,
+            CurrentResidentialNumber:empData.CurrentResidentialNumber,
+            CurrentResidentialName:empData.CurrentResidentialName,
+            CurrentRoadStreet:empData.CurrentRoadStreet,
+            CurrentLocalityArea:empData.CurrentLocalityArea,
+            CurrentLandmark:empData.CurrentLandmark,
+            CurrentPincode:empData.CurrentPincode,            
             CurrentCity:empData.CurrentCity,
             CurrentState:empData.CurrentState,
             AccomodationType:empData.AccomodationType,
             IsSameAsCurrAddress: empData.IsSameAsCurrAddress,
-            PermanentAddress: (empData.IsSameAsCurrAddress == true) ? empData.CurrentAddress : empData.PermanentAddress,
             PermanentState:(empData.IsSameAsCurrAddress == true) ? empData.CurrentState : empData.PermanentState,
             PermanentCity:(empData.IsSameAsCurrAddress == true) ? empData.CurrentCity : empData.PermanentCity,
+            PermanentResidentialNumber: (empData.IsSameAsCurrAddress == true) ?empData.CurrentResidentialNumber:empData.PermanentResidentialNumber,
+            PermanentResidentialName:(empData.IsSameAsCurrAddress == true) ? empData.CurrentResidentialName:empData.PermanentResidentialName,
+            PermanentRoadStreet: (empData.IsSameAsCurrAddress == true) ? empData.CurrentRoadStreet:empData.PermanentRoadStreet,
+            PermanentLocalityArea: (empData.IsSameAsCurrAddress == true) ?empData.CurrentLocalityArea:empData.PermanentLocalityArea,
+            PermanentLandmark: (empData.IsSameAsCurrAddress == true) ?empData.CurrentLandmark:empData.PermanentLandmark,
+            PermanentPincode: (empData.IsSameAsCurrAddress == true) ?empData.CurrentPincode:empData.PermanentPincode,
             PanNo: empData.PanNo,
             AadhaarCardNo: empData.AadharNo,
             Passport: (empData.IsPassAvail == true) ? "Yes" : "No",
             PassportNo: empData.PassportNo,
+            ModifiedSection:"Personal Details",
             PassportValidity: empData.PassportValidity
         }).then((result: ItemUpdateResult) => {
             // let web = new Web(AppConstats.SITEURL);
@@ -224,7 +249,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                 });
                 batch.execute().then(() => { }).catch(() => alert("Oops! Error occured in saving Visa Details"));
             }
-            alert("Employee details saved successfully");
+            alert("Employee details updated successfully");
         }).catch(error => {
             alert("Oops! Error while saving Employee details");
             console.log(error);
@@ -319,7 +344,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
             ResigntionDate: empReqData.ResigntionDate,
             EligibleforRehire: empReqData.EligibleforRehire,
         }).then((result: ItemAddResult) => {
-            alert("HR details saved successfully");
+            alert("HR details updated successfully");
 
         }).catch(error => {
             
@@ -334,6 +359,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
 
     //Get data from Master lists using getMultipleDataFromListUsingParentId
     public async saveEduDataInList(eduData: IEducationDetailState, empListId) {
+        this.updateModifiedSection("Education Details",empListId)
         await this.saveEducationDetails(eduData.educationDetails, empListId);
         await this.saveCertificationDetails(eduData.certificationDetails, empListId);
     }
@@ -462,18 +488,29 @@ export default class NewEmployeeService implements INewEmpRequestService {
     }
     // End get Professional Detail
     //Save Professional Details
-    public async saveProfessionalDetailInList(professionalDetailData: IProfessionalDetailState, EmpListID) {
-        await this.saveIsFresher(professionalDetailData, EmpListID);
+    public async saveProfessionalDetailInList(professionalDetailData: IProfessionalDetailState, EmpListID, isNewEntry) {
+       if (isNewEntry==false) {await this.saveIsFresher(professionalDetailData, EmpListID);}
+       this.updateModifiedSection("Professional Details",EmpListID)
         if (professionalDetailData.IsFresher == false)
             await this.saveOrgenizationDetail(professionalDetailData.organizationDetails, EmpListID);
         await this.saveTechnologyDetail(professionalDetailData.technologyDetails, EmpListID);
 
     }
+    public updateModifiedSection(sectionName,empListID){
+        let web = new Web(AppConstats.SITEURL);
+        return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empListID.EmpListID).update({
+            ModifiedSection:sectionName,
+           
+        }).then((result: ItemAddResult) => {
+            let mainListID = result.data.Id;
+        }).catch(error => {
+            console.log("error while Modified Section");
+        });  
+    }
     public saveIsFresher(professionalDetailData: IProfessionalDetailState, empListID) {
         let web = new Web(AppConstats.SITEURL);
         return web.lists.getByTitle(ListNames.EMPLOYEECONTACT).items.getById(empListID.EmpListID).update({
-            Fresher: professionalDetailData.IsFresher,
-            EmploymentStatus: "Assigned to HR"
+            Fresher: professionalDetailData.IsFresher
         }).then((result: ItemAddResult) => {
             let mainListID = result.data.Id;
         }).catch(error => {
@@ -526,9 +563,9 @@ export default class NewEmployeeService implements INewEmpRequestService {
                     Technology: detailRow.Technology,
                     SinceWhen: detailRow.SinceWhen,
                     Expertise: detailRow.Expertise,
-                    Rating: detailRow.Rating,
+                    Rating: detailRow.Rating,  
                     empTableIDId: empListID.EmpListID
-                });
+                }); 
             }
             else if (detailRow.technologyId > 0) {
                 web.lists.getByTitle(ListNames.EMPLOYEETECHNICALSKILL).items.getById(detailRow.technologyId).inBatch(batch).update({
@@ -540,7 +577,7 @@ export default class NewEmployeeService implements INewEmpRequestService {
                 });
             }
         });
-        batch.execute().then(() => alert("Professional details saved successfully and mail sent to HR"))
+        batch.execute()
             .catch(() => alert("Oops! Error occured in saving Technical Details"));
     }
     //#endregion Professional Detail Section

@@ -7,8 +7,20 @@ export const basicState: IBasicDetailState = {
     Designation: '',
     Technology: [],
     CompanyEmail: '',
+    RefferedBy:'',
     designationOptions: [],
     technologyOptions: [],
+    Location:'',
+    RefferalSource:'',
+    locationOptions:[],
+    departmentOption:[],
+    Department:'',
+    refferalSourceOptions:[],
+    Grade:'',
+    gradeOptions:[],
+    WillingnessToTravelForProjectPurpose:false,
+    FlexibleOnWorkHoursOrTiming:false,
+    Band:'',
     EmployeeCode : null,
 }
 export const BasicDetailSectionReducer = (state: IBasicDetailState = null, action) => {
@@ -24,8 +36,20 @@ export const BasicDetailSectionReducer = (state: IBasicDetailState = null, actio
                 Designation: action.payload.Designation,
                 Technology: action.payload.Technology,
                 CompanyEmail: action.payload.CompanyEmail,
+                RefferedBy:action.payload.RefferedBy,
+                RefferalSource:action.payload.RefferalSource,
+                refferalSourceOptions:action.payload.refferalSourceOptions,
                 designationOptions: action.payload.designationOptions,
+                departmentOption:action.payload.departmentOption,
+                Department:action.payload.Department,
                 technologyOptions: action.payload.technologyOptions,
+                WillingnessToTravelForProjectPurpose:action.payload.WillingnessToTravelForProjectPurpose,
+                FlexibleOnWorkHoursOrTiming:action.payload.FlexibleOnWorkHoursOrTiming,
+                Location:action.payload.Location,
+                locationOptions:action.payload.locationOptions,
+                Grade:action.payload.Grade,
+                gradeOptions:action.payload.gradeOptions,
+                Band:action.payload.Band
             };
             break;
     }

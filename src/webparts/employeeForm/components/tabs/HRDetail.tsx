@@ -111,7 +111,7 @@ class HRDetail extends React.Component<any, IControls> {
                                 <div className={`ms-Grid-row ${styles.rowhr}`}>
                                     {/* Manager*/}
                                     <div className='ms-Grid-col ms-u-sm12 ms-u-md2 block'>
-                                        <label>Manager:</label>
+                                        <label>Manager*:</label>
                                     </div>
                                     <div className={`ms-Grid-col ms-u-sm12 ms-u-md4 block ${styles.marginb}`}>
                                         <PeoplePicker
@@ -136,7 +136,6 @@ class HRDetail extends React.Component<any, IControls> {
                                     </div>
                                     <div className='ms-Grid-col ms-u-sm12 ms-u-md4 block'>
                                         <Control.select model="HR.employementStatus" id="HR.employementStatus" className={styles.dropdowncustomhr} >
-                                            <option value="Assigned to HR">Assigned to HR</option>
                                             <option value="Active">Active</option>
                                             <option value="Inactive">Inactive</option>
                                             <option value="Saved">Saved</option>
@@ -265,7 +264,7 @@ class HRDetail extends React.Component<any, IControls> {
                                         <label>Employee Image:</label>
                                     </div>
                                     <div className='ms-Grid-col ms-u-sm12 ms-u-md4 block'>
-                                    <input type="file" name="myFile" id="UploadedFile" accept="application/msword,application/pdf, image/*" onChange={(e) => this.handleEmployeeImageChange(e.target.files)}></input>
+                                    <input type="file" name="myFile" id="UploadedFile" accept="image/*" onChange={(e) => this.handleEmployeeImageChange(e.target.files)}></input>
                                     </div>
                                     <div className="ms-Grid-col ms-u-sm12 block">
                                         <DefaultButton id="DefaultSubmit" primary={true} text={"Submit"} type="submit"
@@ -291,7 +290,7 @@ class HRDetail extends React.Component<any, IControls> {
             //add file to the document library
             pnp.sp.web.lists.getByTitle('EmployeeContact').items.getById(employeeID.EmpListID).attachmentFiles.add(myfile.name, myfile);
             // pnp.sp.web.getFolderByServerRelativeUrl("/Employee%20Images").files.add(myfile.name, myfile, true).then(f => {
-            //     debugger;
+            //     
             //     console.log("File Uploaded");
             //     f.file.getItem().then(item => {
             //         //update file properties
@@ -304,7 +303,19 @@ class HRDetail extends React.Component<any, IControls> {
 
     }
 private handleEmployeeImageChange(selectorFiles: FileList){
-        this.setState({userImageAdded : true})
+    let myfile = (document.querySelector("#UploadedFile") as HTMLInputElement)
+    .files[0];
+  var filePath = myfile.name;
+  var allowedExtensions = /(\.png|\.jpeg|\.jpg)$/i;
+  if (!allowedExtensions.exec(filePath)) {
+    (document.querySelector("#UploadedFile") as HTMLInputElement).value = "";
+
+    alert("Please upload file having extensions .png/.jpeg/.jpg only.");
+    return false;
+  } else {
+    this.setState({ userImageAdded: true });
+    console.log(selectorFiles);
+  }
     }
 
     public getUserId(email: string): Promise<any> {

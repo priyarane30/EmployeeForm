@@ -37,8 +37,8 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
     public componentDidMount() {
         const empListId = store.getState().EmpListId;
         this.props.getDefaultControlsData(empListId);
-            this.setState({isDisableUser:this.props.isAssignedToHR})
-            if(this.props.isUserHR==false && this.props.isAssignedToHR==true){
+            this.setState({isDisableUser:this.props.isDisabledToUser})
+            if(this.props.isDisabledToUser==true){
                 this.setState({buttonDisabled:true});
             }
     }
@@ -102,10 +102,11 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                 const empListId = store.getState().EmpListId;
                 this.setState({ buttonDisabled: true });
                 let newEmpServiceObj: NewEmpService = new NewEmpService();
-                await newEmpServiceObj.saveProfessionalDetailInList(pdData, empListId);
+                await newEmpServiceObj.saveProfessionalDetailInList(pdData, empListId,this.state.isDisableUser);
                 this.setState({ buttonDisabled: false });
                 this.props.handleSpinner(true);
                 this.props.handleTabClick();
+                (this.state.isDisableUser)?alert("Technology updated succesfully"): alert("Professional details updated successfully")
             }
         }
         else if(pdData.IsFresher==false){if (pdData.organizationDetails.length == 0 || pdData.technologyDetails.length == 0) { 
@@ -120,12 +121,15 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
             const empListId = store.getState().EmpListId;
             this.setState({ buttonDisabled: true });
             let newEmpServiceObj: NewEmpService = new NewEmpService();
-            await newEmpServiceObj.saveProfessionalDetailInList(pdData, empListId);
+            await newEmpServiceObj.saveProfessionalDetailInList(pdData, empListId, this.state.isDisableUser);
             this.setState({ buttonDisabled: false });
             this.props.handleSpinner(true);
             this.props.handleTabClick();
+            (this.state.isDisableUser)?alert("Technology updated succesfully"): alert("Professional details updated successfully")
         }
+
     }
+   
         //else if(pdData.technologyDetails.length == 0){
         //    alert("Please enter required data");
         //    this.handleRowAdd("Technology");
@@ -151,7 +155,7 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                             <div className="table-responsive">
                                 <table className="grid-visa" style={{ width: "100%" }}>
                                     <tr>
-                                        <th colSpan={8} style={{ textAlign: "left" }}><span> Technology / Tools Skills <button className={styles.addbtn} disabled={this.state.isDisableUser} type="button"  onClick={() => this.handleRowAdd("Technology")}>+</button></span></th>
+                                        <th colSpan={8} style={{ textAlign: "left" }}><span> Technology / Tools Skills <button className={styles.addbtn}  type="button"  onClick={() => this.handleRowAdd("Technology")}>+</button></span></th>
 
                                     </tr>
                                     {this.props.ProfessionalDetail.technologyDetails.map((technologies, i) => {
@@ -159,7 +163,7 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                             <tr key={i}>
                                                 <td> {/* Technology */}
                                                     <label>Technology *</label>
-                                                    <Control.select model={`ProfessionalDetail.technologyDetails[${i}].Technology`} id={technologies.Technology}  disabled={this.state.isDisableUser}
+                                                    <Control.select model={`ProfessionalDetail.technologyDetails[${i}].Technology`} id={technologies.Technology} 
                                                         validators={{ requiredtechnology: (val) => val && val != "--Select--" }} style={{ height: "30px", width: "100%" }}>
                                                         <option value="0">--Select--</option>
                                                         {this.props.ProfessionalDetail.technologyDetails[i].technologyOptions.map(technology => {
@@ -271,7 +275,7 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                             <div className="table-responsive">
                                 <table className="grid-visa" style={{ width: "100%" }}>
                                     <tr>
-                                        <th colSpan={8} style={{ textAlign: "left" }}><span> Technology / Tools Skills <button className={styles.addbtn} disabled={this.state.isDisableUser} type="button"  onClick={() => this.handleRowAdd("Technology")}>+</button></span></th>
+                                        <th colSpan={8} style={{ textAlign: "left" }}><span> Technology / Tools Skills <button className={styles.addbtn}  type="button"  onClick={() => this.handleRowAdd("Technology")}>+</button></span></th>
 
                                     </tr>
                                     {this.props.ProfessionalDetail.technologyDetails.map((technologies, i) => {
@@ -279,7 +283,7 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                             <tr key={i}>
                                                 <td> {/* Technology */}
                                                     <label>Technology *</label>
-                                                    <Control.select model={`ProfessionalDetail.technologyDetails[${i}].Technology`} id={technologies.Technology}  disabled={this.state.isDisableUser}
+                                                    <Control.select model={`ProfessionalDetail.technologyDetails[${i}].Technology`} id={technologies.Technology}  
                                                         validators={{ requiredtechnology: (val) => val && val != "--Select--" }} style={{ height: "30px", width: "100%" }}>
                                                         <option value="0">--Select--</option>
                                                         {this.props.ProfessionalDetail.technologyDetails[i].technologyOptions.map(technology => {
@@ -366,7 +370,7 @@ class ProfessionalDetail extends React.Component<any, buttonStatus> {
                                 </table>
                             </div></div>
                             <DefaultButton id="DefaultSubmit" primary={true} text={"Update"} type="submit"
-                         disabled={this.state.buttonDisabled} className={styles.submitbutton} />
+                                 className={styles.submitbutton} />
                         </div>
                       
                     </Form>

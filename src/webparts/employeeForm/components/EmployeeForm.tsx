@@ -33,11 +33,12 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, an
     this.setState({ isSpinnerHidden: flagShow });
   }
   public AssignedToHR(employmentStatus){
-    if(employmentStatus=="Assigned to HR" && this.state.isUserHR==false){
+    if(employmentStatus=="Inactive"){
     this.setState({isDisableToUser:true})}
   }
 
   public async showTabs(empId, isExistsInHR) {
+    
     if (empId != null && empId != undefined && empId.EmpListID > 0)
       await this.setState({ isEmpIdExists: true });
     if (isExistsInHR)
@@ -54,16 +55,16 @@ export default class EmployeeForm extends React.Component<IEmployeeFormProps, an
             <div >
               <Pivot aria-label="Employee Form" linkFormat={PivotLinkFormat.tabs} linkSize={PivotLinkSize.large}  selectedKey={`${this.state.selectedKey}`} onLinkClick={this._TabClick} style={{width:'16px !important;' }}  >
                 <PivotItem headerText="Basic Details" itemKey="0" >
-                  <BasicDetail  isAssignedToHR={this.state.isDisableToUser} handleTabClick={this._handleTabClick} handleSpinner={this._handleSpinner} empEmail={this.props.userEmail} showTabs={this.showTabs} context={this.props.context} forceRenderTabPanel={true} assignedToHR={this.AssignedToHR}/>
+                  <BasicDetail  isDisabledToUser={this.state.isDisableToUser} handleTabClick={this._handleTabClick} handleSpinner={this._handleSpinner} empEmail={this.props.userEmail} showTabs={this.showTabs} context={this.props.context} forceRenderTabPanel={true} assignedToHR={this.AssignedToHR}/>
                 </PivotItem>
                 <PivotItem headerText="Employee Details" itemKey="1"  >
-                  <EmployeeDetail handleTabClick={this._handleTabClick} isAssignedToHR={this.state.isDisableToUser} handleSpinner={this._handleSpinner} isUserHR={this.state.isUserHR} />
+                  <EmployeeDetail handleTabClick={this._handleTabClick} isDisabledToUser={this.state.isDisableToUser} handleSpinner={this._handleSpinner} isUserHR={this.state.isUserHR} />
                 </PivotItem>
                 <PivotItem headerText="Education Details" itemKey="2">
-                  <EducationDetail handleTabClick={this._handleTabClick} isAssignedToHR={this.state.isDisableToUser} handleSpinner={this._handleSpinner} isUserHR={this.state.isUserHR} />
+                  <EducationDetail handleTabClick={this._handleTabClick} isDisabledToUser={this.state.isDisableToUser} handleSpinner={this._handleSpinner} isUserHR={this.state.isUserHR} />
                 </PivotItem>
                 <PivotItem headerText="Professional Detail" itemKey="3">
-                  <ProfessionalDetail handleTabClick={this._handleTabClick} isAssignedToHR={this.state.isDisableToUser} handleSpinner={this._handleSpinner} isUserHR={this.state.isUserHR} />
+                  <ProfessionalDetail handleTabClick={this._handleTabClick} isDisabledToUser={this.state.isDisableToUser} handleSpinner={this._handleSpinner} isUserHR={this.state.isUserHR} />
                 </PivotItem>
                 {this.ShowHRTab()}
                 {this.ShowPayrollTab()}

@@ -45,9 +45,9 @@ class EducationDetail extends React.Component<any, buttonStatus> {
   public async componentDidMount() {
     const empListId = store.getState().EmpListId;
     await this.props.getDefaultControlsData(empListId);
-    this.setState({isDisableUser:this.props.isAssignedToHR})
+    this.setState({isDisableUser:this.props.isDisabledToUser})
     
-    if(this.props.isUserHR==false && this.props.isAssignedToHR==true){
+    if(this.props.isDisabledToUser==true){
       this.setState({buttonDisabled:true});
     }
   }
@@ -83,7 +83,7 @@ class EducationDetail extends React.Component<any, buttonStatus> {
       this.setState({ buttonDisabled: false });
       let newEmpServiceObj: NewEmpService = new NewEmpService();
       await newEmpServiceObj.saveEduDataInList(eduData, empListId);
-      alert("Education Details saved succesfully");
+      alert("Education Details updated succesfully");
       this.setState({ buttonDisabled: true });
       this.props.handleSpinner(true);
       this.props.handleTabClick();

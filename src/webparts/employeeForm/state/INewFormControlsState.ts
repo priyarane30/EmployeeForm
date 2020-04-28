@@ -14,12 +14,22 @@ export interface INewFormState {
     SpouceDOB: Date; //dateTime?
     EmergencyNo: string;
     RelationWithEmergencyNo: string;
-    CurrentAddress: string;
+    CurrentResidentialNumber:string;
+    CurrentResidentialName:string;
+    CurrentRoadStreet:string;
+    CurrentLocalityArea:string;
+    CurrentLandmark:string;
+    CurrentPincode:string;
     CurrentCity:string;
     CurrentState:string;
     AccomodationType:string;
     IsSameAsCurrAddress: boolean;
-    PermanentAddress: string;
+    PermanentResidentialNumber:string;
+    PermanentResidentialName:string;
+    PermanentRoadStreet:string;
+    PermanentLocalityArea:string;
+    PermanentLandmark:string;
+    PermanentPincode:string;
     PermanentState:string;
     PermanentCity:string;
     PanNo: string;
@@ -28,6 +38,8 @@ export interface INewFormState {
     PassportNo: string;
     PassportValidity: Date; //datetime?
     Gender: string;
+    MarraigeAnniversary:Date;
+
 
     // Represent the choices to be displayed in dropdown when the form loads.
     genderOptions: string[];
